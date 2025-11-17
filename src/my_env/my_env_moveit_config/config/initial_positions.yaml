@@ -1,0 +1,15 @@
+# Default initial positions for my_env_controlled's ros2_control fake system
+
+initial_positions:
+  arm_A_ur_elbow_joint: 0
+  arm_A_ur_shoulder_lift_joint: -1.5708
+  arm_A_ur_shoulder_pan_joint: 0
+  arm_A_ur_wrist_1_joint: -1.5708
+  arm_A_ur_wrist_2_joint: 0
+  arm_A_ur_wrist_3_joint: 0
+  arm_B_ur_elbow_joint: 0
+  arm_B_ur_shoulder_lift_joint: -1.5708
+  arm_B_ur_shoulder_pan_joint: 0
+  arm_B_ur_wrist_1_joint: -1.5708
+  arm_B_ur_wrist_2_joint: 0
+  arm_B_ur_wrist_3_joint: 0

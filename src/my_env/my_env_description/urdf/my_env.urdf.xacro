@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot name="my_env_controlled" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- 首先包含自定义描述宏 -->
+  <xacro:include filename="$(find my_env_description)/urdf/my_env_macro.urdf.xacro"/>
+
+  <!-- 我们需要指定用于参数化描述的参数 -->
+  <!-- 为所需的ur_type创建一个文件夹，并从ur_description包中复制文件到那里 -->
+  
+  <!-- UR_A 机器人参数 -->
+  <xacro:arg name="arm_A_tf_prefix" default="arm_A_"/>
+  <xacro:arg name="ur_A_ur_type" default="ur5"/>
+
+  <!-- UR_B 机器人参数 -->
+  <xacro:arg name="arm_B_tf_prefix" default="arm_B_"/>
+  <xacro:arg name="ur_B_ur_type" default="ur5e"/>
+
+  <!-- 控制参数 -->
+  <xacro:arg name="use_fake_hardware" default="true" />
+  <xacro:arg name="fake_sensor_commands" default="true" />
+  <xacro:arg name="use_sim_gazebo" default="false" />
+  <xacro:arg name="generate_ros2_control" default="false" />
+  
+  <!-- 夹爪和相机参数 -->
+  <xacro:arg name="camera_use_nominal_extrinsics" default="true"/>
+
+
+  <!-- 创建包含机器人的场景描述 - 传递my_env宏需要的所有参数 -->
+  <xacro:my_env 
+    arm_A_tf_prefix="$(arg arm_A_tf_prefix)"
+    arm_B_tf_prefix="$(arg arm_B_tf_prefix)"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    use_fake_sensor_commands="$(arg fake_sensor_commands)"
+    generate_ros2_control="$(arg generate_ros2_control)"
+
+    ur_A_ur_type="$(arg ur_A_ur_type)"
+    ur_B_ur_type="$(arg ur_B_ur_type)"
+
+    camera_use_nominal_extrinsics="$(arg camera_use_nominal_extrinsics)"
+
+  />
+
+</robot>

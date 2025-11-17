@@ -1,0 +1,57 @@
+controller_names:
+  - ur_A/scaled_joint_trajectory_controller
+  - ur_A/joint_trajectory_controller
+  - ur_B/scaled_joint_trajectory_controller
+  - ur_B/joint_trajectory_controller
+
+
+ur_A/scaled_joint_trajectory_controller:
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+
+
+ur_A/joint_trajectory_controller:
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: false
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint      
+
+
+ur_B/scaled_joint_trajectory_controller:
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint
+
+
+ur_B/joint_trajectory_controller:
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: false
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint

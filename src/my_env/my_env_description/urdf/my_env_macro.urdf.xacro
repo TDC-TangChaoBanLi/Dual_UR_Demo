@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<robot name="my_env" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find my_env_description)/urdf/my_ur_macro.urdf.xacro"/>
+
+  <xacro:macro name="my_env" params="
+  arm_A_tf_prefix:=arm_A_
+  arm_B_tf_prefix:=arm_B_
+  use_fake_hardware:=false
+  use_fake_sensor_commands:=false
+  use_sim_gazebo:=false
+  generate_ros2_control:=false
+
+  ur_reverse_ip:=0.0.0.0
+  ur_headless_mode:=false
+  ur_A_ur_type:=ur5
+  ur_B_ur_type:=ur5e
+  ur_A_robot_ip:=192.168.1.101
+  ur_B_robot_ip:=192.168.1.102
+
+  ur_A_reverse_port:=50001
+  ur_A_script_sender_port:=50002
+  ur_A_script_command_port:=50003
+  ur_A_trajectory_port:=50004
+
+  ur_B_reverse_port:=50011
+  ur_B_script_sender_port:=50012
+  ur_B_script_command_port:=50013
+  ur_B_trajectory_port:=50014
+
+  camera_use_nominal_extrinsics:=true
+
+  gripper_com_port_A:=/dev/ttyUSB0
+  gripper_com_port_B:=/dev/ttyUSB1
+  ">
+  
+  <!-- 定义材料 -->
+  <material name="wood">
+    <color rgba="0.65 0.5 0.39 1"/>
+  </material>
+
+  <link name="world"/>
+  <!-- 桌子-基座 joint -->
+  <joint name="world_to_table" type="fixed">
+    <parent link="world" />
+    <child link="table" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <!-- 桌子 link -->
+  <link name="table">
+    <visual>
+      <geometry>
+        <box size="2.0 1.2 0.8"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.4"/>
+      <material name="wood"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="2.0 1.2 0.8"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.4"/>
+    </collision>
+  </link>
+
+  <!-- UR 安装座 link & joint -->
+  <link name="ur_mount_A"/>
+  <joint name="table_to_ur_mount_A" type="fixed">
+    <parent link="table"/>
+    <child link="ur_mount_A"/>
+    <origin xyz="0.4 0.2 0.8" rpy="0 0 ${pi/2}" />
+  </joint>
+
+  <link name="ur_mount_B"/>
+  <joint name="table_to_ur_mount_B" type="fixed">
+    <parent link="table"/>
+    <child link="ur_mount_B"/>
+    <origin xyz="-0.4 0.2 0.8" rpy="0 0 ${-pi/2}" />
+  </joint>
+
+  <!-- 创建 UR 机器人 -->
+  <xacro:my_arm
+    name = "ur_A"
+    tf_prefix = "${arm_A_tf_prefix}"
+    parent = "ur_mount_A"
+    ur_type = "${ur_A_ur_type}"
+    use_fake_hardware = "${use_fake_hardware}"
+    use_fake_sensor_commands = "${use_fake_sensor_commands}"
+    use_sim_gazebo = "${use_sim_gazebo}"
+    generate_ros2_control = "${generate_ros2_control}"
+    ur_robot_ip = "${ur_A_robot_ip}"
+    ur_reverse_ip = "${ur_reverse_ip}"
+    ur_reverse_port = "${ur_A_reverse_port}"
+    ur_script_sender_port = "${ur_A_script_sender_port}"
+    ur_script_command_port = "${ur_A_script_command_port}"
+    ur_trajectory_port = "${ur_A_trajectory_port}"
+    ur_headless_mode = "${ur_headless_mode}"
+    robotiq_com_port = "${gripper_com_port_A}"
+    realsense_use_nominal_extrinsics = "${camera_use_nominal_extrinsics}"
+  >
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:my_arm>
+
+  <xacro:my_arm
+    name = "ur_B"
+    tf_prefix = "${arm_B_tf_prefix}"
+    parent = "ur_mount_B"
+    ur_type = "${ur_B_ur_type}"
+    use_fake_hardware = "${use_fake_hardware}"
+    use_fake_sensor_commands = "${use_fake_sensor_commands}"
+    use_sim_gazebo = "${use_sim_gazebo}"
+    generate_ros2_control = "${generate_ros2_control}"
+    ur_robot_ip = "${ur_B_robot_ip}"
+    ur_reverse_ip = "${ur_reverse_ip}"
+    ur_reverse_port = "${ur_B_reverse_port}"
+    ur_script_sender_port = "${ur_B_script_sender_port}"
+    ur_script_command_port = "${ur_B_script_command_port}"
+    ur_trajectory_port = "${ur_B_trajectory_port}"
+    ur_headless_mode = "${ur_headless_mode}"
+    robotiq_com_port = "${gripper_com_port_B}"
+    realsense_use_nominal_extrinsics = "${camera_use_nominal_extrinsics}"
+  >
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:my_arm>
+
+  </xacro:macro>
+</robot>

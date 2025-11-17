@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro" />
+  <xacro:include filename="$(find robotiq_description)/urdf/ur_to_robotiq_adapter.urdf.xacro" />
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+
+  <!-- 宏定义自己的机械臂结构 UR+Robotiq+RealSense -->
+  <xacro:macro name="my_arm" params="
+    name:=my_arm
+    tf_prefix:=my_arm
+    parent:=world
+    use_fake_hardware:=false
+    use_fake_sensor_commands:=false
+    use_sim_gazebo:=false
+    generate_ros2_control:=false
+
+    ur_type:=ur5e
+    ur_reverse_ip:=0.0.0.0
+    ur_reverse_port:=50001
+    ur_robot_ip
+    ur_script_sender_port:=50002
+    ur_script_command_port:=50003
+    ur_trajectory_port:=50004
+    ur_headless_mode:=false
+
+    robotiq_com_port:=/dev/ttyUSB0
+    realsense_use_nominal_extrinsics:=false
+    *origin
+    "> 
+
+    <!-- UR parameters -->
+    <xacro:property name="_ur_name" value="${name}_ur"/>
+    <xacro:property name="_ur_tf_prefix" value="${tf_prefix}ur_"/>
+    <xacro:property name="_ur_parent" value="${parent}"/>
+    <xacro:property name="_ur_joint_limits_parameters_file" value="$(find ur_description)/config/${ur_type}/joint_limits.yaml"/>
+    <xacro:property name="_ur_kinematics_parameters_file" value="$(find ur_description)/config/${ur_type}/default_kinematics.yaml"/>
+    <xacro:property name="_ur_physical_parameters_file" value="$(find ur_description)/config/${ur_type}/physical_parameters.yaml"/>
+    <xacro:property name="_ur_visual_parameters_file" value="$(find ur_description)/config/${ur_type}/visual_parameters.yaml"/>
+
+    <!-- UR Simulation parameters -->
+    <xacro:property name="_ur_use_fake_hardware" value="${use_fake_hardware}" />
+    <xacro:property name="_ur_fake_sensor_commands" value="${use_fake_sensor_commands}" />
+    <xacro:property name="_ur_sim_gazebo" value="${use_sim_gazebo}" />
+    <xacro:property name="_ur_sim_ignition" value="false" />
+
+    <!-- UR tool communication related parameters-->
+    <xacro:property name="_ur_use_tool_communication" value="false" />
+    <xacro:property name="_ur_tool_voltage" value="0" />
+    <xacro:property name="_ur_tool_parity" value="0" />
+    <xacro:property name="_ur_tool_baud_rate" value="115200" />
+    <xacro:property name="_ur_tool_stop_bits" value="1" />
+    <xacro:property name="_ur_tool_rx_idle_chars" value="1.5" />
+    <xacro:property name="_ur_tool_tx_idle_chars" value="3.5" />
+    <xacro:property name="_ur_tool_device_name" value="/tmp/ttyUR" />
+    <xacro:property name="_ur_tool_tcp_port" value="54321" />
+
+    <!-- UR ros2_control related parameters -->
+    <xacro:property name="_ur_generate_ros2_control" value="${generate_ros2_control}" />
+    <xacro:property name="_ur_initial_positions_file" value="$(find ur_description)/config/initial_positions.yaml" />
+    <xacro:property name="_ur_initial_positions" value="${xacro.load_yaml(_ur_initial_positions_file)}" />
+    <xacro:property name="_ur_headless_mode" value="${ur_headless_mode}" />
+    <xacro:property name="_ur_script_filename" value="$(find ur_client_library)/resources/external_control.urscript" />
+    <xacro:property name="_ur_output_recipe_filename" value="$(find ur_robot_driver)/resources/rtde_output_recipe.txt" />
+    <xacro:property name="_ur_input_recipe_filename" value="$(find ur_robot_driver)/resources/rtde_input_recipe.txt" />
+    <xacro:property name="_ur_reverse_ip" value="${ur_reverse_ip}" />
+    <xacro:property name="_ur_reverse_port" value="${ur_reverse_port}" />
+    <xacro:property name="_ur_robot_ip" value="${ur_robot_ip}" />
+    <xacro:property name="_ur_script_sender_port" value="${ur_script_sender_port}" />
+    <xacro:property name="_ur_script_command_port" value="${ur_script_command_port}" />
+    <xacro:property name="_ur_trajectory_port" value="${ur_trajectory_port}" />
+
+
+    <!-- RealSense parameters -->
+    <xacro:property name="_realsense_name" value="${tf_prefix}realsense" />
+    <xacro:property name="_realsense_prefix" value="${tf_prefix}realsense" />
+    <xacro:property name="_realsense_use_nominal_extrinsics" value="${realsense_use_nominal_extrinsics}" />
+    <xacro:property name="_realsense_add_plug" value="false" />
+    <xacro:property name="_realsense_use_mesh" value="true" />
+
+
+    <!-- Robotiq parameters -->
+    <xacro:property name="_robotiq_name" value="${name}_robotiq" />
+    <xacro:property name="_robotiq_prefix" value="${tf_prefix}" />
+    <xacro:property name="_robotiq_sim_gazebo" value="${use_sim_gazebo}" />
+    <xacro:property name="_robotiq_sim_isaac" value="false" />
+    <xacro:property name="_robotiq_use_fake_hardware" value="${use_fake_hardware}" />
+    <xacro:property name="_robotiq_mock_sensor_commands" value="${use_fake_sensor_commands}" />
+    <xacro:property name="_robotiq_include_ros2_control" value="${generate_ros2_control}" />
+    <xacro:property name="_robotiq_com_port" value="${robotiq_com_port}  " />
+    <xacro:property name="_robotiq_gripper_speed_multiplier" value="1.0" />
+    <xacro:property name="_robotiq_gripper_force_multiplier" value="0.5" />
+    <xacro:property name="_robotiq_gripper_max_speed" value="0.150" />
+    <xacro:property name="_robotiq_gripper_max_force" value="235.0" />
+    <xacro:property name="_robotiq_gripper_closed_position" value="0.7929" />
+
+
+    <!-- 创建 UR 机器人 使用宏定义 -->
+    <xacro:ur_robot
+      name="${_ur_name}"
+      tf_prefix="${_ur_tf_prefix}"
+      parent="${_ur_parent}"
+      joint_limits_parameters_file="${_ur_joint_limits_parameters_file}"
+      kinematics_parameters_file="${_ur_kinematics_parameters_file}"
+      physical_parameters_file="${_ur_physical_parameters_file}"
+      visual_parameters_file="${_ur_visual_parameters_file}"
+      generate_ros2_control_tag="${_ur_generate_ros2_control}"
+
+
+
+      use_fake_hardware="${_ur_use_fake_hardware}"
+      fake_sensor_commands="${_ur_fake_sensor_commands}"
+      sim_gazebo="${_ur_sim_gazebo}"
+      sim_ignition="${_ur_sim_ignition}"
+      headless_mode="${_ur_headless_mode}"
+      initial_positions="${_ur_initial_positions}"
+      use_tool_communication="${_ur_use_tool_communication}"
+      tool_voltage="${_ur_tool_voltage}"
+      tool_parity="${_ur_tool_parity}"
+      tool_baud_rate="${_ur_tool_baud_rate}"
+      tool_stop_bits="${_ur_tool_stop_bits}"
+      tool_rx_idle_chars="${_ur_tool_rx_idle_chars}"
+      tool_tx_idle_chars="${_ur_tool_tx_idle_chars}"
+      tool_device_name="${_ur_tool_device_name}"
+      tool_tcp_port="${_ur_tool_tcp_port}"
+      robot_ip="${_ur_robot_ip}"
+      script_filename="${_ur_script_filename}"
+      output_recipe_filename="${_ur_output_recipe_filename}"
+      input_recipe_filename="${_ur_input_recipe_filename}"
+      reverse_ip="${_ur_reverse_ip}"
+      reverse_port="${_ur_reverse_port}"
+      script_sender_port="${_ur_script_sender_port}"
+      script_command_port="${_ur_script_command_port}"
+      trajectory_port="${_ur_trajectory_port}"
+
+
+    >
+      <xacro:insert_block name="origin" />
+    </xacro:ur_robot>
+
+    <!-- 创建 RealSense 相机支架 -->
+    <!-- 该支架的相机螺纹孔距离机械臂末端圆心100mm，支架厚度3mm -->
+    <link name="${_realsense_prefix}_shelf">
+      <inertial>
+        <origin xyz="0.0 0.044 0.0015" rpy="0.0 0.0 0.0"/>
+        <mass value="0.038"/>
+        <inertia ixx="0.00006673" ixy="0.0" ixz="0.0" iyy="0.00000850" iyz="0.0" izz="0.00007517"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://my_env_description/meshes/RealSense_D435_Shelf.STL"/>
+        </geometry>
+        <material name="anodized_aluminum">
+          <color rgba="0.7 0.7 0.7 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://my_env_description/meshes/RealSense_D435_Shelf.STL"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${_realsense_prefix}_tool0_to_realsense_shelf" type="fixed">
+      <parent link="${_ur_tf_prefix}tool0"/>
+      <child link="${_realsense_prefix}_shelf"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 ${pi}" />
+    </joint>
+
+    <!-- 创建 RealSense 相机支架 child 端的 link 和 joint -->
+    <link name="${_realsense_prefix}_shelf_child_side"/>
+    <joint name="${_realsense_prefix}_shelf_to_child_side" type="fixed">
+      <parent link="${_realsense_prefix}_shelf"/>
+      <child link="${_realsense_prefix}_shelf_child_side"/>
+      <!-- 相机支架厚度 3mm + 夹爪底座坐标z轴偏移3mm -->
+      <origin xyz="0.0 0.0 0.006" rpy="0 0 0" />
+    </joint>
+
+    <!-- 创建 RealSense 相机 使用宏定义 -->
+    <!-- params 'name' is actually tf_prefix with '_' -->
+    <xacro:sensor_d435 
+      parent="${_realsense_prefix}_shelf" 
+      name="${_realsense_prefix}"
+      use_nominal_extrinsics="${_realsense_use_nominal_extrinsics}" 
+      add_plug="${_realsense_add_plug}" 
+      use_mesh="${_realsense_use_mesh}"
+    >
+      <!-- RealSense 的基座位于相机底部的1/4螺纹孔，距离后背面10mm，底部平面距离后背2个螺纹孔所在直线12.5mm -->
+      <origin xyz="0 0.0875 0.013" rpy="0 ${-pi/2} ${-pi/2}"/>
+    </xacro:sensor_d435>
+
+    <!-- 创建 robotiq 夹爪底座 使用宏定义 -->
+    <xacro:ur_to_robotiq
+      prefix="${_robotiq_prefix}robotiq_" 
+      parent="${_realsense_prefix}_shelf_child_side" 
+      child="${_robotiq_prefix}robotiq_ur_to_robotiq_child_side"
+    >
+    </xacro:ur_to_robotiq>
+
+    <!-- 创建 robotiq 夹爪 使用宏定义 -->
+    <xacro:robotiq_gripper 
+      name="${_robotiq_name}" 
+      prefix="${_robotiq_prefix}" 
+      parent="${_robotiq_prefix}robotiq_ur_to_robotiq_child_side" 
+      sim_gazebo="${_robotiq_sim_gazebo}" 
+      sim_isaac="${_robotiq_sim_isaac}"
+
+
+      use_fake_hardware="${_robotiq_use_fake_hardware}" 
+      mock_sensor_commands="${_robotiq_mock_sensor_commands}"
+      include_ros2_control="${_robotiq_include_ros2_control}"
+      com_port="${_robotiq_com_port}"
+      gripper_speed_multiplier="${_robotiq_gripper_speed_multiplier}"
+      gripper_force_multiplier="${_robotiq_gripper_force_multiplier}"
+      gripper_max_speed="${_robotiq_gripper_max_speed}"
+      gripper_max_force="${_robotiq_gripper_max_force}"
+      gripper_closed_position="${_robotiq_gripper_closed_position}"
+    >
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:robotiq_gripper>
+
+
+  </xacro:macro>
+</robot>

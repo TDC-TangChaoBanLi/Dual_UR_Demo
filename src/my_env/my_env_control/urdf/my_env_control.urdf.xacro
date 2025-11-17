@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<robot name="my_env_controlled" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- 首先包含自定义描述宏 -->
+  <xacro:include filename="$(find my_env_description)/urdf/my_env_macro.urdf.xacro"/>
+
+  <!-- 我们需要指定用于参数化描述的参数 -->
+  <!-- 为所需的ur_type创建一个文件夹，并从ur_description包中复制文件到那里 -->
+  <!-- 总体参数 -->
+  <xacro:arg name="arm_A_tf_prefix" default="arm_A_"/>
+  <xacro:arg name="arm_B_tf_prefix" default="arm_B_"/>
+  <xacro:arg name="use_fake_hardware" default="true" />
+  <xacro:arg name="use_fake_sensor_commands" default="true" />
+  <xacro:arg name="use_sim_gazebo" default="false" />
+  <xacro:arg name="generate_ros2_control" default="true" />
+  <!-- UR 机器人其他参数 -->
+  <xacro:arg name="ur_reverse_ip" default="0.0.0.0"/>
+  <xacro:arg name="ur_headless_mode" default="false"/>
+  <!-- UR_A 机器人参数 -->
+  <xacro:arg name="ur_A_ur_type" default="ur5"/>
+  <xacro:arg name="ur_A_robot_ip" default="192.168.1.101"/>
+  <xacro:arg name="ur_A_reverse_port" default="50001"/>
+  <xacro:arg name="ur_A_script_sender_port" default="50002"/>
+  <xacro:arg name="ur_A_script_command_port" default="50003"/>
+  <xacro:arg name="ur_A_trajectory_port" default="50004"/>
+  <!-- UR_B 机器人参数 -->
+  <xacro:arg name="ur_B_ur_type" default="ur5e"/>
+  <xacro:arg name="ur_B_robot_ip" default="192.168.1.102"/>
+  <xacro:arg name="ur_B_reverse_port" default="50011"/>
+  <xacro:arg name="ur_B_script_sender_port" default="50012"/>
+  <xacro:arg name="ur_B_script_command_port" default="50013"/>
+  <xacro:arg name="ur_B_trajectory_port" default="50014"/>
+  <!-- 夹爪和相机参数 -->
+  <xacro:arg name="gripper_com_port_A" default="/dev/ttyUSB0"/>
+  <xacro:arg name="gripper_com_port_B" default="/dev/ttyUSB1"/>
+  <xacro:arg name="camera_use_nominal_extrinsics" default="true"/>
+
+
+  <!-- 创建包含机器人的场景描述 - 传递my_env宏需要的所有参数 -->
+  <xacro:my_env 
+    arm_A_tf_prefix="$(arg arm_A_tf_prefix)"
+    arm_B_tf_prefix="$(arg arm_B_tf_prefix)"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    use_fake_sensor_commands="$(arg use_fake_sensor_commands)"
+    use_sim_gazebo="$(arg use_sim_gazebo)"
+    generate_ros2_control="$(arg generate_ros2_control)"
+
+    ur_reverse_ip="$(arg ur_reverse_ip)"
+    ur_headless_mode="$(arg ur_headless_mode)"
+    ur_A_ur_type="$(arg ur_A_ur_type)"
+    ur_B_ur_type="$(arg ur_B_ur_type)"
+    ur_A_robot_ip="$(arg ur_A_robot_ip)"
+    ur_B_robot_ip="$(arg ur_B_robot_ip)"
+    ur_A_reverse_port="$(arg ur_A_reverse_port)"
+    ur_A_script_sender_port="$(arg ur_A_script_sender_port)"
+    ur_A_script_command_port="$(arg ur_A_script_command_port)"
+    ur_A_trajectory_port="$(arg ur_A_trajectory_port)"
+    ur_B_reverse_port="$(arg ur_B_reverse_port)"
+    ur_B_script_sender_port="$(arg ur_B_script_sender_port)"
+    ur_B_script_command_port="$(arg ur_B_script_command_port)"
+    ur_B_trajectory_port="$(arg ur_B_trajectory_port)"
+
+    camera_use_nominal_extrinsics="$(arg camera_use_nominal_extrinsics)"
+
+    gripper_com_port_A="$(arg gripper_com_port_A)"
+    gripper_com_port_B="$(arg gripper_com_port_B)"
+  />
+
+</robot>
