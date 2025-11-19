@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="robotiq_gripper">
+    <!-- parameters -->
+    <xacro:arg name="name" default="robotiq_85" />
+    <xacro:arg name="tf_prefix" default="" />
+    <xacro:arg name="parent" default="world" />
+
+    <xacro:arg name="sim_gazebo" default="false" />
+    <xacro:arg name="sim_isaac" default="false" />
+    <xacro:arg name="isaac_joint_commands" default="/isaac_joint_commands" />
+    <xacro:arg name="isaac_joint_states" default="/isaac_joint_states" />
+    <xacro:arg name="use_fake_hardware" default="false" />
+    <xacro:arg name="mock_sensor_commands" default="false" />
+
+    <xacro:arg name="com_port" default="/dev/ttyUSB0" />
+
+    <xacro:arg name="gripper_speed_multiplier" default="1.0" />
+    <xacro:arg name="gripper_force_multiplier" default="0.5" />
+    <xacro:arg name="gripper_max_speed" default="0.150" />
+    <xacro:arg name="gripper_max_force" default="235.0" />
+    <xacro:arg name="gripper_closed_position" default="0.7929" />
+
+    <!-- Import macros -->
+    <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro" />
+
+    <link name="world" />
+    <xacro:robotiq_gripper 
+        name="$(arg name)" 
+        prefix="$(arg tf_prefix)" 
+        parent="$(arg parent)" 
+
+        sim_gazebo="$(arg sim_gazebo)"
+        sim_isaac="$(arg sim_isaac)"
+        isaac_joint_commands="$(arg isaac_joint_commands)" 
+        isaac_joint_states="$(arg isaac_joint_states)"
+        use_fake_hardware="$(arg use_fake_hardware)" 
+        mock_sensor_commands="$(arg mock_sensor_commands)"
+
+        com_port="$(arg com_port)"
+
+        gripper_speed_multiplier="$(arg gripper_speed_multiplier)"
+        gripper_force_multiplier="$(arg gripper_force_multiplier)"
+        gripper_max_speed="$(arg gripper_max_speed)"
+        gripper_max_force="$(arg gripper_max_force)"
+        gripper_closed_position="$(arg gripper_closed_position)"
+    >
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:robotiq_gripper>
+</robot>

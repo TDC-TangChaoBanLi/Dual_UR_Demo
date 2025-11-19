@@ -17,13 +17,23 @@ def generate_launch_description():
 
     my_control_package = "my_env_control"
     my_control_xacro_file = "my_env_control.urdf.xacro"
-    my_rvizconfig_package = "my_env_control.rviz"
+    my_rvizconfig_file = "my_env_control.rviz"
+
     my_ur_controller_launch_file = "my_ur_control.launch.py"
     my_ur_runtime_config_package = "my_env_control"
-    my_ur_controller_yaml_file = "my_ur_controllers.yaml"
+    my_ur_controllers_file = "my_ur_controllers.yaml"
+
+    my_robotiq_runtime_config_package = "my_env_control"
+    my_robotiq_controllers_file = "my_robotiq_controllers.yaml"
+    my_robotiq_update_rate_file = "my_robotiq_update_rate.yaml"
+
+    my_robotiq_controller_launch_file = "my_robotiq_control.launch.py"
 
     ur_A_namespace = "ur_A"
     ur_B_namespace = "ur_B"
+    robotiq_A_namespace = "robotiq_A"
+    robotiq_B_namespace = "robotiq_B"
+
 
     use_fake_hardware = LaunchConfiguration('use_fake_hardware')    
     use_fake_sensor_commands = LaunchConfiguration('use_fake_sensor_commands')
@@ -41,6 +51,7 @@ def generate_launch_description():
     ur_A_script_sender_port = "50002"
     ur_A_script_command_port = "50003"
     ur_A_trajectory_port = "50004"
+    robotiq_A_com_port = "/dev/ttyUSB0"
 
     arm_B_tf_prefix = "arm_B_"
     ur_B_ur_type = "ur5e"
@@ -49,6 +60,9 @@ def generate_launch_description():
     ur_B_script_sender_port = "50012"
     ur_B_script_command_port = "50013"
     ur_B_trajectory_port = "50014"
+    robotiq_B_com_port = "/dev/ttyUSB1"
+
+
 
     # 声明启动参数
     use_fake_hardware_arg = DeclareLaunchArgument(
@@ -122,13 +136,12 @@ def generate_launch_description():
     )
 
 
-    robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
-    ur_robot_driver_path = get_package_share_directory(my_control_package)
+    my_ur_control_path = get_package_share_directory(my_control_package)
 
     # arm_A_ur 的控制启动文件
     ur_A_tf_prefix = arm_A_tf_prefix+"ur_"
-    ur_A = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(ur_robot_driver_path, 'launch', my_ur_controller_launch_file)),
+    ur_A_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(my_ur_control_path, 'launch', my_ur_controller_launch_file)),
         launch_arguments={
             'ur_type': ur_A_ur_type,
             'use_tool_communication': 'false',
@@ -145,27 +158,19 @@ def generate_launch_description():
             'script_sender_port': ur_A_script_sender_port,
 
             'runtime_config_package': my_ur_runtime_config_package,
-            'controllers_file': my_ur_controller_yaml_file,
-            # 'description_package': my_description_package,
-            # 'description_file': my_description_file,
+            'controllers_file': my_ur_controllers_file,
         }.items())
-    
     ur_A_with_namespace = GroupAction(
         actions=[
             PushRosNamespace(ur_A_namespace),
-            ur_A,
-            Node(
-                package='robot_state_publisher',
-                executable='robot_state_publisher',
-                parameters=[robot_description]
-            )         
+            ur_A_launch,   
         ]
     )
 
     # arm_B_ur 的控制启动文件
     ur_B_tf_prefix = arm_B_tf_prefix+"ur_"
-    ur_B = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(ur_robot_driver_path, 'launch', my_ur_controller_launch_file)),
+    ur_B_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(my_ur_control_path, 'launch', my_ur_controller_launch_file)),
         launch_arguments={
             'ur_type': ur_B_ur_type,
             'use_tool_communication': 'false',
@@ -182,26 +187,84 @@ def generate_launch_description():
             'script_sender_port': ur_B_script_sender_port,
 
             'runtime_config_package': my_ur_runtime_config_package,
-            'controllers_file': my_ur_controller_yaml_file,
-            # 'description_package': my_description_package,
-            # 'description_file': my_description_file,
+            'controllers_file': my_ur_controllers_file,
         }.items())
-    
     ur_B_with_namespace = GroupAction(
         actions=[
             PushRosNamespace(ur_B_namespace),
-            ur_B,
-            Node(
-                package='robot_state_publisher',
-                executable='robot_state_publisher',
-                parameters=[robot_description]
-            )         
+            ur_B_launch,      
+        ]
+    )
+
+    my_robotiq_control_path = get_package_share_directory(my_control_package)
+    # arm_A_robotiq 的控制启动文件
+    robotiq_A_tf_prefix = arm_A_tf_prefix
+    robotiq_A_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(my_robotiq_control_path, 'launch', my_robotiq_controller_launch_file)),
+        launch_arguments={
+            'runtime_config_package': my_robotiq_runtime_config_package,
+            'controllers_file': my_robotiq_controllers_file,
+            'update_rate_file': my_robotiq_update_rate_file,
+            
+            'tf_prefix': robotiq_A_tf_prefix,
+            'use_fake_hardware': use_fake_hardware,
+            'mock_sensor_commands': use_fake_sensor_commands,
+            'com_port': robotiq_A_com_port,
+        }.items())
+    robotiq_A_with_namespace = GroupAction(
+        actions=[
+            PushRosNamespace(robotiq_A_namespace),
+            robotiq_A_launch,      
+        ]
+    )
+
+    # arm_B_robotiq 的控制启动文件
+    robotiq_B_tf_prefix = arm_B_tf_prefix
+    robotiq_B_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(my_robotiq_control_path, 'launch', my_robotiq_controller_launch_file)),
+        launch_arguments={
+            'runtime_config_package': my_robotiq_runtime_config_package,
+            'controllers_file': my_robotiq_controllers_file,
+            'update_rate_file': my_robotiq_update_rate_file,
+            
+            'tf_prefix': robotiq_B_tf_prefix,
+            'use_fake_hardware': use_fake_hardware,
+            'mock_sensor_commands': use_fake_sensor_commands,
+            'com_port': robotiq_B_com_port,
+        }.items())
+    robotiq_B_with_namespace = GroupAction(
+        actions=[
+            PushRosNamespace(robotiq_B_namespace),
+            robotiq_B_launch,      
         ]
     )
 
 
+    # 合并joint_state话题并发布机器人状态
+    joint_state_merger = Node(
+        package='joint_state_publisher',  # 使用现有的包
+        executable='joint_state_publisher',
+        name='joint_state_merger',
+        output='screen',
+        parameters=[{
+            'source_list': [
+                ur_A_namespace+'/joint_states', 
+                ur_B_namespace+'/joint_states',
+                robotiq_A_namespace+'/joint_states',
+                robotiq_B_namespace+'/joint_states',
+            ],
+        }],
+    )
+    robot_description = {"robot_description": ParameterValue(value=robot_description_content, value_type=str)}
+    robot_state_publisher_node = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        parameters=[robot_description]
+    )  
+
+
     # rviz 节点的启动
-    rviz_config_file = PathJoinSubstitution([FindPackageShare(my_control_package), "rviz", my_rvizconfig_package])
+    rviz_config_file = PathJoinSubstitution([FindPackageShare(my_control_package), "rviz", my_rvizconfig_file])
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
@@ -211,7 +274,7 @@ def generate_launch_description():
         condition=IfCondition(launch_rviz),
     )
 
-    
+
 
     return LaunchDescription([    
         use_fake_hardware_arg,
@@ -223,6 +286,12 @@ def generate_launch_description():
         ur_reverse_ip_arg,
 
         rviz_node,# if you don't want to launch the rviz2 to show the robot state, comment it
+
         ur_A_with_namespace,
-        ur_B_with_namespace
+        ur_B_with_namespace,
+        robotiq_A_with_namespace,
+        robotiq_B_with_namespace,
+
+        joint_state_merger,
+        robot_state_publisher_node
     ])

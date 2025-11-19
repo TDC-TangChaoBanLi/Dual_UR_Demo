@@ -1,140 +1,139 @@
-# Copyright (c) 2022 PickNik, Inc.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-#
-#    * Redistributions of source code must retain the above copyright
-#      notice, this list of conditions and the following disclaimer.
-#
-#    * Redistributions in binary form must reproduce the above copyright
-#      notice, this list of conditions and the following disclaimer in the
-#      documentation and/or other materials provided with the distribution.
-#
-#    * Neither the name of the {copyright_holder} nor the names of its
-#      contributors may be used to endorse or promote products derived from
-#      this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
-# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-# POSSIBILITY OF SUCH DAMAGE.
-
-import launch
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import (
     Command,
     FindExecutable,
     LaunchConfiguration,
     PathJoinSubstitution,
 )
-from launch.conditions import IfCondition
-import launch_ros
-import os
 
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+from launch_ros.parameter_descriptions import ParameterFile, ParameterValue
 
 def generate_launch_description():
-    description_pkg_share = launch_ros.substitutions.FindPackageShare(
-        package="robotiq_description"
-    ).find("robotiq_description")
-    default_model_path = os.path.join(
-        description_pkg_share, "urdf", "robotiq_2f_85_gripper.urdf.xacro"
-    )
-    default_rviz_config_path = os.path.join(
-        description_pkg_share, "rviz", "view_urdf.rviz"
-    )
+    runtime_config_package = LaunchConfiguration("runtime_config_package")
+    description_package = LaunchConfiguration("description_package")
+    controllers_file = LaunchConfiguration("controllers_file")
+    update_rate_file = LaunchConfiguration("update_rate_file")
+    description_file = LaunchConfiguration("description_file")
 
-    args = []
-    args.append(
-        launch.actions.DeclareLaunchArgument(
-            name="model",
-            default_value=default_model_path,
-            description="Absolute path to gripper URDF file",
+    name = "robotiq_85"
+    tf_prefix = LaunchConfiguration("tf_prefix")
+    use_fake_hardware = LaunchConfiguration("use_fake_hardware")
+    mock_sensor_commands = LaunchConfiguration("mock_sensor_commands")
+    com_port = LaunchConfiguration("com_port")
+    gripper_speed_multiplier = "1.0"
+    gripper_force_multiplier = "0.5"
+    gripper_max_speed = "0.150"
+    gripper_max_force = "235.0"
+    gripper_closed_position = "0.7929"
+
+    declared_arguments = []
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            name="runtime_config_package",
+            default_value="robotiq_description",
+            description="Package with robot runtime configuration",
         )
     )
-    args.append(
-        launch.actions.DeclareLaunchArgument(
-            name="rvizconfig",
-            default_value=default_rviz_config_path,
-            description="Absolute path to rviz config file",
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            name="description_package",
+            default_value="my_env_control", # ! use the changed package name
+            description="Package with robot description",
         )
     )
-    args.append(
-        launch.actions.DeclareLaunchArgument(
-            name="launch_rviz", default_value="false", description="Launch RViz?"
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            name="controllers_file",
+            default_value="robotiq_controllers.yaml",
+            description="YAML file with the controllers configuration",
         )
     )
-    args.append(
-        launch.actions.DeclareLaunchArgument(
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            name="update_rate_file",
+            default_value="robotiq_update_rate.yaml",
+            description="YAML file with the update rate configuration",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            name="description_file",
+            default_value="robotiq_2f_85_gripper_control.urdf.xacro", # ! use the changed file name
+            description="URDF/XACRO description file with robot hardware configuration",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
             name="com_port",
             default_value="/dev/ttyUSB0",
             description="Port for communicating with Robotiq hardware",
         )
     )
+    
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            name="tf_prefix",
+            default_value="",
+            description="Prefix for tf frames",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            name="use_fake_hardware",
+            default_value="false",
+            description="Whether to use fake hardware simulation",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            name="mock_sensor_commands",
+            default_value="false",
+            description="Whether to simulate sensor commands",
+        )
+    )
 
     robot_description_content = Command(
         [
-            PathJoinSubstitution([FindExecutable(name="xacro")]),
-            " ",
-            LaunchConfiguration("model"),
-            " ",
-            "use_fake_hardware:=false",
-            " ",
-            "com_port:=",
-            LaunchConfiguration("com_port"),
+            PathJoinSubstitution([FindExecutable(name="xacro")]), " ",
+            PathJoinSubstitution([FindPackageShare(description_package), "urdf", description_file]), " ",
+            "name:=", name, " ",
+            "tf_prefix:=", tf_prefix, " ",
+            "use_fake_hardware:=", use_fake_hardware, " ",
+            "mock_sensor_commands:=", mock_sensor_commands, " ",
+            "com_port:=", com_port, " ",
+            "gripper_speed_multiplier:=", gripper_speed_multiplier, " ",
+            "gripper_force_multiplier:=", gripper_force_multiplier, " ",
+            "gripper_max_speed:=", gripper_max_speed, " ",
+            "gripper_max_force:=", gripper_max_force, " ",
+            "gripper_closed_position:=", gripper_closed_position, " ",
         ]
     )
 
-    robot_description_param = {
-        "robot_description": launch_ros.parameter_descriptions.ParameterValue(
-            robot_description_content, value_type=str
-        )
-    }
+    robot_description_param = {"robot_description": ParameterValue(robot_description_content, value_type=str)}
+
 
     update_rate_config_file = PathJoinSubstitution(
-        [
-            description_pkg_share,
-            "config",
-            "robotiq_update_rate.yaml",
-        ]
-    )
-
-    controllers_file = "robotiq_controllers.yaml"
+        [FindPackageShare(runtime_config_package),"config",update_rate_file]
+        )
     initial_joint_controllers = PathJoinSubstitution(
-        [description_pkg_share, "config", controllers_file]
+        [FindPackageShare(runtime_config_package), "config", controllers_file]
     )
 
-    control_node = launch_ros.actions.Node(
+    control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[
             robot_description_param,
             update_rate_config_file,
-            initial_joint_controllers,
+            ParameterFile(initial_joint_controllers, allow_substs=True), # ! must be used allow_substs=True to substitute parameters in the yaml file
         ],
     )
 
-    robot_state_publisher_node = launch_ros.actions.Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        parameters=[robot_description_param],
-    )
-
-    rviz_node = launch_ros.actions.Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2",
-        output="log",
-        arguments=["-d", LaunchConfiguration("rvizconfig")],
-        condition=IfCondition(LaunchConfiguration("launch_rviz")),
-    )
-
-    joint_state_broadcaster_spawner = launch_ros.actions.Node(
+    joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=[
@@ -144,13 +143,13 @@ def generate_launch_description():
         ],
     )
 
-    robotiq_gripper_controller_spawner = launch_ros.actions.Node(
+    robotiq_gripper_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["robotiq_gripper_controller", "-c", "controller_manager"], #"/controller_manager", # ! change to relative path 
     )
 
-    robotiq_activation_controller_spawner = launch_ros.actions.Node(
+    robotiq_activation_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["robotiq_activation_controller", "-c", "controller_manager"], #"/controller_manager", # ! change to relative path 
@@ -165,4 +164,4 @@ def generate_launch_description():
         # rviz_node,    # ! launch in external launch file
     ]
 
-    return launch.LaunchDescription(args + nodes)
+    return LaunchDescription(declared_arguments + nodes)
