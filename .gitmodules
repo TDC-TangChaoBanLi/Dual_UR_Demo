@@ -1,0 +1,3 @@
+[submodule "src/ros2_robotiq_gripper"]
+	path = src/ros2_robotiq_gripper
+	url = https://github.com/PickNikRobotics/ros2_robotiq_gripper.git
