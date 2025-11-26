@@ -3,8 +3,21 @@ moveit_setup_assistant_config:
     package: my_env_description
     relative_path: urdf/my_env.urdf.xacro
   srdf:
-    relative_path: config/my_env.srdf
+    relative_path: config/my_env_controlled.srdf
   package_settings:
     author_name: TDC
     author_email: lihao_0630@qq.com
-    generated_timestamp: 1762845200
+    generated_timestamp: 1763696046
+  control_xacro:
+    command:
+      []
+    state:
+      []
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      []
+    state:
+      []

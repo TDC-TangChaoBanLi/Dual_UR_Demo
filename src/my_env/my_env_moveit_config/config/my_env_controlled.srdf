@@ -10,11 +10,167 @@
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
     <group name="ur_A">
-        <chain base_link="arm_A_ur_base_link" tip_link="arm_A_ur_tool0"/>
+        <chain base_link="arm_A_ur_base_link" tip_link="arm_A__tcp"/>
     </group>
     <group name="ur_B">
-        <chain base_link="arm_B_ur_base_link" tip_link="arm_B_ur_tool0"/>
+        <chain base_link="arm_B_ur_base_link" tip_link="arm_B__tcp"/>
     </group>
+    <group name="gripper_A">
+        <link name="arm_A_robotiq_ur_to_robotiq_link"/>
+        <link name="arm_A_robotiq_ur_to_robotiq_child_side"/>
+        <link name="arm_A_robotiq_85_base_link"/>
+        <link name="arm_A__tcp"/>
+        <link name="arm_A_robotiq_85_left_inner_knuckle_link"/>
+        <link name="arm_A_robotiq_85_left_knuckle_link"/>
+        <link name="arm_A_robotiq_85_left_finger_link"/>
+        <link name="arm_A_robotiq_85_left_finger_tip_link"/>
+        <link name="arm_A_robotiq_85_right_inner_knuckle_link"/>
+        <link name="arm_A_robotiq_85_right_knuckle_link"/>
+        <link name="arm_A_robotiq_85_right_finger_link"/>
+        <link name="arm_A_robotiq_85_right_finger_tip_link"/>
+    </group>
+    <group name="gripper_B">
+        <link name="arm_B_robotiq_ur_to_robotiq_link"/>
+        <link name="arm_B_robotiq_ur_to_robotiq_child_side"/>
+        <link name="arm_B_robotiq_85_base_link"/>
+        <link name="arm_B__tcp"/>
+        <link name="arm_B_robotiq_85_left_inner_knuckle_link"/>
+        <link name="arm_B_robotiq_85_left_knuckle_link"/>
+        <link name="arm_B_robotiq_85_left_finger_link"/>
+        <link name="arm_B_robotiq_85_left_finger_tip_link"/>
+        <link name="arm_B_robotiq_85_right_inner_knuckle_link"/>
+        <link name="arm_B_robotiq_85_right_knuckle_link"/>
+        <link name="arm_B_robotiq_85_right_finger_link"/>
+        <link name="arm_B_robotiq_85_right_finger_tip_link"/>
+    </group>
+    <group name="robot">
+        <group name="arm_A"/>
+        <group name="arm_B"/>
+    </group>
+    <group name="arm_A">
+        <group name="ur_A"/>
+        <group name="gripper_A"/>
+    </group>
+    <group name="arm_B">
+        <group name="gripper_B"/>
+        <group name="ur_B"/>
+    </group>
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
+    <group_state name="init" group="ur_A">
+        <joint name="arm_A_ur_elbow_joint" value="0"/>
+        <joint name="arm_A_ur_shoulder_lift_joint" value="-1.5708"/>
+        <joint name="arm_A_ur_shoulder_pan_joint" value="0"/>
+        <joint name="arm_A_ur_wrist_1_joint" value="-1.5708"/>
+        <joint name="arm_A_ur_wrist_2_joint" value="0"/>
+        <joint name="arm_A_ur_wrist_3_joint" value="0"/>
+    </group_state>
+    <group_state name="init" group="ur_B">
+        <joint name="arm_B_ur_elbow_joint" value="0"/>
+        <joint name="arm_B_ur_shoulder_lift_joint" value="-1.5708"/>
+        <joint name="arm_B_ur_shoulder_pan_joint" value="0"/>
+        <joint name="arm_B_ur_wrist_1_joint" value="-1.5708"/>
+        <joint name="arm_B_ur_wrist_2_joint" value="0"/>
+        <joint name="arm_B_ur_wrist_3_joint" value="0"/>
+    </group_state>
+    <group_state name="home" group="ur_A">
+        <joint name="arm_A_ur_elbow_joint" value="1.5708"/>
+        <joint name="arm_A_ur_shoulder_lift_joint" value="-2.3562"/>
+        <joint name="arm_A_ur_shoulder_pan_joint" value="2.3562"/>
+        <joint name="arm_A_ur_wrist_1_joint" value="-1.5708"/>
+        <joint name="arm_A_ur_wrist_2_joint" value="-1.5708"/>
+        <joint name="arm_A_ur_wrist_3_joint" value="0"/>
+    </group_state>
+    <group_state name="home" group="ur_B">
+        <joint name="arm_B_ur_elbow_joint" value="-1.5708"/>
+        <joint name="arm_B_ur_shoulder_lift_joint" value="-0.7854"/>
+        <joint name="arm_B_ur_shoulder_pan_joint" value="-2.3562"/>
+        <joint name="arm_B_ur_wrist_1_joint" value="-1.5708"/>
+        <joint name="arm_B_ur_wrist_2_joint" value="1.5708"/>
+        <joint name="arm_B_ur_wrist_3_joint" value="0"/>
+    </group_state>
+    <group_state name="open" group="gripper_A">
+        <joint name="arm_A_robotiq_85_left_knuckle_joint" value="0"/>
+    </group_state>
+    <group_state name="open" group="gripper_B">
+        <joint name="arm_B_robotiq_85_left_knuckle_joint" value="0"/>
+    </group_state>
+    <group_state name="close" group="gripper_A">
+        <joint name="arm_A_robotiq_85_left_knuckle_joint" value="0.8"/>
+    </group_state>
+    <group_state name="close" group="gripper_B">
+        <joint name="arm_B_robotiq_85_left_knuckle_joint" value="0.8"/>
+    </group_state>
+    <group_state name="init" group="arm_A">
+        <joint name="arm_A_robotiq_85_left_knuckle_joint" value="0"/>
+        <joint name="arm_A_ur_elbow_joint" value="0"/>
+        <joint name="arm_A_ur_shoulder_lift_joint" value="-1.5708"/>
+        <joint name="arm_A_ur_shoulder_pan_joint" value="0"/>
+        <joint name="arm_A_ur_wrist_1_joint" value="-1.5708"/>
+        <joint name="arm_A_ur_wrist_2_joint" value="0"/>
+        <joint name="arm_A_ur_wrist_3_joint" value="0"/>
+    </group_state>
+    <group_state name="init" group="arm_B">
+        <joint name="arm_B_robotiq_85_left_knuckle_joint" value="0"/>
+        <joint name="arm_B_ur_elbow_joint" value="0"/>
+        <joint name="arm_B_ur_shoulder_lift_joint" value="-1.5708"/>
+        <joint name="arm_B_ur_shoulder_pan_joint" value="0"/>
+        <joint name="arm_B_ur_wrist_1_joint" value="-1.5708"/>
+        <joint name="arm_B_ur_wrist_2_joint" value="0"/>
+        <joint name="arm_B_ur_wrist_3_joint" value="0"/>
+    </group_state>
+    <group_state name="home" group="arm_A">
+        <joint name="arm_A_robotiq_85_left_knuckle_joint" value="0"/>
+        <joint name="arm_A_ur_elbow_joint" value="1.5708"/>
+        <joint name="arm_A_ur_shoulder_lift_joint" value="-2.3562"/>
+        <joint name="arm_A_ur_shoulder_pan_joint" value="2.3562"/>
+        <joint name="arm_A_ur_wrist_1_joint" value="-1.5708"/>
+        <joint name="arm_A_ur_wrist_2_joint" value="-1.5708"/>
+        <joint name="arm_A_ur_wrist_3_joint" value="0"/>
+    </group_state>
+    <group_state name="home" group="arm_B">
+        <joint name="arm_B_robotiq_85_left_knuckle_joint" value="0"/>
+        <joint name="arm_B_ur_elbow_joint" value="-1.5708"/>
+        <joint name="arm_B_ur_shoulder_lift_joint" value="-0.7854"/>
+        <joint name="arm_B_ur_shoulder_pan_joint" value="-2.3562"/>
+        <joint name="arm_B_ur_wrist_1_joint" value="-1.5708"/>
+        <joint name="arm_B_ur_wrist_2_joint" value="1.5708"/>
+        <joint name="arm_B_ur_wrist_3_joint" value="0"/>
+    </group_state>
+    <group_state name="init" group="robot">
+        <joint name="arm_A_robotiq_85_left_knuckle_joint" value="0"/>
+        <joint name="arm_A_ur_elbow_joint" value="0"/>
+        <joint name="arm_A_ur_shoulder_lift_joint" value="-1.5708"/>
+        <joint name="arm_A_ur_shoulder_pan_joint" value="0"/>
+        <joint name="arm_A_ur_wrist_1_joint" value="-1.5708"/>
+        <joint name="arm_A_ur_wrist_2_joint" value="0"/>
+        <joint name="arm_A_ur_wrist_3_joint" value="0"/>
+        <joint name="arm_B_robotiq_85_left_knuckle_joint" value="0"/>
+        <joint name="arm_B_ur_elbow_joint" value="0"/>
+        <joint name="arm_B_ur_shoulder_lift_joint" value="-1.5708"/>
+        <joint name="arm_B_ur_shoulder_pan_joint" value="0"/>
+        <joint name="arm_B_ur_wrist_1_joint" value="-1.5708"/>
+        <joint name="arm_B_ur_wrist_2_joint" value="0"/>
+        <joint name="arm_B_ur_wrist_3_joint" value="0"/>
+    </group_state>
+    <group_state name="home" group="robot">
+        <joint name="arm_A_robotiq_85_left_knuckle_joint" value="0"/>
+        <joint name="arm_A_ur_elbow_joint" value="1.5708"/>
+        <joint name="arm_A_ur_shoulder_lift_joint" value="-2.3562"/>
+        <joint name="arm_A_ur_shoulder_pan_joint" value="2.3562"/>
+        <joint name="arm_A_ur_wrist_1_joint" value="-1.5708"/>
+        <joint name="arm_A_ur_wrist_2_joint" value="-1.5708"/>
+        <joint name="arm_A_ur_wrist_3_joint" value="0"/>
+        <joint name="arm_B_robotiq_85_left_knuckle_joint" value="0"/>
+        <joint name="arm_B_ur_elbow_joint" value="-1.5708"/>
+        <joint name="arm_B_ur_shoulder_lift_joint" value="-0.7854"/>
+        <joint name="arm_B_ur_shoulder_pan_joint" value="-2.3562"/>
+        <joint name="arm_B_ur_wrist_1_joint" value="-1.5708"/>
+        <joint name="arm_B_ur_wrist_2_joint" value="1.5708"/>
+        <joint name="arm_B_ur_wrist_3_joint" value="0"/>
+    </group_state>
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <end_effector name="arm_A_tcp" parent_link="arm_A__tcp" group="gripper_A" parent_group="ur_A"/>
+    <end_effector name="arm_B_tcp" parent_link="arm_B__tcp" group="gripper_B" parent_group="ur_B"/>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="arm_A_realsense_link" link2="arm_A_realsense_shelf" reason="Adjacent"/>
     <disable_collisions link1="arm_A_realsense_link" link2="arm_A_robotiq_85_base_link" reason="Never"/>

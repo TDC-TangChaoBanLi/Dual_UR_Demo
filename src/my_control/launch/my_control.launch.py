@@ -9,16 +9,16 @@ def generate_launch_description():
         #     name='ur_moveit_control',
         #     output='screen'
         # ),
-        Node(
-            package='my_control',
-            executable='my_env_ros2_control',
-            name='my_env_ros2_control',
-            output='screen'
-        ),
         # Node(
         #     package='my_control',
-        #     executable='my_env_moveit_control',
-        #     name='my_env_moveit_control',
+        #     executable='my_env_ros2_control',
+        #     name='my_env_ros2_control',
         #     output='screen'
         # ),
+        Node(
+            package='my_control',
+            executable='my_env_moveit_control',
+            name='my_env_moveit_control',
+            output='screen'
+        ),
     ])

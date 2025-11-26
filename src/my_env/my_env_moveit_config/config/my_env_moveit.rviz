@@ -79,6 +79,10 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
+          arm_A__tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           arm_A_realsense_bottom_screw_frame:
             Alpha: 1
             Show Axes: false
@@ -238,6 +242,10 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          arm_B__tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           arm_B_realsense_bottom_screw_frame:
             Alpha: 1
             Show Axes: false
@@ -437,7 +445,7 @@ Visualization Manager:
         Goal State Color: 250; 128; 0
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
-        Planning Group: ur_B
+        Planning Group: robot
         Query Goal State: true
         Query Start State: false
         Show Workspace: false
@@ -460,6 +468,10 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
+          arm_A__tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           arm_A_realsense_bottom_screw_frame:
             Alpha: 1
             Show Axes: false
@@ -619,6 +631,10 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          arm_B__tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           arm_B_realsense_bottom_screw_frame:
             Alpha: 1
             Show Axes: false
@@ -846,25 +862,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.9999005794525146
+      Distance: 2.408970355987549
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.022087926045060158
-        Y: 0.20463097095489502
-        Z: 0.957894504070282
+        X: -0.011745070107281208
+        Y: 0.18389834463596344
+        Z: 0.8045088648796082
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8197969198226929
+      Pitch: 0.5347967743873596
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.57539701461792
+      Yaw: 4.703589916229248
     Saved: ~
 Window Geometry:
   Displays:
@@ -886,5 +902,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 2352
-  X: 2564
-  Y: -26
+  X: 2631
+  Y: 10

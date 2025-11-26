@@ -1,13 +1,26 @@
 /**:
   ros__parameters:
+    # Only configure kinematics for groups that are defined as a single kinematic chain
+    # (i.e. groups created with <chain base_link=... tip_link=...>). KDL kinematics
+    # plugin requires a chain; providing it for subgroup/group-of-groups (like
+    # "arm_A", "arm_B" or "robot") will fail with "Group '...' is not a chain".
+    #
+    # Keep solvers for the actual UR groups (ur_A, ur_B) which are chains with tip
+    # links (arm_A__tcp, arm_B__tcp) as defined in the SRDF. Leave other groups
+    # without kinematics entries so MoveIt won't attempt to instantiate a chain
+    # solver for them.
     robot_description_kinematics:
       ur_A:
         kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
         kinematics_solver_search_resolution: 0.005
-        kinematics_solver_timeout: 0.005
-        kinematics_solver_attempts: 3
+        # increase timeout/attempts to improve chance of finding IK solutions
+        kinematics_solver_timeout: 0.05
+        kinematics_solver_attempts: 10
       ur_B:
         kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
         kinematics_solver_search_resolution: 0.005
-        kinematics_solver_timeout: 0.005
-        kinematics_solver_attempts: 3
+        kinematics_solver_timeout: 0.05
+        kinematics_solver_attempts: 10
+
+      # Note: do NOT add entries for 'arm_A', 'arm_B' or 'robot' unless those
+      # groups are defined as single chains in the SRDF (base and tip links).

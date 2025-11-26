@@ -59,6 +59,7 @@ target_include_directories(my_env_moveit_control PUBLIC
 ament_target_dependencies(my_env_moveit_control
     rclcpp
     # std_msgs
+    moveit_ros_planning_interface
 )
 target_compile_features(my_env_moveit_control PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 

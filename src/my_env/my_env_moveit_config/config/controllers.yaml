@@ -3,6 +3,8 @@ controller_names:
   - ur_A/joint_trajectory_controller
   - ur_B/scaled_joint_trajectory_controller
   - ur_B/joint_trajectory_controller
+  - robotiq_A/robotiq_gripper_controller
+  - robotiq_B/robotiq_gripper_controller
 
 
 ur_A/scaled_joint_trajectory_controller:
@@ -55,3 +57,19 @@ ur_B/joint_trajectory_controller:
       - arm_B_ur_wrist_1_joint
       - arm_B_ur_wrist_2_joint
       - arm_B_ur_wrist_3_joint
+
+
+robotiq_A/robotiq_gripper_controller:
+    action_ns: gripper_cmd
+    type: GripperCommand
+    default: true
+    joints:
+      - arm_A_robotiq_85_left_knuckle_joint
+
+
+robotiq_B/robotiq_gripper_controller:
+    action_ns: gripper_cmd
+    type: GripperCommand
+    default: true
+    joints:
+      - arm_B_robotiq_85_left_knuckle_joint
