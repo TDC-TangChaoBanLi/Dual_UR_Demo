@@ -52,7 +52,7 @@ def launch_setup(context, *args, **kwargs):
     # Path Arguments
     moveit_config_package = "my_env_moveit_config"
     moveit_joint_limits_file = "joint_limits.yaml"
-    moveit_sdrf_file = "my_env_controlled.srdf"
+    moveit_sdrf_file = "my_env.srdf"
     moveit_ompl_planning_file = "ompl_planning.yaml"
     moveit_controllers_file = "controllers.yaml"
     moveit_kinematics_file = "kinematics.yaml"

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="my_env_controlled" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="my_env" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <!-- 首先包含自定义描述宏 -->
   <xacro:include filename="$(find my_env_description)/urdf/my_env_macro.urdf.xacro"/>
