@@ -1,3 +1,6 @@
-[submodule "src/ros2_robotiq_gripper"]
-	path = src/ros2_robotiq_gripper
+[submodule "lib/mujoco_ros2_control"]
+	path = lib/mujoco_ros2_control
+	url = https://github.com/moveit/mujoco_ros2_control.git
+[submodule "lib/ros2_robotiq_gripper"]
+	path = lib/ros2_robotiq_gripper
 	url = https://github.com/PickNikRobotics/ros2_robotiq_gripper.git
