@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="my_arm_mujoco_control" params="
+    ur_tf_prefix
+    realsense_tf_prefix
+    g2f85_tf_prefix
+  "> 
+
+    <xacro:property name="_ur_tf_prefix" value="${ur_tf_prefix}"/>
+    <xacro:property name="_ur_initial_positions" value="${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}"/>
+    <xacro:property name="_realsense_tf_prefix" value="${realsense_tf_prefix}"/>
+    <xacro:property name="_g2f85_tf_prefix" value="${g2f85_tf_prefix}"/>
+    <xacro:property name="_g2f85_closed_position" value="0.7929"/>
+
+    <!-- UR 机械臂相关 -->
+    <joint name="${_ur_tf_prefix}shoulder_pan_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <!-- initial position for the FakeSystem and simulation -->
+        <param name="initial_value">${_ur_initial_positions['shoulder_pan_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${_ur_tf_prefix}shoulder_lift_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <!-- initial position for the FakeSystem and simulation -->
+        <param name="initial_value">${_ur_initial_positions['shoulder_lift_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${_ur_tf_prefix}elbow_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <!-- initial position for the FakeSystem and simulation -->
+        <param name="initial_value">${_ur_initial_positions['elbow_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${_ur_tf_prefix}wrist_1_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <!-- initial position for the FakeSystem and simulation -->
+        <param name="initial_value">${_ur_initial_positions['wrist_1_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${_ur_tf_prefix}wrist_2_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <!-- initial position for the FakeSystem and simulation -->
+        <param name="initial_value">${_ur_initial_positions['wrist_2_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${_ur_tf_prefix}wrist_3_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <!-- initial position for the FakeSystem and simulation -->
+        <param name="initial_value">${_ur_initial_positions['wrist_3_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+
+    <sensor name="${_ur_tf_prefix}ft_sensor">
+      <param name="mujoco_type">fts</param>
+      <!-- There is _no requirement_ for the mujoco_sensor_name to match the ros2_control sensor name -->
+      <param name="mujoco_sensor_name">${_ur_tf_prefix}ft_sensor</param>
+      <!-- ! 此处的 mujoco_sensor_name 对应 mjcf 的 sensor_name 为 "${mujoco_sensor_name}ft_sensor_force" 和 "${mujoco_sensor_name}ft_sensor_torque" -->
+
+      <state_interface name="force.x"/>
+      <state_interface name="force.y"/>
+      <state_interface name="force.z"/>
+      <state_interface name="torque.x"/>
+      <state_interface name="torque.y"/>
+      <state_interface name="torque.z"/>
+    </sensor>
+
+      <!-- ! For cameras, the sensor name _must_ match the camera name in the MJCF -->
+    <sensor name="${_realsense_tf_prefix}camera">
+      <!-- Fuck you, Mujoco ROS2 plugin. The parameters of the sensor camera are invalid -->
+      <!-- The default frame_name of the camera in mujoco ROS2 plugin is ${sensor name}_frame. -->
+
+      <!-- Parameters will be used as is -->
+      <!-- <param name="frame_name">${_realsense_tf_prefix}link</param> -->
+      <!-- <param name="info_topic">/${_realsense_tf_prefix}camera/camera_info</param> -->
+      <!-- <param name="image_topic">/${_realsense_tf_prefix}camera/image_raw</param> -->
+      <!-- <param name="depth_topic">/${_realsense_tf_prefix}camera/depth</param> -->
+    </sensor>
+
+    <!-- Robotiq 2f85 Gripper 相关 -->
+    <joint name="${_g2f85_tf_prefix}robotiq_85_left_knuckle_joint">
+        <command_interface name="position" />
+        <state_interface name="position">
+            <param name="initial_value">${_g2f85_closed_position}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+    </joint>
+
+
+  </xacro:macro>
+</robot>

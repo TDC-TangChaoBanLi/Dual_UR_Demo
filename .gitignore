@@ -2,3 +2,5 @@ build/
 install/
 log/
 .vscode/browse.*
+
+src/my_env/my_env_mujoco/meshes/*

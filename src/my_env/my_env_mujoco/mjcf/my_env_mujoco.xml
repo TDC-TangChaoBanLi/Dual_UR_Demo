@@ -1,0 +1,566 @@
+<?xml version="1.0" ?>
+<mujoco model="my_env">
+  <compiler angle="radian" balanceinertia="true"/>
+  <option gravity="0 0 0" timestep="0.002"/>
+  <visual>
+    <global offwidth="640" offheight="480"/>
+  </visual>
+  <default>
+    <default class="robot">
+      <default class="visual">
+        <geom contype="0" conaffinity="0" group="2"/>
+      </default>
+      <default class="collision">
+        <geom condim="4" contype="1" group="3" conaffinity="1" priority="0" solref="0.02 1" solimp="0.9 0.95 0.001" friction="1 0.005 0.0001"/>
+      </default>
+    </default>
+    <default class="floor">
+      <geom type="plane" size="0 0 0.05" material="groundplane"/>
+    </default>
+  </default>
+  <asset>
+    <material name="wood" rgba="0.65 0.5 0.39 1"/>
+    <mesh name="COLLISION_base_b5e6c3e1_stl_MESH" file="../meshes/base_b5e6c3e1.stl"/>
+    <mesh name="COLLISION_shoulder_2014d8de_stl_MESH" file="../meshes/shoulder_2014d8de.stl"/>
+    <mesh name="COLLISION_upperarm_325e7569_stl_MESH" file="../meshes/upperarm_325e7569.stl"/>
+    <mesh name="COLLISION_forearm_927c3ae1_stl_MESH" file="../meshes/forearm_927c3ae1.stl"/>
+    <mesh name="COLLISION_wrist1_46a5ed36_stl_MESH" file="../meshes/wrist1_46a5ed36.stl"/>
+    <mesh name="COLLISION_wrist2_dcb46cb3_stl_MESH" file="../meshes/wrist2_dcb46cb3.stl"/>
+    <mesh name="COLLISION_wrist3_fefb2e8c_stl_MESH" file="../meshes/wrist3_fefb2e8c.stl"/>
+    <mesh name="VISUAL_RealSense_D435_Shelf_c481497f_stl_MESH" file="../meshes/RealSense_D435_Shelf_c481497f.stl"/>
+    <material name="VISUAL_RealSense_D435_Shelf_c481497f_stl_MATERIAL" rgba="0.7 0.7 0.7 1.0"/>
+    <mesh name="COLLISION_RealSense_D435_Shelf_c481497f_stl_MESH" file="../meshes/RealSense_D435_Shelf_c481497f.stl"/>
+    <mesh name="COLLISION_ur_to_robotiq_adapte_87e27856_stl_MESH" file="../meshes/ur_to_robotiq_adapte_87e27856.stl"/>
+    <mesh name="COLLISION_robotiq_base_150dcf40_stl_MESH" file="../meshes/robotiq_base_150dcf40.stl"/>
+    <mesh name="COLLISION_left_knuckle_3b324ce8_stl_MESH" file="../meshes/left_knuckle_3b324ce8.stl"/>
+    <mesh name="COLLISION_left_finger_79dcf3c1_stl_MESH" file="../meshes/left_finger_79dcf3c1.stl"/>
+    <mesh name="COLLISION_left_finger_tip_bccedc73_stl_MESH" file="../meshes/left_finger_tip_bccedc73.stl"/>
+    <mesh name="COLLISION_right_knuckle_182ef7b5_stl_MESH" file="../meshes/right_knuckle_182ef7b5.stl"/>
+    <mesh name="COLLISION_right_finger_b2754923_stl_MESH" file="../meshes/right_finger_b2754923.stl"/>
+    <mesh name="COLLISION_right_finger_tip_d6a613e2_stl_MESH" file="../meshes/right_finger_tip_d6a613e2.stl"/>
+    <mesh name="COLLISION_left_inner_knuckle_618a8392_stl_MESH" file="../meshes/left_inner_knuckle_618a8392.stl"/>
+    <mesh name="COLLISION_right_inner_knuckle_9d8f5a95_stl_MESH" file="../meshes/right_inner_knuckle_9d8f5a95.stl"/>
+    <mesh name="COLLISION_base_c90511fb_stl_MESH" file="../meshes/base_c90511fb.stl"/>
+    <mesh name="COLLISION_shoulder_9e70b180_stl_MESH" file="../meshes/shoulder_9e70b180.stl"/>
+    <mesh name="COLLISION_upperarm_be39b1aa_stl_MESH" file="../meshes/upperarm_be39b1aa.stl"/>
+    <mesh name="COLLISION_forearm_8023c127_stl_MESH" file="../meshes/forearm_8023c127.stl"/>
+    <mesh name="COLLISION_wrist1_86ac31fb_stl_MESH" file="../meshes/wrist1_86ac31fb.stl"/>
+    <mesh name="COLLISION_wrist2_134d23ee_stl_MESH" file="../meshes/wrist2_134d23ee.stl"/>
+    <mesh name="COLLISION_wrist3_92fb655d_stl_MESH" file="../meshes/wrist3_92fb655d.stl"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+    <texture name="skybox" type="skybox" builtin="gradient" rgb1=".3 .5 .7" rgb2="0 0 0" width="1024" height="1024"/>
+    <material name="VISUAL_base_0c3f3eb6_obj_0_MATERIAL" rgba="0.5254902 0.5254902 0.5254902 1.0"/>
+    <mesh name="VISUAL_base_0c3f3eb6_obj_0_MESH" file="../meshes/base_0c3f3eb6/base_0c3f3eb6_obj_0.obj"/>
+    <material name="VISUAL_base_0c3f3eb6_obj_1_MATERIAL" rgba="0.0627451 0.0627451 0.0627451 1.0"/>
+    <mesh name="VISUAL_base_0c3f3eb6_obj_1_MESH" file="../meshes/base_0c3f3eb6/base_0c3f3eb6_obj_1.obj"/>
+    <material name="VISUAL_shoulder_a6f4510a_obj_0_MATERIAL" rgba="0.17647059 0.17647059 0.17647059 1.0"/>
+    <mesh name="VISUAL_shoulder_a6f4510a_obj_0_MESH" file="../meshes/shoulder_a6f4510a/shoulder_a6f4510a_obj_0.obj"/>
+    <material name="VISUAL_shoulder_a6f4510a_obj_1_MATERIAL" rgba="0.0627451 0.0627451 0.0627451 1.0"/>
+    <mesh name="VISUAL_shoulder_a6f4510a_obj_1_MESH" file="../meshes/shoulder_a6f4510a/shoulder_a6f4510a_obj_1.obj"/>
+    <material name="VISUAL_shoulder_a6f4510a_obj_2_MATERIAL" rgba="0.31372549 0.43529412 0.51372549 1.0"/>
+    <mesh name="VISUAL_shoulder_a6f4510a_obj_2_MESH" file="../meshes/shoulder_a6f4510a/shoulder_a6f4510a_obj_2.obj"/>
+    <material name="VISUAL_upperarm_d93be14c_obj_0_MATERIAL" rgba="0.14117647 0.14117647 0.14117647 1.0"/>
+    <mesh name="VISUAL_upperarm_d93be14c_obj_0_MESH" file="../meshes/upperarm_d93be14c/upperarm_d93be14c_obj_0.obj"/>
+    <material name="VISUAL_upperarm_d93be14c_obj_1_MATERIAL" rgba="0.05098039 0.05098039 0.05098039 1.0"/>
+    <mesh name="VISUAL_upperarm_d93be14c_obj_1_MESH" file="../meshes/upperarm_d93be14c/upperarm_d93be14c_obj_1.obj"/>
+    <material name="VISUAL_upperarm_d93be14c_obj_2_MATERIAL" rgba="0.25098039 0.34901961 0.40784314 1.0"/>
+    <mesh name="VISUAL_upperarm_d93be14c_obj_2_MESH" file="../meshes/upperarm_d93be14c/upperarm_d93be14c_obj_2.obj"/>
+    <material name="VISUAL_upperarm_d93be14c_obj_3_MATERIAL" rgba="0.41960784 0.41960784 0.41960784 1.0"/>
+    <mesh name="VISUAL_upperarm_d93be14c_obj_3_MESH" file="../meshes/upperarm_d93be14c/upperarm_d93be14c_obj_3.obj"/>
+    <material name="VISUAL_forearm_3c8ab1d6_obj_0_MATERIAL" rgba="0.25098039 0.34901961 0.40784314 1.0"/>
+    <mesh name="VISUAL_forearm_3c8ab1d6_obj_0_MESH" file="../meshes/forearm_3c8ab1d6/forearm_3c8ab1d6_obj_0.obj"/>
+    <material name="VISUAL_forearm_3c8ab1d6_obj_1_MATERIAL" rgba="0.41960784 0.41960784 0.41960784 1.0"/>
+    <mesh name="VISUAL_forearm_3c8ab1d6_obj_1_MESH" file="../meshes/forearm_3c8ab1d6/forearm_3c8ab1d6_obj_1.obj"/>
+    <material name="VISUAL_forearm_3c8ab1d6_obj_2_MATERIAL" rgba="0.14117647 0.14117647 0.14117647 1.0"/>
+    <mesh name="VISUAL_forearm_3c8ab1d6_obj_2_MESH" file="../meshes/forearm_3c8ab1d6/forearm_3c8ab1d6_obj_2.obj"/>
+    <material name="VISUAL_wrist1_1dcedd9a_obj_0_MATERIAL" rgba="0.05098039 0.05098039 0.05098039 1.0"/>
+    <mesh name="VISUAL_wrist1_1dcedd9a_obj_0_MESH" file="../meshes/wrist1_1dcedd9a/wrist1_1dcedd9a_obj_0.obj"/>
+    <material name="VISUAL_wrist1_1dcedd9a_obj_1_MATERIAL" rgba="0.14117647 0.14117647 0.14117647 1.0"/>
+    <mesh name="VISUAL_wrist1_1dcedd9a_obj_1_MESH" file="../meshes/wrist1_1dcedd9a/wrist1_1dcedd9a_obj_1.obj"/>
+    <material name="VISUAL_wrist1_1dcedd9a_obj_2_MATERIAL" rgba="0.25098039 0.34901961 0.40784314 1.0"/>
+    <mesh name="VISUAL_wrist1_1dcedd9a_obj_2_MESH" file="../meshes/wrist1_1dcedd9a/wrist1_1dcedd9a_obj_2.obj"/>
+    <material name="VISUAL_wrist2_154fbc66_obj_0_MATERIAL" rgba="0.05098039 0.05098039 0.05098039 1.0"/>
+    <mesh name="VISUAL_wrist2_154fbc66_obj_0_MESH" file="../meshes/wrist2_154fbc66/wrist2_154fbc66_obj_0.obj"/>
+    <material name="VISUAL_wrist2_154fbc66_obj_1_MATERIAL" rgba="0.14117647 0.14117647 0.14117647 1.0"/>
+    <mesh name="VISUAL_wrist2_154fbc66_obj_1_MESH" file="../meshes/wrist2_154fbc66/wrist2_154fbc66_obj_1.obj"/>
+    <material name="VISUAL_wrist2_154fbc66_obj_2_MATERIAL" rgba="0.25098039 0.34901961 0.40784314 1.0"/>
+    <mesh name="VISUAL_wrist2_154fbc66_obj_2_MESH" file="../meshes/wrist2_154fbc66/wrist2_154fbc66_obj_2.obj"/>
+    <material name="VISUAL_wrist3_ef2f0b1d_obj_0_MATERIAL" rgba="0.21568627 0.21568627 0.21568627 1.0"/>
+    <mesh name="VISUAL_wrist3_ef2f0b1d_obj_0_MESH" file="../meshes/wrist3_ef2f0b1d/wrist3_ef2f0b1d_obj_0.obj"/>
+    <material name="VISUAL_wrist3_ef2f0b1d_obj_1_MATERIAL" rgba="0.09803922 0.10196078 0.10980392 1.0"/>
+    <mesh name="VISUAL_wrist3_ef2f0b1d_obj_1_MESH" file="../meshes/wrist3_ef2f0b1d/wrist3_ef2f0b1d_obj_1.obj"/>
+    <material name="VISUAL_ur_to_robotiq_adapte_2d672419_obj_0_MATERIAL" rgba="0.03921569 0.03921569 0.03921569 1.0"/>
+    <mesh name="VISUAL_ur_to_robotiq_adapte_2d672419_obj_0_MESH" file="../meshes/ur_to_robotiq_adapte_2d672419/ur_to_robotiq_adapte_2d672419_obj_0.obj"/>
+    <material name="VISUAL_ur_to_robotiq_adapte_2d672419_obj_1_MATERIAL" rgba="0.29803922 0.29803922 0.29803922 1.0"/>
+    <mesh name="VISUAL_ur_to_robotiq_adapte_2d672419_obj_1_MESH" file="../meshes/ur_to_robotiq_adapte_2d672419/ur_to_robotiq_adapte_2d672419_obj_1.obj"/>
+    <material name="VISUAL_robotiq_base_26432cf8_obj_0_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_robotiq_base_26432cf8_obj_0_MESH" file="../meshes/robotiq_base_26432cf8/robotiq_base_26432cf8_obj_0.obj"/>
+    <material name="VISUAL_robotiq_base_26432cf8_obj_1_MATERIAL" rgba="0.8 0.8 0.8 1.0"/>
+    <mesh name="VISUAL_robotiq_base_26432cf8_obj_1_MESH" file="../meshes/robotiq_base_26432cf8/robotiq_base_26432cf8_obj_1.obj"/>
+    <material name="VISUAL_left_knuckle_47409267_obj_0_MATERIAL" rgba="0.8 0.8 0.8 1.0"/>
+    <mesh name="VISUAL_left_knuckle_47409267_obj_0_MESH" file="../meshes/left_knuckle_47409267/left_knuckle_47409267_obj_0.obj"/>
+    <material name="VISUAL_left_finger_b346066b_obj_0_MATERIAL" rgba="0.8 0.8 0.8 1.0"/>
+    <mesh name="VISUAL_left_finger_b346066b_obj_0_MESH" file="../meshes/left_finger_b346066b/left_finger_b346066b_obj_0.obj"/>
+    <material name="VISUAL_left_finger_b346066b_obj_1_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_left_finger_b346066b_obj_1_MESH" file="../meshes/left_finger_b346066b/left_finger_b346066b_obj_1.obj"/>
+    <material name="VISUAL_left_finger_tip_4174f5e0_obj_0_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_left_finger_tip_4174f5e0_obj_0_MESH" file="../meshes/left_finger_tip_4174f5e0/left_finger_tip_4174f5e0_obj_0.obj"/>
+    <material name="VISUAL_left_finger_tip_4174f5e0_obj_1_MATERIAL" rgba="0.8 0.8 0.8 1.0"/>
+    <mesh name="VISUAL_left_finger_tip_4174f5e0_obj_1_MESH" file="../meshes/left_finger_tip_4174f5e0/left_finger_tip_4174f5e0_obj_1.obj"/>
+    <material name="VISUAL_right_knuckle_e31cc0a2_obj_0_MATERIAL" rgba="0.8 0.8 0.8 1.0"/>
+    <mesh name="VISUAL_right_knuckle_e31cc0a2_obj_0_MESH" file="../meshes/right_knuckle_e31cc0a2/right_knuckle_e31cc0a2_obj_0.obj"/>
+    <material name="VISUAL_right_finger_d19b75c1_obj_0_MATERIAL" rgba="0.8 0.8 0.8 1.0"/>
+    <mesh name="VISUAL_right_finger_d19b75c1_obj_0_MESH" file="../meshes/right_finger_d19b75c1/right_finger_d19b75c1_obj_0.obj"/>
+    <material name="VISUAL_right_finger_d19b75c1_obj_1_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_right_finger_d19b75c1_obj_1_MESH" file="../meshes/right_finger_d19b75c1/right_finger_d19b75c1_obj_1.obj"/>
+    <material name="VISUAL_right_finger_tip_62ce7d88_obj_0_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_right_finger_tip_62ce7d88_obj_0_MESH" file="../meshes/right_finger_tip_62ce7d88/right_finger_tip_62ce7d88_obj_0.obj"/>
+    <material name="VISUAL_right_finger_tip_62ce7d88_obj_1_MATERIAL" rgba="0.8 0.8 0.8 1.0"/>
+    <mesh name="VISUAL_right_finger_tip_62ce7d88_obj_1_MESH" file="../meshes/right_finger_tip_62ce7d88/right_finger_tip_62ce7d88_obj_1.obj"/>
+    <material name="VISUAL_left_inner_knuckle_0ef9735b_obj_0_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_left_inner_knuckle_0ef9735b_obj_0_MESH" file="../meshes/left_inner_knuckle_0ef9735b/left_inner_knuckle_0ef9735b_obj_0.obj"/>
+    <material name="VISUAL_left_inner_knuckle_0ef9735b_obj_1_MATERIAL" rgba="0.8 0.8 0.8 1.0"/>
+    <mesh name="VISUAL_left_inner_knuckle_0ef9735b_obj_1_MESH" file="../meshes/left_inner_knuckle_0ef9735b/left_inner_knuckle_0ef9735b_obj_1.obj"/>
+    <material name="VISUAL_right_inner_knuckle_491141ed_obj_0_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_right_inner_knuckle_491141ed_obj_0_MESH" file="../meshes/right_inner_knuckle_491141ed/right_inner_knuckle_491141ed_obj_0.obj"/>
+    <material name="VISUAL_right_inner_knuckle_491141ed_obj_1_MATERIAL" rgba="0.8 0.8 0.8 1.0"/>
+    <mesh name="VISUAL_right_inner_knuckle_491141ed_obj_1_MESH" file="../meshes/right_inner_knuckle_491141ed/right_inner_knuckle_491141ed_obj_1.obj"/>
+    <material name="VISUAL_d435_d7a8c085_obj_0_MATERIAL" rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+    <mesh name="VISUAL_d435_d7a8c085_obj_0_MESH" file="../meshes/d435_d7a8c085/d435_d7a8c085_obj_0.obj"/>
+    <material name="VISUAL_base_4c1445fa_obj_0_MATERIAL" rgba="0.27843137 0.27843137 0.27843137 1.0"/>
+    <mesh name="VISUAL_base_4c1445fa_obj_0_MESH" file="../meshes/base_4c1445fa/base_4c1445fa_obj_0.obj"/>
+    <material name="VISUAL_base_4c1445fa_obj_1_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_base_4c1445fa_obj_1_MESH" file="../meshes/base_4c1445fa/base_4c1445fa_obj_1.obj"/>
+    <material name="VISUAL_shoulder_e0897c84_obj_0_MATERIAL" rgba="0.27843137 0.27843137 0.27843137 1.0"/>
+    <mesh name="VISUAL_shoulder_e0897c84_obj_0_MESH" file="../meshes/shoulder_e0897c84/shoulder_e0897c84_obj_0.obj"/>
+    <material name="VISUAL_shoulder_e0897c84_obj_1_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_shoulder_e0897c84_obj_1_MESH" file="../meshes/shoulder_e0897c84/shoulder_e0897c84_obj_1.obj"/>
+    <material name="VISUAL_shoulder_e0897c84_obj_2_MATERIAL" rgba="0.49019608 0.67843137 0.8 1.0"/>
+    <mesh name="VISUAL_shoulder_e0897c84_obj_2_MESH" file="../meshes/shoulder_e0897c84/shoulder_e0897c84_obj_2.obj"/>
+    <material name="VISUAL_upperarm_d0db644e_obj_0_MATERIAL" rgba="0.49019608 0.67843137 0.8 1.0"/>
+    <mesh name="VISUAL_upperarm_d0db644e_obj_0_MESH" file="../meshes/upperarm_d0db644e/upperarm_d0db644e_obj_0.obj"/>
+    <material name="VISUAL_upperarm_d0db644e_obj_1_MATERIAL" rgba="0.27843137 0.27843137 0.27843137 1.0"/>
+    <mesh name="VISUAL_upperarm_d0db644e_obj_1_MESH" file="../meshes/upperarm_d0db644e/upperarm_d0db644e_obj_1.obj"/>
+    <material name="VISUAL_upperarm_d0db644e_obj_2_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_upperarm_d0db644e_obj_2_MESH" file="../meshes/upperarm_d0db644e/upperarm_d0db644e_obj_2.obj"/>
+    <material name="VISUAL_upperarm_d0db644e_obj_3_MATERIAL" rgba="0.81960784 0.81960784 0.81960784 1.0"/>
+    <mesh name="VISUAL_upperarm_d0db644e_obj_3_MESH" file="../meshes/upperarm_d0db644e/upperarm_d0db644e_obj_3.obj"/>
+    <material name="VISUAL_forearm_552d2862_obj_0_MATERIAL" rgba="0.27843137 0.27843137 0.27843137 1.0"/>
+    <mesh name="VISUAL_forearm_552d2862_obj_0_MESH" file="../meshes/forearm_552d2862/forearm_552d2862_obj_0.obj"/>
+    <material name="VISUAL_forearm_552d2862_obj_1_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_forearm_552d2862_obj_1_MESH" file="../meshes/forearm_552d2862/forearm_552d2862_obj_1.obj"/>
+    <material name="VISUAL_forearm_552d2862_obj_2_MATERIAL" rgba="0.81960784 0.81960784 0.81960784 1.0"/>
+    <mesh name="VISUAL_forearm_552d2862_obj_2_MESH" file="../meshes/forearm_552d2862/forearm_552d2862_obj_2.obj"/>
+    <material name="VISUAL_forearm_552d2862_obj_3_MATERIAL" rgba="0.49019608 0.67843137 0.8 1.0"/>
+    <mesh name="VISUAL_forearm_552d2862_obj_3_MESH" file="../meshes/forearm_552d2862/forearm_552d2862_obj_3.obj"/>
+    <material name="VISUAL_wrist1_d9f4dcb4_obj_0_MATERIAL" rgba="0.27843137 0.27843137 0.27843137 1.0"/>
+    <mesh name="VISUAL_wrist1_d9f4dcb4_obj_0_MESH" file="../meshes/wrist1_d9f4dcb4/wrist1_d9f4dcb4_obj_0.obj"/>
+    <material name="VISUAL_wrist1_d9f4dcb4_obj_1_MATERIAL" rgba="0.49019608 0.67843137 0.8 1.0"/>
+    <mesh name="VISUAL_wrist1_d9f4dcb4_obj_1_MESH" file="../meshes/wrist1_d9f4dcb4/wrist1_d9f4dcb4_obj_1.obj"/>
+    <material name="VISUAL_wrist1_d9f4dcb4_obj_2_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_wrist1_d9f4dcb4_obj_2_MESH" file="../meshes/wrist1_d9f4dcb4/wrist1_d9f4dcb4_obj_2.obj"/>
+    <material name="VISUAL_wrist2_f21a75d6_obj_0_MATERIAL" rgba="0.27843137 0.27843137 0.27843137 1.0"/>
+    <mesh name="VISUAL_wrist2_f21a75d6_obj_0_MESH" file="../meshes/wrist2_f21a75d6/wrist2_f21a75d6_obj_0.obj"/>
+    <material name="VISUAL_wrist2_f21a75d6_obj_1_MATERIAL" rgba="0.49019608 0.67843137 0.8 1.0"/>
+    <mesh name="VISUAL_wrist2_f21a75d6_obj_1_MESH" file="../meshes/wrist2_f21a75d6/wrist2_f21a75d6_obj_1.obj"/>
+    <material name="VISUAL_wrist2_f21a75d6_obj_2_MATERIAL" rgba="0.03137255 0.03137255 0.03137255 1.0"/>
+    <mesh name="VISUAL_wrist2_f21a75d6_obj_2_MESH" file="../meshes/wrist2_f21a75d6/wrist2_f21a75d6_obj_2.obj"/>
+    <material name="VISUAL_wrist3_8ee5d649_obj_0_MATERIAL" rgba="0.81960784 0.81960784 0.81960784 1.0"/>
+    <mesh name="VISUAL_wrist3_8ee5d649_obj_0_MESH" file="../meshes/wrist3_8ee5d649/wrist3_8ee5d649_obj_0.obj"/>
+  </asset>
+  <worldbody>
+      <body name="table" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+        <geom class="collision" name="collision_table" pos="0.0 0.0 0.4" quat="1.0 0.0 0.0 0.0" type="box" size="1.0 0.6 0.4"/>
+        <geom class="visual" name="visual_table" pos="0.0 0.0 0.4" quat="1.0 0.0 0.0 0.0" type="box" size="1.0 0.6 0.4" material="wood"/>
+        <body name="ur_mount_A" pos="0.4 0.2 0.8" quat="0.7071067811865476 0.0 0.0 0.7071067811865475">
+          <body name="arm_A_ur_base_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+            <body name="arm_A_ur_base_link_inertia" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0">
+              <inertial pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" mass="4.0" diaginertia="0.00443333156 0.00443333156 0.0072"/>
+              <geom class="collision" name="collision_arm_A_ur_base_link_inertia" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0" type="mesh" mesh="COLLISION_base_b5e6c3e1_stl_MESH"/>
+              <geom class="visual" name="visual_arm_A_ur_base_link_inertia_0" type="mesh" mesh="VISUAL_base_0c3f3eb6_obj_0_MESH" material="VISUAL_base_0c3f3eb6_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+              <geom class="visual" name="visual_arm_A_ur_base_link_inertia_1" type="mesh" mesh="VISUAL_base_0c3f3eb6_obj_1_MESH" material="VISUAL_base_0c3f3eb6_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+              <body name="arm_A_ur_shoulder_link" pos="0.0 0.0 0.089159" quat="1.0 0.0 0.0 0.0">
+                <inertial pos="0.0 -0.00193 -0.02561" quat="1.0 0.0 0.0 0.0" mass="3.7" diaginertia="0.014972358333333331 0.014972358333333331 0.01040625"/>
+                <joint name="arm_A_ur_shoulder_pan_joint" type="hinge" axis="0.0 0.0 1.0" ref="0.0" range="-6.283185307179586 6.283185307179586"/>
+                <geom class="collision" name="collision_arm_A_ur_shoulder_link" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0" type="mesh" mesh="COLLISION_shoulder_2014d8de_stl_MESH"/>
+                <geom class="visual" name="visual_arm_A_ur_shoulder_link_0" type="mesh" mesh="VISUAL_shoulder_a6f4510a_obj_0_MESH" material="VISUAL_shoulder_a6f4510a_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <geom class="visual" name="visual_arm_A_ur_shoulder_link_1" type="mesh" mesh="VISUAL_shoulder_a6f4510a_obj_1_MESH" material="VISUAL_shoulder_a6f4510a_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <geom class="visual" name="visual_arm_A_ur_shoulder_link_2" type="mesh" mesh="VISUAL_shoulder_a6f4510a_obj_2_MESH" material="VISUAL_shoulder_a6f4510a_obj_2_MATERIAL" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <body name="arm_A_ur_upper_arm_link" pos="0.0 0.0 0.0" quat="0.7071067811140325 0.7071067812590626 0.0 0.0">
+                  <inertial pos="-0.2125 0.0 0.11336" quat="0.7071067811865474 0.0 0.7071067811865477 0.0" mass="8.393" diaginertia="0.13388583541666665 0.13388583541666665 0.0151074"/>
+                  <joint name="arm_A_ur_shoulder_lift_joint" type="hinge" axis="0.0 0.0 1.0" ref="0.0" range="-6.283185307179586 6.283185307179586"/>
+                  <geom class="collision" name="collision_arm_A_ur_upper_arm_link" pos="0.0 0.0 0.13585" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5" type="mesh" mesh="COLLISION_upperarm_325e7569_stl_MESH"/>
+                  <geom class="visual" name="visual_arm_A_ur_upper_arm_link_0" type="mesh" mesh="VISUAL_upperarm_d93be14c_obj_0_MESH" material="VISUAL_upperarm_d93be14c_obj_0_MATERIAL" pos="0.0 0.0 0.13585" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="visual_arm_A_ur_upper_arm_link_1" type="mesh" mesh="VISUAL_upperarm_d93be14c_obj_1_MESH" material="VISUAL_upperarm_d93be14c_obj_1_MATERIAL" pos="0.0 0.0 0.13585" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="visual_arm_A_ur_upper_arm_link_2" type="mesh" mesh="VISUAL_upperarm_d93be14c_obj_2_MESH" material="VISUAL_upperarm_d93be14c_obj_2_MATERIAL" pos="0.0 0.0 0.13585" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="visual_arm_A_ur_upper_arm_link_3" type="mesh" mesh="VISUAL_upperarm_d93be14c_obj_3_MESH" material="VISUAL_upperarm_d93be14c_obj_3_MATERIAL" pos="0.0 0.0 0.13585" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <body name="arm_A_ur_forearm_link" pos="-0.425 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+                    <inertial pos="-0.24225 0.0 0.0265" quat="0.7071067811865474 0.0 0.7071067811865477 0.0" mass="2.33" diaginertia="0.031216803515624995 0.031216803515624995 0.004095"/>
+                    <joint name="arm_A_ur_elbow_joint" type="hinge" axis="0.0 0.0 1.0" ref="0.0" range="-3.141592653589793 3.141592653589793"/>
+                    <geom class="collision" name="collision_arm_A_ur_forearm_link" pos="0.0 0.0 0.0165" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5" type="mesh" mesh="COLLISION_forearm_927c3ae1_stl_MESH"/>
+                    <geom class="visual" name="visual_arm_A_ur_forearm_link_0" type="mesh" mesh="VISUAL_forearm_3c8ab1d6_obj_0_MESH" material="VISUAL_forearm_3c8ab1d6_obj_0_MATERIAL" pos="0.0 0.0 0.0165" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="visual_arm_A_ur_forearm_link_1" type="mesh" mesh="VISUAL_forearm_3c8ab1d6_obj_1_MESH" material="VISUAL_forearm_3c8ab1d6_obj_1_MATERIAL" pos="0.0 0.0 0.0165" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="visual_arm_A_ur_forearm_link_2" type="mesh" mesh="VISUAL_forearm_3c8ab1d6_obj_2_MESH" material="VISUAL_forearm_3c8ab1d6_obj_2_MATERIAL" pos="0.0 0.0 0.0165" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <body name="arm_A_ur_wrist_1_link" pos="-0.39225 0.0 0.10915" quat="1.0 0.0 0.0 0.0">
+                      <inertial pos="0.0 -0.01634 -0.0018" quat="1.0 0.0 0.0 0.0" mass="1.219" diaginertia="0.002013889583333333 0.002013889583333333 0.0021942"/>
+                      <joint name="arm_A_ur_wrist_1_joint" type="hinge" axis="0.0 0.0 1.0" ref="0.0" range="-6.283185307179586 6.283185307179586"/>
+                      <geom class="collision" name="collision_arm_A_ur_wrist_1_link" pos="0.0 0.0 -0.093" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" type="mesh" mesh="COLLISION_wrist1_46a5ed36_stl_MESH"/>
+                      <geom class="visual" name="visual_arm_A_ur_wrist_1_link_0" type="mesh" mesh="VISUAL_wrist1_1dcedd9a_obj_0_MESH" material="VISUAL_wrist1_1dcedd9a_obj_0_MATERIAL" pos="0.0 0.0 -0.093" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <geom class="visual" name="visual_arm_A_ur_wrist_1_link_1" type="mesh" mesh="VISUAL_wrist1_1dcedd9a_obj_1_MESH" material="VISUAL_wrist1_1dcedd9a_obj_1_MATERIAL" pos="0.0 0.0 -0.093" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <geom class="visual" name="visual_arm_A_ur_wrist_1_link_2" type="mesh" mesh="VISUAL_wrist1_1dcedd9a_obj_2_MESH" material="VISUAL_wrist1_1dcedd9a_obj_2_MATERIAL" pos="0.0 0.0 -0.093" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <body name="arm_A_ur_wrist_2_link" pos="0.0 -0.09465 -1.941303950897609e-11" quat="0.7071067811140325 0.7071067812590626 0.0 0.0">
+                        <inertial pos="0.0 0.01634 -0.0018" quat="1.0 0.0 0.0 0.0" mass="1.219" diaginertia="0.0018310395833333333 0.0018310395833333333 0.0021942"/>
+                        <joint name="arm_A_ur_wrist_2_joint" type="hinge" axis="0.0 0.0 1.0" ref="0.0" range="-6.283185307179586 6.283185307179586"/>
+                        <geom class="collision" name="collision_arm_A_ur_wrist_2_link" pos="0.0 0.0 -0.095" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_wrist2_dcb46cb3_stl_MESH"/>
+                        <geom class="visual" name="visual_arm_A_ur_wrist_2_link_0" type="mesh" mesh="VISUAL_wrist2_154fbc66_obj_0_MESH" material="VISUAL_wrist2_154fbc66_obj_0_MATERIAL" pos="0.0 0.0 -0.095" quat="1.0 0.0 0.0 0.0"/>
+                        <geom class="visual" name="visual_arm_A_ur_wrist_2_link_1" type="mesh" mesh="VISUAL_wrist2_154fbc66_obj_1_MESH" material="VISUAL_wrist2_154fbc66_obj_1_MATERIAL" pos="0.0 0.0 -0.095" quat="1.0 0.0 0.0 0.0"/>
+                        <geom class="visual" name="visual_arm_A_ur_wrist_2_link_2" type="mesh" mesh="VISUAL_wrist2_154fbc66_obj_2_MESH" material="VISUAL_wrist2_154fbc66_obj_2_MATERIAL" pos="0.0 0.0 -0.095" quat="1.0 0.0 0.0 0.0"/>
+                        <body name="arm_A_ur_wrist_3_link" pos="0.0 0.0823 -1.688001216681175e-11" quat="0.7071067811140325 -0.7071067812590626 8.659560562354933e-17 8.880527684815676e-27">
+                          <inertial pos="0.0 0.0 -0.001159" quat="1.0 0.0 0.0 0.0" mass="0.1879" diaginertia="8.062475833333332e-05 8.062475833333332e-05 0.0001321171875"/>
+                          <joint name="arm_A_ur_wrist_3_joint" type="hinge" axis="0.0 0.0 1.0" ref="0.0" range="-6.283185307179586 6.283185307179586"/>
+                          <geom class="collision" name="collision_arm_A_ur_wrist_3_link" pos="0.0 0.0 -0.0818" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" type="mesh" mesh="COLLISION_wrist3_fefb2e8c_stl_MESH"/>
+                          <geom class="visual" name="visual_arm_A_ur_wrist_3_link_0" type="mesh" mesh="VISUAL_wrist3_ef2f0b1d_obj_0_MESH" material="VISUAL_wrist3_ef2f0b1d_obj_0_MATERIAL" pos="0.0 0.0 -0.0818" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                          <geom class="visual" name="visual_arm_A_ur_wrist_3_link_1" type="mesh" mesh="VISUAL_wrist3_ef2f0b1d_obj_1_MESH" material="VISUAL_wrist3_ef2f0b1d_obj_1_MATERIAL" pos="0.0 0.0 -0.0818" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                          <body name="arm_A_ur_ft_frame" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 1.0 0.0 0.0">
+                            <site name="arm_A_ur_ft_frame_SITE" pos="0 0 0" quat="1 0 0 0"/>
+                          </body>
+                          <body name="arm_A_ur_flange" pos="0.0 0.0 0.0" quat="0.5000000000000001 -0.4999999999999999 -0.5 -0.5">
+                            <body name="arm_A_ur_tool0" pos="0.0 0.0 0.0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5">
+                              <body name="arm_A_realsense_shelf" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0">
+                                <inertial pos="0.0 0.044 0.0015" quat="1.0 0.0 0.0 0.0" mass="0.038" diaginertia="6.673e-05 8.5e-06 7.517e-05"/>
+                                <geom class="collision" name="collision_arm_A_realsense_shelf" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_RealSense_D435_Shelf_c481497f_stl_MESH"/>
+                                <geom class="visual" name="visual_arm_A_realsense_shelf" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="VISUAL_RealSense_D435_Shelf_c481497f_stl_MESH" material="VISUAL_RealSense_D435_Shelf_c481497f_stl_MATERIAL"/>
+                                <body name="arm_A_realsense_shelf_child_side" pos="0.0 0.0 0.006" quat="1.0 0.0 0.0 0.0">
+                                  <body name="arm_A_robotiq_ur_to_robotiq_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+                                    <inertial pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" mass="0.01" diaginertia="4.4e-05 2.7e-05 2.7e-05"/>
+                                    <geom class="collision" name="collision_arm_A_robotiq_ur_to_robotiq_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_ur_to_robotiq_adapte_87e27856_stl_MESH"/>
+                                    <geom class="visual" name="visual_arm_A_robotiq_ur_to_robotiq_link_0" type="mesh" mesh="VISUAL_ur_to_robotiq_adapte_2d672419_obj_0_MESH" material="VISUAL_ur_to_robotiq_adapte_2d672419_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                    <geom class="visual" name="visual_arm_A_robotiq_ur_to_robotiq_link_1" type="mesh" mesh="VISUAL_ur_to_robotiq_adapte_2d672419_obj_1_MESH" material="VISUAL_ur_to_robotiq_adapte_2d672419_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                    <body name="arm_A_robotiq_ur_to_g2f85_child_side" pos="0.0 0.0 0.011" quat="1.0 0.0 0.0 0.0">
+                                      <body name="arm_A_robotiq_85_base_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+                                        <inertial pos="0.0 2.274e-05 0.03232288" quat="0.5005192813628906 -0.49947997687615325 0.49968467889977636 -0.5003153239274212" mass="0.66320197" diaginertia="0.00039462722067250294 0.0005161781480017798 0.0005880226313257172"/>
+                                        <geom class="collision" name="collision_arm_A_robotiq_85_base_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_robotiq_base_150dcf40_stl_MESH"/>
+                                        <geom class="visual" name="visual_arm_A_robotiq_85_base_link_0" type="mesh" mesh="VISUAL_robotiq_base_26432cf8_obj_0_MESH" material="VISUAL_robotiq_base_26432cf8_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                        <geom class="visual" name="visual_arm_A_robotiq_85_base_link_1" type="mesh" mesh="VISUAL_robotiq_base_26432cf8_obj_1_MESH" material="VISUAL_robotiq_base_26432cf8_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                        <body name="arm_A_robotiq_85_left_knuckle_link" pos="0.03060114 0.0 0.05490452" quat="1.0 0.0 0.0 0.0">
+                                          <inertial pos="0.01213197 0.0002 -0.00058647" quat="0.7067650957173783 -0.706765095717382 -0.02197952400764002 0.021979524007640125" mass="0.01384773208" diaginertia="3.4500845003981836e-07 2.238671549960182e-06 2.3194400000000004e-06"/>
+                                          <joint name="arm_A_robotiq_85_left_knuckle_joint" type="hinge" axis="0.0 -1.0 0.0" ref="0.0" range="0.0 0.8"/>
+                                          <geom class="collision" name="collision_arm_A_robotiq_85_left_knuckle_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_left_knuckle_3b324ce8_stl_MESH"/>
+                                          <geom class="visual" name="visual_arm_A_robotiq_85_left_knuckle_link_0" type="mesh" mesh="VISUAL_left_knuckle_47409267_obj_0_MESH" material="VISUAL_left_knuckle_47409267_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                          <body name="arm_A_robotiq_85_left_finger_link" pos="0.03152616 0.0 -0.00376347" quat="1.0 0.0 0.0 0.0">
+                                            <inertial pos="0.00346899 -0.00079447 0.01867121" quat="0.620317559743575 1.5660448931166561e-16 -0.7843507666049523 7.817375081343765e-18" mass="0.04260376752" diaginertia="4.6822750126340444e-06 1.1832080000000002e-05 1.4372364987365957e-05"/>
+                                            <geom class="collision" name="collision_arm_A_robotiq_85_left_finger_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_left_finger_79dcf3c1_stl_MESH"/>
+                                            <geom class="visual" name="visual_arm_A_robotiq_85_left_finger_link_0" type="mesh" mesh="VISUAL_left_finger_b346066b_obj_0_MESH" material="VISUAL_left_finger_b346066b_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                            <geom class="visual" name="visual_arm_A_robotiq_85_left_finger_link_1" type="mesh" mesh="VISUAL_left_finger_b346066b_obj_1_MESH" material="VISUAL_left_finger_b346066b_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                            <body name="arm_A_robotiq_85_left_finger_tip_link" pos="0.00563134 0.0 0.04718515" quat="1.0 0.0 0.0 0.0">
+                                              <inertial pos="-0.01456706 -0.0008 0.01649701" quat="0.0 0.5431343521286145 0.0 0.8396458036206875" mass="0.04268588744" diaginertia="2.6440466428387786e-06 1.197888e-05 1.206531335716122e-05"/>
+                                              <joint name="arm_A_robotiq_85_left_finger_tip_joint" type="hinge" axis="0.0 -1.0 0.0" ref="0.0"/>
+                                              <geom class="collision" name="collision_arm_A_robotiq_85_left_finger_tip_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_left_finger_tip_bccedc73_stl_MESH"/>
+                                              <geom class="visual" name="visual_arm_A_robotiq_85_left_finger_tip_link_0" type="mesh" mesh="VISUAL_left_finger_tip_4174f5e0_obj_0_MESH" material="VISUAL_left_finger_tip_4174f5e0_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                              <geom class="visual" name="visual_arm_A_robotiq_85_left_finger_tip_link_1" type="mesh" mesh="VISUAL_left_finger_tip_4174f5e0_obj_1_MESH" material="VISUAL_left_finger_tip_4174f5e0_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                            </body>
+                                          </body>
+                                        </body>
+                                        <body name="arm_A_robotiq_85_right_knuckle_link" pos="-0.03060114 0.0 0.05490452" quat="1.0 0.0 0.0 0.0">
+                                          <inertial pos="-0.01213197 0.0002 -0.00058647" quat="0.7067650957173783 0.706765095717382 0.02197952400764002 0.021979524007640125" mass="0.01384773208" diaginertia="3.4500845003981836e-07 2.238671549960182e-06 2.3194400000000004e-06"/>
+                                          <joint name="arm_A_robotiq_85_right_knuckle_joint" type="hinge" axis="0.0 -1.0 0.0" ref="0.0" range="-0.8 0.0"/>
+                                          <geom class="collision" name="collision_arm_A_robotiq_85_right_knuckle_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_right_knuckle_182ef7b5_stl_MESH"/>
+                                          <geom class="visual" name="visual_arm_A_robotiq_85_right_knuckle_link_0" type="mesh" mesh="VISUAL_right_knuckle_e31cc0a2_obj_0_MESH" material="VISUAL_right_knuckle_e31cc0a2_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                          <body name="arm_A_robotiq_85_right_finger_link" pos="-0.03152616 0.0 -0.00376347" quat="1.0 0.0 0.0 0.0">
+                                            <inertial pos="-0.00346899 -5.53e-06 0.01867121" quat="1.3536424256716714e-16 0.620317559743575 -1.7693343843959256e-17 0.7843507666049523" mass="0.04260376752" diaginertia="4.6822750126340444e-06 1.1832080000000002e-05 1.4372364987365957e-05"/>
+                                            <geom class="collision" name="collision_arm_A_robotiq_85_right_finger_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_right_finger_b2754923_stl_MESH"/>
+                                            <geom class="visual" name="visual_arm_A_robotiq_85_right_finger_link_0" type="mesh" mesh="VISUAL_right_finger_d19b75c1_obj_0_MESH" material="VISUAL_right_finger_d19b75c1_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                            <geom class="visual" name="visual_arm_A_robotiq_85_right_finger_link_1" type="mesh" mesh="VISUAL_right_finger_d19b75c1_obj_1_MESH" material="VISUAL_right_finger_d19b75c1_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                            <body name="arm_A_robotiq_85_right_finger_tip_link" pos="-0.00563134 0.0 0.04718515" quat="1.0 0.0 0.0 0.0">
+                                              <inertial pos="0.01456706 5e-05 0.01649701" quat="0.5431343521286145 0.0 -0.8396458036206876 0.0" mass="0.04268588744" diaginertia="2.6440466428387786e-06 1.197888e-05 1.206531335716122e-05"/>
+                                              <joint name="arm_A_robotiq_85_right_finger_tip_joint" type="hinge" axis="0.0 -1.0 0.0" ref="0.0"/>
+                                              <geom class="collision" name="collision_arm_A_robotiq_85_right_finger_tip_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_right_finger_tip_d6a613e2_stl_MESH"/>
+                                              <geom class="visual" name="visual_arm_A_robotiq_85_right_finger_tip_link_0" type="mesh" mesh="VISUAL_right_finger_tip_62ce7d88_obj_0_MESH" material="VISUAL_right_finger_tip_62ce7d88_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                              <geom class="visual" name="visual_arm_A_robotiq_85_right_finger_tip_link_1" type="mesh" mesh="VISUAL_right_finger_tip_62ce7d88_obj_1_MESH" material="VISUAL_right_finger_tip_62ce7d88_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                            </body>
+                                          </body>
+                                        </body>
+                                        <body name="arm_A_robotiq_85_left_inner_knuckle_link" pos="0.0127 0.0 0.06142" quat="1.0 0.0 0.0 0.0">
+                                          <inertial pos="0.01897699 0.00015001 0.02247101" quat="-0.42240861350400083 2.0734925751478815e-16 0.9064055180975167 -3.062158720512423e-17" mass="0.02969376448" diaginertia="4.887117939453948e-06 8.690559999999998e-06 1.287568206054605e-05"/>
+                                          <joint name="arm_A_robotiq_85_left_inner_knuckle_joint" type="hinge" axis="0.0 -1.0 0.0" ref="0.0"/>
+                                          <geom class="collision" name="collision_arm_A_robotiq_85_left_inner_knuckle_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_left_inner_knuckle_618a8392_stl_MESH"/>
+                                          <geom class="visual" name="visual_arm_A_robotiq_85_left_inner_knuckle_link_0" type="mesh" mesh="VISUAL_left_inner_knuckle_0ef9735b_obj_0_MESH" material="VISUAL_left_inner_knuckle_0ef9735b_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                          <geom class="visual" name="visual_arm_A_robotiq_85_left_inner_knuckle_link_1" type="mesh" mesh="VISUAL_left_inner_knuckle_0ef9735b_obj_1_MESH" material="VISUAL_left_inner_knuckle_0ef9735b_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                        </body>
+                                        <body name="arm_A_robotiq_85_right_inner_knuckle_link" pos="-0.0127 0.0 0.06142" quat="1.0 0.0 0.0 0.0">
+                                          <inertial pos="-0.01926824 5.001e-05 0.02222178" quat="2.0694740322688522e-16 0.41391107378742875 6.098000116538267e-17 0.9103173199473564" mass="0.02969376448" diaginertia="4.880756583548092e-06 8.690560000000002e-06 1.288204341645191e-05"/>
+                                          <joint name="arm_A_robotiq_85_right_inner_knuckle_joint" type="hinge" axis="0.0 -1.0 0.0" ref="0.0"/>
+                                          <geom class="collision" name="collision_arm_A_robotiq_85_right_inner_knuckle_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_right_inner_knuckle_9d8f5a95_stl_MESH"/>
+                                          <geom class="visual" name="visual_arm_A_robotiq_85_right_inner_knuckle_link_0" type="mesh" mesh="VISUAL_right_inner_knuckle_491141ed_obj_0_MESH" material="VISUAL_right_inner_knuckle_491141ed_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                          <geom class="visual" name="visual_arm_A_robotiq_85_right_inner_knuckle_link_1" type="mesh" mesh="VISUAL_right_inner_knuckle_491141ed_obj_1_MESH" material="VISUAL_right_inner_knuckle_491141ed_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                        </body>
+                                        <body name="arm_A__tcp" pos="0.0 0.0 0.14" quat="1.0 0.0 0.0 0.0"/>
+                                      </body>
+                                    </body>
+                                  </body>
+                                </body>
+                                <body name="arm_A_realsense_bottom_screw_frame" pos="0.0 0.0875 0.013" quat="0.5000000000000001 -0.4999999999999999 -0.5 -0.5">
+                                  <body name="arm_A_realsense_link" pos="0.010600000000000002 0.0175 0.0125" quat="1.0 0.0 0.0 0.0">
+                                    <inertial pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" mass="0.072" diaginertia="0.003881243 0.00049894 0.003879257"/>
+                                    <camera name="arm_A_realsense_camera" mode="fixed" pos="0 0 0" euler="0 -1.5708 -1.5708" fovy="75" resolution="640 480"/>
+                                    <geom class="collision" name="collision_arm_A_realsense_link" pos="0.0 -0.0175 0.0" quat="1.0 0.0 0.0 0.0" type="box" size="0.012525 0.045 0.0125"/>
+                                    <geom class="visual" name="visual_arm_A_realsense_link_0" type="mesh" mesh="VISUAL_d435_d7a8c085_obj_0_MESH" material="VISUAL_d435_d7a8c085_obj_0_MATERIAL" pos="0.0043 -0.0175 0.0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <body name="arm_A_realsense_depth_frame" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+                                      <body name="arm_A_realsense_depth_optical_frame" pos="0.0 0.0 0.0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5"/>
+                                    </body>
+                                    <body name="arm_A_realsense_infra1_frame" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+                                      <body name="arm_A_realsense_infra1_optical_frame" pos="0.0 0.0 0.0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5"/>
+                                    </body>
+                                    <body name="arm_A_realsense_infra2_frame" pos="0.0 -0.05 0.0" quat="1.0 0.0 0.0 0.0">
+                                      <body name="arm_A_realsense_infra2_optical_frame" pos="0.0 0.0 0.0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5"/>
+                                    </body>
+                                    <body name="arm_A_realsense_color_frame" pos="0.0 0.015 0.0" quat="1.0 0.0 0.0 0.0">
+                                      <body name="arm_A_realsense_color_optical_frame" pos="0.0 0.0 0.0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5"/>
+                                    </body>
+                                    <body name="arm_A_realsense_camera_frame" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+            <body name="arm_A_ur_base" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+          </body>
+        </body>
+        <body name="ur_mount_B" pos="-0.4 0.2 0.8" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475">
+          <body name="arm_B_ur_base_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+            <body name="arm_B_ur_base_link_inertia" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0">
+              <inertial pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" mass="4.0" diaginertia="0.00443333156 0.00443333156 0.0072"/>
+              <geom class="collision" name="collision_arm_B_ur_base_link_inertia" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0" type="mesh" mesh="COLLISION_base_c90511fb_stl_MESH"/>
+              <geom class="visual" name="visual_arm_B_ur_base_link_inertia_0" type="mesh" mesh="VISUAL_base_4c1445fa_obj_0_MESH" material="VISUAL_base_4c1445fa_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+              <geom class="visual" name="visual_arm_B_ur_base_link_inertia_1" type="mesh" mesh="VISUAL_base_4c1445fa_obj_1_MESH" material="VISUAL_base_4c1445fa_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+              <body name="arm_B_ur_shoulder_link" pos="0.0 0.0 0.1625" quat="1.0 0.0 0.0 0.0">
+                <inertial pos="0.0 -0.00193 -0.02561" quat="0.20206705998679322 0.6747312134749398 0.365097644892179 -0.6087777940473136" mass="3.761" diaginertia="0.006024775831167757 0.0070003048838239885 0.007030789285008251"/>
+                <joint name="arm_B_ur_shoulder_pan_joint" type="hinge" axis="0.0 0.0 1.0" ref="0.0" range="-6.283185307179586 6.283185307179586"/>
+                <geom class="collision" name="collision_arm_B_ur_shoulder_link" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0" type="mesh" mesh="COLLISION_shoulder_9e70b180_stl_MESH"/>
+                <geom class="visual" name="visual_arm_B_ur_shoulder_link_0" type="mesh" mesh="VISUAL_shoulder_e0897c84_obj_0_MESH" material="VISUAL_shoulder_e0897c84_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <geom class="visual" name="visual_arm_B_ur_shoulder_link_1" type="mesh" mesh="VISUAL_shoulder_e0897c84_obj_1_MESH" material="VISUAL_shoulder_e0897c84_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <geom class="visual" name="visual_arm_B_ur_shoulder_link_2" type="mesh" mesh="VISUAL_shoulder_e0897c84_obj_2_MESH" material="VISUAL_shoulder_e0897c84_obj_2_MATERIAL" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <body name="arm_B_ur_upper_arm_link" pos="0.0 0.0 0.0" quat="0.7071067811140325 0.7071067812590626 0.0 0.0">
+                  <inertial pos="-0.2125 0.0 0.11336" quat="0.7066521546519151 0.7075611104882223 5.365436380901162e-05 -6.611874721869904e-05" mass="8.058" diaginertia="0.015058840753982044 0.3324720677719464 0.3338808714740716"/>
+                  <joint name="arm_B_ur_shoulder_lift_joint" type="hinge" axis="0.0 0.0 1.0" ref="0.0" range="-6.283185307179586 6.283185307179586"/>
+                  <geom class="collision" name="collision_arm_B_ur_upper_arm_link" pos="0.0 0.0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5" type="mesh" mesh="COLLISION_upperarm_be39b1aa_stl_MESH"/>
+                  <geom class="visual" name="visual_arm_B_ur_upper_arm_link_0" type="mesh" mesh="VISUAL_upperarm_d0db644e_obj_0_MESH" material="VISUAL_upperarm_d0db644e_obj_0_MATERIAL" pos="0.0 0.0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="visual_arm_B_ur_upper_arm_link_1" type="mesh" mesh="VISUAL_upperarm_d0db644e_obj_1_MESH" material="VISUAL_upperarm_d0db644e_obj_1_MATERIAL" pos="0.0 0.0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="visual_arm_B_ur_upper_arm_link_2" type="mesh" mesh="VISUAL_upperarm_d0db644e_obj_2_MESH" material="VISUAL_upperarm_d0db644e_obj_2_MATERIAL" pos="0.0 0.0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="visual_arm_B_ur_upper_arm_link_3" type="mesh" mesh="VISUAL_upperarm_d0db644e_obj_3_MESH" material="VISUAL_upperarm_d0db644e_obj_3_MATERIAL" pos="0.0 0.0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <body name="arm_B_ur_forearm_link" pos="-0.425 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+                    <inertial pos="-0.2422 0.0 0.0265" quat="0.6984488939206283 0.715600664432383 -0.006368275363090869 -0.006654074983260039" mass="2.846" diaginertia="0.003971028904819707 0.0785102224320644 0.07879270866311583"/>
+                    <joint name="arm_B_ur_elbow_joint" type="hinge" axis="0.0 0.0 1.0" ref="0.0" range="-3.141592653589793 3.141592653589793"/>
+                    <geom class="collision" name="collision_arm_B_ur_forearm_link" pos="0.0 0.0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5" type="mesh" mesh="COLLISION_forearm_8023c127_stl_MESH"/>
+                    <geom class="visual" name="visual_arm_B_ur_forearm_link_0" type="mesh" mesh="VISUAL_forearm_552d2862_obj_0_MESH" material="VISUAL_forearm_552d2862_obj_0_MATERIAL" pos="0.0 0.0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="visual_arm_B_ur_forearm_link_1" type="mesh" mesh="VISUAL_forearm_552d2862_obj_1_MESH" material="VISUAL_forearm_552d2862_obj_1_MATERIAL" pos="0.0 0.0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="visual_arm_B_ur_forearm_link_2" type="mesh" mesh="VISUAL_forearm_552d2862_obj_2_MESH" material="VISUAL_forearm_552d2862_obj_2_MATERIAL" pos="0.0 0.0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="visual_arm_B_ur_forearm_link_3" type="mesh" mesh="VISUAL_forearm_552d2862_obj_3_MESH" material="VISUAL_forearm_552d2862_obj_3_MATERIAL" pos="0.0 0.0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <body name="arm_B_ur_wrist_1_link" pos="-0.3922 0.0 0.1333" quat="1.0 0.0 0.0 0.0">
+                      <inertial pos="0.0 -0.01634 -0.0018" quat="0.6171649704777031 0.34859393389971566 0.33430783515013307 0.6211504969174606" mass="1.37" diaginertia="0.0011986756140664695 0.0014236273687040747 0.0016550170172294559"/>
+                      <joint name="arm_B_ur_wrist_1_joint" type="hinge" axis="0.0 0.0 1.0" ref="0.0" range="-6.283185307179586 6.283185307179586"/>
+                      <geom class="collision" name="collision_arm_B_ur_wrist_1_link" pos="0.0 0.0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" type="mesh" mesh="COLLISION_wrist1_86ac31fb_stl_MESH"/>
+                      <geom class="visual" name="visual_arm_B_ur_wrist_1_link_0" type="mesh" mesh="VISUAL_wrist1_d9f4dcb4_obj_0_MESH" material="VISUAL_wrist1_d9f4dcb4_obj_0_MATERIAL" pos="0.0 0.0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <geom class="visual" name="visual_arm_B_ur_wrist_1_link_1" type="mesh" mesh="VISUAL_wrist1_d9f4dcb4_obj_1_MESH" material="VISUAL_wrist1_d9f4dcb4_obj_1_MATERIAL" pos="0.0 0.0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <geom class="visual" name="visual_arm_B_ur_wrist_1_link_2" type="mesh" mesh="VISUAL_wrist1_d9f4dcb4_obj_2_MESH" material="VISUAL_wrist1_d9f4dcb4_obj_2_MATERIAL" pos="0.0 0.0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <body name="arm_B_ur_wrist_2_link" pos="0.0 -0.0997 -2.044881182297852e-11" quat="0.7071067811140325 0.7071067812590626 0.0 0.0">
+                        <inertial pos="0.0 0.01634 -0.0018" quat="0.5288470911292525 -0.47465159334892915 -0.4440672234695894 0.5457388754481953" mass="1.3" diaginertia="0.0009581396620642861 0.001286066344108885 0.001356373993826829"/>
+                        <joint name="arm_B_ur_wrist_2_joint" type="hinge" axis="0.0 0.0 1.0" ref="0.0" range="-6.283185307179586 6.283185307179586"/>
+                        <geom class="collision" name="collision_arm_B_ur_wrist_2_link" pos="0.0 0.0 -0.0997" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_wrist2_134d23ee_stl_MESH"/>
+                        <geom class="visual" name="visual_arm_B_ur_wrist_2_link_0" type="mesh" mesh="VISUAL_wrist2_f21a75d6_obj_0_MESH" material="VISUAL_wrist2_f21a75d6_obj_0_MATERIAL" pos="0.0 0.0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
+                        <geom class="visual" name="visual_arm_B_ur_wrist_2_link_1" type="mesh" mesh="VISUAL_wrist2_f21a75d6_obj_1_MESH" material="VISUAL_wrist2_f21a75d6_obj_1_MATERIAL" pos="0.0 0.0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
+                        <geom class="visual" name="visual_arm_B_ur_wrist_2_link_2" type="mesh" mesh="VISUAL_wrist2_f21a75d6_obj_2_MESH" material="VISUAL_wrist2_f21a75d6_obj_2_MATERIAL" pos="0.0 0.0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
+                        <body name="arm_B_ur_wrist_3_link" pos="0.0 0.0996 -2.042830148012698e-11" quat="0.7071067811140325 -0.7071067812590626 8.659560562354933e-17 8.880527684815676e-27">
+                          <inertial pos="0.0 0.0 -0.001159" quat="0.9998848543715624 -0.006732397405301183 0.0011178804501228406 0.013553714134353398" mass="0.365" diaginertia="0.00018693802309626027 0.00018906920634770998 0.0002575727705560295"/>
+                          <joint name="arm_B_ur_wrist_3_joint" type="hinge" axis="0.0 0.0 1.0" ref="0.0" range="-6.283185307179586 6.283185307179586"/>
+                          <geom class="collision" name="collision_arm_B_ur_wrist_3_link" pos="0.0 0.0 -0.0989" quat="0.7071067811865476 0.7071067811865475 0.0 0.0" type="mesh" mesh="COLLISION_wrist3_92fb655d_stl_MESH"/>
+                          <geom class="visual" name="visual_arm_B_ur_wrist_3_link_0" type="mesh" mesh="VISUAL_wrist3_8ee5d649_obj_0_MESH" material="VISUAL_wrist3_8ee5d649_obj_0_MATERIAL" pos="0.0 0.0 -0.0989" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                          <body name="arm_B_ur_ft_frame" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 1.0 0.0 0.0">
+                            <site name="arm_B_ur_ft_frame_SITE" pos="0 0 0" quat="1 0 0 0"/>
+                          </body>
+                          <body name="arm_B_ur_flange" pos="0.0 0.0 0.0" quat="0.5000000000000001 -0.4999999999999999 -0.5 -0.5">
+                            <body name="arm_B_ur_tool0" pos="0.0 0.0 0.0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5">
+                              <body name="arm_B_realsense_shelf" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0">
+                                <inertial pos="0.0 0.044 0.0015" quat="1.0 0.0 0.0 0.0" mass="0.038" diaginertia="6.673e-05 8.5e-06 7.517e-05"/>
+                                <geom class="collision" name="collision_arm_B_realsense_shelf" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_RealSense_D435_Shelf_c481497f_stl_MESH"/>
+                                <geom class="visual" name="visual_arm_B_realsense_shelf" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="VISUAL_RealSense_D435_Shelf_c481497f_stl_MESH" material="VISUAL_RealSense_D435_Shelf_c481497f_stl_MATERIAL"/>
+                                <body name="arm_B_realsense_shelf_child_side" pos="0.0 0.0 0.006" quat="1.0 0.0 0.0 0.0">
+                                  <body name="arm_B_robotiq_ur_to_robotiq_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+                                    <inertial pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" mass="0.01" diaginertia="4.4e-05 2.7e-05 2.7e-05"/>
+                                    <geom class="collision" name="collision_arm_B_robotiq_ur_to_robotiq_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_ur_to_robotiq_adapte_87e27856_stl_MESH"/>
+                                    <geom class="visual" name="visual_arm_B_robotiq_ur_to_robotiq_link_0" type="mesh" mesh="VISUAL_ur_to_robotiq_adapte_2d672419_obj_0_MESH" material="VISUAL_ur_to_robotiq_adapte_2d672419_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                    <geom class="visual" name="visual_arm_B_robotiq_ur_to_robotiq_link_1" type="mesh" mesh="VISUAL_ur_to_robotiq_adapte_2d672419_obj_1_MESH" material="VISUAL_ur_to_robotiq_adapte_2d672419_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                    <body name="arm_B_robotiq_ur_to_g2f85_child_side" pos="0.0 0.0 0.011" quat="1.0 0.0 0.0 0.0">
+                                      <body name="arm_B_robotiq_85_base_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+                                        <inertial pos="0.0 2.274e-05 0.03232288" quat="0.5005192813628906 -0.49947997687615325 0.49968467889977636 -0.5003153239274212" mass="0.66320197" diaginertia="0.00039462722067250294 0.0005161781480017798 0.0005880226313257172"/>
+                                        <geom class="collision" name="collision_arm_B_robotiq_85_base_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_robotiq_base_150dcf40_stl_MESH"/>
+                                        <geom class="visual" name="visual_arm_B_robotiq_85_base_link_0" type="mesh" mesh="VISUAL_robotiq_base_26432cf8_obj_0_MESH" material="VISUAL_robotiq_base_26432cf8_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                        <geom class="visual" name="visual_arm_B_robotiq_85_base_link_1" type="mesh" mesh="VISUAL_robotiq_base_26432cf8_obj_1_MESH" material="VISUAL_robotiq_base_26432cf8_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                        <body name="arm_B_robotiq_85_left_knuckle_link" pos="0.03060114 0.0 0.05490452" quat="1.0 0.0 0.0 0.0">
+                                          <inertial pos="0.01213197 0.0002 -0.00058647" quat="0.7067650957173783 -0.706765095717382 -0.02197952400764002 0.021979524007640125" mass="0.01384773208" diaginertia="3.4500845003981836e-07 2.238671549960182e-06 2.3194400000000004e-06"/>
+                                          <joint name="arm_B_robotiq_85_left_knuckle_joint" type="hinge" axis="0.0 -1.0 0.0" ref="0.0" range="0.0 0.8"/>
+                                          <geom class="collision" name="collision_arm_B_robotiq_85_left_knuckle_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_left_knuckle_3b324ce8_stl_MESH"/>
+                                          <geom class="visual" name="visual_arm_B_robotiq_85_left_knuckle_link_0" type="mesh" mesh="VISUAL_left_knuckle_47409267_obj_0_MESH" material="VISUAL_left_knuckle_47409267_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                          <body name="arm_B_robotiq_85_left_finger_link" pos="0.03152616 0.0 -0.00376347" quat="1.0 0.0 0.0 0.0">
+                                            <inertial pos="0.00346899 -0.00079447 0.01867121" quat="0.620317559743575 1.5660448931166561e-16 -0.7843507666049523 7.817375081343765e-18" mass="0.04260376752" diaginertia="4.6822750126340444e-06 1.1832080000000002e-05 1.4372364987365957e-05"/>
+                                            <geom class="collision" name="collision_arm_B_robotiq_85_left_finger_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_left_finger_79dcf3c1_stl_MESH"/>
+                                            <geom class="visual" name="visual_arm_B_robotiq_85_left_finger_link_0" type="mesh" mesh="VISUAL_left_finger_b346066b_obj_0_MESH" material="VISUAL_left_finger_b346066b_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                            <geom class="visual" name="visual_arm_B_robotiq_85_left_finger_link_1" type="mesh" mesh="VISUAL_left_finger_b346066b_obj_1_MESH" material="VISUAL_left_finger_b346066b_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                            <body name="arm_B_robotiq_85_left_finger_tip_link" pos="0.00563134 0.0 0.04718515" quat="1.0 0.0 0.0 0.0">
+                                              <inertial pos="-0.01456706 -0.0008 0.01649701" quat="0.0 0.5431343521286145 0.0 0.8396458036206875" mass="0.04268588744" diaginertia="2.6440466428387786e-06 1.197888e-05 1.206531335716122e-05"/>
+                                              <joint name="arm_B_robotiq_85_left_finger_tip_joint" type="hinge" axis="0.0 -1.0 0.0" ref="0.0"/>
+                                              <geom class="collision" name="collision_arm_B_robotiq_85_left_finger_tip_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_left_finger_tip_bccedc73_stl_MESH"/>
+                                              <geom class="visual" name="visual_arm_B_robotiq_85_left_finger_tip_link_0" type="mesh" mesh="VISUAL_left_finger_tip_4174f5e0_obj_0_MESH" material="VISUAL_left_finger_tip_4174f5e0_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                              <geom class="visual" name="visual_arm_B_robotiq_85_left_finger_tip_link_1" type="mesh" mesh="VISUAL_left_finger_tip_4174f5e0_obj_1_MESH" material="VISUAL_left_finger_tip_4174f5e0_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                            </body>
+                                          </body>
+                                        </body>
+                                        <body name="arm_B_robotiq_85_right_knuckle_link" pos="-0.03060114 0.0 0.05490452" quat="1.0 0.0 0.0 0.0">
+                                          <inertial pos="-0.01213197 0.0002 -0.00058647" quat="0.7067650957173783 0.706765095717382 0.02197952400764002 0.021979524007640125" mass="0.01384773208" diaginertia="3.4500845003981836e-07 2.238671549960182e-06 2.3194400000000004e-06"/>
+                                          <joint name="arm_B_robotiq_85_right_knuckle_joint" type="hinge" axis="0.0 -1.0 0.0" ref="0.0" range="-0.8 0.0"/>
+                                          <geom class="collision" name="collision_arm_B_robotiq_85_right_knuckle_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_right_knuckle_182ef7b5_stl_MESH"/>
+                                          <geom class="visual" name="visual_arm_B_robotiq_85_right_knuckle_link_0" type="mesh" mesh="VISUAL_right_knuckle_e31cc0a2_obj_0_MESH" material="VISUAL_right_knuckle_e31cc0a2_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                          <body name="arm_B_robotiq_85_right_finger_link" pos="-0.03152616 0.0 -0.00376347" quat="1.0 0.0 0.0 0.0">
+                                            <inertial pos="-0.00346899 -5.53e-06 0.01867121" quat="1.3536424256716714e-16 0.620317559743575 -1.7693343843959256e-17 0.7843507666049523" mass="0.04260376752" diaginertia="4.6822750126340444e-06 1.1832080000000002e-05 1.4372364987365957e-05"/>
+                                            <geom class="collision" name="collision_arm_B_robotiq_85_right_finger_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_right_finger_b2754923_stl_MESH"/>
+                                            <geom class="visual" name="visual_arm_B_robotiq_85_right_finger_link_0" type="mesh" mesh="VISUAL_right_finger_d19b75c1_obj_0_MESH" material="VISUAL_right_finger_d19b75c1_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                            <geom class="visual" name="visual_arm_B_robotiq_85_right_finger_link_1" type="mesh" mesh="VISUAL_right_finger_d19b75c1_obj_1_MESH" material="VISUAL_right_finger_d19b75c1_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                            <body name="arm_B_robotiq_85_right_finger_tip_link" pos="-0.00563134 0.0 0.04718515" quat="1.0 0.0 0.0 0.0">
+                                              <inertial pos="0.01456706 5e-05 0.01649701" quat="0.5431343521286145 0.0 -0.8396458036206876 0.0" mass="0.04268588744" diaginertia="2.6440466428387786e-06 1.197888e-05 1.206531335716122e-05"/>
+                                              <joint name="arm_B_robotiq_85_right_finger_tip_joint" type="hinge" axis="0.0 -1.0 0.0" ref="0.0"/>
+                                              <geom class="collision" name="collision_arm_B_robotiq_85_right_finger_tip_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_right_finger_tip_d6a613e2_stl_MESH"/>
+                                              <geom class="visual" name="visual_arm_B_robotiq_85_right_finger_tip_link_0" type="mesh" mesh="VISUAL_right_finger_tip_62ce7d88_obj_0_MESH" material="VISUAL_right_finger_tip_62ce7d88_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                              <geom class="visual" name="visual_arm_B_robotiq_85_right_finger_tip_link_1" type="mesh" mesh="VISUAL_right_finger_tip_62ce7d88_obj_1_MESH" material="VISUAL_right_finger_tip_62ce7d88_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                            </body>
+                                          </body>
+                                        </body>
+                                        <body name="arm_B_robotiq_85_left_inner_knuckle_link" pos="0.0127 0.0 0.06142" quat="1.0 0.0 0.0 0.0">
+                                          <inertial pos="0.01897699 0.00015001 0.02247101" quat="-0.42240861350400083 2.0734925751478815e-16 0.9064055180975167 -3.062158720512423e-17" mass="0.02969376448" diaginertia="4.887117939453948e-06 8.690559999999998e-06 1.287568206054605e-05"/>
+                                          <joint name="arm_B_robotiq_85_left_inner_knuckle_joint" type="hinge" axis="0.0 -1.0 0.0" ref="0.0"/>
+                                          <geom class="collision" name="collision_arm_B_robotiq_85_left_inner_knuckle_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_left_inner_knuckle_618a8392_stl_MESH"/>
+                                          <geom class="visual" name="visual_arm_B_robotiq_85_left_inner_knuckle_link_0" type="mesh" mesh="VISUAL_left_inner_knuckle_0ef9735b_obj_0_MESH" material="VISUAL_left_inner_knuckle_0ef9735b_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                          <geom class="visual" name="visual_arm_B_robotiq_85_left_inner_knuckle_link_1" type="mesh" mesh="VISUAL_left_inner_knuckle_0ef9735b_obj_1_MESH" material="VISUAL_left_inner_knuckle_0ef9735b_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                        </body>
+                                        <body name="arm_B_robotiq_85_right_inner_knuckle_link" pos="-0.0127 0.0 0.06142" quat="1.0 0.0 0.0 0.0">
+                                          <inertial pos="-0.01926824 5.001e-05 0.02222178" quat="2.0694740322688522e-16 0.41391107378742875 6.098000116538267e-17 0.9103173199473564" mass="0.02969376448" diaginertia="4.880756583548092e-06 8.690560000000002e-06 1.288204341645191e-05"/>
+                                          <joint name="arm_B_robotiq_85_right_inner_knuckle_joint" type="hinge" axis="0.0 -1.0 0.0" ref="0.0"/>
+                                          <geom class="collision" name="collision_arm_B_robotiq_85_right_inner_knuckle_link" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="COLLISION_right_inner_knuckle_9d8f5a95_stl_MESH"/>
+                                          <geom class="visual" name="visual_arm_B_robotiq_85_right_inner_knuckle_link_0" type="mesh" mesh="VISUAL_right_inner_knuckle_491141ed_obj_0_MESH" material="VISUAL_right_inner_knuckle_491141ed_obj_0_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                          <geom class="visual" name="visual_arm_B_robotiq_85_right_inner_knuckle_link_1" type="mesh" mesh="VISUAL_right_inner_knuckle_491141ed_obj_1_MESH" material="VISUAL_right_inner_knuckle_491141ed_obj_1_MATERIAL" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                        </body>
+                                        <body name="arm_B__tcp" pos="0.0 0.0 0.14" quat="1.0 0.0 0.0 0.0"/>
+                                      </body>
+                                    </body>
+                                  </body>
+                                </body>
+                                <body name="arm_B_realsense_bottom_screw_frame" pos="0.0 0.0875 0.013" quat="0.5000000000000001 -0.4999999999999999 -0.5 -0.5">
+                                  <body name="arm_B_realsense_link" pos="0.010600000000000002 0.0175 0.0125" quat="1.0 0.0 0.0 0.0">
+                                    <inertial pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0" mass="0.072" diaginertia="0.003881243 0.00049894 0.003879257"/>
+                                    <camera name="arm_B_realsense_camera" mode="fixed" pos="0 0 0" euler="0 -1.5708 -1.5708" fovy="75" resolution="640 480"/>
+                                    <geom class="collision" name="collision_arm_B_realsense_link" pos="0.0 -0.0175 0.0" quat="1.0 0.0 0.0 0.0" type="box" size="0.012525 0.045 0.0125"/>
+                                    <geom class="visual" name="visual_arm_B_realsense_link_0" type="mesh" mesh="VISUAL_d435_d7a8c085_obj_0_MESH" material="VISUAL_d435_d7a8c085_obj_0_MATERIAL" pos="0.0043 -0.0175 0.0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <body name="arm_B_realsense_depth_frame" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+                                      <body name="arm_B_realsense_depth_optical_frame" pos="0.0 0.0 0.0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5"/>
+                                    </body>
+                                    <body name="arm_B_realsense_infra1_frame" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0">
+                                      <body name="arm_B_realsense_infra1_optical_frame" pos="0.0 0.0 0.0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5"/>
+                                    </body>
+                                    <body name="arm_B_realsense_infra2_frame" pos="0.0 -0.05 0.0" quat="1.0 0.0 0.0 0.0">
+                                      <body name="arm_B_realsense_infra2_optical_frame" pos="0.0 0.0 0.0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5"/>
+                                    </body>
+                                    <body name="arm_B_realsense_color_frame" pos="0.0 0.015 0.0" quat="1.0 0.0 0.0 0.0">
+                                      <body name="arm_B_realsense_color_optical_frame" pos="0.0 0.0 0.0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5"/>
+                                    </body>
+                                    <body name="arm_B_realsense_camera_frame" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"/>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+            <body name="arm_B_ur_base" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+          </body>
+        </body>
+      </body>
+    <geom name="floor" class="floor" size="0 0 0.05"/>
+    <light name="default_light" pos="0 0 2" dir="0 0 -1" directional="true"/>
+  </worldbody>
+  <contact>
+    <exclude body1="arm_A_ur_base_link_inertia" body2="arm_A_ur_shoulder_link"/>
+    <exclude body1="arm_A_ur_shoulder_link" body2="arm_A_ur_upper_arm_link"/>
+    <exclude body1="arm_A_ur_upper_arm_link" body2="arm_A_ur_forearm_link"/>
+    <exclude body1="arm_A_ur_forearm_link" body2="arm_A_ur_wrist_1_link"/>
+    <exclude body1="arm_A_ur_wrist_1_link" body2="arm_A_ur_wrist_2_link"/>
+    <exclude body1="arm_A_ur_wrist_2_link" body2="arm_A_ur_wrist_3_link"/>
+    <exclude body1="arm_A_robotiq_85_base_link" body2="arm_A_robotiq_85_left_knuckle_link"/>
+    <exclude body1="arm_A_robotiq_85_base_link" body2="arm_A_robotiq_85_right_knuckle_link"/>
+    <exclude body1="arm_A_robotiq_85_left_knuckle_link" body2="arm_A_robotiq_85_left_finger_link"/>
+    <exclude body1="arm_A_robotiq_85_right_knuckle_link" body2="arm_A_robotiq_85_right_finger_link"/>
+    <exclude body1="arm_A_robotiq_85_base_link" body2="arm_A_robotiq_85_left_inner_knuckle_link"/>
+    <exclude body1="arm_A_robotiq_85_base_link" body2="arm_A_robotiq_85_right_inner_knuckle_link"/>
+    <exclude body1="arm_A_robotiq_85_left_finger_link" body2="arm_A_robotiq_85_left_finger_tip_link"/>
+    <exclude body1="arm_A_robotiq_85_right_finger_link" body2="arm_A_robotiq_85_right_finger_tip_link"/>
+    <exclude body1="arm_B_ur_base_link_inertia" body2="arm_B_ur_shoulder_link"/>
+    <exclude body1="arm_B_ur_shoulder_link" body2="arm_B_ur_upper_arm_link"/>
+    <exclude body1="arm_B_ur_upper_arm_link" body2="arm_B_ur_forearm_link"/>
+    <exclude body1="arm_B_ur_forearm_link" body2="arm_B_ur_wrist_1_link"/>
+    <exclude body1="arm_B_ur_wrist_1_link" body2="arm_B_ur_wrist_2_link"/>
+    <exclude body1="arm_B_ur_wrist_2_link" body2="arm_B_ur_wrist_3_link"/>
+    <exclude body1="arm_B_robotiq_85_base_link" body2="arm_B_robotiq_85_left_knuckle_link"/>
+    <exclude body1="arm_B_robotiq_85_base_link" body2="arm_B_robotiq_85_right_knuckle_link"/>
+    <exclude body1="arm_B_robotiq_85_left_knuckle_link" body2="arm_B_robotiq_85_left_finger_link"/>
+    <exclude body1="arm_B_robotiq_85_right_knuckle_link" body2="arm_B_robotiq_85_right_finger_link"/>
+    <exclude body1="arm_B_robotiq_85_base_link" body2="arm_B_robotiq_85_left_inner_knuckle_link"/>
+    <exclude body1="arm_B_robotiq_85_base_link" body2="arm_B_robotiq_85_right_inner_knuckle_link"/>
+    <exclude body1="arm_B_robotiq_85_left_finger_link" body2="arm_B_robotiq_85_left_finger_tip_link"/>
+    <exclude body1="arm_B_robotiq_85_right_finger_link" body2="arm_B_robotiq_85_right_finger_tip_link"/>
+  </contact>
+  <actuator>
+    <position group="1" kp="60" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION" joint="arm_A_ur_shoulder_pan_joint"/>
+    <position group="1" kp="60" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION" joint="arm_A_ur_shoulder_lift_joint"/>
+    <position group="1" kp="30" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_A_ur_elbow_joint_ACTUATOR_POSITION" joint="arm_A_ur_elbow_joint"/>
+    <position group="1" kp="5" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_A_ur_wrist_1_joint_ACTUATOR_POSITION" joint="arm_A_ur_wrist_1_joint"/>
+    <position group="1" kp="5" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_A_ur_wrist_2_joint_ACTUATOR_POSITION" joint="arm_A_ur_wrist_2_joint"/>
+    <position group="1" kp="5" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_A_ur_wrist_3_joint_ACTUATOR_POSITION" joint="arm_A_ur_wrist_3_joint"/>
+    <position group="1" kp="1" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_A_robotiq_85_left_knuckle_joint_ACTUATOR_POSITION" joint="arm_A_robotiq_85_left_knuckle_joint"/>
+    <position group="1" kp="60" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_B_ur_shoulder_pan_joint_ACTUATOR_POSITION" joint="arm_B_ur_shoulder_pan_joint"/>
+    <position group="1" kp="60" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_B_ur_shoulder_lift_joint_ACTUATOR_POSITION" joint="arm_B_ur_shoulder_lift_joint"/>
+    <position group="1" kp="30" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_B_ur_elbow_joint_ACTUATOR_POSITION" joint="arm_B_ur_elbow_joint"/>
+    <position group="1" kp="5" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_B_ur_wrist_1_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_1_joint"/>
+    <position group="1" kp="5" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_B_ur_wrist_2_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_2_joint"/>
+    <position group="1" kp="5" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_B_ur_wrist_3_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_3_joint"/>
+    <position group="1" kp="1" dampratio="1" ctrlrange="-3.1416 3.1416" name="arm_B_robotiq_85_left_knuckle_joint_ACTUATOR_POSITION" joint="arm_B_robotiq_85_left_knuckle_joint"/>
+  </actuator>
+  <equality>
+    <joint joint1="arm_A_robotiq_85_left_knuckle_joint" joint2="arm_A_robotiq_85_right_knuckle_joint" polycoef="0.0 -1.0 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    <joint joint1="arm_A_robotiq_85_left_knuckle_joint" joint2="arm_A_robotiq_85_left_inner_knuckle_joint" polycoef="0.0 1.0 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    <joint joint1="arm_A_robotiq_85_left_knuckle_joint" joint2="arm_A_robotiq_85_right_inner_knuckle_joint" polycoef="0.0 -1.0 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    <joint joint1="arm_A_robotiq_85_left_knuckle_joint" joint2="arm_A_robotiq_85_left_finger_tip_joint" polycoef="0.0 -1.0 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    <joint joint1="arm_A_robotiq_85_left_knuckle_joint" joint2="arm_A_robotiq_85_right_finger_tip_joint" polycoef="0.0 1.0 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    <joint joint1="arm_B_robotiq_85_left_knuckle_joint" joint2="arm_B_robotiq_85_right_knuckle_joint" polycoef="0.0 -1.0 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    <joint joint1="arm_B_robotiq_85_left_knuckle_joint" joint2="arm_B_robotiq_85_left_inner_knuckle_joint" polycoef="0.0 1.0 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    <joint joint1="arm_B_robotiq_85_left_knuckle_joint" joint2="arm_B_robotiq_85_right_inner_knuckle_joint" polycoef="0.0 -1.0 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    <joint joint1="arm_B_robotiq_85_left_knuckle_joint" joint2="arm_B_robotiq_85_left_finger_tip_joint" polycoef="0.0 -1.0 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    <joint joint1="arm_B_robotiq_85_left_knuckle_joint" joint2="arm_B_robotiq_85_right_finger_tip_joint" polycoef="0.0 1.0 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+  </equality>
+  <sensor>
+    <force name="arm_A_ur_ft_sensor_force" site="arm_A_ur_ft_frame_SITE"/>
+    <force name="arm_B_ur_ft_sensor_force" site="arm_B_ur_ft_frame_SITE"/>
+    <torque name="arm_A_ur_ft_sensor_torque" site="arm_A_ur_ft_frame_SITE"/>
+    <torque name="arm_B_ur_ft_sensor_torque" site="arm_B_ur_ft_frame_SITE"/>
+  </sensor>
+</mujoco>

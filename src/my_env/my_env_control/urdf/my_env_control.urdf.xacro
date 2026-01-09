@@ -12,6 +12,7 @@
   <xacro:arg name="use_fake_hardware" default="true" />
   <xacro:arg name="use_fake_sensor_commands" default="true" />
   <xacro:arg name="use_sim_gazebo" default="false" />
+  <xacro:arg name="use_sim_mujoco" default="false" />
   <xacro:arg name="generate_ros2_control" default="true" />
   <!-- UR 机器人其他参数 -->
   <xacro:arg name="ur_reverse_ip" default="0.0.0.0"/>
@@ -43,6 +44,7 @@
     use_fake_hardware="$(arg use_fake_hardware)"
     use_fake_sensor_commands="$(arg use_fake_sensor_commands)"
     use_sim_gazebo="$(arg use_sim_gazebo)"
+    use_sim_mujoco="$(arg use_sim_mujoco)"
     generate_ros2_control="$(arg generate_ros2_control)"
 
     ur_reverse_ip="$(arg ur_reverse_ip)"

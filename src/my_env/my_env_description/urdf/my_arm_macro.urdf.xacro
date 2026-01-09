@@ -6,6 +6,7 @@
   <xacro:include filename="$(find robotiq_description)/urdf/ur_to_robotiq_adapter.urdf.xacro" />
   <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
 
+
   <!-- 宏定义自己的机械臂结构 UR+Robotiq+RealSense -->
   <xacro:macro name="my_arm" params="
     name:=my_arm
@@ -25,14 +26,14 @@
     ur_trajectory_port:=50004
     ur_headless_mode:=false
 
-    robotiq_com_port:=/dev/ttyUSB0
+    g2f85_com_port:=/dev/ttyUSB0
     realsense_use_nominal_extrinsics:=false
     *origin
     "> 
 
     <!-- UR parameters -->
     <xacro:property name="_ur_name" value="${name}_ur"/>
-    <xacro:property name="_ur_tf_prefix" value="${tf_prefix}ur_"/>
+    <xacro:property name="_ur_tf_prefix" value="${tf_prefix}ur_"/> <!-- ! Match the prefix in my_env_macro.urdf.xacro -->
     <xacro:property name="_ur_parent" value="${parent}"/>
     <xacro:property name="_ur_joint_limits_parameters_file" value="$(find ur_description)/config/${ur_type}/joint_limits.yaml"/>
     <xacro:property name="_ur_kinematics_parameters_file" value="$(find ur_description)/config/${ur_type}/default_kinematics.yaml"/>
@@ -73,27 +74,27 @@
 
 
     <!-- RealSense parameters -->
-    <xacro:property name="_realsense_name" value="${tf_prefix}realsense" />
-    <xacro:property name="_realsense_prefix" value="${tf_prefix}realsense" />
+    <xacro:property name="_realsense_name" value="${tf_prefix}realsense" /> 
+    <xacro:property name="_realsense_prefix" value="${tf_prefix}realsense" /> <!-- ! Match the prefix in my_env_macro.urdf.xacro -->
     <xacro:property name="_realsense_use_nominal_extrinsics" value="${realsense_use_nominal_extrinsics}" />
     <xacro:property name="_realsense_add_plug" value="false" />
     <xacro:property name="_realsense_use_mesh" value="true" />
 
 
-    <!-- Robotiq parameters -->
-    <xacro:property name="_robotiq_name" value="${name}_robotiq" />
-    <xacro:property name="_robotiq_prefix" value="${tf_prefix}" />
-    <xacro:property name="_robotiq_sim_gazebo" value="${use_sim_gazebo}" />
-    <xacro:property name="_robotiq_sim_isaac" value="false" />
-    <xacro:property name="_robotiq_use_fake_hardware" value="${use_fake_hardware}" />
-    <xacro:property name="_robotiq_mock_sensor_commands" value="${use_fake_sensor_commands}" />
-    <xacro:property name="_robotiq_include_ros2_control" value="${generate_ros2_control}" />
-    <xacro:property name="_robotiq_com_port" value="${robotiq_com_port}  " />
-    <xacro:property name="_robotiq_gripper_speed_multiplier" value="1.0" />
-    <xacro:property name="_robotiq_gripper_force_multiplier" value="0.5" />
-    <xacro:property name="_robotiq_gripper_max_speed" value="0.150" />
-    <xacro:property name="_robotiq_gripper_max_force" value="235.0" />
-    <xacro:property name="_robotiq_gripper_closed_position" value="0.7929" />
+    <!-- Robotiq 2f85 gripper parameters -->
+    <xacro:property name="_g2f85_name" value="${name}_g2f85" />
+    <xacro:property name="_g2f85_prefix" value="${tf_prefix}" /> <!-- ! Match the prefix in my_env_macro.urdf.xacro -->
+    <xacro:property name="_g2f85_sim_gazebo" value="${use_sim_gazebo}" />
+    <xacro:property name="_g2f85_sim_isaac" value="false" />
+    <xacro:property name="_g2f85_use_fake_hardware" value="${use_fake_hardware}" />
+    <xacro:property name="_g2f85_mock_sensor_commands" value="${use_fake_sensor_commands}" />
+    <xacro:property name="_g2f85_include_ros2_control" value="${generate_ros2_control}" />
+    <xacro:property name="_g2f85_com_port" value="${g2f85_com_port}" />
+    <xacro:property name="_g2f85_gripper_speed_multiplier" value="1.0" />
+    <xacro:property name="_g2f85_gripper_force_multiplier" value="0.5" />
+    <xacro:property name="_g2f85_gripper_max_speed" value="0.150" />
+    <xacro:property name="_g2f85_gripper_max_force" value="235.0" />
+    <xacro:property name="_g2f85_gripper_closed_position" value="0.7929" />
 
 
     <!-- 创建 UR 机器人 使用宏定义 -->
@@ -188,33 +189,42 @@
       <!-- RealSense 的基座位于相机底部的1/4螺纹孔，距离后背面10mm，底部平面距离后背2个螺纹孔所在直线12.5mm -->
       <origin xyz="0 0.0875 0.013" rpy="0 ${-pi/2} ${-pi/2}"/>
     </xacro:sensor_d435>
+    <!-- Fuck you, Mujoco ROS2 plugin. The parameters of the sensor camera are invalid -->
+    <!-- The default frame_name of the camera in mujoco ROS2 plugin is ${sensor name}_frame. -->
+    <!-- I have to add this link to fix the problem. -->
+    <link name="${_realsense_prefix}_camera_frame"/> 
+    <joint name="${_realsense_prefix}_camera_frame_joint" type="fixed">
+      <parent link="${_realsense_prefix}_link"/>
+      <child link="${_realsense_prefix}_camera_frame"/>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
 
     <!-- 创建 robotiq 夹爪底座 使用宏定义 -->
     <xacro:ur_to_robotiq
-      prefix="${_robotiq_prefix}robotiq_" 
+      prefix="${_g2f85_prefix}robotiq_" 
       parent="${_realsense_prefix}_shelf_child_side" 
-      child="${_robotiq_prefix}robotiq_ur_to_robotiq_child_side"
+      child="${_g2f85_prefix}robotiq_ur_to_g2f85_child_side"
     >
     </xacro:ur_to_robotiq>
 
     <!-- 创建 robotiq 夹爪 使用宏定义 -->
     <xacro:robotiq_gripper 
-      name="${_robotiq_name}" 
-      prefix="${_robotiq_prefix}" 
-      parent="${_robotiq_prefix}robotiq_ur_to_robotiq_child_side" 
-      sim_gazebo="${_robotiq_sim_gazebo}" 
-      sim_isaac="${_robotiq_sim_isaac}"
+      name="${_g2f85_name}" 
+      prefix="${_g2f85_prefix}" 
+      parent="${_g2f85_prefix}robotiq_ur_to_g2f85_child_side" 
+      sim_gazebo="${_g2f85_sim_gazebo}" 
+      sim_isaac="${_g2f85_sim_isaac}"
 
 
-      use_fake_hardware="${_robotiq_use_fake_hardware}" 
-      mock_sensor_commands="${_robotiq_mock_sensor_commands}"
-      include_ros2_control="${_robotiq_include_ros2_control}"
-      com_port="${_robotiq_com_port}"
-      gripper_speed_multiplier="${_robotiq_gripper_speed_multiplier}"
-      gripper_force_multiplier="${_robotiq_gripper_force_multiplier}"
-      gripper_max_speed="${_robotiq_gripper_max_speed}"
-      gripper_max_force="${_robotiq_gripper_max_force}"
-      gripper_closed_position="${_robotiq_gripper_closed_position}"
+      use_fake_hardware="${_g2f85_use_fake_hardware}" 
+      mock_sensor_commands="${_g2f85_mock_sensor_commands}"
+      include_ros2_control="${_g2f85_include_ros2_control}"
+      com_port="${_g2f85_com_port}"
+      gripper_speed_multiplier="${_g2f85_gripper_speed_multiplier}"
+      gripper_force_multiplier="${_g2f85_gripper_force_multiplier}"
+      gripper_max_speed="${_g2f85_gripper_max_speed}"
+      gripper_max_force="${_g2f85_gripper_max_force}"
+      gripper_closed_position="${_g2f85_gripper_closed_position}"
     >
       <origin xyz="0 0 0" rpy="0 0 0" />
     </xacro:robotiq_gripper>
@@ -223,9 +233,11 @@
     <link name="${tf_prefix}_tcp"/>
     <joint name="${tf_prefix}_tcp_joint" type="fixed">
         <origin xyz="0 0 0.14" rpy="0 0 0"/>
-        <parent link="${_robotiq_prefix}robotiq_85_base_link"/>
+        <parent link="${_g2f85_prefix}robotiq_85_base_link"/>
         <child link="${tf_prefix}_tcp"/>
     </joint>
+
+
 
   </xacro:macro>
 </robot>
