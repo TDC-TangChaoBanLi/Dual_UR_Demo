@@ -64,7 +64,21 @@ ament_target_dependencies(my_env_moveit_control
 target_compile_features(my_env_moveit_control PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
 
-
+# my_env_mujoco_control executable
+add_executable(my_env_mujoco_control
+    src/my_env_mujoco_control.cpp
+)
+target_include_directories(my_env_mujoco_control PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
+ament_target_dependencies(my_env_mujoco_control
+    rclcpp
+    # std_msgs
+    trajectory_msgs
+    control_msgs
+    rclcpp_action
+)
+target_compile_features(my_env_mujoco_control PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
 
 # Install targets
@@ -72,6 +86,7 @@ install(TARGETS
     ur_moveit_control 
     my_env_ros2_control 
     my_env_moveit_control
+    my_env_mujoco_control
     DESTINATION lib/${PROJECT_NAME})
 
 # Install include directory

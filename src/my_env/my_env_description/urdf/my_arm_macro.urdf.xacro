@@ -192,12 +192,12 @@
     <!-- Fuck you, Mujoco ROS2 plugin. The parameters of the sensor camera are invalid -->
     <!-- The default frame_name of the camera in mujoco ROS2 plugin is ${sensor name}_frame. -->
     <!-- I have to add this link to fix the problem. -->
-    <link name="${_realsense_prefix}_camera_frame"/> 
+    <!-- <link name="${_realsense_prefix}_camera_frame"/> 
     <joint name="${_realsense_prefix}_camera_frame_joint" type="fixed">
       <parent link="${_realsense_prefix}_link"/>
       <child link="${_realsense_prefix}_camera_frame"/>
       <origin xyz="0 0 0" rpy="0 0 0" />
-    </joint>
+    </joint> -->
 
     <!-- 创建 robotiq 夹爪底座 使用宏定义 -->
     <xacro:ur_to_robotiq

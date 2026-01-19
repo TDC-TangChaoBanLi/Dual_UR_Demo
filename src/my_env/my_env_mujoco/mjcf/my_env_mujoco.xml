@@ -497,7 +497,7 @@
         </body>
       </body>
     <geom name="floor" class="floor" size="0 0 0.05"/>
-    <light name="default_light" pos="0 0 2" dir="0 0 -1" directional="true"/>
+    <light name="default_light" pos="0 0 100" dir="0 0 -1" directional="true"/>
   </worldbody>
   <contact>
     <exclude body1="arm_A_ur_base_link_inertia" body2="arm_A_ur_shoulder_link"/>
@@ -558,9 +558,9 @@
     <joint joint1="arm_B_robotiq_85_left_knuckle_joint" joint2="arm_B_robotiq_85_right_finger_tip_joint" polycoef="0.0 1.0 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
   </equality>
   <sensor>
-    <force name="arm_A_ur_ft_sensor_force" site="arm_A_ur_ft_frame_SITE"/>
-    <force name="arm_B_ur_ft_sensor_force" site="arm_B_ur_ft_frame_SITE"/>
-    <torque name="arm_A_ur_ft_sensor_torque" site="arm_A_ur_ft_frame_SITE"/>
-    <torque name="arm_B_ur_ft_sensor_torque" site="arm_B_ur_ft_frame_SITE"/>
+    <force name="arm_A_ur_tcp_fts_sensor_force" site="arm_A_ur_ft_frame_SITE"/>
+    <force name="arm_B_ur_tcp_fts_sensor_force" site="arm_B_ur_ft_frame_SITE"/>
+    <torque name="arm_A_ur_tcp_fts_sensor_torque" site="arm_A_ur_ft_frame_SITE"/>
+    <torque name="arm_B_ur_tcp_fts_sensor_torque" site="arm_B_ur_ft_frame_SITE"/>
   </sensor>
 </mujoco>

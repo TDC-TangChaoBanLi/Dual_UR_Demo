@@ -1412,10 +1412,10 @@
       <state_interface name="velocity" />
       <state_interface name="effort" />
     </joint>
-    <sensor name="arm_A_ur_ft_sensor">
+    <sensor name="arm_A_ur_tcp_fts_sensor">
       <param name="mujoco_type">fts</param>
       
-      <param name="mujoco_sensor_name">arm_A_ur_ft_sensor</param>
+      <param name="mujoco_sensor_name">arm_A_ur_tcp_fts_sensor</param>
       
       <state_interface name="force.x" />
       <state_interface name="force.y" />
@@ -1425,7 +1425,7 @@
       <state_interface name="torque.z" />
     </sensor>
     
-    <sensor name="arm_A_realsensecamera">
+    <sensor name="arm_A_realsense_camera">
       
       
       
@@ -1503,10 +1503,10 @@
       <state_interface name="velocity" />
       <state_interface name="effort" />
     </joint>
-    <sensor name="arm_B_ur_ft_sensor">
+    <sensor name="arm_B_ur_tcp_fts_sensor">
       <param name="mujoco_type">fts</param>
       
-      <param name="mujoco_sensor_name">arm_B_ur_ft_sensor</param>
+      <param name="mujoco_sensor_name">arm_B_ur_tcp_fts_sensor</param>
       
       <state_interface name="force.x" />
       <state_interface name="force.y" />
@@ -1516,7 +1516,7 @@
       <state_interface name="torque.z" />
     </sensor>
     
-    <sensor name="arm_B_realsensecamera">
+    <sensor name="arm_B_realsense_camera">
       
       
       

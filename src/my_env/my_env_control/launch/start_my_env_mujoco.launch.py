@@ -88,10 +88,13 @@ def generate_launch_description():
         executable="spawner",
         name="spawn_position_controller",
         arguments=[
-            "arm_A_joint_trajectory_controller",
-            "arm_B_joint_trajectory_controller",
+            "arm_A_forward_position_controller",
             "arm_A_robotiq_gripper_controller",
-            "arm_B_robotiq_gripper_controller"
+            "arm_A_force_torque_sensor_broadcaster",
+
+            "arm_B_forward_position_controller",
+            "arm_B_robotiq_gripper_controller",
+            "arm_B_force_torque_sensor_broadcaster",
         ],
         output="both",
     )

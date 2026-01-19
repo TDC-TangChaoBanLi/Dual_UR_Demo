@@ -134,8 +134,8 @@
   <xacro:if value="${use_sim_mujoco}">
     <xacro:property name="arm_A_ur_prefix" value="${arm_A_tf_prefix}ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
     <xacro:property name="arm_B_ur_prefix" value="${arm_B_tf_prefix}ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    <xacro:property name="arm_A_realsense_prefix" value="${arm_A_tf_prefix}realsense"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    <xacro:property name="arm_B_realsense_prefix" value="${arm_B_tf_prefix}realsense"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+    <xacro:property name="arm_A_realsense_prefix" value="${arm_A_tf_prefix}realsense_"/> <!-- ! append the '_' in the prefix -->
+    <xacro:property name="arm_B_realsense_prefix" value="${arm_B_tf_prefix}realsense_"/> <!-- ! append the '_' in the prefix -->
     <xacro:property name="arm_A_g2f85_prefix" value="${arm_A_tf_prefix}"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
     <xacro:property name="arm_B_g2f85_prefix" value="${arm_B_tf_prefix}"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
     

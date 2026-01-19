@@ -74,11 +74,11 @@
       <state_interface name="effort"/>
     </joint>
 
-    <sensor name="${_ur_tf_prefix}ft_sensor">
+    <sensor name="${_ur_tf_prefix}tcp_fts_sensor">
       <param name="mujoco_type">fts</param>
       <!-- There is _no requirement_ for the mujoco_sensor_name to match the ros2_control sensor name -->
-      <param name="mujoco_sensor_name">${_ur_tf_prefix}ft_sensor</param>
-      <!-- ! 此处的 mujoco_sensor_name 对应 mjcf 的 sensor_name 为 "${mujoco_sensor_name}ft_sensor_force" 和 "${mujoco_sensor_name}ft_sensor_torque" -->
+      <param name="mujoco_sensor_name">${_ur_tf_prefix}tcp_fts_sensor</param>
+      <!-- ! 此处的 mujoco_sensor_name 对应 mjcf 的 sensor_name 为 "${mujoco_sensor_name}tcp_fts_sensor_force" 和 "${mujoco_sensor_name}tcp_fts_sensor_torque" -->
 
       <state_interface name="force.x"/>
       <state_interface name="force.y"/>
@@ -94,10 +94,10 @@
       <!-- The default frame_name of the camera in mujoco ROS2 plugin is ${sensor name}_frame. -->
 
       <!-- Parameters will be used as is -->
-      <!-- <param name="frame_name">${_realsense_tf_prefix}link</param> -->
-      <!-- <param name="info_topic">/${_realsense_tf_prefix}camera/camera_info</param> -->
-      <!-- <param name="image_topic">/${_realsense_tf_prefix}camera/image_raw</param> -->
-      <!-- <param name="depth_topic">/${_realsense_tf_prefix}camera/depth</param> -->
+      <param name="frame_name">${_realsense_tf_prefix}link</param>
+      <param name="info_topic">/${_realsense_tf_prefix}camera/camera_info</param>
+      <param name="image_topic">/${_realsense_tf_prefix}camera/color</param>
+      <param name="depth_topic">/${_realsense_tf_prefix}camera/depth</param>
     </sensor>
 
     <!-- Robotiq 2f85 Gripper 相关 -->

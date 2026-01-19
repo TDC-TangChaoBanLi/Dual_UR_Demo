@@ -1483,11 +1483,11 @@
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
-    <sensor name="arm_A_ur_ft_sensor">
+    <sensor name="arm_A_ur_tcp_fts_sensor">
       <param name="mujoco_type">fts</param>
       <!-- There is _no requirement_ for the mujoco_sensor_name to match the ros2_control sensor name -->
-      <param name="mujoco_sensor_name">arm_A_ur_ft_sensor</param>
-      <!-- ! 此处的 mujoco_sensor_name 对应 mjcf 的 sensor_name 为 "${mujoco_sensor_name}ft_sensor_force" 和 "${mujoco_sensor_name}ft_sensor_torque" -->
+      <param name="mujoco_sensor_name">arm_A_ur_tcp_fts_sensor</param>
+      <!-- ! 此处的 mujoco_sensor_name 对应 mjcf 的 sensor_name 为 "${mujoco_sensor_name}tcp_fts_sensor_force" 和 "${mujoco_sensor_name}tcp_fts_sensor_torque" -->
       <state_interface name="force.x"/>
       <state_interface name="force.y"/>
       <state_interface name="force.z"/>
@@ -1496,7 +1496,7 @@
       <state_interface name="torque.z"/>
     </sensor>
     <!-- ! For cameras, the sensor name _must_ match the camera name in the MJCF -->
-    <sensor name="arm_A_realsensecamera">
+    <sensor name="arm_A_realsense_camera">
       <!-- Fuck you, Mujoco ROS2 plugin. The parameters of the sensor camera are invalid -->
       <!-- The default frame_name of the camera in mujoco ROS2 plugin is ${sensor name}_frame. -->
       <!-- Parameters will be used as is -->
@@ -1574,11 +1574,11 @@
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
-    <sensor name="arm_B_ur_ft_sensor">
+    <sensor name="arm_B_ur_tcp_fts_sensor">
       <param name="mujoco_type">fts</param>
       <!-- There is _no requirement_ for the mujoco_sensor_name to match the ros2_control sensor name -->
-      <param name="mujoco_sensor_name">arm_B_ur_ft_sensor</param>
-      <!-- ! 此处的 mujoco_sensor_name 对应 mjcf 的 sensor_name 为 "${mujoco_sensor_name}ft_sensor_force" 和 "${mujoco_sensor_name}ft_sensor_torque" -->
+      <param name="mujoco_sensor_name">arm_B_ur_tcp_fts_sensor</param>
+      <!-- ! 此处的 mujoco_sensor_name 对应 mjcf 的 sensor_name 为 "${mujoco_sensor_name}tcp_fts_sensor_force" 和 "${mujoco_sensor_name}tcp_fts_sensor_torque" -->
       <state_interface name="force.x"/>
       <state_interface name="force.y"/>
       <state_interface name="force.z"/>
@@ -1587,7 +1587,7 @@
       <state_interface name="torque.z"/>
     </sensor>
     <!-- ! For cameras, the sensor name _must_ match the camera name in the MJCF -->
-    <sensor name="arm_B_realsensecamera">
+    <sensor name="arm_B_realsense_camera">
       <!-- Fuck you, Mujoco ROS2 plugin. The parameters of the sensor camera are invalid -->
       <!-- The default frame_name of the camera in mujoco ROS2 plugin is ${sensor name}_frame. -->
       <!-- Parameters will be used as is -->

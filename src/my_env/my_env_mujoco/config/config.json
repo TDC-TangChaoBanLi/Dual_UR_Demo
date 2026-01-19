@@ -34,12 +34,12 @@
         },
         "sensor": {
             "force":[
-                { "name": "arm_A_ur_ft_sensor_force", "body": "arm_A_ur_ft_frame"},
-                { "name": "arm_B_ur_ft_sensor_force", "body": "arm_B_ur_ft_frame"}
+                { "name": "arm_A_ur_tcp_fts_sensor_force", "body": "arm_A_ur_ft_frame"},
+                { "name": "arm_B_ur_tcp_fts_sensor_force", "body": "arm_B_ur_ft_frame"}
             ],
             "torque": [
-                { "name": "arm_A_ur_ft_sensor_torque", "body": "arm_A_ur_ft_frame"},
-                { "name": "arm_B_ur_ft_sensor_torque", "body": "arm_B_ur_ft_frame"}
+                { "name": "arm_A_ur_tcp_fts_sensor_torque", "body": "arm_A_ur_ft_frame"},
+                { "name": "arm_B_ur_tcp_fts_sensor_torque", "body": "arm_B_ur_ft_frame"}
             ]
         },
         "camera": {
