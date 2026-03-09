@@ -82,6 +82,9 @@
             ],
             "arm_B_realsense_link" :[
                 {"name": "arm_B_realsense_camera", "mode": "fixed", "pos": "0 0 0", "euler": "0 -1.5708 -1.5708", "fovy": "75", "resolution": "640 480" }
+            ],
+            "global_realsense_link" :[
+                {"name": "global_realsense_camera", "mode": "fixed", "pos": "0 0 0", "euler": "0 -1.5708 -1.5708", "fovy": "75", "resolution": "640 480" }
             ]
         },
         "texture": {

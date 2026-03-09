@@ -1,8 +1,4 @@
 <?xml version="1.0"?>
-<!-- xacro src/my_env/my_env_description/urdf/my_env.urdf.xacro -o src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf -->
-<!-- urdf2mjcf src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf -o ./src/my_env/my_env_mujoco/mjcf/my_env_mujoco.xml -m src/my_env/my_env_mujoco/meshes -c -j src/my_env/my_env_mujoco/config/config.json -->
-
-
 <robot name="my_env" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find my_env_description)/urdf/my_arm_macro.urdf.xacro"/>
@@ -323,6 +319,21 @@
     <origin xyz="${-0.866*0.523} -0.025 ${-0.5*0.523}" rpy="${pi} ${-4*pi/6} 0" />
   </joint>
 
+
+  <!-- 全局相机 -->
+  <!-- 创建 RealSense 相机 使用宏定义 -->
+    <!-- params 'name' is actually tf_prefix with '_' -->
+    <xacro:sensor_d435 
+      parent="world" 
+      name="global_realsense"
+      use_nominal_extrinsics="false" 
+      add_plug="false" 
+      use_mesh="true"
+    >
+      <!-- RealSense 的基座位于相机底部的1/4螺纹孔，距离后背面10mm，底部平面距离后背2个螺纹孔所在直线12.5mm -->
+      <origin xyz="0 0.2 1.8" rpy="0 ${pi/4} ${-pi/2}"/>
+    </xacro:sensor_d435>
+
   <!-- UR 安装座 link & joint -->
   <link name="ur_mount_A"/>
   <joint name="world_to_ur_mount_A" type="fixed">
@@ -408,6 +419,17 @@
         <!-- Publish lidar scans at 10 hz -->
         <param name="lidar_publish_rate">10.0</param>
       </hardware>
+
+      <!-- 全局相机 -->
+      <!-- ! For cameras, the sensor name _must_ match the camera name in the MJCF -->
+      <sensor name="global_realsense_camera">
+
+        <!-- Parameters will be used as is -->
+        <param name="frame_name">global_realsense_link</param>
+        <param name="info_topic">/global_realsense_camera/camera_info</param>
+        <param name="image_topic">/global_realsense_camera/color</param>
+        <param name="depth_topic">/global_realsense_camera/depth</param>
+      </sensor>
 
       <!-- 把两套机械臂的 joint/sensor 接口“塞进同一个 system”里 -->
       <xacro:my_arm_mujoco_control

@@ -897,6 +897,39 @@
     <child link="peg_B4_link"/>
     <origin rpy="3.141592653589793 -2.0943951023931953 0" xyz="-0.452918 -0.025 -0.2615"/>
   </joint>
+  <!-- camera body, with origin at bottom screw mount -->
+  <joint name="global_realsense_joint" type="fixed">
+    <origin rpy="0 0.7853981633974483 -1.5707963267948966" xyz="0 0.8 2.2"/>
+    <parent link="world"/>
+    <child link="global_realsense_bottom_screw_frame"/>
+  </joint>
+  <link name="global_realsense_bottom_screw_frame"/>
+  <joint name="global_realsense_link_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.010600000000000002 0.0175 0.0125"/>
+    <parent link="global_realsense_bottom_screw_frame"/>
+    <child link="global_realsense_link"/>
+  </joint>
+  <link name="global_realsense_link">
+    <visual>
+      <!-- the mesh origin is at front plate in between the two infrared camera axes -->
+      <origin rpy="1.5707963267948966 0 1.5707963267948966" xyz="0.0043 -0.0175 0"/>
+      <geometry>
+        <mesh filename="file:///opt/ros/humble/share/realsense2_description/meshes/d435.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 -0.0175 0"/>
+      <geometry>
+        <box size="0.02505 0.09 0.025"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- The following are not reliable values, and should not be used for modeling -->
+      <mass value="0.072"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257"/>
+    </inertial>
+  </link>
   <!-- UR 安装座 link & joint -->
   <link name="ur_mount_A"/>
   <joint name="world_to_ur_mount_A" type="fixed">
@@ -1266,15 +1299,6 @@
     <child link="arm_A_realsense_color_optical_frame"/>
   </joint>
   <link name="arm_A_realsense_color_optical_frame"/>
-  <!-- Fuck you, Mujoco ROS2 plugin. The parameters of the sensor camera are invalid -->
-  <!-- The default frame_name of the camera in mujoco ROS2 plugin is ${sensor name}_frame. -->
-  <!-- I have to add this link to fix the problem. -->
-  <!-- <link name="${_realsense_prefix}_camera_frame"/> 
-    <joint name="${_realsense_prefix}_camera_frame_joint" type="fixed">
-      <parent link="${_realsense_prefix}_link"/>
-      <child link="${_realsense_prefix}_camera_frame"/>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-    </joint> -->
   <joint name="arm_A_robotiq_ur_to_robotiq_joint" type="fixed">
     <!-- The parent link must be read from the robot model it is attached to. -->
     <parent link="arm_A_realsense_shelf_child_side"/>
@@ -1917,15 +1941,6 @@
     <child link="arm_B_realsense_color_optical_frame"/>
   </joint>
   <link name="arm_B_realsense_color_optical_frame"/>
-  <!-- Fuck you, Mujoco ROS2 plugin. The parameters of the sensor camera are invalid -->
-  <!-- The default frame_name of the camera in mujoco ROS2 plugin is ${sensor name}_frame. -->
-  <!-- I have to add this link to fix the problem. -->
-  <!-- <link name="${_realsense_prefix}_camera_frame"/> 
-    <joint name="${_realsense_prefix}_camera_frame_joint" type="fixed">
-      <parent link="${_realsense_prefix}_link"/>
-      <child link="${_realsense_prefix}_camera_frame"/>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-    </joint> -->
   <joint name="arm_B_robotiq_ur_to_robotiq_joint" type="fixed">
     <!-- The parent link must be read from the robot model it is attached to. -->
     <parent link="arm_B_realsense_shelf_child_side"/>

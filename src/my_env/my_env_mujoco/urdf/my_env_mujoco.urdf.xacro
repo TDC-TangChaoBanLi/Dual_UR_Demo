@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <robot name="my_env" xmlns:xacro="http://ros.org/wiki/xacro">
 
+<!-- xacro src/my_env/my_env_description/urdf/my_env.urdf.xacro -o src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf -->
+<!-- urdf2mjcf src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf -o ./src/my_env/my_env_mujoco/mjcf/my_env_mujoco.xml -m src/my_env/my_env_mujoco/meshes -c -j src/my_env/my_env_mujoco/config/config.json -->
+
+
   <!-- 首先包含自定义描述宏 -->
   <xacro:include filename="$(find my_env_description)/urdf/my_env_macro.urdf.xacro"/>
 

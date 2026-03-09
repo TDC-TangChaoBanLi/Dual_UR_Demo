@@ -955,6 +955,192 @@
     <child link="peg_B4_link"/>
     <origin rpy="3.141592653589793 -2.0943951023931953 0" xyz="-0.452918 -0.025 -0.2615"/>
   </joint>
+  <joint name="global_realsense_joint" type="fixed">
+    <origin rpy="0 0.7853981633974483 -1.5707963267948966" xyz="0 0.8 2.2"/>
+    <parent link="world"/>
+    <child link="global_realsense_bottom_screw_frame"/>
+  </joint>
+  <link name="global_realsense_bottom_screw_frame"/>
+  <joint name="global_realsense_link_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.010600000000000002 0.0175 0.0125"/>
+    <parent link="global_realsense_bottom_screw_frame"/>
+    <child link="global_realsense_link"/>
+  </joint>
+  <link name="global_realsense_link">
+    <inertial>
+      <mass value="0.072"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_0.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_1.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_2.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_3.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_4.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_5.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_6.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_7.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_8.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_9.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_10.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_11.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_12.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_13.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_14.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_15.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_16.obj"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.0043 -0.0175 0" rpy="1.5707963267948966 0 1.5707963267948966"/>
+      <material>
+        <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="../meshes/d435_6743a526_17.obj"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 -0.0175 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.02505 0.09 0.025"/>
+      </geometry>
+    </collision>
+  </link>
   <link name="ur_mount_A"/>
   <joint name="world_to_ur_mount_A" type="fixed">
     <parent link="world"/>
