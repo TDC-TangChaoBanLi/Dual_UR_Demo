@@ -1,3 +1,4 @@
+import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, Command, PathJoinSubstitution, FindExecutable
@@ -15,6 +16,7 @@ def generate_launch_description():
 
     mjcf_file_path = PathJoinSubstitution([FindPackageShare('my_env_mujoco'), 'mjcf', 'my_env_mujoco.xml'])
     controller_parameters = PathJoinSubstitution([FindPackageShare("my_env_control"), "config", "my_env_mujoco_controller.yaml"])
+    mujoco_plugins_file = PathJoinSubstitution([FindPackageShare("my_env_control"), "config", "mujoco_ros2_control_plugins.yaml"])
     rviz_file_path = PathJoinSubstitution([FindPackageShare('my_env_control'), 'rviz', 'my_env_mujoco.rviz'])
 
 
@@ -63,14 +65,17 @@ def generate_launch_description():
     )
 
     control_node = Node(
-        package="controller_manager",
+        package="mujoco_ros2_control",
         executable="ros2_control_node",
         output="both",
         parameters=[
             {"use_sim_time": True},
             ParameterFile(controller_parameters, allow_substs=True),
+            ParameterFile(mujoco_plugins_file)
         ],
-        remappings=[("~/robot_description", "/robot_description")],
+        remappings=(
+                [("~/robot_description", "/robot_description")] if os.environ.get("ROS_DISTRO") == "humble" else []
+            ),
     )
 
     spawn_joint_state_broadcaster = Node(

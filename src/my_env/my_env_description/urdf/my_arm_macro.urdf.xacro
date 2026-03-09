@@ -189,15 +189,6 @@
       <!-- RealSense 的基座位于相机底部的1/4螺纹孔，距离后背面10mm，底部平面距离后背2个螺纹孔所在直线12.5mm -->
       <origin xyz="0 0.0875 0.013" rpy="0 ${-pi/2} ${-pi/2}"/>
     </xacro:sensor_d435>
-    <!-- Fuck you, Mujoco ROS2 plugin. The parameters of the sensor camera are invalid -->
-    <!-- The default frame_name of the camera in mujoco ROS2 plugin is ${sensor name}_frame. -->
-    <!-- I have to add this link to fix the problem. -->
-    <!-- <link name="${_realsense_prefix}_camera_frame"/> 
-    <joint name="${_realsense_prefix}_camera_frame_joint" type="fixed">
-      <parent link="${_realsense_prefix}_link"/>
-      <child link="${_realsense_prefix}_camera_frame"/>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-    </joint> -->
 
     <!-- 创建 robotiq 夹爪底座 使用宏定义 -->
     <xacro:ur_to_robotiq

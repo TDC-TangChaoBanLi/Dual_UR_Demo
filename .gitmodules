@@ -4,4 +4,7 @@
 [submodule "lib/mujoco_ros2_control"]
 	path = lib/mujoco_ros2_control
 	url = https://github.com/ros-controls/mujoco_ros2_control.git
-	branch = humble
+	branch = main
+[submodule "lib/mujoco_vendor"]
+	path = lib/mujoco_vendor
+	url = https://github.com/pal-robotics/mujoco_vendor.git

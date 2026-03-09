@@ -9,7 +9,7 @@
   
   <!-- UR_A 机器人参数 -->
   <xacro:arg name="arm_A_tf_prefix" default="arm_A_"/>
-  <xacro:arg name="ur_A_ur_type" default="ur5"/>
+  <xacro:arg name="ur_A_ur_type" default="ur5e"/>
 
   <!-- UR_B 机器人参数 -->
   <xacro:arg name="arm_B_tf_prefix" default="arm_B_"/>
