@@ -4,25 +4,25 @@ from launch_ros.actions import Node
 def generate_launch_description():
     return LaunchDescription([
         # Node(
-        #     package='my_control',
+        #     package='my_control_demo',
         #     executable='ur_moveit_control',
         #     name='ur_moveit_control',
         #     output='screen'
         # ),
         # Node(
-        #     package='my_control',
+        #     package='my_control_demo',
         #     executable='my_env_ros2_control',
         #     name='my_env_ros2_control',
         #     output='screen'
         # ),
         # Node(
-        #     package='my_control',
+        #     package='my_control_demo',
         #     executable='my_env_moveit_control',
         #     name='my_env_moveit_control',
         #     output='screen'
         # ),
         Node(
-            package='my_control',
+            package='my_control_demo',
             executable='my_env_mujoco_control',
             name='my_env_mujoco_control',
             output='screen'

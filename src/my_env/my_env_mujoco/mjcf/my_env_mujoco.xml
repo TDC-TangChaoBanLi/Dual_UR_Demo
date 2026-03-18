@@ -218,7 +218,7 @@
       <geom class="collision" name="COLLISION_lens_0_link_8" type="mesh" mesh="MESH_lens_8_7af0c489" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_lens_0_link_0" type="mesh" mesh="MESH_lens_f8a76047" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="lens_0_link_TEXTURE" type="box" material="lens_0_link_TEXTURE" pos="0.0 0.0 0.0" euler="0.0 0.0 0.0" size="0.025 0.025 1e-5"/>
-      <freejoint name="lens_0_link_freejoint" />
+      <freejoint name="lens_0_link_freejoint"/>
     </body>
     <body name="lens_A1_link" pos="0.551 -0.3015 1.2" quat="4.329780281177467e-17 -0.7071067811865475 0.7071067811865476 4.329780281177466e-17">
       <geom class="collision" name="COLLISION_lens_A1_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -232,7 +232,7 @@
       <geom class="collision" name="COLLISION_lens_A1_link_8" type="mesh" mesh="MESH_lens_8_7af0c489" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_lens_A1_link_0" type="mesh" mesh="MESH_lens_f8a76047" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="lens_A1_link_TEXTURE" type="box" material="lens_A1_link_TEXTURE" pos="0.0 0.0 0.0" euler="0.0 0.0 0.0" size="0.025 0.025 1e-5"/>
-      <freejoint name="lens_A1_link_freejoint" />
+      <freejoint name="lens_A1_link_freejoint"/>
     </body>
     <body name="lens_A2_link" pos="0.602 -0.3015 1.2" quat="4.329780281177467e-17 -0.7071067811865475 0.7071067811865476 4.329780281177466e-17">
       <geom class="collision" name="COLLISION_lens_A2_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -246,7 +246,7 @@
       <geom class="collision" name="COLLISION_lens_A2_link_8" type="mesh" mesh="MESH_lens_8_7af0c489" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_lens_A2_link_0" type="mesh" mesh="MESH_lens_f8a76047" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="lens_A2_link_TEXTURE" type="box" material="lens_A2_link_TEXTURE" pos="0.0 0.0 0.0" euler="0.0 0.0 0.0" size="0.025 0.025 1e-5"/>
-      <freejoint name="lens_A2_link_freejoint" />
+      <freejoint name="lens_A2_link_freejoint"/>
     </body>
     <body name="lens_A3_link" pos="0.653 -0.3015 1.2" quat="4.329780281177467e-17 -0.7071067811865475 0.7071067811865476 4.329780281177466e-17">
       <geom class="collision" name="COLLISION_lens_A3_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -260,7 +260,7 @@
       <geom class="collision" name="COLLISION_lens_A3_link_8" type="mesh" mesh="MESH_lens_8_7af0c489" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_lens_A3_link_0" type="mesh" mesh="MESH_lens_f8a76047" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="lens_A3_link_TEXTURE" type="box" material="lens_A3_link_TEXTURE" pos="0.0 0.0 0.0" euler="0.0 0.0 0.0" size="0.025 0.025 1e-5"/>
-      <freejoint name="lens_A3_link_freejoint" />
+      <freejoint name="lens_A3_link_freejoint"/>
     </body>
     <body name="lens_A4_link" pos="0.704 -0.3015 1.2" quat="4.329780281177467e-17 -0.7071067811865475 0.7071067811865476 4.329780281177466e-17">
       <geom class="collision" name="COLLISION_lens_A4_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -274,7 +274,7 @@
       <geom class="collision" name="COLLISION_lens_A4_link_8" type="mesh" mesh="MESH_lens_8_7af0c489" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_lens_A4_link_0" type="mesh" mesh="MESH_lens_f8a76047" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="lens_A4_link_TEXTURE" type="box" material="lens_A4_link_TEXTURE" pos="0.0 0.0 0.0" euler="0.0 0.0 0.0" size="0.025 0.025 1e-5"/>
-      <freejoint name="lens_A4_link_freejoint" />
+      <freejoint name="lens_A4_link_freejoint"/>
     </body>
     <body name="lens_B1_link" pos="-0.5 -0.3015 1.2" quat="4.329780281177467e-17 0.7071067811865475 0.7071067811865476 -4.329780281177466e-17">
       <geom class="collision" name="COLLISION_lens_B1_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -288,7 +288,7 @@
       <geom class="collision" name="COLLISION_lens_B1_link_8" type="mesh" mesh="MESH_lens_8_7af0c489" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_lens_B1_link_0" type="mesh" mesh="MESH_lens_f8a76047" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="lens_B1_link_TEXTURE" type="box" material="lens_B1_link_TEXTURE" pos="0.0 0.0 0.0" euler="0.0 0.0 0.0" size="0.025 0.025 1e-5"/>
-      <freejoint name="lens_B1_link_freejoint" />
+      <freejoint name="lens_B1_link_freejoint"/>
     </body>
     <body name="lens_B2_link" pos="-0.551 -0.3015 1.2" quat="4.329780281177467e-17 0.7071067811865475 0.7071067811865476 -4.329780281177466e-17">
       <geom class="collision" name="COLLISION_lens_B2_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -302,7 +302,7 @@
       <geom class="collision" name="COLLISION_lens_B2_link_8" type="mesh" mesh="MESH_lens_8_7af0c489" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_lens_B2_link_0" type="mesh" mesh="MESH_lens_f8a76047" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="lens_B2_link_TEXTURE" type="box" material="lens_B2_link_TEXTURE" pos="0.0 0.0 0.0" euler="0.0 0.0 0.0" size="0.025 0.025 1e-5"/>
-      <freejoint name="lens_B2_link_freejoint" />
+      <freejoint name="lens_B2_link_freejoint"/>
     </body>
     <body name="lens_B3_link" pos="-0.602 -0.3015 1.2" quat="4.329780281177467e-17 0.7071067811865475 0.7071067811865476 -4.329780281177466e-17">
       <geom class="collision" name="COLLISION_lens_B3_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -316,7 +316,7 @@
       <geom class="collision" name="COLLISION_lens_B3_link_8" type="mesh" mesh="MESH_lens_8_7af0c489" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_lens_B3_link_0" type="mesh" mesh="MESH_lens_f8a76047" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="lens_B3_link_TEXTURE" type="box" material="lens_B3_link_TEXTURE" pos="0.0 0.0 0.0" euler="0.0 0.0 0.0" size="0.025 0.025 1e-5"/>
-      <freejoint name="lens_B3_link_freejoint" />
+      <freejoint name="lens_B3_link_freejoint"/>
     </body>
     <body name="lens_B4_link" pos="-0.653 -0.3015 1.2" quat="4.329780281177467e-17 0.7071067811865475 0.7071067811865476 -4.329780281177466e-17">
       <geom class="collision" name="COLLISION_lens_B4_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -330,9 +330,9 @@
       <geom class="collision" name="COLLISION_lens_B4_link_8" type="mesh" mesh="MESH_lens_8_7af0c489" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_lens_B4_link_0" type="mesh" mesh="MESH_lens_f8a76047" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="lens_B4_link_TEXTURE" type="box" material="lens_B4_link_TEXTURE" pos="0.0 0.0 0.0" euler="0.0 0.0 0.0" size="0.025 0.025 1e-5"/>
-      <freejoint name="lens_B4_link_freejoint" />
+      <freejoint name="lens_B4_link_freejoint"/>
     </body>
-    <body name="global_realsense_bottom_screw_frame" pos="0 0.2 1.8" quat="0.6532814824381883 0.27059805007309845 0.2705980500730985 -0.6532814824381882">
+    <body name="global_realsense_bottom_screw_frame" pos="0 0.8 2.2" quat="0.6532814824381883 0.27059805007309845 0.2705980500730985 -0.6532814824381882">
       <body name="global_realsense_link" pos="0.010600000000000002 0.0175 0.0125" quat="1.0 0.0 0.0 0.0">
         <inertial mass="0.072" diaginertia="0.003881243 0.00049894 0.003879257" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         <geom class="collision" name="COLLISION_global_realsense_link_0" type="box" pos="0 -0.0175 0" quat="1.0 0.0 0.0 0.0" size="0.012525 0.045 0.0125"/>
