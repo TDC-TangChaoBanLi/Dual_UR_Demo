@@ -15,6 +15,7 @@ def generate_launch_description():
     arm_B_tf_prefix = LaunchConfiguration('arm_B_prefix')
 
     mjcf_file_path = PathJoinSubstitution([FindPackageShare('my_env_mujoco'), 'mjcf', 'my_env_mujoco.xml'])
+    pids_config_file_path = PathJoinSubstitution([FindPackageShare('my_env_control'), 'config', 'mujoco_pids_config.yaml'])
     controller_parameters = PathJoinSubstitution([FindPackageShare("my_env_control"), "config", "my_env_mujoco_controller.yaml"])
     mujoco_plugins_file = PathJoinSubstitution([FindPackageShare("my_env_control"), "config", "mujoco_ros2_control_plugins.yaml"])
     rviz_file_path = PathJoinSubstitution([FindPackageShare('my_env_control'), 'rviz', 'my_env_mujoco.rviz'])
@@ -49,6 +50,7 @@ def generate_launch_description():
         'fake_sensor_commands:=true', ' ',
         'use_sim_mujoco:=true', ' ',
         'mjcf_file_path:=', mjcf_file_path, ' ',
+        'pids_config_file_path:=', pids_config_file_path, ' ',
         'generate_ros2_control:=false', ' ',
         'camera_use_nominal_extrinsics:=true',
     ])

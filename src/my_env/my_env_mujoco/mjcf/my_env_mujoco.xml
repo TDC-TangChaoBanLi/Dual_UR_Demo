@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <mujoco model="my_env">
   <compiler angle="radian" balanceinertia="true"/>
-  <option gravity="0 0 0" timestep="0.001"/>
+  <option gravity="0 0 -9.8" timestep="0.001"/>
   <visual>
     <global offwidth="640" offheight="480"/>
     <quality shadowsize="4096"/>
@@ -332,7 +332,7 @@
       <geom class="visual" name="lens_B4_link_TEXTURE" type="box" material="lens_B4_link_TEXTURE" pos="0.0 0.0 0.0" euler="0.0 0.0 0.0" size="0.025 0.025 1e-5"/>
       <freejoint name="lens_B4_link_freejoint"/>
     </body>
-    <body name="global_realsense_bottom_screw_frame" pos="0 0.8 2.2" quat="0.6532814824381883 0.27059805007309845 0.2705980500730985 -0.6532814824381882">
+    <body name="global_realsense_bottom_screw_frame" pos="0 0.4 2.2" quat="0.6532814824381883 0.27059805007309845 0.2705980500730985 -0.6532814824381882">
       <body name="global_realsense_link" pos="0.010600000000000002 0.0175 0.0125" quat="1.0 0.0 0.0 0.0">
         <inertial mass="0.072" diaginertia="0.003881243 0.00049894 0.003879257" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         <geom class="collision" name="COLLISION_global_realsense_link_0" type="box" pos="0 -0.0175 0" quat="1.0 0.0 0.0 0.0" size="0.012525 0.045 0.0125"/>
@@ -759,20 +759,35 @@
     <exclude body1="arm_B_robotiq_85_right_finger_tip_link" body2="arm_B_robotiq_85_right_inner_knuckle_link"/>
   </contact>
   <actuator>
-    <position group="1" kp="200" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION" joint="arm_A_ur_shoulder_pan_joint"/>
-    <position group="1" kp="200" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION" joint="arm_A_ur_shoulder_lift_joint"/>
-    <position group="1" kp="100" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_A_ur_elbow_joint_ACTUATOR_POSITION" joint="arm_A_ur_elbow_joint"/>
-    <position group="1" kp="50" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_A_ur_wrist_1_joint_ACTUATOR_POSITION" joint="arm_A_ur_wrist_1_joint"/>
-    <position group="1" kp="50" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_A_ur_wrist_2_joint_ACTUATOR_POSITION" joint="arm_A_ur_wrist_2_joint"/>
-    <position group="1" kp="50" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_A_ur_wrist_3_joint_ACTUATOR_POSITION" joint="arm_A_ur_wrist_3_joint"/>
+    <!-- <position group="1" kp="200" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION" joint="arm_A_ur_shoulder_pan_joint"/> -->
+    <!-- <position group="1" kp="200" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION" joint="arm_A_ur_shoulder_lift_joint"/> -->
+    <!-- <position group="1" kp="100" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_A_ur_elbow_joint_ACTUATOR_POSITION" joint="arm_A_ur_elbow_joint"/> -->
+    <!-- <position group="1" kp="50" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_A_ur_wrist_1_joint_ACTUATOR_POSITION" joint="arm_A_ur_wrist_1_joint"/> -->
+    <!-- <position group="1" kp="50" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_A_ur_wrist_2_joint_ACTUATOR_POSITION" joint="arm_A_ur_wrist_2_joint"/> -->
+    <!-- <position group="1" kp="50" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_A_ur_wrist_3_joint_ACTUATOR_POSITION" joint="arm_A_ur_wrist_3_joint"/> -->
     <position group="1" kp="10" dampratio="1.2" ctrlrange="0.0 0.7929" name="arm_A_robotiq_85_left_knuckle_joint_ACTUATOR_POSITION" joint="arm_A_robotiq_85_left_knuckle_joint"/>
-    <position group="1" kp="200" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_B_ur_shoulder_pan_joint_ACTUATOR_POSITION" joint="arm_B_ur_shoulder_pan_joint"/>
-    <position group="1" kp="200" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_B_ur_shoulder_lift_joint_ACTUATOR_POSITION" joint="arm_B_ur_shoulder_lift_joint"/>
-    <position group="1" kp="100" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_B_ur_elbow_joint_ACTUATOR_POSITION" joint="arm_B_ur_elbow_joint"/>
-    <position group="1" kp="50" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_B_ur_wrist_1_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_1_joint"/>
-    <position group="1" kp="50" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_B_ur_wrist_2_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_2_joint"/>
-    <position group="1" kp="50" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_B_ur_wrist_3_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_3_joint"/>
+    <!-- <position group="1" kp="200" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_B_ur_shoulder_pan_joint_ACTUATOR_POSITION" joint="arm_B_ur_shoulder_pan_joint"/> -->
+    <!-- <position group="1" kp="200" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_B_ur_shoulder_lift_joint_ACTUATOR_POSITION" joint="arm_B_ur_shoulder_lift_joint"/> -->
+    <!-- <position group="1" kp="100" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_B_ur_elbow_joint_ACTUATOR_POSITION" joint="arm_B_ur_elbow_joint"/> -->
+    <!-- <position group="1" kp="50" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_B_ur_wrist_1_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_1_joint"/> -->
+    <!-- <position group="1" kp="50" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_B_ur_wrist_2_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_2_joint"/> -->
+    <!-- <position group="1" kp="50" dampratio="1.2" ctrlrange="-3.1416 3.1416" name="arm_B_ur_wrist_3_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_3_joint"/> -->
     <position group="1" kp="10" dampratio="1.2" ctrlrange="0.0 0.7929" name="arm_B_robotiq_85_left_knuckle_joint_ACTUATOR_POSITION" joint="arm_B_robotiq_85_left_knuckle_joint"/>
+    
+    <motor group="0" ctrlrange="-150 150" name="arm_A_ur_shoulder_pan_joint_ACTUATOR_MOTOR" joint="arm_A_ur_shoulder_pan_joint"/>
+    <motor group="0" ctrlrange="-150 150" name="arm_A_ur_shoulder_lift_joint_ACTUATOR_MOTOR" joint="arm_A_ur_shoulder_lift_joint"/>
+    <motor group="0" ctrlrange="-150 150" name="arm_A_ur_elbow_joint_ACTUATOR_MOTOR" joint="arm_A_ur_elbow_joint"/>
+    <motor group="0" ctrlrange="-28  28"  name="arm_A_ur_wrist_1_joint_ACTUATOR_MOTOR" joint="arm_A_ur_wrist_1_joint"/>
+    <motor group="0" ctrlrange="-28  28"  name="arm_A_ur_wrist_2_joint_ACTUATOR_MOTOR" joint="arm_A_ur_wrist_2_joint"/>
+    <motor group="0" ctrlrange="-28  28"  name="arm_A_ur_wrist_3_joint_ACTUATOR_MOTOR" joint="arm_A_ur_wrist_3_joint"/>
+    <!-- <motor group="0" ctrlrange="-10  10"  name="arm_A_robotiq_85_left_knuckle_joint_ACTUATOR_MOTOR" joint="arm_A_robotiq_85_left_knuckle_joint"/> -->
+    <motor group="0" ctrlrange="-150 150" name="arm_B_ur_shoulder_pan_joint_ACTUATOR_MOTOR" joint="arm_B_ur_shoulder_pan_joint"/>
+    <motor group="0" ctrlrange="-150 150" name="arm_B_ur_shoulder_lift_joint_ACTUATOR_MOTOR" joint="arm_B_ur_shoulder_lift_joint"/>
+    <motor group="0" ctrlrange="-150 150" name="arm_B_ur_elbow_joint_ACTUATOR_MOTOR" joint="arm_B_ur_elbow_joint"/>
+    <motor group="0" ctrlrange="-28  28"  name="arm_B_ur_wrist_1_joint_ACTUATOR_MOTOR" joint="arm_B_ur_wrist_1_joint"/>
+    <motor group="0" ctrlrange="-28  28"  name="arm_B_ur_wrist_2_joint_ACTUATOR_MOTOR" joint="arm_B_ur_wrist_2_joint"/>
+    <motor group="0" ctrlrange="-28  28"  name="arm_B_ur_wrist_3_joint_ACTUATOR_MOTOR" joint="arm_B_ur_wrist_3_joint"/>
+    <!-- <motor group="0" ctrlrange="-10  10"  name="arm_B_robotiq_85_left_knuckle_joint_ACTUATOR_MOTOR" joint="arm_B_robotiq_85_left_knuckle_joint"/> -->
   </actuator>
   <equality>
     <joint joint1="arm_A_robotiq_85_left_knuckle_joint" joint2="arm_A_robotiq_85_right_knuckle_joint" polycoef="0.0 -1.0 0.0 0.0 0.0"/>

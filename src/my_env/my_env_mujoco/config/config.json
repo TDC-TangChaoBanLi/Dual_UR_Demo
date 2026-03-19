@@ -40,6 +40,23 @@
         "compiler": { "angle": "radian", "balanceinertia": true },
         
         "actuator": {
+            "motor":[
+                {"group": 0, "ctrlrange":"-150 150", "name": "arm_A_ur_shoulder_pan_joint_ACTUATOR_MOTOR",              "joint": "arm_A_ur_shoulder_pan_joint"},
+                {"group": 0, "ctrlrange":"-150 150", "name": "arm_A_ur_shoulder_lift_joint_ACTUATOR_MOTOR",             "joint": "arm_A_ur_shoulder_lift_joint"},
+                {"group": 0, "ctrlrange":"-150 150", "name": "arm_A_ur_elbow_joint_ACTUATOR_MOTOR",                     "joint": "arm_A_ur_elbow_joint"},
+                {"group": 0, "ctrlrange":"-28  28" , "name": "arm_A_ur_wrist_1_joint_ACTUATOR_MOTOR",                   "joint": "arm_A_ur_wrist_1_joint"},
+                {"group": 0, "ctrlrange":"-28  28" , "name": "arm_A_ur_wrist_2_joint_ACTUATOR_MOTOR",                   "joint": "arm_A_ur_wrist_2_joint"},
+                {"group": 0, "ctrlrange":"-28  28" , "name": "arm_A_ur_wrist_3_joint_ACTUATOR_MOTOR",                   "joint": "arm_A_ur_wrist_3_joint"},
+                {"group": 0, "ctrlrange":"-10  10" , "name": "arm_A_robotiq_85_left_knuckle_joint_ACTUATOR_MOTOR",      "joint": "arm_A_robotiq_85_left_knuckle_joint"},
+
+                {"group": 0, "ctrlrange":"-150 150", "name": "arm_B_ur_shoulder_pan_joint_ACTUATOR_MOTOR",              "joint": "arm_B_ur_shoulder_pan_joint"},
+                {"group": 0, "ctrlrange":"-150 150", "name": "arm_B_ur_shoulder_lift_joint_ACTUATOR_MOTOR",             "joint": "arm_B_ur_shoulder_lift_joint"},
+                {"group": 0, "ctrlrange":"-150 150", "name": "arm_B_ur_elbow_joint_ACTUATOR_MOTOR",                     "joint": "arm_B_ur_elbow_joint"},
+                {"group": 0, "ctrlrange":"-28  28" , "name": "arm_B_ur_wrist_1_joint_ACTUATOR_MOTOR",                   "joint": "arm_B_ur_wrist_1_joint"},
+                {"group": 0, "ctrlrange":"-28  28" , "name": "arm_B_ur_wrist_2_joint_ACTUATOR_MOTOR",                   "joint": "arm_B_ur_wrist_2_joint"},
+                {"group": 0, "ctrlrange":"-28  28" , "name": "arm_B_ur_wrist_3_joint_ACTUATOR_MOTOR",                   "joint": "arm_B_ur_wrist_3_joint"},
+                {"group": 0, "ctrlrange":"-10  10" , "name": "arm_B_robotiq_85_left_knuckle_joint_ACTUATOR_MOTOR",      "joint": "arm_B_robotiq_85_left_knuckle_joint"}
+            ],
             "position":[
                 {"group": 1, "kp":200, "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_A_ur_shoulder_pan_joint"},
                 {"group": 1, "kp":200, "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_A_ur_shoulder_lift_joint"},
@@ -148,21 +165,21 @@
 
     "unused_key":{
         "motor":[
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_shoulder_pan_joint_ACTUATOR_MOTOR",              "joint": "arm_A_ur_shoulder_pan_joint"},
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_shoulder_lift_joint_ACTUATOR_MOTOR",             "joint": "arm_A_ur_shoulder_lift_joint"},
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_elbow_joint_ACTUATOR_MOTOR",                     "joint": "arm_A_ur_elbow_joint"},
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_wrist_1_joint_ACTUATOR_MOTOR",                   "joint": "arm_A_ur_wrist_1_joint"},
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_wrist_2_joint_ACTUATOR_MOTOR",                   "joint": "arm_A_ur_wrist_2_joint"},
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_wrist_3_joint_ACTUATOR_MOTOR",                   "joint": "arm_A_ur_wrist_3_joint"},
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_robotiq_85_left_knuckle_joint_ACTUATOR_MOTOR",      "joint": "arm_A_robotiq_85_left_knuckle_joint"},
+            {"group": 0, "ctrlrange":"-150 150", "name": "arm_A_ur_shoulder_pan_joint_ACTUATOR_MOTOR",              "joint": "arm_A_ur_shoulder_pan_joint"},
+            {"group": 0, "ctrlrange":"-150 150", "name": "arm_A_ur_shoulder_lift_joint_ACTUATOR_MOTOR",             "joint": "arm_A_ur_shoulder_lift_joint"},
+            {"group": 0, "ctrlrange":"-150 150", "name": "arm_A_ur_elbow_joint_ACTUATOR_MOTOR",                     "joint": "arm_A_ur_elbow_joint"},
+            {"group": 0, "ctrlrange":"-28  28" , "name": "arm_A_ur_wrist_1_joint_ACTUATOR_MOTOR",                   "joint": "arm_A_ur_wrist_1_joint"},
+            {"group": 0, "ctrlrange":"-28  28" , "name": "arm_A_ur_wrist_2_joint_ACTUATOR_MOTOR",                   "joint": "arm_A_ur_wrist_2_joint"},
+            {"group": 0, "ctrlrange":"-28  28" , "name": "arm_A_ur_wrist_3_joint_ACTUATOR_MOTOR",                   "joint": "arm_A_ur_wrist_3_joint"},
+            {"group": 0, "ctrlrange":"-10  10" , "name": "arm_A_robotiq_85_left_knuckle_joint_ACTUATOR_MOTOR",      "joint": "arm_A_robotiq_85_left_knuckle_joint"},
 
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_ur_shoulder_pan_joint_ACTUATOR_MOTOR",              "joint": "arm_B_ur_shoulder_pan_joint"},
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_ur_shoulder_lift_joint_ACTUATOR_MOTOR",             "joint": "arm_B_ur_shoulder_lift_joint"},
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_ur_elbow_joint_ACTUATOR_MOTOR",                     "joint": "arm_B_ur_elbow_joint"},
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_ur_wrist_1_joint_ACTUATOR_MOTOR",                   "joint": "arm_B_ur_wrist_1_joint"},
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_ur_wrist_2_joint_ACTUATOR_MOTOR",                   "joint": "arm_B_ur_wrist_2_joint"},
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_ur_wrist_3_joint_ACTUATOR_MOTOR",                   "joint": "arm_B_ur_wrist_3_joint"},
-            {"group": 0, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_robotiq_85_left_knuckle_joint_ACTUATOR_MOTOR",      "joint": "arm_B_robotiq_85_left_knuckle_joint"}
+            {"group": 0, "ctrlrange":"-150 150", "name": "arm_B_ur_shoulder_pan_joint_ACTUATOR_MOTOR",              "joint": "arm_B_ur_shoulder_pan_joint"},
+            {"group": 0, "ctrlrange":"-150 150", "name": "arm_B_ur_shoulder_lift_joint_ACTUATOR_MOTOR",             "joint": "arm_B_ur_shoulder_lift_joint"},
+            {"group": 0, "ctrlrange":"-150 150", "name": "arm_B_ur_elbow_joint_ACTUATOR_MOTOR",                     "joint": "arm_B_ur_elbow_joint"},
+            {"group": 0, "ctrlrange":"-28  28" , "name": "arm_B_ur_wrist_1_joint_ACTUATOR_MOTOR",                   "joint": "arm_B_ur_wrist_1_joint"},
+            {"group": 0, "ctrlrange":"-28  28" , "name": "arm_B_ur_wrist_2_joint_ACTUATOR_MOTOR",                   "joint": "arm_B_ur_wrist_2_joint"},
+            {"group": 0, "ctrlrange":"-28  28" , "name": "arm_B_ur_wrist_3_joint_ACTUATOR_MOTOR",                   "joint": "arm_B_ur_wrist_3_joint"},
+            {"group": 0, "ctrlrange":"-10  10" , "name": "arm_B_robotiq_85_left_knuckle_joint_ACTUATOR_MOTOR",      "joint": "arm_B_robotiq_85_left_knuckle_joint"}
         ]
     }
 }

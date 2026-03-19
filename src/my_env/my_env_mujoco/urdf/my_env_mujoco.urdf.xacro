@@ -24,6 +24,7 @@
   <xacro:arg name="fake_sensor_commands" default="true" />
   <xacro:arg name="use_sim_mujoco" default="true" />
   <xacro:arg name="mjcf_file_path" default="$(find my_env_mujoco)/urdf/my_env_mujoco.xml"/>
+  <xacro:arg name="pids_config_file_path" default="$(find my_env_control)/config/mujoco_pids_config.yaml"/>
   <xacro:arg name="generate_ros2_control" default="false" />
   
   <!-- 夹爪和相机参数 -->
@@ -38,6 +39,7 @@
     use_fake_sensor_commands="$(arg fake_sensor_commands)"
     use_sim_mujoco="$(arg use_sim_mujoco)"
     mjcf_file_path="$(arg mjcf_file_path)"
+    pids_config_file_path="$(arg pids_config_file_path)"
     generate_ros2_control="$(arg generate_ros2_control)"
 
     ur_A_ur_type="$(arg ur_A_ur_type)"

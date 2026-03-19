@@ -13,6 +13,7 @@
   use_sim_gazebo:=false
   use_sim_mujoco:=false
   mjcf_file_path
+  pids_config_file_path
   generate_ros2_control:=false
 
   ur_reverse_ip:=0.0.0.0
@@ -331,7 +332,7 @@
       use_mesh="true"
     >
       <!-- RealSense 的基座位于相机底部的1/4螺纹孔，距离后背面10mm，底部平面距离后背2个螺纹孔所在直线12.5mm -->
-      <origin xyz="0 0.2 1.8" rpy="0 ${pi/4} ${-pi/2}"/>
+      <origin xyz="0 0.4 2.2" rpy="0 ${pi/4} ${-pi/2}"/>
     </xacro:sensor_d435>
 
   <!-- UR 安装座 link & joint -->
@@ -410,6 +411,7 @@
       <hardware>
         <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
         <param name="mujoco_model">${mjcf_file_path}</param>
+        <param name="pids_config_file">${pids_config_file_path}</param>
         <!-- Override the slowdown settings in the Simulate App and run at 3x speed -->
         <param name="sim_speed_factor">1.0</param>
         <!-- If set to true, will not launch the Simulate App window -->
