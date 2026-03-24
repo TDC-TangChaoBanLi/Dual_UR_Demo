@@ -260,7 +260,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "launch_servo", 
-            default_value="true", 
+            default_value="false", 
             description="Launch Servo?"
         )
     )

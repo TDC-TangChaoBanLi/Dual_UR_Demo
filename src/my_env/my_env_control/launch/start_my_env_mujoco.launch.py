@@ -14,6 +14,7 @@ def generate_launch_description():
     arm_A_tf_prefix = LaunchConfiguration('arm_A_prefix')
     arm_B_tf_prefix = LaunchConfiguration('arm_B_prefix')
 
+    xacro_file_path = PathJoinSubstitution([FindPackageShare('my_env_mujoco'), 'urdf', 'my_env_mujoco.urdf.xacro'])
     mjcf_file_path = PathJoinSubstitution([FindPackageShare('my_env_mujoco'), 'mjcf', 'my_env_mujoco.xml'])
     pids_config_file_path = PathJoinSubstitution([FindPackageShare('my_env_control'), 'config', 'mujoco_pids_config.yaml'])
     controller_parameters = PathJoinSubstitution([FindPackageShare("my_env_control"), "config", "my_env_mujoco_controller.yaml"])
@@ -43,7 +44,7 @@ def generate_launch_description():
     # 例如 my_robot.urdf.xacro 接受 arm_A_tf_prefix & arm_B_tf_prefix 做命名
     robot_description_content = Command([
         PathJoinSubstitution([FindExecutable(name='xacro')]), ' ',
-        PathJoinSubstitution([FindPackageShare('my_env_mujoco'), 'urdf', 'my_env_mujoco.urdf.xacro']), ' ',
+        xacro_file_path, ' ',
         'arm_A_tf_prefix:=', arm_A_tf_prefix, ' ',
         'arm_B_tf_prefix:=', arm_B_tf_prefix, ' ',
         'use_fake_hardware:=true', ' ',
