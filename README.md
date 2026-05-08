@@ -1,6 +1,6 @@
 # 双臂UR机械臂ROS2控制系统
 
-这是一个基于ROS2的双臂UR机械臂控制系统，集成了UR5和UR5e机械臂、Robotiq 2F-85夹爪和RealSense D435相机，目前支持rviz仿真。
+这是一个基于ROS2的双臂UR机械臂控制系统，集成了UR5和UR5e机械臂、Robotiq 2F-85夹爪和RealSense D435相机，目前支持rviz仿真和Mujoco仿真。
 
 ![intrudoction](view_my_env.png)
 
@@ -11,6 +11,7 @@
 1. **机械臂描述文件** - 定义双臂系统的URDF模型
 2. **ros_control控制器配置** - 实现硬件接口和控制器管理
 3. **MoveIt运动规划配置** - 提供高级运动规划功能
+4. **Mujoco仿真配置** - 支持在Mujoco仿真环境中运行
 
 ---
 

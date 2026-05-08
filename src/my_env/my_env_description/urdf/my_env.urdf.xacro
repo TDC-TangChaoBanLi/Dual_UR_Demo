@@ -32,6 +32,7 @@
     use_fake_hardware="$(arg use_fake_hardware)"
     use_fake_sensor_commands="$(arg fake_sensor_commands)"
     generate_ros2_control="$(arg generate_ros2_control)"
+    mjcf_file_path=""
 
     ur_A_ur_type="$(arg ur_A_ur_type)"
     ur_B_ur_type="$(arg ur_B_ur_type)"
