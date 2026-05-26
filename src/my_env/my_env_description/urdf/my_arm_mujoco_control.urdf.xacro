@@ -4,10 +4,11 @@
     ur_tf_prefix
     realsense_tf_prefix
     g2f85_tf_prefix
+    ur_initial_positions:=${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}
   "> 
 
     <xacro:property name="_ur_tf_prefix" value="${ur_tf_prefix}"/>
-    <xacro:property name="_ur_initial_positions" value="${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}"/>
+    <xacro:property name="_ur_initial_positions" value="${ur_initial_positions}"/>
     <xacro:property name="_realsense_tf_prefix" value="${realsense_tf_prefix}"/>
     <xacro:property name="_g2f85_tf_prefix" value="${g2f85_tf_prefix}"/>
     <xacro:property name="_g2f85_closed_position" value="0.7929"/>

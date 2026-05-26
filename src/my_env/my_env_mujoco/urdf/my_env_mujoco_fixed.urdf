@@ -146,6 +146,11 @@
     <origin rpy="0 0 3.141592653589793" xyz="0 -0.3015 0"/>
   </joint>
   <link name="lens_0_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.205"/>
+      <mass value="0.438"/>
+      <inertia ixx="0.003246" ixy="0.0" ixz="0.0" iyy="0.006287" iyz="0.0" izz="0.003223"/>
+    </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="anodized_aluminum">
@@ -236,6 +241,11 @@
     <origin rpy="3.141592653589793 0 0" xyz="0 -0.025 0.523"/>
   </joint>
   <link name="lens_A1_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.205"/>
+      <mass value="0.438"/>
+      <inertia ixx="0.003246" ixy="0.0" ixz="0.0" iyy="0.006287" iyz="0.0" izz="0.003223"/>
+    </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="anodized_aluminum">
@@ -326,6 +336,11 @@
     <origin rpy="3.141592653589793 0.5235987755982988 0" xyz="0.2615 -0.025 0.452918"/>
   </joint>
   <link name="lens_A2_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.205"/>
+      <mass value="0.438"/>
+      <inertia ixx="0.003246" ixy="0.0" ixz="0.0" iyy="0.006287" iyz="0.0" izz="0.003223"/>
+    </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="anodized_aluminum">
@@ -416,6 +431,11 @@
     <origin rpy="3.141592653589793 1.0471975511965976 0" xyz="0.452918 -0.025 0.2615"/>
   </joint>
   <link name="lens_A3_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.205"/>
+      <mass value="0.438"/>
+      <inertia ixx="0.003246" ixy="0.0" ixz="0.0" iyy="0.006287" iyz="0.0" izz="0.003223"/>
+    </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="anodized_aluminum">
@@ -506,6 +526,11 @@
     <origin rpy="3.141592653589793 1.5707963267948966 0" xyz="0.523 -0.025 0.0"/>
   </joint>
   <link name="lens_A4_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.205"/>
+      <mass value="0.438"/>
+      <inertia ixx="0.003246" ixy="0.0" ixz="0.0" iyy="0.006287" iyz="0.0" izz="0.003223"/>
+    </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="anodized_aluminum">
@@ -596,6 +621,11 @@
     <origin rpy="3.141592653589793 2.0943951023931953 0" xyz="0.452918 -0.025 -0.2615"/>
   </joint>
   <link name="lens_B1_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.205"/>
+      <mass value="0.438"/>
+      <inertia ixx="0.003246" ixy="0.0" ixz="0.0" iyy="0.006287" iyz="0.0" izz="0.003223"/>
+    </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="anodized_aluminum">
@@ -686,6 +716,11 @@
     <origin rpy="3.141592653589793 -0.5235987755982988 0" xyz="-0.2615 -0.025 0.452918"/>
   </joint>
   <link name="lens_B2_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.205"/>
+      <mass value="0.438"/>
+      <inertia ixx="0.003246" ixy="0.0" ixz="0.0" iyy="0.006287" iyz="0.0" izz="0.003223"/>
+    </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="anodized_aluminum">
@@ -776,6 +811,11 @@
     <origin rpy="3.141592653589793 -1.0471975511965976 0" xyz="-0.452918 -0.025 0.2615"/>
   </joint>
   <link name="lens_B3_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.205"/>
+      <mass value="0.438"/>
+      <inertia ixx="0.003246" ixy="0.0" ixz="0.0" iyy="0.006287" iyz="0.0" izz="0.003223"/>
+    </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="anodized_aluminum">
@@ -866,6 +906,11 @@
     <origin rpy="3.141592653589793 -1.5707963267948966 0" xyz="-0.523 -0.025 0.0"/>
   </joint>
   <link name="lens_B4_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.205"/>
+      <mass value="0.438"/>
+      <inertia ixx="0.003246" ixy="0.0" ixz="0.0" iyy="0.006287" iyz="0.0" izz="0.003223"/>
+    </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="anodized_aluminum">
@@ -956,7 +1001,7 @@
     <origin rpy="3.141592653589793 -2.0943951023931953 0" xyz="-0.452918 -0.025 -0.2615"/>
   </joint>
   <joint name="global_realsense_joint" type="fixed">
-    <origin rpy="0 0.7853981633974483 -1.5707963267948966" xyz="0 0.8 2.2"/>
+    <origin rpy="0 0.7853981633974483 -1.5707963267948966" xyz="0 0.4 2.2"/>
     <parent link="world"/>
     <child link="global_realsense_bottom_screw_frame"/>
   </joint>
@@ -1145,13 +1190,13 @@
   <joint name="world_to_ur_mount_A" type="fixed">
     <parent link="world"/>
     <child link="ur_mount_A"/>
-    <origin rpy="0 0 0" xyz="0.6 0.4 0.8"/>
+    <origin rpy="0 0 0" xyz="0.6 0.3 0.8"/>
   </joint>
   <link name="ur_mount_B"/>
   <joint name="world_to_ur_mount_B" type="fixed">
     <parent link="world"/>
     <child link="ur_mount_B"/>
-    <origin rpy="0 0 3.141592653589793" xyz="-0.6 0.4 0.8"/>
+    <origin rpy="0 0 3.141592653589793" xyz="-0.6 0.3 0.8"/>
   </joint>
   <link name="arm_A_ur_base_link"/>
   <link name="arm_A_ur_base_link_inertia">
@@ -3255,4 +3300,191 @@
     <parent link="arm_B_robotiq_85_base_link"/>
     <child link="arm_B__tcp"/>
   </joint>
+  <ros2_control name="my_env_ros2_mujoco" type="system">
+    <hardware>
+      <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
+      <param name="mujoco_model">/home/tdc/CodeProjects/Dual_UR_Assembly/install/my_env_mujoco/share/my_env_mujoco/urdf/my_env_mujoco.xml</param>
+      <param name="pids_config_file">/home/tdc/CodeProjects/Dual_UR_Assembly/install/my_env_control/share/my_env_control/config/mujoco_pids_config.yaml</param>
+      <param name="sim_speed_factor">1.0</param>
+      <param name="headless">false</param>
+      <param name="camera_publish_rate">30.0</param>
+      <param name="lidar_publish_rate">10.0</param>
+    </hardware>
+    <sensor name="global_realsense_camera">
+      <param name="frame_name">global_realsense_link</param>
+      <param name="info_topic">/global_realsense_camera/camera_info</param>
+      <param name="image_topic">/global_realsense_camera/color</param>
+      <param name="depth_topic">/global_realsense_camera/depth</param>
+    </sensor>
+    <joint name="arm_A_ur_shoulder_pan_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">-1.57</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="arm_A_ur_shoulder_lift_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">-0.87</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="arm_A_ur_elbow_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">0.2</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="arm_A_ur_wrist_1_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">-0.9</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="arm_A_ur_wrist_2_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">-1.57</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="arm_A_ur_wrist_3_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">-1.57</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <sensor name="arm_A_ur_tcp_fts_sensor">
+      <param name="mujoco_type">fts</param>
+      <param name="mujoco_sensor_name">arm_A_ur_tcp_fts_sensor</param>
+      <param name="force_mjcf_suffix">_force</param>
+      <param name="torque_mjcf_suffix">_torque</param>
+      <state_interface name="force.x"/>
+      <state_interface name="force.y"/>
+      <state_interface name="force.z"/>
+      <state_interface name="torque.x"/>
+      <state_interface name="torque.y"/>
+      <state_interface name="torque.z"/>
+    </sensor>
+    <sensor name="arm_A_realsense_camera">
+      <param name="frame_name">arm_A_realsense_link</param>
+      <param name="info_topic">/arm_A_realsense_camera/camera_info</param>
+      <param name="image_topic">/arm_A_realsense_camera/color</param>
+      <param name="depth_topic">/arm_A_realsense_camera/depth</param>
+    </sensor>
+    <joint name="arm_A_robotiq_85_left_knuckle_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.7929</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="arm_B_ur_shoulder_pan_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">-1.57</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="arm_B_ur_shoulder_lift_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">-2.27</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="arm_B_ur_elbow_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">-0.2</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="arm_B_ur_wrist_1_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">-2.24</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="arm_B_ur_wrist_2_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">1.57</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="arm_B_ur_wrist_3_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <param name="initial_value">1.57</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <sensor name="arm_B_ur_tcp_fts_sensor">
+      <param name="mujoco_type">fts</param>
+      <param name="mujoco_sensor_name">arm_B_ur_tcp_fts_sensor</param>
+      <param name="force_mjcf_suffix">_force</param>
+      <param name="torque_mjcf_suffix">_torque</param>
+      <state_interface name="force.x"/>
+      <state_interface name="force.y"/>
+      <state_interface name="force.z"/>
+      <state_interface name="torque.x"/>
+      <state_interface name="torque.y"/>
+      <state_interface name="torque.z"/>
+    </sensor>
+    <sensor name="arm_B_realsense_camera">
+      <param name="frame_name">arm_B_realsense_link</param>
+      <param name="info_topic">/arm_B_realsense_camera/camera_info</param>
+      <param name="image_topic">/arm_B_realsense_camera/color</param>
+      <param name="depth_topic">/arm_B_realsense_camera/depth</param>
+    </sensor>
+    <joint name="arm_B_robotiq_85_left_knuckle_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.7929</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
 </robot>

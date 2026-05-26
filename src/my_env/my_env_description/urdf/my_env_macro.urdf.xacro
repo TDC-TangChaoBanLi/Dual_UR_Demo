@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <robot name="my_env" xmlns:xacro="http://ros.org/wiki/xacro">
 
+<!-- xacro src/my_env/my_env_description/urdf/my_env.urdf.xacro -o src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf -->
+<!-- urdf2mjcf src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf -o ./src/my_env/my_env_mujoco/mjcf/my_env_mujoco.xml -m src/my_env/my_env_mujoco/meshes -c -j src/my_env/my_env_mujoco/config/config.json -->
+
+
   <xacro:include filename="$(find my_env_description)/urdf/my_arm_macro.urdf.xacro"/>
   <xacro:include filename="$(find my_env_description)/urdf/my_arm_mujoco_control.urdf.xacro"/>
   <xacro:include filename="$(find my_env_description)/urdf/len_macro.xacro"/>
@@ -15,6 +19,9 @@
   mjcf_file_path
   pids_config_file_path
   generate_ros2_control:=false
+
+  ur_A_initial_positions:=${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}
+  ur_B_initial_positions:=${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}
 
   ur_reverse_ip:=0.0.0.0
   ur_headless_mode:=false
@@ -340,14 +347,14 @@
   <joint name="world_to_ur_mount_A" type="fixed">
     <parent link="world"/>
     <child link="ur_mount_A"/>
-    <origin xyz="0.6 0.4 0.8" rpy="0 0 0" />
+    <origin xyz="0.6 0.3 0.8" rpy="0 0 0" />
   </joint>
 
   <link name="ur_mount_B"/>
   <joint name="world_to_ur_mount_B" type="fixed">
     <parent link="world"/>
     <child link="ur_mount_B"/>
-    <origin xyz="-0.6 0.4 0.8" rpy="0 0 ${pi}" />
+    <origin xyz="-0.6 0.3 0.8" rpy="0 0 ${pi}" />
   </joint>
 
   <!-- 创建 UR 机器人 -->
@@ -406,6 +413,8 @@
     <xacro:property name="arm_B_realsense_prefix" value="${arm_B_tf_prefix}realsense_"/> <!-- ! append the '_' in the prefix -->
     <xacro:property name="arm_A_g2f85_prefix" value="${arm_A_tf_prefix}"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
     <xacro:property name="arm_B_g2f85_prefix" value="${arm_B_tf_prefix}"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+    <xacro:property name="arm_A_ur_initial_positions" value="${ur_A_initial_positions}"/>
+    <xacro:property name="arm_B_ur_initial_positions" value="${ur_B_initial_positions}"/>
     
     <ros2_control name="my_env_ros2_mujoco" type="system">
       <hardware>
@@ -437,12 +446,16 @@
       <xacro:my_arm_mujoco_control
           ur_tf_prefix="${arm_A_ur_prefix}"
           realsense_tf_prefix="${arm_A_realsense_prefix}"
-          g2f85_tf_prefix="${arm_A_g2f85_prefix}"/>
+          g2f85_tf_prefix="${arm_A_g2f85_prefix}"
+          ur_initial_positions="${arm_A_ur_initial_positions}"
+      />
 
       <xacro:my_arm_mujoco_control
           ur_tf_prefix="${arm_B_ur_prefix}"
           realsense_tf_prefix="${arm_B_realsense_prefix}"
-          g2f85_tf_prefix="${arm_B_g2f85_prefix}"/>
+          g2f85_tf_prefix="${arm_B_g2f85_prefix}"
+          ur_initial_positions="${arm_B_ur_initial_positions}"
+      />
     </ros2_control>
   </xacro:if>
 

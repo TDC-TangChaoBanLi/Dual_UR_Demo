@@ -15,7 +15,8 @@
 
             "add_json_texture":     true,
 
-            "add_json_contact":     true
+            "add_json_contact":     true,
+            "add_json_equality":    true
         },
         "worldbody": { 
             "add_default_floor": true, 
@@ -36,7 +37,7 @@
             ]
         },
 
-        "option": { "timestep": 0.001, "gravity": "0 0 0" },
+        "option": { "timestep": 0.001, "gravity": "0 0 -9.81", "noslip_iterations":"5", "integrator": "implicitfast", "impratio": "20"},
         "compiler": { "angle": "radian", "balanceinertia": true },
         
         "actuator": {
@@ -58,21 +59,21 @@
                 {"group": 0, "ctrlrange":"-10  10" , "name": "arm_B_robotiq_85_left_knuckle_joint_ACTUATOR_MOTOR",      "joint": "arm_B_robotiq_85_left_knuckle_joint"}
             ],
             "position":[
-                {"group": 1, "kp":200, "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_A_ur_shoulder_pan_joint"},
-                {"group": 1, "kp":200, "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_A_ur_shoulder_lift_joint"},
-                {"group": 1, "kp":100, "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_elbow_joint_ACTUATOR_POSITION",                  "joint": "arm_A_ur_elbow_joint"},
-                {"group": 1, "kp":50 , "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_wrist_1_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_1_joint"},
-                {"group": 1, "kp":50 , "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_wrist_2_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_2_joint"},
-                {"group": 1, "kp":50 , "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_A_ur_wrist_3_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_3_joint"},
-                {"group": 1, "kp":10 , "dampratio":1.2, "ctrlrange":"0.0 0.7929", "name": "arm_A_robotiq_85_left_knuckle_joint_ACTUATOR_POSITION",   "joint": "arm_A_robotiq_85_left_knuckle_joint"},
+                {"group": 1, "kp":1e4, "dampratio":0.85, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_A_ur_shoulder_pan_joint"},
+                {"group": 1, "kp":1e4, "dampratio":0.85, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_A_ur_shoulder_lift_joint"},
+                {"group": 1, "kp":1e4, "dampratio":0.85, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_elbow_joint_ACTUATOR_POSITION",                  "joint": "arm_A_ur_elbow_joint"},
+                {"group": 1, "kp":1e4, "dampratio":0.85, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_1_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_1_joint"},
+                {"group": 1, "kp":500, "dampratio":0.85, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_2_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_2_joint"},
+                {"group": 1, "kp":500, "dampratio":0.85, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_3_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_3_joint"},
+                {"group": 1, "kp":10 , "dampratio":0.85, "ctrlrange":"0.0 0.7929", "name": "arm_A_robotiq_85_left_knuckle_joint_ACTUATOR_POSITION",   "joint": "arm_A_robotiq_85_left_knuckle_joint"},
 
-                {"group": 1, "kp":200, "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_B_ur_shoulder_pan_joint"},
-                {"group": 1, "kp":200, "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_B_ur_shoulder_lift_joint"},
-                {"group": 1, "kp":100, "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_ur_elbow_joint_ACTUATOR_POSITION",                  "joint": "arm_B_ur_elbow_joint"},
-                {"group": 1, "kp":50 , "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_ur_wrist_1_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_1_joint"},
-                {"group": 1, "kp":50 , "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_ur_wrist_2_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_2_joint"},
-                {"group": 1, "kp":50 , "dampratio":1.2, "ctrlrange":"-3.1416 3.1416", "name": "arm_B_ur_wrist_3_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_3_joint"},
-                {"group": 1, "kp":10 , "dampratio":1.2, "ctrlrange":"0.0 0.7929", "name": "arm_B_robotiq_85_left_knuckle_joint_ACTUATOR_POSITION",   "joint": "arm_B_robotiq_85_left_knuckle_joint"}
+                {"group": 1, "kp":1e4, "dampratio":0.85, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_B_ur_shoulder_pan_joint"},
+                {"group": 1, "kp":1e4, "dampratio":0.85, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_B_ur_shoulder_lift_joint"},
+                {"group": 1, "kp":1e4, "dampratio":0.85, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_elbow_joint_ACTUATOR_POSITION",                  "joint": "arm_B_ur_elbow_joint"},
+                {"group": 1, "kp":1e4, "dampratio":0.85, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_1_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_1_joint"},
+                {"group": 1, "kp":500, "dampratio":0.85, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_2_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_2_joint"},
+                {"group": 1, "kp":500, "dampratio":0.85, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_3_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_3_joint"},
+                {"group": 1, "kp":10 , "dampratio":0.85, "ctrlrange":"0.0 0.7929", "name": "arm_B_robotiq_85_left_knuckle_joint_ACTUATOR_POSITION",   "joint": "arm_B_robotiq_85_left_knuckle_joint"}
             ]
         },
         "site":{
@@ -139,6 +140,14 @@
                 {"body1": "arm_A_robotiq_85_right_finger_tip_link", "body2": "arm_A_robotiq_85_right_inner_knuckle_link"},
                 {"body1": "arm_B_robotiq_85_left_finger_tip_link", "body2": "arm_B_robotiq_85_left_inner_knuckle_link"},
                 {"body1": "arm_B_robotiq_85_right_finger_tip_link", "body2": "arm_B_robotiq_85_right_inner_knuckle_link"}
+            ]
+        },
+        "equality":{
+            "connect": [
+                {"anchor": "-0.018 0 0.0065", "body1": "arm_A_robotiq_85_left_finger_tip_link", "body2": "arm_A_robotiq_85_left_inner_knuckle_link", "solimp": "0.95 0.99 0.001", "solref":"0.005 1"},
+                {"anchor": "0.018 0 0.0065", "body1": "arm_A_robotiq_85_right_finger_tip_link", "body2": "arm_A_robotiq_85_right_inner_knuckle_link", "solimp": "0.95 0.99 0.001", "solref":"0.005 1"},
+                {"anchor": "-0.018 0 0.0065", "body1": "arm_B_robotiq_85_left_finger_tip_link", "body2": "arm_B_robotiq_85_left_inner_knuckle_link", "solimp": "0.95 0.99 0.001", "solref":"0.005 1"},
+                {"anchor": "0.018 0 0.0065", "body1": "arm_B_robotiq_85_right_finger_tip_link", "body2": "arm_B_robotiq_85_right_inner_knuckle_link", "solimp": "0.95 0.99 0.001", "solref":"0.005 1"}
             ]
         }
     },

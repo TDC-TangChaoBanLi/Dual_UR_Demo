@@ -8,6 +8,11 @@
   ">
 
   <link name="${link_name}">
+    <inertial>
+      <origin xyz="0 0 0.205" rpy="0 0 0"/>
+      <mass value="0.438"/>
+      <inertia ixx="0.003246" ixy="0.0" ixz="0.0" iyy="0.006287" iyz="0.0" izz="0.003223"/>
+    </inertial>
     <visual>
       <geometry>
         <mesh filename="package://my_env_description/meshes/lens.STL"/>

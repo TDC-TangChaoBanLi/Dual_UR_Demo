@@ -14,10 +14,12 @@
   <!-- UR_A 机器人参数 -->
   <xacro:arg name="arm_A_tf_prefix" default="arm_A_"/>
   <xacro:arg name="ur_A_ur_type" default="ur5e"/>
+  <!-- <xacro:arg name="ur_A_initial_positions" default="${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}"/> -->
 
   <!-- UR_B 机器人参数 -->
   <xacro:arg name="arm_B_tf_prefix" default="arm_B_"/>
   <xacro:arg name="ur_B_ur_type" default="ur5e"/>
+  <!-- <xacro:arg name="ur_B_initial_positions" default="${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}"/> -->
 
   <!-- 控制参数 -->
   <xacro:arg name="use_fake_hardware" default="true" />
@@ -41,6 +43,7 @@
 
     ur_A_ur_type="$(arg ur_A_ur_type)"
     ur_B_ur_type="$(arg ur_B_ur_type)"
+
 
     camera_use_nominal_extrinsics="$(arg camera_use_nominal_extrinsics)"
 

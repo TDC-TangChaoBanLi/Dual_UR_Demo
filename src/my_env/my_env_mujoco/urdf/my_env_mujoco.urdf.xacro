@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="my_env" xmlns:xacro="http://ros.org/wiki/xacro">
 
-<!-- xacro src/my_env/my_env_description/urdf/my_env.urdf.xacro -o src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf -->
+<!-- xacro src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf.xacro -o src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf -->
 <!-- urdf2mjcf src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf -o ./src/my_env/my_env_mujoco/mjcf/my_env_mujoco.xml -m src/my_env/my_env_mujoco/meshes -c -j src/my_env/my_env_mujoco/config/config.json -->
 
 
@@ -26,10 +26,14 @@
   <xacro:arg name="mjcf_file_path" default="$(find my_env_mujoco)/urdf/my_env_mujoco.xml"/>
   <xacro:arg name="pids_config_file_path" default="$(find my_env_control)/config/mujoco_pids_config.yaml"/>
   <xacro:arg name="generate_ros2_control" default="false" />
+  <!-- <xacro:arg name="ur_A_initial_positions" default="{shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0}"/> -->
+  <!-- <xacro:arg name="ur_B_initial_positions" default="{shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0}"/> -->
   
   <!-- 夹爪和相机参数 -->
   <xacro:arg name="camera_use_nominal_extrinsics" default="true"/>
 
+  <xacro:property name="ur_A_initial_positions" value="${dict(shoulder_pan_joint=-1.57,shoulder_lift_joint=-1.27,elbow_joint=1.0,wrist_1_joint=-1.3,wrist_2_joint=-1.57,wrist_3_joint=-1.57)}"/>
+  <xacro:property name="ur_B_initial_positions" value="${dict(shoulder_pan_joint=-1.57,shoulder_lift_joint=-2.27,elbow_joint=-0.2,wrist_1_joint=-2.24,wrist_2_joint=1.57,wrist_3_joint=1.57)}"/>
 
   <!-- 创建包含机器人的场景描述 - 传递my_env宏需要的所有参数 -->
   <xacro:my_env 
@@ -44,6 +48,8 @@
 
     ur_A_ur_type="$(arg ur_A_ur_type)"
     ur_B_ur_type="$(arg ur_B_ur_type)"
+    ur_A_initial_positions="${ur_A_initial_positions}"
+    ur_B_initial_positions="${ur_B_initial_positions}"
 
     camera_use_nominal_extrinsics="$(arg camera_use_nominal_extrinsics)"
 

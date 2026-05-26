@@ -1,113 +1,152 @@
 #pragma once
 
+#include <Eigen/Geometry>
+
+#include <map>
 #include <memory>
 #include <mutex>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-#include <Eigen/Core>
-#include <Eigen/Geometry>
-
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
 
-#include <moveit/robot_model_loader/robot_model_loader.h>
 #include <moveit/robot_model/robot_model.h>
+#include <moveit/robot_model_loader/robot_model_loader.h>
 #include <moveit/robot_state/robot_state.h>
 
-namespace moveit_ik_solver {
+namespace moveit_ik_solver
+{
 
-struct MoveItIkSettings {
-    double timeout = 0.05;
-    unsigned int attempts = 1;
-    bool verbose = false;
-};
+    struct MoveItIkSettings
+    {
+        double timeout{0.05};
+        unsigned int attempts{10};
+        bool verbose{false};
+    };
 
-struct MoveItIkResult {
-    bool success = false;
-    std::vector<double> joint_angles;   // planning_group 变量顺序
-};
+    struct MoveItIkResult
+    {
+        bool success{false};
 
-class MoveItIkSolver {
-public:
-    MoveItIkSolver();
+        // 按最终使用的 planning group 变量顺序返回
+        std::vector<double> joint_angles;
 
-    // 这里只加载 MoveIt 模型；file_path 实际上传 robot_description 参数名
-    bool loadModel(const rclcpp::Node::SharedPtr& node,
-                   const std::string& robot_description_topic = "/robot_description");
+        // 更适合外部直接使用
+        std::map<std::string, double> joint_map;
 
-    // 提前注册需要用到的 planning groups
-    bool registerPlanningGroup(const std::string& planning_group);
-    bool registerPlanningGroups(const std::vector<std::string>& planning_groups);
+        // 实际使用/推断出的 group
+        std::string planning_group;
+    };
 
-    std::vector<std::string> getRegisteredPlanningGroups() const;
-    std::vector<std::string> getJointNames(const std::string& planning_group) const;
-    std::vector<std::string> getLinkNames() const;
+    class MoveItIkSolver
+    {
+    public:
+        using JointValueMap = std::map<std::string, double>;
 
-    // 启动 joint_states 订阅，用于动态维护 robot_state_
-    bool startJointStateMonitor(const std::string& joint_state_topic = "/joint_states");
+        MoveItIkSolver();
 
-    bool hasRobotState() const;
+        bool loadModel(const rclcpp::Node::SharedPtr &node,
+                       const std::string &robot_description_param = "robot_description");
 
-    // ---------------- IK：手动输入初始关节角 ----------------
-    MoveItIkResult solveIk(const std::string& planning_group,
-                           const std::vector<double>& initial_joint_angles,
-                           const std::string& end_effector_name,
-                           const std::string& relative_name,
-                           const Eigen::Isometry3d& target_pose,
-                           const MoveItIkSettings& settings = MoveItIkSettings());
+        bool registerPlanningGroup(const std::string &planning_group);
+        bool registerPlanningGroups(const std::vector<std::string> &planning_groups);
+        bool startJointStateMonitor(const std::string &joint_state_topic = "/joint_states");
 
-    // ---------------- IK：直接使用 robot_state_ 当前状态 ----------------
-    MoveItIkResult solveIk(const std::string& planning_group,
-                           const std::string& end_effector_name,
-                           const std::string& relative_name,
-                           const Eigen::Isometry3d& target_pose,
-                           const MoveItIkSettings& settings = MoveItIkSettings());
+        std::vector<std::string> getRegisteredPlanningGroups() const;
+        std::vector<std::string> getJointNames(const std::string &planning_group) const;
+        std::vector<std::string> getLinkNames() const;
+        
+        // 规划组各个关节名及其状态
+        JointValueMap getCurrentJointValues(const std::string &planning_group) const;
+        // JointValueMap getTargetJointValues(const std::string &planning_group) const;
 
-    // ---------------- FK：手动输入关节角 ----------------
-    Eigen::Matrix4d solveFk(const std::string& planning_group,
-                            const std::vector<double>& joint_angles,
-                            const std::string& end_effector_name) const;
+        // ========================= IK =========================
 
-    // ---------------- FK：直接使用 robot_state_ 当前状态 ----------------
-    Eigen::Matrix4d solveFk(const std::string& planning_group,
-                            const std::string& end_effector_name) const;
+        // 1) 带 seed joint map：不需要显式传 planning_group，内部自动推断
+        MoveItIkResult solveIk(const JointValueMap &initial_joint_map,
+                               const std::string &end_effector_name,
+                               const Eigen::Isometry3d &target_pose,
+                               const MoveItIkSettings &settings = MoveItIkSettings{},
+                               const std::string &relative_name = "world");
 
-private:
-    void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
+        // 2) 基于实时维护的当前状态做 IK：必须显式指定 planning_group
+        MoveItIkResult solveIk(const std::string &planning_group,
+                               const std::string &end_effector_name,
+                               const Eigen::Isometry3d &target_pose,
+                               const MoveItIkSettings &settings = MoveItIkSettings{},
+                               const std::string &relative_name = "world");
 
-    const moveit::core::JointModelGroup* getJointModelGroupChecked(
-        const std::string& planning_group) const;
+        // ========================= FK =========================
 
-    moveit::core::LinkModel* getFrameId(const std::string& name) const;
+        // 1) 带 joint map：不需要 planning_group
+        Eigen::Isometry3d solveFk(const JointValueMap &joint_map,
+                                  const std::string &target_name,
+                                  const std::string &relative_name = "world") const;
 
-    Eigen::MatrixXd getJac(const std::string& planning_group,
-                           const std::vector<double>& joint_angles,
-                           const std::string& end_effector_name) const;
+        // 2) 使用当前维护的 robot_state_：不需要 planning_group
+        Eigen::Isometry3d solveFk(const std::string &target_name,
+                                  const std::string &relative_name = "world") const;
 
-    Eigen::Matrix4d isometryToMat4(const Eigen::Isometry3d& T) const;
-    Eigen::Isometry3d makeTargetInModelFrame(const moveit::core::RobotState& state,
-                                             const std::string& relative_name,
-                                             const Eigen::Isometry3d& target_pose) const;
+        // ====================== Jacobian ======================
 
-    std::vector<double> getCurrentGroupPositionsUnsafe(const std::string& planning_group) const;
+        // Jacobian 仍然需要 planning_group，因为列空间属于某个 group
+        Eigen::MatrixXd getJac(const std::string &planning_group,
+                               const JointValueMap &joint_map,
+                               const std::string &end_effector_name) const;
 
-private:
-    rclcpp::Node::SharedPtr node_;
+        Eigen::Matrix4d isometryToMat4(const Eigen::Isometry3d &T) const;
 
-    std::shared_ptr<robot_model_loader::RobotModelLoader> robot_model_loader_;
-    moveit::core::RobotModelPtr kinematic_model_;
-    std::shared_ptr<moveit::core::RobotState> robot_state_;
+    private:
+        void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
 
-    std::unordered_map<std::string, const moveit::core::JointModelGroup*> joint_model_groups_;
-    std::unordered_map<std::string, std::vector<std::string>> group_variable_names_map_;
+        const moveit::core::JointModelGroup *getJointModelGroupChecked(
+            const std::string &planning_group) const;
 
-    rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_sub_;
+        // 若 name 是 link 名，则直接返回该 link
+        // 若 name 是 joint 名，则返回该 joint 的 child link
+        moveit::core::LinkModel *resolveFrameLink(const std::string &name) const;
 
-    mutable std::mutex robot_state_mutex_;
-    bool model_loaded_ = false;
-    bool robot_state_ready_ = false;
-};
+        // 把 relative_name 坐标系中的目标位姿转换到模型/world坐标系
+        Eigen::Isometry3d makeTargetInModelFrame(const moveit::core::RobotState &state,
+                                                 const std::string &relative_name,
+                                                 const Eigen::Isometry3d &target_pose) const;
+
+        // 从 joint map 构造 local RobotState：先复制当前状态（若存在），再覆盖 joint map
+        moveit::core::RobotState makeRobotStateFromJointMap(
+            const JointValueMap &joint_map) const;
+
+        // 只允许在 joint_states 已启动并收到有效状态后调用
+        moveit::core::RobotState getMaintainedRobotStateCopyChecked() const;
+
+        // 从 state 中提取某个 group 的当前关节值
+        JointValueMap extractGroupJointMap(const moveit::core::RobotState &state,
+                                           const moveit::core::JointModelGroup *jmg) const;
+
+        // 根据 joint_map + ee 自动推断 planning_group
+        const moveit::core::JointModelGroup *inferPlanningGroupFromJointMap(
+            const JointValueMap &joint_map,
+            const std::string &end_effector_name) const;
+
+    private:
+        rclcpp::Node::SharedPtr node_;
+        rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_sub_;
+
+        robot_model_loader::RobotModelLoaderPtr robot_model_loader_;
+        moveit::core::RobotModelPtr kinematic_model_;
+        moveit::core::RobotStatePtr robot_state_;
+
+        bool model_loaded_{false};
+        bool robot_state_ready_{false};
+        bool joint_state_monitor_started_{false};
+        bool joint_state_received_{false};
+
+        mutable std::mutex robot_state_mutex_;
+
+        // 仍然需要缓存注册过的 group，IK/Jacobian 都要用
+        std::unordered_map<std::string, const moveit::core::JointModelGroup *> joint_model_groups_;
+        std::unordered_map<std::string, std::vector<std::string>> group_variable_names_map_;
+    };
 
 } // namespace moveit_ik_solver
