@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<mujoco model="my_env">
+<mujoco model="assembly_env_mujoco">
   <compiler angle="radian" balanceinertia="true"/>
-  <option gravity="0 0 -9.81" timestep="0.001" noslip_iterations="5" noslip_tolerance="1e-8" integrator="implicitfast" impratio="10"/>
+  <option gravity="0 0 -9.81" timestep="0.001" noslip_iterations="5" integrator="implicitfast" impratio="20"/>
   <visual>
     <global offwidth="640" offheight="480"/>
     <quality shadowsize="4096"/>
@@ -12,7 +12,7 @@
         <geom contype="0" conaffinity="0" group="2"/>
       </default>
       <default class="collision">
-        <geom contype="1" conaffinity="1" group="3" condim="4"/>
+        <geom contype="1" conaffinity="1" group="3" condim="6"/>
       </default>
     </default>
   </default>
@@ -123,23 +123,23 @@
     <material name="floor" texture="floor" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
     <texture name="floor" type="2d" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300"/>
     <texture name="skybox" type="skybox" builtin="gradient" rgb1=".3 .5 .7" rgb2="0 0 0" width="1024" height="1024"/>
-    <texture name="lens_0_link_TEXTURE" file="../mjcf/tag36h11-100.png" type="2d"/>
+    <texture name="lens_0_link_TEXTURE" file="../textures/tag36h11-100.png" type="2d"/>
     <material name="lens_0_link_TEXTURE" texture="lens_0_link_TEXTURE"/>
-    <texture name="lens_A1_link_TEXTURE" file="../mjcf/tag36h11-101.png" type="2d"/>
+    <texture name="lens_A1_link_TEXTURE" file="../textures/tag36h11-101.png" type="2d"/>
     <material name="lens_A1_link_TEXTURE" texture="lens_A1_link_TEXTURE"/>
-    <texture name="lens_A2_link_TEXTURE" file="../mjcf/tag36h11-102.png" type="2d"/>
+    <texture name="lens_A2_link_TEXTURE" file="../textures/tag36h11-102.png" type="2d"/>
     <material name="lens_A2_link_TEXTURE" texture="lens_A2_link_TEXTURE"/>
-    <texture name="lens_A3_link_TEXTURE" file="../mjcf/tag36h11-103.png" type="2d"/>
+    <texture name="lens_A3_link_TEXTURE" file="../textures/tag36h11-103.png" type="2d"/>
     <material name="lens_A3_link_TEXTURE" texture="lens_A3_link_TEXTURE"/>
-    <texture name="lens_A4_link_TEXTURE" file="../mjcf/tag36h11-104.png" type="2d"/>
+    <texture name="lens_A4_link_TEXTURE" file="../textures/tag36h11-104.png" type="2d"/>
     <material name="lens_A4_link_TEXTURE" texture="lens_A4_link_TEXTURE"/>
-    <texture name="lens_B1_link_TEXTURE" file="../mjcf/tag36h11-105.png" type="2d"/>
+    <texture name="lens_B1_link_TEXTURE" file="../textures/tag36h11-105.png" type="2d"/>
     <material name="lens_B1_link_TEXTURE" texture="lens_B1_link_TEXTURE"/>
-    <texture name="lens_B2_link_TEXTURE" file="../mjcf/tag36h11-106.png" type="2d"/>
+    <texture name="lens_B2_link_TEXTURE" file="../textures/tag36h11-106.png" type="2d"/>
     <material name="lens_B2_link_TEXTURE" texture="lens_B2_link_TEXTURE"/>
-    <texture name="lens_B3_link_TEXTURE" file="../mjcf/tag36h11-107.png" type="2d"/>
+    <texture name="lens_B3_link_TEXTURE" file="../textures/tag36h11-107.png" type="2d"/>
     <material name="lens_B3_link_TEXTURE" texture="lens_B3_link_TEXTURE"/>
-    <texture name="lens_B4_link_TEXTURE" file="../mjcf/tag36h11-108.png" type="2d"/>
+    <texture name="lens_B4_link_TEXTURE" file="../textures/tag36h11-108.png" type="2d"/>
     <material name="lens_B4_link_TEXTURE" texture="lens_B4_link_TEXTURE"/>
     <material name="aluminum" rgba="0.5 0.5 0.5 1"/>
     <material name="plastic" rgba="0.1 0.1 0.1 1"/>
@@ -152,20 +152,20 @@
       <body name="basket_A_link" pos="0 -0.3015 0" quat="1.0 0.0 0.0 0.0">
         <geom class="collision" name="COLLISION_basket_A_link_0" type="mesh" mesh="MESH_basket_0_a307d541" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         <geom class="collision" name="COLLISION_basket_A_link_1" type="mesh" mesh="MESH_basket_1_ee7564a5" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-        <!-- <geom class="collision" name="COLLISION_basket_A_link_2" type="mesh" mesh="MESH_basket_2_3eddf833" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+        <geom class="collision" name="COLLISION_basket_A_link_2" type="mesh" mesh="MESH_basket_2_3eddf833" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         <geom class="collision" name="COLLISION_basket_A_link_3" type="mesh" mesh="MESH_basket_3_339e5322" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         <geom class="collision" name="COLLISION_basket_A_link_4" type="mesh" mesh="MESH_basket_4_c6d3d2f7" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-        <geom class="collision" name="COLLISION_basket_A_link_5" type="mesh" mesh="MESH_basket_5_52ad14e8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/> -->
+        <geom class="collision" name="COLLISION_basket_A_link_5" type="mesh" mesh="MESH_basket_5_52ad14e8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         <geom class="collision" name="COLLISION_basket_A_link_6" type="mesh" mesh="MESH_basket_6_327f748d" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         <geom class="visual" name="VISUAL_basket_A_link_0" type="mesh" mesh="MESH_basket_a4f96c03" material="aluminum" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       </body>
       <body name="basket_B_link" pos="0 -0.3015 0" quat="6.123233995736766e-17 0.0 0.0 1.0">
         <geom class="collision" name="COLLISION_basket_B_link_0" type="mesh" mesh="MESH_basket_0_a307d541" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         <geom class="collision" name="COLLISION_basket_B_link_1" type="mesh" mesh="MESH_basket_1_ee7564a5" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-        <!-- <geom class="collision" name="COLLISION_basket_B_link_2" type="mesh" mesh="MESH_basket_2_3eddf833" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+        <geom class="collision" name="COLLISION_basket_B_link_2" type="mesh" mesh="MESH_basket_2_3eddf833" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         <geom class="collision" name="COLLISION_basket_B_link_3" type="mesh" mesh="MESH_basket_3_339e5322" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         <geom class="collision" name="COLLISION_basket_B_link_4" type="mesh" mesh="MESH_basket_4_c6d3d2f7" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-        <geom class="collision" name="COLLISION_basket_B_link_5" type="mesh" mesh="MESH_basket_5_52ad14e8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/> -->
+        <geom class="collision" name="COLLISION_basket_B_link_5" type="mesh" mesh="MESH_basket_5_52ad14e8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         <geom class="collision" name="COLLISION_basket_B_link_6" type="mesh" mesh="MESH_basket_6_327f748d" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         <geom class="visual" name="VISUAL_basket_B_link_0" type="mesh" mesh="MESH_basket_a4f96c03" material="aluminum" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       </body>
@@ -207,7 +207,7 @@
       </body>
     </body>
     <body name="lens_0_link" pos="0.5 -0.3015 1.2" quat="4.329780281177467e-17 -0.7071067811865475 0.7071067811865476 4.329780281177466e-17">
-      <inertial mass="0.0438" diaginertia="0.0003246 0.0006287 0.0003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
+      <inertial mass="0.438" diaginertia="0.003246 0.006287 0.003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_0_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_0_link_1" type="mesh" mesh="MESH_lens_1_0ea760e3" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_0_link_2" type="mesh" mesh="MESH_lens_2_17e9b118" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -222,7 +222,7 @@
       <freejoint name="lens_0_link_freejoint"/>
     </body>
     <body name="lens_A1_link" pos="0.551 -0.3015 1.2" quat="4.329780281177467e-17 -0.7071067811865475 0.7071067811865476 4.329780281177466e-17">
-      <inertial mass="0.0438" diaginertia="0.0003246 0.0006287 0.0003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
+      <inertial mass="0.438" diaginertia="0.003246 0.006287 0.003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_A1_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_A1_link_1" type="mesh" mesh="MESH_lens_1_0ea760e3" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_A1_link_2" type="mesh" mesh="MESH_lens_2_17e9b118" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -237,7 +237,7 @@
       <freejoint name="lens_A1_link_freejoint"/>
     </body>
     <body name="lens_A2_link" pos="0.602 -0.3015 1.2" quat="4.329780281177467e-17 -0.7071067811865475 0.7071067811865476 4.329780281177466e-17">
-      <inertial mass="0.0438" diaginertia="0.0003246 0.0006287 0.0003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
+      <inertial mass="0.438" diaginertia="0.003246 0.006287 0.003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_A2_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_A2_link_1" type="mesh" mesh="MESH_lens_1_0ea760e3" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_A2_link_2" type="mesh" mesh="MESH_lens_2_17e9b118" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -252,7 +252,7 @@
       <freejoint name="lens_A2_link_freejoint"/>
     </body>
     <body name="lens_A3_link" pos="0.653 -0.3015 1.2" quat="4.329780281177467e-17 -0.7071067811865475 0.7071067811865476 4.329780281177466e-17">
-      <inertial mass="0.0438" diaginertia="0.0003246 0.0006287 0.0003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
+      <inertial mass="0.438" diaginertia="0.003246 0.006287 0.003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_A3_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_A3_link_1" type="mesh" mesh="MESH_lens_1_0ea760e3" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_A3_link_2" type="mesh" mesh="MESH_lens_2_17e9b118" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -267,7 +267,7 @@
       <freejoint name="lens_A3_link_freejoint"/>
     </body>
     <body name="lens_A4_link" pos="0.704 -0.3015 1.2" quat="4.329780281177467e-17 -0.7071067811865475 0.7071067811865476 4.329780281177466e-17">
-      <inertial mass="0.0438" diaginertia="0.0003246 0.0006287 0.0003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
+      <inertial mass="0.438" diaginertia="0.003246 0.006287 0.003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_A4_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_A4_link_1" type="mesh" mesh="MESH_lens_1_0ea760e3" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_A4_link_2" type="mesh" mesh="MESH_lens_2_17e9b118" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -282,7 +282,7 @@
       <freejoint name="lens_A4_link_freejoint"/>
     </body>
     <body name="lens_B1_link" pos="-0.5 -0.3015 1.2" quat="4.329780281177467e-17 0.7071067811865475 0.7071067811865476 -4.329780281177466e-17">
-      <inertial mass="0.0438" diaginertia="0.0003246 0.0006287 0.0003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
+      <inertial mass="0.438" diaginertia="0.003246 0.006287 0.003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_B1_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_B1_link_1" type="mesh" mesh="MESH_lens_1_0ea760e3" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_B1_link_2" type="mesh" mesh="MESH_lens_2_17e9b118" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -297,7 +297,7 @@
       <freejoint name="lens_B1_link_freejoint"/>
     </body>
     <body name="lens_B2_link" pos="-0.551 -0.3015 1.2" quat="4.329780281177467e-17 0.7071067811865475 0.7071067811865476 -4.329780281177466e-17">
-      <inertial mass="0.0438" diaginertia="0.0003246 0.0006287 0.0003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
+      <inertial mass="0.438" diaginertia="0.003246 0.006287 0.003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_B2_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_B2_link_1" type="mesh" mesh="MESH_lens_1_0ea760e3" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_B2_link_2" type="mesh" mesh="MESH_lens_2_17e9b118" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -312,7 +312,7 @@
       <freejoint name="lens_B2_link_freejoint"/>
     </body>
     <body name="lens_B3_link" pos="-0.602 -0.3015 1.2" quat="4.329780281177467e-17 0.7071067811865475 0.7071067811865476 -4.329780281177466e-17">
-      <inertial mass="0.0438" diaginertia="0.0003246 0.0006287 0.0003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
+      <inertial mass="0.438" diaginertia="0.003246 0.006287 0.003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_B3_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_B3_link_1" type="mesh" mesh="MESH_lens_1_0ea760e3" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_B3_link_2" type="mesh" mesh="MESH_lens_2_17e9b118" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -327,7 +327,7 @@
       <freejoint name="lens_B3_link_freejoint"/>
     </body>
     <body name="lens_B4_link" pos="-0.653 -0.3015 1.2" quat="4.329780281177467e-17 0.7071067811865475 0.7071067811865476 -4.329780281177466e-17">
-      <inertial mass="0.0438" diaginertia="0.0003246 0.0006287 0.0003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
+      <inertial mass="0.438" diaginertia="0.003246 0.006287 0.003223" pos="0 0 0.205" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_B4_link_0" type="mesh" mesh="MESH_lens_0_95837269" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_B4_link_1" type="mesh" mesh="MESH_lens_1_0ea760e3" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_lens_B4_link_2" type="mesh" mesh="MESH_lens_2_17e9b118" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -456,8 +456,7 @@
                                         <body name="arm_A_robotiq_85_left_finger_tip_link" pos="0.00563134 0.0 0.04718515" quat="1.0 0.0 0.0 0.0">
                                           <inertial mass="0.04268588744" diaginertia="2.6440466428387786e-06 1.197888e-05 1.206531335716122e-05" pos="-0.01456706 -0.0008 0.01649701" quat="0.0 0.5431343521286145 0.0 0.8396458036206875"/>
                                           <joint name="arm_A_robotiq_85_left_finger_tip_joint" type="hinge" axis="0 -1 0" ref=""/>
-                                          <geom class="collision" name="COLLISION_arm_A_robotiq_85_left_finger_tip_link_0" type="mesh" mesh="MESH_left_finger_tip_c9609174" pos="0 0 0" quat="1.0 0.0 0.0 0.0"
-                                            margin="0.001" solmix="10" solref="-3000 -500" solimp="0.95 0.99 0.001 0.5 2" priority="10" friction="5 5 0.02"/>
+                                          <geom class="collision" name="COLLISION_arm_A_robotiq_85_left_finger_tip_link_0" type="mesh" mesh="MESH_left_finger_tip_c9609174" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                           <geom class="visual" name="VISUAL_arm_A_robotiq_85_left_finger_tip_link_0" type="mesh" mesh="MESH_left_finger_tip_4c918411_0" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                           <geom class="visual" name="VISUAL_arm_A_robotiq_85_left_finger_tip_link_1" type="mesh" mesh="MESH_left_finger_tip_4c918411_1" rgba="0.8 0.8 0.8 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                         </body>
@@ -476,8 +475,7 @@
                                         <body name="arm_A_robotiq_85_right_finger_tip_link" pos="-0.00563134 0.0 0.04718515" quat="1.0 0.0 0.0 0.0">
                                           <inertial mass="0.04268588744" diaginertia="2.6440466428387786e-06 1.197888e-05 1.206531335716122e-05" pos="0.01456706 5e-05 0.01649701" quat="0.5431343521286145 0.0 -0.8396458036206876 0.0"/>
                                           <joint name="arm_A_robotiq_85_right_finger_tip_joint" type="hinge" axis="0 -1 0" ref=""/>
-                                          <geom class="collision" name="COLLISION_arm_A_robotiq_85_right_finger_tip_link_0" type="mesh" mesh="MESH_right_finger_tip_8abbbc6d" pos="0 0 0" quat="1.0 0.0 0.0 0.0"
-                                            margin="0.001" solmix="10" solref="-3000 -500" solimp="0.95 0.99 0.001 0.5 2" priority="10" friction="5 5 0.02"/>
+                                          <geom class="collision" name="COLLISION_arm_A_robotiq_85_right_finger_tip_link_0" type="mesh" mesh="MESH_right_finger_tip_8abbbc6d" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                           <geom class="visual" name="VISUAL_arm_A_robotiq_85_right_finger_tip_link_0" type="mesh" mesh="MESH_right_finger_tip_5aafdc4f_0" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                           <geom class="visual" name="VISUAL_arm_A_robotiq_85_right_finger_tip_link_1" type="mesh" mesh="MESH_right_finger_tip_5aafdc4f_1" rgba="0.8 0.8 0.8 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                         </body>
@@ -642,8 +640,7 @@
                                         <body name="arm_B_robotiq_85_left_finger_tip_link" pos="0.00563134 0.0 0.04718515" quat="1.0 0.0 0.0 0.0">
                                           <inertial mass="0.04268588744" diaginertia="2.6440466428387786e-06 1.197888e-05 1.206531335716122e-05" pos="-0.01456706 -0.0008 0.01649701" quat="0.0 0.5431343521286145 0.0 0.8396458036206875"/>
                                           <joint name="arm_B_robotiq_85_left_finger_tip_joint" type="hinge" axis="0 -1 0" ref=""/>
-                                          <geom class="collision" name="COLLISION_arm_B_robotiq_85_left_finger_tip_link_0" type="mesh" mesh="MESH_left_finger_tip_c9609174" pos="0 0 0" quat="1.0 0.0 0.0 0.0"
-                                            margin="0.001" solmix="10" solref="-3000 -500" solimp="0.95 0.99 0.001 0.5 2" priority="10" friction="5 5 0.02"/>
+                                          <geom class="collision" name="COLLISION_arm_B_robotiq_85_left_finger_tip_link_0" type="mesh" mesh="MESH_left_finger_tip_c9609174" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                           <geom class="visual" name="VISUAL_arm_B_robotiq_85_left_finger_tip_link_0" type="mesh" mesh="MESH_left_finger_tip_4c918411_0" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                           <geom class="visual" name="VISUAL_arm_B_robotiq_85_left_finger_tip_link_1" type="mesh" mesh="MESH_left_finger_tip_4c918411_1" rgba="0.8 0.8 0.8 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                         </body>
@@ -662,8 +659,7 @@
                                         <body name="arm_B_robotiq_85_right_finger_tip_link" pos="-0.00563134 0.0 0.04718515" quat="1.0 0.0 0.0 0.0">
                                           <inertial mass="0.04268588744" diaginertia="2.6440466428387786e-06 1.197888e-05 1.206531335716122e-05" pos="0.01456706 5e-05 0.01649701" quat="0.5431343521286145 0.0 -0.8396458036206876 0.0"/>
                                           <joint name="arm_B_robotiq_85_right_finger_tip_joint" type="hinge" axis="0 -1 0" ref=""/>
-                                          <geom class="collision" name="COLLISION_arm_B_robotiq_85_right_finger_tip_link_0" type="mesh" mesh="MESH_right_finger_tip_8abbbc6d" pos="0 0 0" quat="1.0 0.0 0.0 0.0"
-                                            margin="0.001" solmix="10" solref="-3000 -500" solimp="0.95 0.99 0.001 0.5 2" priority="10" friction="5 5 0.02"/>
+                                          <geom class="collision" name="COLLISION_arm_B_robotiq_85_right_finger_tip_link_0" type="mesh" mesh="MESH_right_finger_tip_8abbbc6d" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                           <geom class="visual" name="VISUAL_arm_B_robotiq_85_right_finger_tip_link_0" type="mesh" mesh="MESH_right_finger_tip_5aafdc4f_0" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                           <geom class="visual" name="VISUAL_arm_B_robotiq_85_right_finger_tip_link_1" type="mesh" mesh="MESH_right_finger_tip_5aafdc4f_1" rgba="0.8 0.8 0.8 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                         </body>
@@ -741,12 +737,6 @@
     <geom name="floor" type="plane" size="0 0 0.05" material="floor"/>
     <light name="default_light" pos="0 0 10" dir="0 0 -1" directional="true"/>
   </worldbody>
-  <tendon>
-    <fixed name="arm_A_robotiq_knuckle_tendon">
-      <joint joint="arm_A_robotiq_85_left_knuckle_joint" coef="0.5"/>
-      <joint joint="arm_A_robotiq_85_right_knuckle_joint" coef="-0.5"/>
-    </fixed>
-  </tendon>
   <contact>
     <exclude body1="arm_A_ur_base_link_inertia" body2="arm_A_ur_shoulder_link"/>
     <exclude body1="arm_A_ur_shoulder_link" body2="arm_A_ur_upper_arm_link"/>
@@ -778,7 +768,7 @@
     <exclude body1="arm_B_robotiq_85_right_finger_tip_link" body2="arm_B_robotiq_85_right_inner_knuckle_link"/>
   </contact>
   <actuator>
-    <!-- <motor group="0" ctrlrange="-150 150" name="arm_A_ur_shoulder_pan_joint_ACTUATOR_MOTOR" joint="arm_A_ur_shoulder_pan_joint"/>
+    <motor group="0" ctrlrange="-150 150" name="arm_A_ur_shoulder_pan_joint_ACTUATOR_MOTOR" joint="arm_A_ur_shoulder_pan_joint"/>
     <motor group="0" ctrlrange="-150 150" name="arm_A_ur_shoulder_lift_joint_ACTUATOR_MOTOR" joint="arm_A_ur_shoulder_lift_joint"/>
     <motor group="0" ctrlrange="-150 150" name="arm_A_ur_elbow_joint_ACTUATOR_MOTOR" joint="arm_A_ur_elbow_joint"/>
     <motor group="0" ctrlrange="-28  28" name="arm_A_ur_wrist_1_joint_ACTUATOR_MOTOR" joint="arm_A_ur_wrist_1_joint"/>
@@ -791,7 +781,7 @@
     <motor group="0" ctrlrange="-28  28" name="arm_B_ur_wrist_1_joint_ACTUATOR_MOTOR" joint="arm_B_ur_wrist_1_joint"/>
     <motor group="0" ctrlrange="-28  28" name="arm_B_ur_wrist_2_joint_ACTUATOR_MOTOR" joint="arm_B_ur_wrist_2_joint"/>
     <motor group="0" ctrlrange="-28  28" name="arm_B_ur_wrist_3_joint_ACTUATOR_MOTOR" joint="arm_B_ur_wrist_3_joint"/>
-    <motor group="0" ctrlrange="-10  10" name="arm_B_robotiq_85_left_knuckle_joint_ACTUATOR_MOTOR" joint="arm_B_robotiq_85_left_knuckle_joint"/> -->
+    <motor group="0" ctrlrange="-10  10" name="arm_B_robotiq_85_left_knuckle_joint_ACTUATOR_MOTOR" joint="arm_B_robotiq_85_left_knuckle_joint"/>
     <position group="1" kp="10000.0" dampratio="0.85" ctrlrange="-6.2832 6.2832" name="arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION" joint="arm_A_ur_shoulder_pan_joint"/>
     <position group="1" kp="10000.0" dampratio="0.85" ctrlrange="-6.2832 6.2832" name="arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION" joint="arm_A_ur_shoulder_lift_joint"/>
     <position group="1" kp="10000.0" dampratio="0.85" ctrlrange="-6.2832 6.2832" name="arm_A_ur_elbow_joint_ACTUATOR_POSITION" joint="arm_A_ur_elbow_joint"/>
@@ -810,8 +800,8 @@
   <equality>
     <connect anchor="-0.018 0 0.0065" body1="arm_A_robotiq_85_left_finger_tip_link" body2="arm_A_robotiq_85_left_inner_knuckle_link" solimp="0.95 0.99 0.001" solref="0.005 1"/>
     <connect anchor="0.018 0 0.0065" body1="arm_A_robotiq_85_right_finger_tip_link" body2="arm_A_robotiq_85_right_inner_knuckle_link" solimp="0.95 0.99 0.001" solref="0.005 1"/>
-    <connect anchor="-0.018 0 0.0065" body1="arm_B_robotiq_85_left_finger_tip_link" body2="arm_B_robotiq_85_left_inner_knuckle_link"/>
-    <connect anchor="0.018 0 0.0065" body1="arm_B_robotiq_85_right_finger_tip_link" body2="arm_B_robotiq_85_right_inner_knuckle_link"/>
+    <connect anchor="-0.018 0 0.0065" body1="arm_B_robotiq_85_left_finger_tip_link" body2="arm_B_robotiq_85_left_inner_knuckle_link" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    <connect anchor="0.018 0 0.0065" body1="arm_B_robotiq_85_right_finger_tip_link" body2="arm_B_robotiq_85_right_inner_knuckle_link" solimp="0.95 0.99 0.001" solref="0.005 1"/>
     <joint joint1="arm_A_robotiq_85_left_knuckle_joint" joint2="arm_A_robotiq_85_right_knuckle_joint" polycoef="0.0 -1.0 0.0 0.0 0.0"/>
     <joint joint1="arm_A_robotiq_85_left_knuckle_joint" joint2="arm_A_robotiq_85_left_inner_knuckle_joint" polycoef="0.0 1.0 0.0 0.0 0.0"/>
     <joint joint1="arm_A_robotiq_85_left_knuckle_joint" joint2="arm_A_robotiq_85_right_inner_knuckle_joint" polycoef="0.0 -1.0 0.0 0.0 0.0"/>

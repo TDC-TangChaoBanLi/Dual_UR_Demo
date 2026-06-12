@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="my_env">
+<robot name="assembly_env_mujoco">
   <material name="aluminum">
     <color rgba="0.5 0.5 0.5 1"/>
   </material>
@@ -17,19 +17,19 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="aluminum"/>
       <geometry>
-        <mesh filename="../meshes/platform_ce12f076.STL"/>
+        <mesh filename="../../meshes/platform_ce12f076.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/platform_0_0b097b69.STL"/>
+        <mesh filename="../../meshes/platform_0_0b097b69.STL"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/platform_1_191e2908.STL"/>
+        <mesh filename="../../meshes/platform_1_191e2908.STL"/>
       </geometry>
     </collision>
   </link>
@@ -38,49 +38,49 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="aluminum"/>
       <geometry>
-        <mesh filename="../meshes/basket_a4f96c03.STL"/>
+        <mesh filename="../../meshes/basket_a4f96c03.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_0_a307d541.stl"/>
+        <mesh filename="../../meshes/basket_0_a307d541.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_1_ee7564a5.stl"/>
+        <mesh filename="../../meshes/basket_1_ee7564a5.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_2_3eddf833.stl"/>
+        <mesh filename="../../meshes/basket_2_3eddf833.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_3_339e5322.stl"/>
+        <mesh filename="../../meshes/basket_3_339e5322.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_4_c6d3d2f7.stl"/>
+        <mesh filename="../../meshes/basket_4_c6d3d2f7.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_5_52ad14e8.stl"/>
+        <mesh filename="../../meshes/basket_5_52ad14e8.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_6_327f748d.stl"/>
+        <mesh filename="../../meshes/basket_6_327f748d.stl"/>
       </geometry>
     </collision>
   </link>
@@ -94,49 +94,49 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="aluminum"/>
       <geometry>
-        <mesh filename="../meshes/basket_a4f96c03.STL"/>
+        <mesh filename="../../meshes/basket_a4f96c03.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_0_a307d541.stl"/>
+        <mesh filename="../../meshes/basket_0_a307d541.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_1_ee7564a5.stl"/>
+        <mesh filename="../../meshes/basket_1_ee7564a5.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_2_3eddf833.stl"/>
+        <mesh filename="../../meshes/basket_2_3eddf833.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_3_339e5322.stl"/>
+        <mesh filename="../../meshes/basket_3_339e5322.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_4_c6d3d2f7.stl"/>
+        <mesh filename="../../meshes/basket_4_c6d3d2f7.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_5_52ad14e8.stl"/>
+        <mesh filename="../../meshes/basket_5_52ad14e8.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/basket_6_327f748d.stl"/>
+        <mesh filename="../../meshes/basket_6_327f748d.stl"/>
       </geometry>
     </collision>
   </link>
@@ -157,61 +157,61 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/lens_f8a76047.STL"/>
+        <mesh filename="../../meshes/lens_f8a76047.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_0_95837269.stl"/>
+        <mesh filename="../../meshes/lens_0_95837269.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_1_0ea760e3.stl"/>
+        <mesh filename="../../meshes/lens_1_0ea760e3.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_2_17e9b118.stl"/>
+        <mesh filename="../../meshes/lens_2_17e9b118.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_3_374e2d52.stl"/>
+        <mesh filename="../../meshes/lens_3_374e2d52.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_4_f4180c93.stl"/>
+        <mesh filename="../../meshes/lens_4_f4180c93.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_5_7c8fdeea.stl"/>
+        <mesh filename="../../meshes/lens_5_7c8fdeea.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_6_d1d8923f.stl"/>
+        <mesh filename="../../meshes/lens_6_d1d8923f.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_7_fc00ca60.stl"/>
+        <mesh filename="../../meshes/lens_7_fc00ca60.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_8_7af0c489.stl"/>
+        <mesh filename="../../meshes/lens_8_7af0c489.stl"/>
       </geometry>
     </collision>
   </link>
@@ -225,13 +225,13 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="aluminum"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </collision>
   </link>
@@ -252,61 +252,61 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/lens_f8a76047.STL"/>
+        <mesh filename="../../meshes/lens_f8a76047.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_0_95837269.stl"/>
+        <mesh filename="../../meshes/lens_0_95837269.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_1_0ea760e3.stl"/>
+        <mesh filename="../../meshes/lens_1_0ea760e3.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_2_17e9b118.stl"/>
+        <mesh filename="../../meshes/lens_2_17e9b118.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_3_374e2d52.stl"/>
+        <mesh filename="../../meshes/lens_3_374e2d52.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_4_f4180c93.stl"/>
+        <mesh filename="../../meshes/lens_4_f4180c93.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_5_7c8fdeea.stl"/>
+        <mesh filename="../../meshes/lens_5_7c8fdeea.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_6_d1d8923f.stl"/>
+        <mesh filename="../../meshes/lens_6_d1d8923f.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_7_fc00ca60.stl"/>
+        <mesh filename="../../meshes/lens_7_fc00ca60.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_8_7af0c489.stl"/>
+        <mesh filename="../../meshes/lens_8_7af0c489.stl"/>
       </geometry>
     </collision>
   </link>
@@ -320,13 +320,13 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="aluminum"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </collision>
   </link>
@@ -347,61 +347,61 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/lens_f8a76047.STL"/>
+        <mesh filename="../../meshes/lens_f8a76047.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_0_95837269.stl"/>
+        <mesh filename="../../meshes/lens_0_95837269.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_1_0ea760e3.stl"/>
+        <mesh filename="../../meshes/lens_1_0ea760e3.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_2_17e9b118.stl"/>
+        <mesh filename="../../meshes/lens_2_17e9b118.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_3_374e2d52.stl"/>
+        <mesh filename="../../meshes/lens_3_374e2d52.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_4_f4180c93.stl"/>
+        <mesh filename="../../meshes/lens_4_f4180c93.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_5_7c8fdeea.stl"/>
+        <mesh filename="../../meshes/lens_5_7c8fdeea.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_6_d1d8923f.stl"/>
+        <mesh filename="../../meshes/lens_6_d1d8923f.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_7_fc00ca60.stl"/>
+        <mesh filename="../../meshes/lens_7_fc00ca60.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_8_7af0c489.stl"/>
+        <mesh filename="../../meshes/lens_8_7af0c489.stl"/>
       </geometry>
     </collision>
   </link>
@@ -415,13 +415,13 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="aluminum"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </collision>
   </link>
@@ -442,61 +442,61 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/lens_f8a76047.STL"/>
+        <mesh filename="../../meshes/lens_f8a76047.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_0_95837269.stl"/>
+        <mesh filename="../../meshes/lens_0_95837269.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_1_0ea760e3.stl"/>
+        <mesh filename="../../meshes/lens_1_0ea760e3.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_2_17e9b118.stl"/>
+        <mesh filename="../../meshes/lens_2_17e9b118.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_3_374e2d52.stl"/>
+        <mesh filename="../../meshes/lens_3_374e2d52.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_4_f4180c93.stl"/>
+        <mesh filename="../../meshes/lens_4_f4180c93.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_5_7c8fdeea.stl"/>
+        <mesh filename="../../meshes/lens_5_7c8fdeea.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_6_d1d8923f.stl"/>
+        <mesh filename="../../meshes/lens_6_d1d8923f.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_7_fc00ca60.stl"/>
+        <mesh filename="../../meshes/lens_7_fc00ca60.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_8_7af0c489.stl"/>
+        <mesh filename="../../meshes/lens_8_7af0c489.stl"/>
       </geometry>
     </collision>
   </link>
@@ -510,13 +510,13 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="aluminum"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </collision>
   </link>
@@ -537,61 +537,61 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/lens_f8a76047.STL"/>
+        <mesh filename="../../meshes/lens_f8a76047.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_0_95837269.stl"/>
+        <mesh filename="../../meshes/lens_0_95837269.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_1_0ea760e3.stl"/>
+        <mesh filename="../../meshes/lens_1_0ea760e3.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_2_17e9b118.stl"/>
+        <mesh filename="../../meshes/lens_2_17e9b118.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_3_374e2d52.stl"/>
+        <mesh filename="../../meshes/lens_3_374e2d52.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_4_f4180c93.stl"/>
+        <mesh filename="../../meshes/lens_4_f4180c93.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_5_7c8fdeea.stl"/>
+        <mesh filename="../../meshes/lens_5_7c8fdeea.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_6_d1d8923f.stl"/>
+        <mesh filename="../../meshes/lens_6_d1d8923f.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_7_fc00ca60.stl"/>
+        <mesh filename="../../meshes/lens_7_fc00ca60.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_8_7af0c489.stl"/>
+        <mesh filename="../../meshes/lens_8_7af0c489.stl"/>
       </geometry>
     </collision>
   </link>
@@ -605,13 +605,13 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="aluminum"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </collision>
   </link>
@@ -632,61 +632,61 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/lens_f8a76047.STL"/>
+        <mesh filename="../../meshes/lens_f8a76047.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_0_95837269.stl"/>
+        <mesh filename="../../meshes/lens_0_95837269.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_1_0ea760e3.stl"/>
+        <mesh filename="../../meshes/lens_1_0ea760e3.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_2_17e9b118.stl"/>
+        <mesh filename="../../meshes/lens_2_17e9b118.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_3_374e2d52.stl"/>
+        <mesh filename="../../meshes/lens_3_374e2d52.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_4_f4180c93.stl"/>
+        <mesh filename="../../meshes/lens_4_f4180c93.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_5_7c8fdeea.stl"/>
+        <mesh filename="../../meshes/lens_5_7c8fdeea.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_6_d1d8923f.stl"/>
+        <mesh filename="../../meshes/lens_6_d1d8923f.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_7_fc00ca60.stl"/>
+        <mesh filename="../../meshes/lens_7_fc00ca60.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_8_7af0c489.stl"/>
+        <mesh filename="../../meshes/lens_8_7af0c489.stl"/>
       </geometry>
     </collision>
   </link>
@@ -700,13 +700,13 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="aluminum"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </collision>
   </link>
@@ -727,61 +727,61 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/lens_f8a76047.STL"/>
+        <mesh filename="../../meshes/lens_f8a76047.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_0_95837269.stl"/>
+        <mesh filename="../../meshes/lens_0_95837269.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_1_0ea760e3.stl"/>
+        <mesh filename="../../meshes/lens_1_0ea760e3.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_2_17e9b118.stl"/>
+        <mesh filename="../../meshes/lens_2_17e9b118.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_3_374e2d52.stl"/>
+        <mesh filename="../../meshes/lens_3_374e2d52.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_4_f4180c93.stl"/>
+        <mesh filename="../../meshes/lens_4_f4180c93.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_5_7c8fdeea.stl"/>
+        <mesh filename="../../meshes/lens_5_7c8fdeea.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_6_d1d8923f.stl"/>
+        <mesh filename="../../meshes/lens_6_d1d8923f.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_7_fc00ca60.stl"/>
+        <mesh filename="../../meshes/lens_7_fc00ca60.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_8_7af0c489.stl"/>
+        <mesh filename="../../meshes/lens_8_7af0c489.stl"/>
       </geometry>
     </collision>
   </link>
@@ -795,13 +795,13 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="aluminum"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </collision>
   </link>
@@ -822,61 +822,61 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/lens_f8a76047.STL"/>
+        <mesh filename="../../meshes/lens_f8a76047.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_0_95837269.stl"/>
+        <mesh filename="../../meshes/lens_0_95837269.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_1_0ea760e3.stl"/>
+        <mesh filename="../../meshes/lens_1_0ea760e3.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_2_17e9b118.stl"/>
+        <mesh filename="../../meshes/lens_2_17e9b118.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_3_374e2d52.stl"/>
+        <mesh filename="../../meshes/lens_3_374e2d52.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_4_f4180c93.stl"/>
+        <mesh filename="../../meshes/lens_4_f4180c93.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_5_7c8fdeea.stl"/>
+        <mesh filename="../../meshes/lens_5_7c8fdeea.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_6_d1d8923f.stl"/>
+        <mesh filename="../../meshes/lens_6_d1d8923f.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_7_fc00ca60.stl"/>
+        <mesh filename="../../meshes/lens_7_fc00ca60.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_8_7af0c489.stl"/>
+        <mesh filename="../../meshes/lens_8_7af0c489.stl"/>
       </geometry>
     </collision>
   </link>
@@ -890,13 +890,13 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="aluminum"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </collision>
   </link>
@@ -917,61 +917,61 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/lens_f8a76047.STL"/>
+        <mesh filename="../../meshes/lens_f8a76047.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_0_95837269.stl"/>
+        <mesh filename="../../meshes/lens_0_95837269.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_1_0ea760e3.stl"/>
+        <mesh filename="../../meshes/lens_1_0ea760e3.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_2_17e9b118.stl"/>
+        <mesh filename="../../meshes/lens_2_17e9b118.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_3_374e2d52.stl"/>
+        <mesh filename="../../meshes/lens_3_374e2d52.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_4_f4180c93.stl"/>
+        <mesh filename="../../meshes/lens_4_f4180c93.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_5_7c8fdeea.stl"/>
+        <mesh filename="../../meshes/lens_5_7c8fdeea.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_6_d1d8923f.stl"/>
+        <mesh filename="../../meshes/lens_6_d1d8923f.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_7_fc00ca60.stl"/>
+        <mesh filename="../../meshes/lens_7_fc00ca60.stl"/>
       </geometry>
     </collision>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/lens_8_7af0c489.stl"/>
+        <mesh filename="../../meshes/lens_8_7af0c489.stl"/>
       </geometry>
     </collision>
   </link>
@@ -985,13 +985,13 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <material name="aluminum"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/main_body_peg_f2370d47.STL"/>
+        <mesh filename="../../meshes/main_body_peg_f2370d47.STL"/>
       </geometry>
     </collision>
   </link>
@@ -1023,7 +1023,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_0.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1032,7 +1032,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_1.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1041,7 +1041,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_2.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_2.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1050,7 +1050,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_3.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_3.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1059,7 +1059,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_4.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_4.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1068,7 +1068,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_5.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_5.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1077,7 +1077,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_6.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_6.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1086,7 +1086,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_7.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_7.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1095,7 +1095,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_8.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_8.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1104,7 +1104,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_9.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_9.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1113,7 +1113,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_10.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_10.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1122,7 +1122,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_11.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_11.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1131,7 +1131,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_12.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_12.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1140,7 +1140,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_13.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_13.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1149,7 +1149,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_14.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_14.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1158,7 +1158,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_15.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_15.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1167,7 +1167,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_16.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_16.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1176,7 +1176,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_17.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_17.obj"/>
       </geometry>
     </visual>
     <collision>
@@ -1211,7 +1211,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/base_b81001a2_0.obj"/>
+        <mesh filename="../../meshes/base_b81001a2_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1220,13 +1220,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/base_b81001a2_1.obj"/>
+        <mesh filename="../../meshes/base_b81001a2_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 3.141592653589793"/>
       <geometry>
-        <mesh filename="../meshes/base_bd1b2dd6.stl"/>
+        <mesh filename="../../meshes/base_bd1b2dd6.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1242,7 +1242,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/shoulder_0fe2d913_0.obj"/>
+        <mesh filename="../../meshes/shoulder_0fe2d913_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1251,7 +1251,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/shoulder_0fe2d913_1.obj"/>
+        <mesh filename="../../meshes/shoulder_0fe2d913_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1260,13 +1260,13 @@
         <color rgba="0.49019608 0.67843137 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/shoulder_0fe2d913_2.obj"/>
+        <mesh filename="../../meshes/shoulder_0fe2d913_2.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 3.141592653589793"/>
       <geometry>
-        <mesh filename="../meshes/shoulder_661339ad.stl"/>
+        <mesh filename="../../meshes/shoulder_661339ad.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1282,7 +1282,7 @@
         <color rgba="0.49019608 0.67843137 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_0.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1291,7 +1291,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_1.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1300,7 +1300,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_2.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_2.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1309,7 +1309,7 @@
         <color rgba="0.49019608 0.67843137 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_3.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_3.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1318,7 +1318,7 @@
         <color rgba="0.81960784 0.81960784 0.81960784 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_4.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_4.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1327,7 +1327,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_5.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_5.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1336,7 +1336,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_6.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_6.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1345,13 +1345,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_7.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_7.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0.138" rpy="1.5707963267948966 0 -1.5707963267948966"/>
       <geometry>
-        <mesh filename="../meshes/upperarm_d0455716.stl"/>
+        <mesh filename="../../meshes/upperarm_d0455716.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1367,7 +1367,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_0.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1376,7 +1376,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_1.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1385,7 +1385,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_2.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_2.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1394,7 +1394,7 @@
         <color rgba="0.81960784 0.81960784 0.81960784 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_3.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_3.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1403,7 +1403,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_4.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_4.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1412,7 +1412,7 @@
         <color rgba="0.49019608 0.67843137 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_5.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_5.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1421,13 +1421,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_6.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_6.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0.007" rpy="1.5707963267948966 0 -1.5707963267948966"/>
       <geometry>
-        <mesh filename="../meshes/forearm_98bdcf8e.stl"/>
+        <mesh filename="../../meshes/forearm_98bdcf8e.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1443,7 +1443,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist1_1e3ee180_0.obj"/>
+        <mesh filename="../../meshes/wrist1_1e3ee180_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1452,7 +1452,7 @@
         <color rgba="0.49019608 0.67843137 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist1_1e3ee180_1.obj"/>
+        <mesh filename="../../meshes/wrist1_1e3ee180_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1461,13 +1461,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist1_1e3ee180_2.obj"/>
+        <mesh filename="../../meshes/wrist1_1e3ee180_2.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 -0.127" rpy="1.5707963267948966 0 0"/>
       <geometry>
-        <mesh filename="../meshes/wrist1_2df87b9f.stl"/>
+        <mesh filename="../../meshes/wrist1_2df87b9f.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1483,7 +1483,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist2_bde41993_0.obj"/>
+        <mesh filename="../../meshes/wrist2_bde41993_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1492,7 +1492,7 @@
         <color rgba="0.49019608 0.67843137 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist2_bde41993_1.obj"/>
+        <mesh filename="../../meshes/wrist2_bde41993_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1501,13 +1501,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist2_bde41993_2.obj"/>
+        <mesh filename="../../meshes/wrist2_bde41993_2.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 -0.0997" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/wrist2_e6869549.stl"/>
+        <mesh filename="../../meshes/wrist2_e6869549.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1523,13 +1523,13 @@
         <color rgba="0.81960784 0.81960784 0.81960784 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist3_8e7adc5c_0.obj"/>
+        <mesh filename="../../meshes/wrist3_8e7adc5c_0.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 -0.0989" rpy="1.5707963267948966 0 0"/>
       <geometry>
-        <mesh filename="../meshes/wrist3_21abe53b.stl"/>
+        <mesh filename="../../meshes/wrist3_21abe53b.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1627,13 +1627,13 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/RealSense_D435_Shelf_d359ca29.STL"/>
+        <mesh filename="../../meshes/RealSense_D435_Shelf_d359ca29.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/RealSense_D435_Shelf_d359ca29.STL"/>
+        <mesh filename="../../meshes/RealSense_D435_Shelf_d359ca29.STL"/>
       </geometry>
     </collision>
   </link>
@@ -1671,7 +1671,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_0.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1680,7 +1680,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_1.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1689,7 +1689,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_2.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_2.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1698,7 +1698,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_3.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_3.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1707,7 +1707,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_4.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_4.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1716,7 +1716,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_5.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_5.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1725,7 +1725,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_6.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_6.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1734,7 +1734,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_7.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_7.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1743,7 +1743,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_8.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_8.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1752,7 +1752,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_9.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_9.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1761,7 +1761,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_10.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_10.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1770,7 +1770,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_11.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_11.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1779,7 +1779,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_12.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_12.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1788,7 +1788,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_13.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_13.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1797,7 +1797,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_14.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_14.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1806,7 +1806,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_15.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_15.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1815,7 +1815,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_16.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_16.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1824,7 +1824,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_17.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_17.obj"/>
       </geometry>
     </visual>
     <collision>
@@ -1899,7 +1899,7 @@
         <color rgba="0.03921569 0.03921569 0.03921569 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/ur_to_robotiq_adapter_e07b68cf_0.obj"/>
+        <mesh filename="../../meshes/ur_to_robotiq_adapter_e07b68cf_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1908,13 +1908,13 @@
         <color rgba="0.29803922 0.29803922 0.29803922 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/ur_to_robotiq_adapter_e07b68cf_1.obj"/>
+        <mesh filename="../../meshes/ur_to_robotiq_adapter_e07b68cf_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/ur_to_robotiq_adapter_c1f8affd.stl"/>
+        <mesh filename="../../meshes/ur_to_robotiq_adapter_c1f8affd.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1936,7 +1936,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/robotiq_base_ba4c22e7_0.obj"/>
+        <mesh filename="../../meshes/robotiq_base_ba4c22e7_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -1945,13 +1945,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/robotiq_base_ba4c22e7_1.obj"/>
+        <mesh filename="../../meshes/robotiq_base_ba4c22e7_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/robotiq_base_e14b1363.stl"/>
+        <mesh filename="../../meshes/robotiq_base_e14b1363.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1967,13 +1967,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_knuckle_ac6d7519_0.obj"/>
+        <mesh filename="../../meshes/left_knuckle_ac6d7519_0.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/left_knuckle_51d3a21e.stl"/>
+        <mesh filename="../../meshes/left_knuckle_51d3a21e.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1989,13 +1989,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_knuckle_922d025b_0.obj"/>
+        <mesh filename="../../meshes/right_knuckle_922d025b_0.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/right_knuckle_8dc62fad.stl"/>
+        <mesh filename="../../meshes/right_knuckle_8dc62fad.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2011,7 +2011,7 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_finger_e1ea88f9_0.obj"/>
+        <mesh filename="../../meshes/left_finger_e1ea88f9_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2020,13 +2020,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_finger_e1ea88f9_1.obj"/>
+        <mesh filename="../../meshes/left_finger_e1ea88f9_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/left_finger_1b48fede.stl"/>
+        <mesh filename="../../meshes/left_finger_1b48fede.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2042,7 +2042,7 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_finger_12094dbb_0.obj"/>
+        <mesh filename="../../meshes/right_finger_12094dbb_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2051,13 +2051,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_finger_12094dbb_1.obj"/>
+        <mesh filename="../../meshes/right_finger_12094dbb_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/right_finger_df3e86a5.stl"/>
+        <mesh filename="../../meshes/right_finger_df3e86a5.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2073,7 +2073,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_inner_knuckle_d6e20ced_0.obj"/>
+        <mesh filename="../../meshes/left_inner_knuckle_d6e20ced_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2082,13 +2082,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_inner_knuckle_d6e20ced_1.obj"/>
+        <mesh filename="../../meshes/left_inner_knuckle_d6e20ced_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/left_inner_knuckle_11ecd5a1.stl"/>
+        <mesh filename="../../meshes/left_inner_knuckle_11ecd5a1.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2104,7 +2104,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_inner_knuckle_8d05a49d_0.obj"/>
+        <mesh filename="../../meshes/right_inner_knuckle_8d05a49d_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2113,13 +2113,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_inner_knuckle_8d05a49d_1.obj"/>
+        <mesh filename="../../meshes/right_inner_knuckle_8d05a49d_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/right_inner_knuckle_2c3a72a4.stl"/>
+        <mesh filename="../../meshes/right_inner_knuckle_2c3a72a4.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2135,7 +2135,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_finger_tip_4c918411_0.obj"/>
+        <mesh filename="../../meshes/left_finger_tip_4c918411_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2144,13 +2144,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_finger_tip_4c918411_1.obj"/>
+        <mesh filename="../../meshes/left_finger_tip_4c918411_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/left_finger_tip_c9609174.stl"/>
+        <mesh filename="../../meshes/left_finger_tip_c9609174.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2166,7 +2166,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_finger_tip_5aafdc4f_0.obj"/>
+        <mesh filename="../../meshes/right_finger_tip_5aafdc4f_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2175,13 +2175,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_finger_tip_5aafdc4f_1.obj"/>
+        <mesh filename="../../meshes/right_finger_tip_5aafdc4f_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/right_finger_tip_8abbbc6d.stl"/>
+        <mesh filename="../../meshes/right_finger_tip_8abbbc6d.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2262,7 +2262,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/base_b81001a2_0.obj"/>
+        <mesh filename="../../meshes/base_b81001a2_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2271,13 +2271,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/base_b81001a2_1.obj"/>
+        <mesh filename="../../meshes/base_b81001a2_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 3.141592653589793"/>
       <geometry>
-        <mesh filename="../meshes/base_bd1b2dd6.stl"/>
+        <mesh filename="../../meshes/base_bd1b2dd6.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2293,7 +2293,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/shoulder_0fe2d913_0.obj"/>
+        <mesh filename="../../meshes/shoulder_0fe2d913_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2302,7 +2302,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/shoulder_0fe2d913_1.obj"/>
+        <mesh filename="../../meshes/shoulder_0fe2d913_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2311,13 +2311,13 @@
         <color rgba="0.49019608 0.67843137 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/shoulder_0fe2d913_2.obj"/>
+        <mesh filename="../../meshes/shoulder_0fe2d913_2.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 3.141592653589793"/>
       <geometry>
-        <mesh filename="../meshes/shoulder_661339ad.stl"/>
+        <mesh filename="../../meshes/shoulder_661339ad.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2333,7 +2333,7 @@
         <color rgba="0.49019608 0.67843137 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_0.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2342,7 +2342,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_1.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2351,7 +2351,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_2.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_2.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2360,7 +2360,7 @@
         <color rgba="0.49019608 0.67843137 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_3.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_3.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2369,7 +2369,7 @@
         <color rgba="0.81960784 0.81960784 0.81960784 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_4.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_4.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2378,7 +2378,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_5.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_5.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2387,7 +2387,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_6.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_6.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2396,13 +2396,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/upperarm_12b51e98_7.obj"/>
+        <mesh filename="../../meshes/upperarm_12b51e98_7.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0.138" rpy="1.5707963267948966 0 -1.5707963267948966"/>
       <geometry>
-        <mesh filename="../meshes/upperarm_d0455716.stl"/>
+        <mesh filename="../../meshes/upperarm_d0455716.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2418,7 +2418,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_0.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2427,7 +2427,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_1.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2436,7 +2436,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_2.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_2.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2445,7 +2445,7 @@
         <color rgba="0.81960784 0.81960784 0.81960784 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_3.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_3.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2454,7 +2454,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_4.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_4.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2463,7 +2463,7 @@
         <color rgba="0.49019608 0.67843137 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_5.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_5.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2472,13 +2472,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/forearm_861ccd15_6.obj"/>
+        <mesh filename="../../meshes/forearm_861ccd15_6.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0.007" rpy="1.5707963267948966 0 -1.5707963267948966"/>
       <geometry>
-        <mesh filename="../meshes/forearm_98bdcf8e.stl"/>
+        <mesh filename="../../meshes/forearm_98bdcf8e.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2494,7 +2494,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist1_1e3ee180_0.obj"/>
+        <mesh filename="../../meshes/wrist1_1e3ee180_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2503,7 +2503,7 @@
         <color rgba="0.49019608 0.67843137 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist1_1e3ee180_1.obj"/>
+        <mesh filename="../../meshes/wrist1_1e3ee180_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2512,13 +2512,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist1_1e3ee180_2.obj"/>
+        <mesh filename="../../meshes/wrist1_1e3ee180_2.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 -0.127" rpy="1.5707963267948966 0 0"/>
       <geometry>
-        <mesh filename="../meshes/wrist1_2df87b9f.stl"/>
+        <mesh filename="../../meshes/wrist1_2df87b9f.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2534,7 +2534,7 @@
         <color rgba="0.27843137 0.27843137 0.27843137 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist2_bde41993_0.obj"/>
+        <mesh filename="../../meshes/wrist2_bde41993_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2543,7 +2543,7 @@
         <color rgba="0.49019608 0.67843137 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist2_bde41993_1.obj"/>
+        <mesh filename="../../meshes/wrist2_bde41993_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2552,13 +2552,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist2_bde41993_2.obj"/>
+        <mesh filename="../../meshes/wrist2_bde41993_2.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 -0.0997" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/wrist2_e6869549.stl"/>
+        <mesh filename="../../meshes/wrist2_e6869549.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2574,13 +2574,13 @@
         <color rgba="0.81960784 0.81960784 0.81960784 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/wrist3_8e7adc5c_0.obj"/>
+        <mesh filename="../../meshes/wrist3_8e7adc5c_0.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 -0.0989" rpy="1.5707963267948966 0 0"/>
       <geometry>
-        <mesh filename="../meshes/wrist3_21abe53b.stl"/>
+        <mesh filename="../../meshes/wrist3_21abe53b.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2678,13 +2678,13 @@
         <color rgba="0.7 0.7 0.7 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/RealSense_D435_Shelf_d359ca29.STL"/>
+        <mesh filename="../../meshes/RealSense_D435_Shelf_d359ca29.STL"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/RealSense_D435_Shelf_d359ca29.STL"/>
+        <mesh filename="../../meshes/RealSense_D435_Shelf_d359ca29.STL"/>
       </geometry>
     </collision>
   </link>
@@ -2722,7 +2722,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_0.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2731,7 +2731,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_1.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_1.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2740,7 +2740,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_2.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_2.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2749,7 +2749,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_3.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_3.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2758,7 +2758,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_4.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_4.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2767,7 +2767,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_5.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_5.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2776,7 +2776,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_6.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_6.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2785,7 +2785,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_7.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_7.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2794,7 +2794,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_8.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_8.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2803,7 +2803,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_9.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_9.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2812,7 +2812,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_10.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_10.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2821,7 +2821,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_11.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_11.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2830,7 +2830,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_12.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_12.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2839,7 +2839,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_13.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_13.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2848,7 +2848,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_14.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_14.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2857,7 +2857,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_15.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_15.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2866,7 +2866,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_16.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_16.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2875,7 +2875,7 @@
         <color rgba="0.74901961 0.74901961 0.74901961 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/d435_6743a526_17.obj"/>
+        <mesh filename="../../meshes/d435_6743a526_17.obj"/>
       </geometry>
     </visual>
     <collision>
@@ -2950,7 +2950,7 @@
         <color rgba="0.03921569 0.03921569 0.03921569 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/ur_to_robotiq_adapter_e07b68cf_0.obj"/>
+        <mesh filename="../../meshes/ur_to_robotiq_adapter_e07b68cf_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2959,13 +2959,13 @@
         <color rgba="0.29803922 0.29803922 0.29803922 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/ur_to_robotiq_adapter_e07b68cf_1.obj"/>
+        <mesh filename="../../meshes/ur_to_robotiq_adapter_e07b68cf_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/ur_to_robotiq_adapter_c1f8affd.stl"/>
+        <mesh filename="../../meshes/ur_to_robotiq_adapter_c1f8affd.stl"/>
       </geometry>
     </collision>
   </link>
@@ -2987,7 +2987,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/robotiq_base_ba4c22e7_0.obj"/>
+        <mesh filename="../../meshes/robotiq_base_ba4c22e7_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -2996,13 +2996,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/robotiq_base_ba4c22e7_1.obj"/>
+        <mesh filename="../../meshes/robotiq_base_ba4c22e7_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/robotiq_base_e14b1363.stl"/>
+        <mesh filename="../../meshes/robotiq_base_e14b1363.stl"/>
       </geometry>
     </collision>
   </link>
@@ -3018,13 +3018,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_knuckle_ac6d7519_0.obj"/>
+        <mesh filename="../../meshes/left_knuckle_ac6d7519_0.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/left_knuckle_51d3a21e.stl"/>
+        <mesh filename="../../meshes/left_knuckle_51d3a21e.stl"/>
       </geometry>
     </collision>
   </link>
@@ -3040,13 +3040,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_knuckle_922d025b_0.obj"/>
+        <mesh filename="../../meshes/right_knuckle_922d025b_0.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/right_knuckle_8dc62fad.stl"/>
+        <mesh filename="../../meshes/right_knuckle_8dc62fad.stl"/>
       </geometry>
     </collision>
   </link>
@@ -3062,7 +3062,7 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_finger_e1ea88f9_0.obj"/>
+        <mesh filename="../../meshes/left_finger_e1ea88f9_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -3071,13 +3071,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_finger_e1ea88f9_1.obj"/>
+        <mesh filename="../../meshes/left_finger_e1ea88f9_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/left_finger_1b48fede.stl"/>
+        <mesh filename="../../meshes/left_finger_1b48fede.stl"/>
       </geometry>
     </collision>
   </link>
@@ -3093,7 +3093,7 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_finger_12094dbb_0.obj"/>
+        <mesh filename="../../meshes/right_finger_12094dbb_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -3102,13 +3102,13 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_finger_12094dbb_1.obj"/>
+        <mesh filename="../../meshes/right_finger_12094dbb_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/right_finger_df3e86a5.stl"/>
+        <mesh filename="../../meshes/right_finger_df3e86a5.stl"/>
       </geometry>
     </collision>
   </link>
@@ -3124,7 +3124,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_inner_knuckle_d6e20ced_0.obj"/>
+        <mesh filename="../../meshes/left_inner_knuckle_d6e20ced_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -3133,13 +3133,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_inner_knuckle_d6e20ced_1.obj"/>
+        <mesh filename="../../meshes/left_inner_knuckle_d6e20ced_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/left_inner_knuckle_11ecd5a1.stl"/>
+        <mesh filename="../../meshes/left_inner_knuckle_11ecd5a1.stl"/>
       </geometry>
     </collision>
   </link>
@@ -3155,7 +3155,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_inner_knuckle_8d05a49d_0.obj"/>
+        <mesh filename="../../meshes/right_inner_knuckle_8d05a49d_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -3164,13 +3164,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_inner_knuckle_8d05a49d_1.obj"/>
+        <mesh filename="../../meshes/right_inner_knuckle_8d05a49d_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/right_inner_knuckle_2c3a72a4.stl"/>
+        <mesh filename="../../meshes/right_inner_knuckle_2c3a72a4.stl"/>
       </geometry>
     </collision>
   </link>
@@ -3186,7 +3186,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_finger_tip_4c918411_0.obj"/>
+        <mesh filename="../../meshes/left_finger_tip_4c918411_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -3195,13 +3195,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/left_finger_tip_4c918411_1.obj"/>
+        <mesh filename="../../meshes/left_finger_tip_4c918411_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/left_finger_tip_c9609174.stl"/>
+        <mesh filename="../../meshes/left_finger_tip_c9609174.stl"/>
       </geometry>
     </collision>
   </link>
@@ -3217,7 +3217,7 @@
         <color rgba="0.03137255 0.03137255 0.03137255 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_finger_tip_5aafdc4f_0.obj"/>
+        <mesh filename="../../meshes/right_finger_tip_5aafdc4f_0.obj"/>
       </geometry>
     </visual>
     <visual>
@@ -3226,13 +3226,13 @@
         <color rgba="0.8 0.8 0.8 1.0"/>
       </material>
       <geometry>
-        <mesh filename="../meshes/right_finger_tip_5aafdc4f_1.obj"/>
+        <mesh filename="../../meshes/right_finger_tip_5aafdc4f_1.obj"/>
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="../meshes/right_finger_tip_8abbbc6d.stl"/>
+        <mesh filename="../../meshes/right_finger_tip_8abbbc6d.stl"/>
       </geometry>
     </collision>
   </link>
@@ -3331,7 +3331,7 @@
       <command_interface name="velocity"/>
       <command_interface name="effort"/>
       <state_interface name="position">
-        <param name="initial_value">-0.87</param>
+        <param name="initial_value">-1.27</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -3341,7 +3341,7 @@
       <command_interface name="velocity"/>
       <command_interface name="effort"/>
       <state_interface name="position">
-        <param name="initial_value">0.2</param>
+        <param name="initial_value">1.0</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -3351,7 +3351,7 @@
       <command_interface name="velocity"/>
       <command_interface name="effort"/>
       <state_interface name="position">
-        <param name="initial_value">-0.9</param>
+        <param name="initial_value">-1.3</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>

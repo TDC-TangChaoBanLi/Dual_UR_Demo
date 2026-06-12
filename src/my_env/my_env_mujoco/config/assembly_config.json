@@ -107,31 +107,31 @@
         },
         "texture": {
             "lens_0_link": [
-                { "name": "lens_0_link_TEXTURE","file": "../mjcf/tag36h11-100.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
+                { "name": "lens_0_link_TEXTURE","file": "../textures/tag36h11-100.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
             ],
             "lens_A1_link": [
-                { "name": "lens_A1_link_TEXTURE","file": "../mjcf/tag36h11-101.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
+                { "name": "lens_A1_link_TEXTURE","file": "../textures/tag36h11-101.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
             ],
             "lens_A2_link": [
-                { "name": "lens_A2_link_TEXTURE","file": "../mjcf/tag36h11-102.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
+                { "name": "lens_A2_link_TEXTURE","file": "../textures/tag36h11-102.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
             ],
             "lens_A3_link": [
-                { "name": "lens_A3_link_TEXTURE","file": "../mjcf/tag36h11-103.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
+                { "name": "lens_A3_link_TEXTURE","file": "../textures/tag36h11-103.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
             ],
             "lens_A4_link": [
-                { "name": "lens_A4_link_TEXTURE","file": "../mjcf/tag36h11-104.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
+                { "name": "lens_A4_link_TEXTURE","file": "../textures/tag36h11-104.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
             ],
             "lens_B1_link": [
-                { "name": "lens_B1_link_TEXTURE","file": "../mjcf/tag36h11-105.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
+                { "name": "lens_B1_link_TEXTURE","file": "../textures/tag36h11-105.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
             ],
             "lens_B2_link": [
-                { "name": "lens_B2_link_TEXTURE","file": "../mjcf/tag36h11-106.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
+                { "name": "lens_B2_link_TEXTURE","file": "../textures/tag36h11-106.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
             ],
             "lens_B3_link": [
-                { "name": "lens_B3_link_TEXTURE","file": "../mjcf/tag36h11-107.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
+                { "name": "lens_B3_link_TEXTURE","file": "../textures/tag36h11-107.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
             ],
             "lens_B4_link": [
-                { "name": "lens_B4_link_TEXTURE","file": "../mjcf/tag36h11-108.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
+                { "name": "lens_B4_link_TEXTURE","file": "../textures/tag36h11-108.png", "pos": "0.0 0.0 0.0", "euler": "0.0 0.0 0.0", "size": "0.05 0.05"}
             ]
         },
         "contact":{

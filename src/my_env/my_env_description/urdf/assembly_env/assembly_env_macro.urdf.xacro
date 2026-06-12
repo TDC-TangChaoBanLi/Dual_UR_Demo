@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<robot name="my_env" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="assembly_env" xmlns:xacro="http://ros.org/wiki/xacro">
 
-<!-- xacro src/my_env/my_env_description/urdf/my_env.urdf.xacro -o src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf -->
-<!-- urdf2mjcf src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf -o ./src/my_env/my_env_mujoco/mjcf/my_env_mujoco.xml -m src/my_env/my_env_mujoco/meshes -c -j src/my_env/my_env_mujoco/config/config.json -->
+<!-- xacro src/my_env/my_env_description/urdf/assembly_env/assembly_env.urdf.xacro -o src/my_env/my_env_mujoco/urdf/assembly_env_mujoco.urdf -->
+<!-- urdf2mjcf src/my_env/my_env_mujoco/urdf/assembly_env_mujoco.urdf -o ./src/my_env/my_env_mujoco/mjcf/assembly_env_mujoco.xml -m src/my_env/my_env_mujoco/meshes -c -j src/my_env/my_env_mujoco/config/config.json -->
 
 
   <xacro:include filename="$(find my_env_description)/urdf/my_arm_macro.urdf.xacro"/>
   <xacro:include filename="$(find my_env_description)/urdf/my_arm_mujoco_control.urdf.xacro"/>
-  <xacro:include filename="$(find my_env_description)/urdf/len_macro.xacro"/>
+  <xacro:include filename="$(find my_env_description)/urdf/assembly_env/len_macro.xacro"/>
 
-  <xacro:macro name="my_env" params="
+  <xacro:macro name="assembly_env" params="
   arm_A_tf_prefix:=arm_A_
   arm_B_tf_prefix:=arm_B_
   use_fake_hardware:=false

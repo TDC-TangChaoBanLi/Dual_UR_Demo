@@ -2,5 +2,7 @@ build/
 install/
 log/
 .vscode/browse.*
+__pycache__/
+
 
 src/my_env/my_env_mujoco/meshes/*
