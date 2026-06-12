@@ -11,33 +11,36 @@ def generate_launch_description():
 
     launch_rviz = LaunchConfiguration('launch_rviz')
 
-    arm_A_tf_prefix = LaunchConfiguration('arm_A_prefix')
-    arm_B_tf_prefix = LaunchConfiguration('arm_B_prefix')
-
-    xacro_file_path = PathJoinSubstitution([FindPackageShare('my_env_mujoco'), 'urdf', 'my_env_mujoco.urdf.xacro'])
-    mjcf_file_path = PathJoinSubstitution([FindPackageShare('my_env_mujoco'), 'mjcf', 'my_env_mujoco.xml'])
-    pids_config_file_path = PathJoinSubstitution([FindPackageShare('my_env_control'), 'config', 'mujoco_pids_config.yaml'])
-    controller_parameters = PathJoinSubstitution([FindPackageShare("my_env_control"), "config", "my_env_mujoco_controller.yaml"])
-    mujoco_plugins_file = PathJoinSubstitution([FindPackageShare("my_env_control"), "config", "mujoco_ros2_control_plugins.yaml"])
-    rviz_file_path = PathJoinSubstitution([FindPackageShare('my_env_control'), 'rviz', 'my_env_mujoco.rviz'])
-
-
     launch_rviz_arg = DeclareLaunchArgument(
             "launch_rviz",
             default_value="true",
             description="Launch RViz?",
         )
-    arm_A_tf_prefix_arg = DeclareLaunchArgument(
-            "arm_A_prefix",
-            default_value="arm_A_",
-            description="Prefix for arm_A_.",
+    xacro_file_path_arg = DeclareLaunchArgument(
+            "xacro_file_path",
+            default_value="urdf/my_env_mujoco.urdf.xacro",
+            description="Relative path to xacro file in my_env_mujoco package.",
+        )
+    mjcf_file_path_arg = DeclareLaunchArgument(
+            "mjcf_file_path",
+            default_value="mjcf/my_env_mujoco.xml",
+            description="Relative path to mjcf file in my_env_mujoco package.",
         )
 
-    arm_B_tf_prefix_arg = DeclareLaunchArgument(
-            "arm_B_prefix",
-            default_value="arm_B_",
-            description="Prefix for arm_B_.",
-        )
+
+    arm_A_tf_prefix = "arm_A_"
+    arm_B_tf_prefix = "arm_B_"
+
+    pkg_my_env_mujoco = FindPackageShare('my_env_mujoco')
+    pkg_my_env_control = FindPackageShare('my_env_control')
+
+
+    xacro_file_path = PathJoinSubstitution([pkg_my_env_mujoco, LaunchConfiguration('xacro_file_path')])
+    mjcf_file_path = PathJoinSubstitution([pkg_my_env_mujoco, LaunchConfiguration('mjcf_file_path')])
+    pids_config_file_path = PathJoinSubstitution([pkg_my_env_control, 'config', 'mujoco_pids_config.yaml'])
+    controller_parameters = PathJoinSubstitution([pkg_my_env_control, "config", "my_env_mujoco_controller.yaml"])
+    mujoco_plugins_file = PathJoinSubstitution([pkg_my_env_control, "config", "mujoco_ros2_control_plugins.yaml"])
+    rviz_file_path = PathJoinSubstitution([pkg_my_env_control, 'rviz', 'my_env_mujoco.rviz'])
 
 
     # robot_description: 假定你有一个 xacro 可以产出包含两臂的 model
@@ -122,8 +125,8 @@ def generate_launch_description():
     return LaunchDescription(
         [
             launch_rviz_arg,
-            arm_A_tf_prefix_arg,
-            arm_B_tf_prefix_arg,
+            xacro_file_path_arg,
+            mjcf_file_path_arg,
             robot_state_publisher_node,
             control_node,
             spawn_joint_state_broadcaster,

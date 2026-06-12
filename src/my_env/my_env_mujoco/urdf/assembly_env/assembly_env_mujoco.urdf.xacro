@@ -23,7 +23,7 @@
   <xacro:arg name="use_fake_hardware" default="true" />
   <xacro:arg name="fake_sensor_commands" default="true" />
   <xacro:arg name="use_sim_mujoco" default="true" />
-  <xacro:arg name="mjcf_file_path" default="$(find my_env_mujoco)/urdf/my_env_mujoco.xml"/>
+  <xacro:arg name="mjcf_file_path" default="$(find my_env_mujoco)/mjcf/assembly_env_mujoco.xml"/>
   <xacro:arg name="pids_config_file_path" default="$(find my_env_control)/config/mujoco_pids_config.yaml"/>
   <xacro:arg name="generate_ros2_control" default="false" />
   <!-- <xacro:arg name="ur_A_initial_positions" default="{shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0}"/> -->

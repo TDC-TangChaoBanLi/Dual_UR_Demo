@@ -16,8 +16,6 @@ from launch_ros.descriptions import ParameterValue
 def generate_launch_description():
 
     my_control_package = "my_env_control"
-    my_control_xacro_file = "my_env_control.urdf.xacro"
-    my_rvizconfig_file = "my_env_control.rviz"
 
     my_ur_controller_launch_file = "my_ur_control.launch.py"
     my_ur_runtime_config_package = "my_env_control"
@@ -104,12 +102,25 @@ def generate_launch_description():
             default_value="192.168.1.100",
             description="The IP address of the robot controller.",
         )
+    xacro_file_path_arg = DeclareLaunchArgument(
+            "xacro_file_path",
+            default_value="urdf/my_env_control.urdf.xacro",
+            description="Relative path to xacro file in my_env_control package.",
+        )
+    rviz_config_file_arg = DeclareLaunchArgument(
+            "rviz_config_file",
+            default_value="rviz/my_env_control.rviz",
+            description="Relative path to rviz config file in my_env_control package.",
+        )
+
+    xacro_file_path = PathJoinSubstitution([FindPackageShare(my_control_package), LaunchConfiguration('xacro_file_path')])
+    rviz_config_file = PathJoinSubstitution([FindPackageShare(my_control_package), LaunchConfiguration('rviz_config_file')])
 
     # 机器人描述
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]), " ",
-            PathJoinSubstitution([FindPackageShare(my_control_package), "urdf", my_control_xacro_file]), " ",
+            xacro_file_path, " ",
             "arm_A_tf_prefix:=", arm_A_tf_prefix, " ",
             "arm_B_tf_prefix:=", arm_B_tf_prefix, " ",
             "use_fake_hardware:=", use_fake_hardware, " ", 
@@ -264,7 +275,6 @@ def generate_launch_description():
 
 
     # rviz 节点的启动
-    rviz_config_file = PathJoinSubstitution([FindPackageShare(my_control_package), "rviz", my_rvizconfig_file])
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
@@ -284,6 +294,9 @@ def generate_launch_description():
         ur_headless_mode_arg,
         ur_initial_joint_controller_arg,
         ur_reverse_ip_arg,
+
+        xacro_file_path_arg,
+        rviz_config_file_arg,
 
         rviz_node,# if you don't want to launch the rviz2 to show the robot state, comment it
 
