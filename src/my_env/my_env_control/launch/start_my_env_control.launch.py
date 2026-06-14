@@ -33,7 +33,7 @@ def generate_launch_description():
     robotiq_B_namespace = "robotiq_B"
 
 
-    use_fake_hardware = LaunchConfiguration('use_fake_hardware')    
+    use_fake_hardware = LaunchConfiguration('use_fake_hardware')
     use_fake_sensor_commands = LaunchConfiguration('use_fake_sensor_commands')
     launch_rviz = LaunchConfiguration('launch_rviz')
     generate_ros2_control = "true"
@@ -44,7 +44,7 @@ def generate_launch_description():
 
     arm_A_tf_prefix = "arm_A_"
     ur_A_ur_type = "ur5"
-    ur_A_robot_ip = "192.168.1.101"
+    ur_A_robot_ip = "192.168.1.17"
     ur_A_reverse_port = "50001"
     ur_A_script_sender_port = "50002"
     ur_A_script_command_port = "50003"
@@ -53,7 +53,7 @@ def generate_launch_description():
 
     arm_B_tf_prefix = "arm_B_"
     ur_B_ur_type = "ur5e"
-    ur_B_robot_ip = "192.168.1.102"
+    ur_B_robot_ip = "192.168.1.11"
     ur_B_reverse_port = "50011"
     ur_B_script_sender_port = "50012"
     ur_B_script_command_port = "50013"

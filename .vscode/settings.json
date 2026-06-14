@@ -7,6 +7,14 @@
         "/opt/ros/humble/lib/python3.10/site-packages",
         "/opt/ros/humble/local/lib/python3.10/dist-packages"
     ],
-    "cmake.ignoreCMakeListsMissing": true,
-    "github.copilot.chat.codeGeneration.useInstructionFiles": true
+    "terminal.integrated.profiles.linux": {
+        "ROS2 Bash": {
+            "path": "/bin/bash",
+            "args": [
+                "--init-file",
+                "${workspaceFolder}/.vscode/ros2_terminal.bash"
+            ]
+        }
+    },
+    "terminal.integrated.defaultProfile.linux": "ROS2 Bash"
 }

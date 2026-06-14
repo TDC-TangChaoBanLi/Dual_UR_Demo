@@ -40,48 +40,74 @@
 
 
   <!-- 定义材料 -->
-  <material name="wood">
-    <color rgba="0.65 0.5 0.39 1"/>
+  <material name="table_material">
+    <color rgba="0.863 0.875 0.890 1"/>
+  </material>
+  <material name="arm_shelf_material">
+    <color rgba="0.15 0.15 0.15 1"/>
   </material>
 
   <link name="world"/>
-  <!-- 桌子-基座 joint -->
+  <!-- world2tabel joint -->
   <joint name="world_to_table" type="fixed">
     <parent link="world" />
     <child link="table" />
-    <origin xyz="0 0 0" rpy="0 0 0" />
+    <origin xyz="0 ${1.0/2 + 0.05} 0" rpy="0 0 0" />
+  </joint>
+  <!-- world2arm_shelf joint -->
+  <joint name="world_to_arm_shelf" type="fixed">
+    <parent link="world" />
+    <child link="arm_shelf" />
+    <origin xyz="0 ${-0.728/2} 0" rpy="0 0 0" />
   </joint>
 
   <!-- 桌子 link -->
   <link name="table">
     <visual>
       <geometry>
-        <box size="2.0 1.2 0.8"/>
+        <box size="2.7 1.0 0.765"/> # L*W*H=2.7*1.0*0.765m
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0.4"/>
-      <material name="wood"/>
+      <origin rpy="0 0 0" xyz="0 0 ${0.765/2}" />
+      <material name="table_material"/>
     </visual>
     <collision>
       <geometry>
-        <box size="2.0 1.2 0.8"/>
+        <box size="2.7 1.0 0.765"/> # L*W*H=2.7*1.0*0.765m
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0.4"/>
+      <origin rpy="0 0 0" xyz="0 0 ${0.765/2}" />
+    </collision>
+  </link>
+
+  <!-- 机械臂安装台 -->
+  <link name="arm_shelf">
+    <visual>
+      <geometry>
+        <box size="0.615 0.728 1.353"/> # L*W*H=0.615*0.728*1.353m
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 ${1.353/2}" />
+      <material name="arm_shelf_material"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.615 0.728 1.353"/> # L*W*H=0.615*0.728*1.353m
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 ${1.353/2}" />
     </collision>
   </link>
 
   <!-- UR 安装座 link & joint -->
   <link name="ur_mount_A"/>
   <joint name="table_to_ur_mount_A" type="fixed">
-    <parent link="table"/>
+    <parent link="arm_shelf"/>
     <child link="ur_mount_A"/>
-    <origin xyz="0.4 0.2 0.8" rpy="0 0 ${pi/2}" />
+    <origin xyz="${0.615/2 + 0.068} ${0.728/2 - 0.13} ${1.353 - 0.13}" rpy="0 ${pi/2} 0" />
   </joint>
 
   <link name="ur_mount_B"/>
   <joint name="table_to_ur_mount_B" type="fixed">
-    <parent link="table"/>
+    <parent link="arm_shelf"/>
     <child link="ur_mount_B"/>
-    <origin xyz="-0.4 0.2 0.8" rpy="0 0 ${-pi/2}" />
+    <origin xyz="${-0.615/2} ${0.728/2 - 0.13} ${1.353 - 0.13}" rpy="0 ${-pi/2} 0" />
   </joint>
 
   <!-- 创建 UR 机器人 -->
