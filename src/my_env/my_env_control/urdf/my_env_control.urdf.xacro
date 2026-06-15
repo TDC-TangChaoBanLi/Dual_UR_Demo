@@ -25,6 +25,7 @@
   <xacro:arg name="ur_A_script_command_port" default="50003"/>
   <xacro:arg name="ur_A_trajectory_port" default="50004"/>
   <xacro:arg name="ur_A_rw_rate" default="0"/>
+  <xacro:arg name="ur_A_kinematics_parameters_file" default="$(find ur_description)/config/$(arg ur_A_ur_type)/default_kinematics.yaml"/>
   <!-- UR_B 机器人参数 -->
   <xacro:arg name="ur_B_ur_type" default="ur5e"/>
   <xacro:arg name="ur_B_robot_ip" default="192.168.1.102"/>
@@ -33,6 +34,7 @@
   <xacro:arg name="ur_B_script_command_port" default="50013"/>
   <xacro:arg name="ur_B_trajectory_port" default="50014"/>
   <xacro:arg name="ur_B_rw_rate" default="0"/>
+  <xacro:arg name="ur_B_kinematics_parameters_file" default="$(find ur_description)/config/$(arg ur_B_ur_type)/default_kinematics.yaml"/>
   <!-- 夹爪和相机参数 -->
   <xacro:arg name="g2f85_A_com_port" default="/dev/ttyUSB0"/>
   <xacro:arg name="g2f85_B_com_port" default="/dev/ttyUSB1"/>
@@ -169,7 +171,7 @@
   <!-- ============================================ -->
 
   <!-- arm_A 夹爪 ros2_control -->
-  <xacro:robotiq_gripper_ros2_control
+  <!-- <xacro:robotiq_gripper_ros2_control
     name="arm_A_g2f85"
     prefix="$(arg arm_A_tf_prefix)"
     use_fake_hardware="$(arg use_fake_hardware)"
@@ -184,10 +186,10 @@
     gripper_max_speed="$(arg g2f85_gripper_max_speed)"
     gripper_max_force="$(arg g2f85_gripper_max_force)"
     gripper_closed_position="$(arg g2f85_gripper_closed_position)"
-  />
+  /> -->
 
   <!-- arm_B 夹爪 ros2_control -->
-  <xacro:robotiq_gripper_ros2_control
+  <!-- <xacro:robotiq_gripper_ros2_control
     name="arm_B_g2f85"
     prefix="$(arg arm_B_tf_prefix)"
     use_fake_hardware="$(arg use_fake_hardware)"
@@ -202,6 +204,6 @@
     gripper_max_speed="$(arg g2f85_gripper_max_speed)"
     gripper_max_force="$(arg g2f85_gripper_max_force)"
     gripper_closed_position="$(arg g2f85_gripper_closed_position)"
-  />
+  /> -->
 
 </robot>

@@ -22,14 +22,20 @@ sudo apt-get install ros-${ROS_DISTRO}-ur -y
 sudo apt install ros-${ROS_DISTRO}-librealsense2* -y
 sudo apt install ros-${ROS_DISTRO}-realsense2-* -y
 
-sudo apt install colcon -y
 
+sudo apt install colcon -y
+sudo apt install libserial-dev
 colcon build --symlink-install --packages-select robotiq_driver robotiq_controllers robotiq_description
 colcon build --symlink-install --packages-select my_env_description my_env_moveit_config my_env_control
 ```
 
-ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5 robot_ip:=192.168.1.17
-ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5e robot_ip:=192.168.1.11
+
+ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.17 target_filename:="src/my_env/my_env_control/config/ur_A_kinematics_calibration.yaml"
+ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.11 target_filename:="src/my_env/my_env_control/config/ur_B_kinematics_calibration.yaml"
+
+
+ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5 robot_ip:=192.168.1.17 reverse_ip:=192.168.1.100
+ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5e robot_ip:=192.168.1.11 reverse_ip:=192.168.1.100
 
 
 

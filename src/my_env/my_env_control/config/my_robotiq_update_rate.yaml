@@ -1,4 +1,0 @@
-/*: # ! Added relative path identifier
-  controller_manager:
-    ros__parameters:
-      update_rate: 500  # Hz
