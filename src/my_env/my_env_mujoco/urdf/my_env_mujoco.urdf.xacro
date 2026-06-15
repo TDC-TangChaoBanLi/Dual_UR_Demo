@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <robot name="my_env" xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <!-- 首先包含自定义描述宏 -->
+  <!-- 包含几何描述宏 -->
   <xacro:include filename="$(find my_env_description)/urdf/my_env_macro.urdf.xacro"/>
+  <!-- Jazzy: mujoco ros2_control 宏（已移至 my_env_mujoco 包） -->
+  <xacro:include filename="$(find my_env_mujoco)/urdf/my_arm_mujoco_control.urdf.xacro"/>
 
   <!-- 我们需要指定用于参数化描述的参数 -->
   <!-- 为所需的ur_type创建一个文件夹，并从ur_description包中复制文件到那里 -->
@@ -26,25 +28,78 @@
   
   <!-- 夹爪和相机参数 -->
   <xacro:arg name="camera_use_nominal_extrinsics" default="true"/>
+  <!-- UR 安全限位和路径参数（几何用） -->
+  <xacro:arg name="safety_limits" default="false"/>
+  <xacro:arg name="safety_pos_margin" default="0.15"/>
+  <xacro:arg name="safety_k_position" default="20"/>
+  <xacro:arg name="force_abs_paths" default="false"/>
 
+  <!-- ============================================ -->
+  <!-- Mujoco ros2_control 可选参数                  -->
+  <!-- ============================================ -->
+  <xacro:arg name="mujoco_sim_speed_factor" default="1.0"/>
+  <xacro:arg name="mujoco_headless" default="false"/>
+  <xacro:arg name="mujoco_camera_publish_rate" default="30.0"/>
+  <xacro:arg name="mujoco_lidar_publish_rate" default="10.0"/>
+
+  <!-- 两臂初始关节角（property 形式，可在 launch 文件中通过 xacro 参数覆盖） -->
   <xacro:property name="ur_A_initial_positions" value="${dict(shoulder_pan_joint=-1.57,shoulder_lift_joint=-1.27,elbow_joint=1.0,wrist_1_joint=-1.3,wrist_2_joint=-1.57,wrist_3_joint=-1.57)}"/>
   <xacro:property name="ur_B_initial_positions" value="${dict(shoulder_pan_joint=-1.57,shoulder_lift_joint=-2.27,elbow_joint=-0.2,wrist_1_joint=-2.24,wrist_2_joint=1.57,wrist_3_joint=1.57)}"/>
 
-  <!-- 创建包含机器人的场景描述 - 传递my_env宏需要的所有参数 -->
+  <!-- Jazzy: 纯几何描述（仅传几何参数给 my_env） -->
   <xacro:my_env 
     arm_A_tf_prefix="$(arg arm_A_tf_prefix)"
     arm_B_tf_prefix="$(arg arm_B_tf_prefix)"
-    use_fake_hardware="$(arg use_fake_hardware)"
-    use_fake_sensor_commands="$(arg fake_sensor_commands)"
-    use_sim_mujoco="$(arg use_sim_mujoco)"
-    mjcf_file_path="$(arg mjcf_file_path)"
-    generate_ros2_control="$(arg generate_ros2_control)"
 
     ur_A_ur_type="$(arg ur_A_ur_type)"
     ur_B_ur_type="$(arg ur_B_ur_type)"
 
     camera_use_nominal_extrinsics="$(arg camera_use_nominal_extrinsics)"
-
+    safety_limits="$(arg safety_limits)"
+    safety_pos_margin="$(arg safety_pos_margin)"
+    safety_k_position="$(arg safety_k_position)"
+    force_abs_paths="$(arg force_abs_paths)"
   />
+
+  <!-- ============================================ -->
+  <!-- Jazzy: Mujoco ros2_control（从 my_env_macro 移至此） -->
+  <!-- 只保留一个 ros2_control system：只启动一次 MujocoSystemInterface -->
+  <!-- ============================================ -->
+  <xacro:if value="$(arg use_sim_mujoco)">
+    <xacro:property name="arm_A_ur_prefix" value="$(arg arm_A_tf_prefix)ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+    <xacro:property name="arm_B_ur_prefix" value="$(arg arm_B_tf_prefix)ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+    <xacro:property name="arm_A_realsense_prefix" value="$(arg arm_A_tf_prefix)realsense_"/> <!-- ! append the '_' in the prefix -->
+    <xacro:property name="arm_B_realsense_prefix" value="$(arg arm_B_tf_prefix)realsense_"/> <!-- ! append the '_' in the prefix -->
+    <xacro:property name="arm_A_g2f85_prefix" value="$(arg arm_A_tf_prefix)"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+    <xacro:property name="arm_B_g2f85_prefix" value="$(arg arm_B_tf_prefix)"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+    
+    <ros2_control name="my_env_ros2_mujoco" type="system">
+      <hardware>
+        <plugin>mujoco_ros2_simulation/MujocoSystemInterface</plugin>
+        <param name="mujoco_model">$(arg mjcf_file_path)</param>
+        <!-- Override the slowdown settings in the Simulate App -->
+        <param name="sim_speed_factor">$(arg mujoco_sim_speed_factor)</param>
+        <!-- If set to true, will not launch the Simulate App window -->
+        <param name="headless">$(arg mujoco_headless)</param>
+        <!-- Publish camera images -->
+        <param name="camera_publish_rate">$(arg mujoco_camera_publish_rate)</param>
+        <!-- Publish lidar scans at 10 hz -->
+        <param name="lidar_publish_rate">$(arg mujoco_lidar_publish_rate)</param>
+      </hardware>
+
+      <!-- 把两套机械臂的 joint/sensor 接口“塞进同一个 system”里 -->
+      <xacro:my_arm_mujoco_control
+          ur_tf_prefix="${arm_A_ur_prefix}"
+          realsense_tf_prefix="${arm_A_realsense_prefix}"
+          g2f85_tf_prefix="${arm_A_g2f85_prefix}"
+          ur_initial_positions="${ur_A_initial_positions}"/>
+
+      <xacro:my_arm_mujoco_control
+          ur_tf_prefix="${arm_B_ur_prefix}"
+          realsense_tf_prefix="${arm_B_realsense_prefix}"
+          g2f85_tf_prefix="${arm_B_g2f85_prefix}"
+          ur_initial_positions="${ur_B_initial_positions}"/>
+    </ros2_control>
+  </xacro:if>
 
 </robot>

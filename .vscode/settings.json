@@ -16,5 +16,6 @@
             ]
         }
     },
-    "terminal.integrated.defaultProfile.linux": "ROS2 Bash"
+    "terminal.integrated.defaultProfile.linux": "ROS2 Bash",
+    "cmake.ignoreCMakeListsMissing": true
 }

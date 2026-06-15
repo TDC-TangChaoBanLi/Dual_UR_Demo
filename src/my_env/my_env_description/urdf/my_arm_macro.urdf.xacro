@@ -8,30 +8,21 @@
 
 
   <!-- 宏定义自己的机械臂结构 UR+Robotiq+RealSense -->
+  <!-- Jazzy: 仅纯几何描述，不包含任何 ros2_control -->
   <xacro:macro name="my_arm" params="
     name:=my_arm
     tf_prefix:=my_arm
     parent:=world
-    use_fake_hardware:=false
-    use_fake_sensor_commands:=false
-    use_sim_gazebo:=false
-    generate_ros2_control:=false
-
     ur_type:=ur5e
-    ur_reverse_ip:=0.0.0.0
-    ur_reverse_port:=50001
-    ur_robot_ip
-    ur_script_sender_port:=50002
-    ur_script_command_port:=50003
-    ur_trajectory_port:=50004
-    ur_headless_mode:=false
-
-    g2f85_com_port:=/dev/ttyUSB0
     realsense_use_nominal_extrinsics:=false
+    safety_limits:=false
+    safety_pos_margin:=0.15
+    safety_k_position:=20
+    force_abs_paths:=false
     *origin
     "> 
 
-    <!-- UR parameters -->
+    <!-- UR parameters (Jazzy: 仅 yaml 配置文件路径) -->
     <xacro:property name="_ur_name" value="${name}_ur"/>
     <xacro:property name="_ur_tf_prefix" value="${tf_prefix}ur_"/> <!-- ! Match the prefix in my_env_macro.urdf.xacro -->
     <xacro:property name="_ur_parent" value="${parent}"/>
@@ -39,38 +30,6 @@
     <xacro:property name="_ur_kinematics_parameters_file" value="$(find ur_description)/config/${ur_type}/default_kinematics.yaml"/>
     <xacro:property name="_ur_physical_parameters_file" value="$(find ur_description)/config/${ur_type}/physical_parameters.yaml"/>
     <xacro:property name="_ur_visual_parameters_file" value="$(find ur_description)/config/${ur_type}/visual_parameters.yaml"/>
-
-    <!-- UR Simulation parameters -->
-    <xacro:property name="_ur_use_fake_hardware" value="${use_fake_hardware}" />
-    <xacro:property name="_ur_fake_sensor_commands" value="${use_fake_sensor_commands}" />
-    <xacro:property name="_ur_sim_gazebo" value="${use_sim_gazebo}" />
-    <xacro:property name="_ur_sim_ignition" value="false" />
-
-    <!-- UR tool communication related parameters-->
-    <xacro:property name="_ur_use_tool_communication" value="false" />
-    <xacro:property name="_ur_tool_voltage" value="0" />
-    <xacro:property name="_ur_tool_parity" value="0" />
-    <xacro:property name="_ur_tool_baud_rate" value="115200" />
-    <xacro:property name="_ur_tool_stop_bits" value="1" />
-    <xacro:property name="_ur_tool_rx_idle_chars" value="1.5" />
-    <xacro:property name="_ur_tool_tx_idle_chars" value="3.5" />
-    <xacro:property name="_ur_tool_device_name" value="/tmp/ttyUR" />
-    <xacro:property name="_ur_tool_tcp_port" value="54321" />
-
-    <!-- UR ros2_control related parameters -->
-    <xacro:property name="_ur_generate_ros2_control" value="${generate_ros2_control}" />
-    <xacro:property name="_ur_initial_positions_file" value="$(find ur_description)/config/initial_positions.yaml" />
-    <xacro:property name="_ur_initial_positions" value="${xacro.load_yaml(_ur_initial_positions_file)}" />
-    <xacro:property name="_ur_headless_mode" value="${ur_headless_mode}" />
-    <xacro:property name="_ur_script_filename" value="$(find ur_client_library)/resources/external_control.urscript" />
-    <xacro:property name="_ur_output_recipe_filename" value="$(find ur_robot_driver)/resources/rtde_output_recipe.txt" />
-    <xacro:property name="_ur_input_recipe_filename" value="$(find ur_robot_driver)/resources/rtde_input_recipe.txt" />
-    <xacro:property name="_ur_reverse_ip" value="${ur_reverse_ip}" />
-    <xacro:property name="_ur_reverse_port" value="${ur_reverse_port}" />
-    <xacro:property name="_ur_robot_ip" value="${ur_robot_ip}" />
-    <xacro:property name="_ur_script_sender_port" value="${ur_script_sender_port}" />
-    <xacro:property name="_ur_script_command_port" value="${ur_script_command_port}" />
-    <xacro:property name="_ur_trajectory_port" value="${ur_trajectory_port}" />
 
 
     <!-- RealSense parameters -->
@@ -81,23 +40,12 @@
     <xacro:property name="_realsense_use_mesh" value="true" />
 
 
-    <!-- Robotiq 2f85 gripper parameters -->
+    <!-- Robotiq 2f85 gripper parameters (Jazzy: 纯几何，不含 ros2_control) -->
     <xacro:property name="_g2f85_name" value="${name}_g2f85" />
     <xacro:property name="_g2f85_prefix" value="${tf_prefix}" /> <!-- ! Match the prefix in my_env_macro.urdf.xacro -->
-    <xacro:property name="_g2f85_sim_gazebo" value="${use_sim_gazebo}" />
-    <xacro:property name="_g2f85_sim_isaac" value="false" />
-    <xacro:property name="_g2f85_use_fake_hardware" value="${use_fake_hardware}" />
-    <xacro:property name="_g2f85_mock_sensor_commands" value="${use_fake_sensor_commands}" />
-    <xacro:property name="_g2f85_include_ros2_control" value="${generate_ros2_control}" />
-    <xacro:property name="_g2f85_com_port" value="${g2f85_com_port}" />
-    <xacro:property name="_g2f85_gripper_speed_multiplier" value="1.0" />
-    <xacro:property name="_g2f85_gripper_force_multiplier" value="0.5" />
-    <xacro:property name="_g2f85_gripper_max_speed" value="0.150" />
-    <xacro:property name="_g2f85_gripper_max_force" value="235.0" />
-    <xacro:property name="_g2f85_gripper_closed_position" value="0.7929" />
 
 
-    <!-- 创建 UR 机器人 使用宏定义 -->
+    <!-- 创建 UR 机器人 使用宏定义 (Jazzy: 纯描述，无 ros2_control 参数) -->
     <xacro:ur_robot
       name="${_ur_name}"
       tf_prefix="${_ur_tf_prefix}"
@@ -106,36 +54,10 @@
       kinematics_parameters_file="${_ur_kinematics_parameters_file}"
       physical_parameters_file="${_ur_physical_parameters_file}"
       visual_parameters_file="${_ur_visual_parameters_file}"
-      generate_ros2_control_tag="${_ur_generate_ros2_control}"
-
-
-
-      use_fake_hardware="${_ur_use_fake_hardware}"
-      fake_sensor_commands="${_ur_fake_sensor_commands}"
-      sim_gazebo="${_ur_sim_gazebo}"
-      sim_ignition="${_ur_sim_ignition}"
-      headless_mode="${_ur_headless_mode}"
-      initial_positions="${_ur_initial_positions}"
-      use_tool_communication="${_ur_use_tool_communication}"
-      tool_voltage="${_ur_tool_voltage}"
-      tool_parity="${_ur_tool_parity}"
-      tool_baud_rate="${_ur_tool_baud_rate}"
-      tool_stop_bits="${_ur_tool_stop_bits}"
-      tool_rx_idle_chars="${_ur_tool_rx_idle_chars}"
-      tool_tx_idle_chars="${_ur_tool_tx_idle_chars}"
-      tool_device_name="${_ur_tool_device_name}"
-      tool_tcp_port="${_ur_tool_tcp_port}"
-      robot_ip="${_ur_robot_ip}"
-      script_filename="${_ur_script_filename}"
-      output_recipe_filename="${_ur_output_recipe_filename}"
-      input_recipe_filename="${_ur_input_recipe_filename}"
-      reverse_ip="${_ur_reverse_ip}"
-      reverse_port="${_ur_reverse_port}"
-      script_sender_port="${_ur_script_sender_port}"
-      script_command_port="${_ur_script_command_port}"
-      trajectory_port="${_ur_trajectory_port}"
-
-
+      safety_limits="${safety_limits}"
+      safety_pos_margin="${safety_pos_margin}"
+      safety_k_position="${safety_k_position}"
+      force_abs_paths="${force_abs_paths}"
     >
       <xacro:insert_block name="origin" />
     </xacro:ur_robot>
@@ -198,24 +120,12 @@
     >
     </xacro:ur_to_robotiq>
 
-    <!-- 创建 robotiq 夹爪 使用宏定义 -->
+    <!-- 创建 robotiq 夹爪 使用宏定义 (Jazzy: 纯几何，禁用 ros2_control) -->
     <xacro:robotiq_gripper 
       name="${_g2f85_name}" 
       prefix="${_g2f85_prefix}" 
-      parent="${_g2f85_prefix}robotiq_ur_to_g2f85_child_side" 
-      sim_gazebo="${_g2f85_sim_gazebo}" 
-      sim_isaac="${_g2f85_sim_isaac}"
-
-
-      use_fake_hardware="${_g2f85_use_fake_hardware}" 
-      mock_sensor_commands="${_g2f85_mock_sensor_commands}"
-      include_ros2_control="${_g2f85_include_ros2_control}"
-      com_port="${_g2f85_com_port}"
-      gripper_speed_multiplier="${_g2f85_gripper_speed_multiplier}"
-      gripper_force_multiplier="${_g2f85_gripper_force_multiplier}"
-      gripper_max_speed="${_g2f85_gripper_max_speed}"
-      gripper_max_force="${_g2f85_gripper_max_force}"
-      gripper_closed_position="${_g2f85_gripper_closed_position}"
+      parent="${_g2f85_prefix}robotiq_ur_to_g2f85_child_side"
+      include_ros2_control="false"
     >
       <origin xyz="0 0 0" rpy="0 0 0" />
     </xacro:robotiq_gripper>

@@ -1,8 +1,37 @@
 # 双臂UR机械臂ROS2控制系统
 
+> **注意：本项目仅支持 ROS2 Jazzy 版本。**
+
 这是一个基于ROS2的双臂UR机械臂控制系统，集成了UR5和UR5e机械臂、Robotiq 2F-85夹爪和RealSense D435相机，目前支持rviz仿真和Mujoco仿真。
 
 ![intrudoction](view_my_env.png)
+
+
+## 开始
+
+ROS2 换清华源: [清华大学开源软件镜像站 ROS2 软件仓库](https://mirror.tuna.tsinghua.edu.cn/help/ros2/)
+
+
+```bash
+git clone https://github.com/TDC-TangChaoBanLi/Dual_UR_Demo.git
+cd Dual_UR_Demo
+git submodule update --init --recursive
+
+sudo apt install ros-${ROS_DISTRO}-ros2-control ros-${ROS_DISTRO}-ros2-controllers -y
+sudo apt-get install ros-${ROS_DISTRO}-ur -y
+sudo apt install ros-${ROS_DISTRO}-librealsense2* -y
+sudo apt install ros-${ROS_DISTRO}-realsense2-* -y
+
+sudo apt install colcon -y
+
+colcon build --symlink-install --packages-select robotiq_driver robotiq_controllers robotiq_description
+colcon build --symlink-install --packages-select my_env_description my_env_moveit_config my_env_control
+```
+
+ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5 robot_ip:=192.168.1.17
+ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5e robot_ip:=192.168.1.11
+
+
 
 ## 项目结构概述
 

@@ -2,39 +2,18 @@
 <robot name="my_env" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find my_env_description)/urdf/my_arm_macro.urdf.xacro"/>
-  <xacro:include filename="$(find my_env_description)/urdf/my_arm_mujoco_control.urdf.xacro"/>
 
+  <!-- Jazzy: 纯几何描述，不包含 ros2_control -->
   <xacro:macro name="my_env" params="
   arm_A_tf_prefix:=arm_A_
   arm_B_tf_prefix:=arm_B_
-  use_fake_hardware:=false
-  use_fake_sensor_commands:=false
-  use_sim_gazebo:=false
-  use_sim_mujoco:=false
-  mjcf_file_path
-  generate_ros2_control:=false
-
-  ur_reverse_ip:=0.0.0.0
-  ur_headless_mode:=false
   ur_A_ur_type:=ur5
   ur_B_ur_type:=ur5e
-  ur_A_robot_ip:=192.168.1.101
-  ur_B_robot_ip:=192.168.1.102
-
-  ur_A_reverse_port:=50001
-  ur_A_script_sender_port:=50002
-  ur_A_script_command_port:=50003
-  ur_A_trajectory_port:=50004
-
-  ur_B_reverse_port:=50011
-  ur_B_script_sender_port:=50012
-  ur_B_script_command_port:=50013
-  ur_B_trajectory_port:=50014
-
   camera_use_nominal_extrinsics:=true
-
-  gripper_com_port_A:=/dev/ttyUSB0
-  gripper_com_port_B:=/dev/ttyUSB1
+  safety_limits:=false
+  safety_pos_margin:=0.15
+  safety_k_position:=20
+  force_abs_paths:=false
   ">
   
 
@@ -110,25 +89,17 @@
     <origin xyz="${-0.615/2} ${0.728/2 - 0.13} ${1.353 - 0.13}" rpy="0 ${-pi/2} 0" />
   </joint>
 
-  <!-- 创建 UR 机器人 -->
+  <!-- 创建 UR 机器人 (Jazzy: 仅传几何相关参数) -->
   <xacro:my_arm
     name = "ur_A"
     tf_prefix = "${arm_A_tf_prefix}"
     parent = "ur_mount_A"
     ur_type = "${ur_A_ur_type}"
-    use_fake_hardware = "${use_fake_hardware}"
-    use_fake_sensor_commands = "${use_fake_sensor_commands}"
-    use_sim_gazebo = "${use_sim_gazebo}"
-    generate_ros2_control = "${generate_ros2_control}"
-    ur_robot_ip = "${ur_A_robot_ip}"
-    ur_reverse_ip = "${ur_reverse_ip}"
-    ur_reverse_port = "${ur_A_reverse_port}"
-    ur_script_sender_port = "${ur_A_script_sender_port}"
-    ur_script_command_port = "${ur_A_script_command_port}"
-    ur_trajectory_port = "${ur_A_trajectory_port}"
-    ur_headless_mode = "${ur_headless_mode}"
-    g2f85_com_port = "${gripper_com_port_A}"
     realsense_use_nominal_extrinsics = "${camera_use_nominal_extrinsics}"
+    safety_limits = "${safety_limits}"
+    safety_pos_margin = "${safety_pos_margin}"
+    safety_k_position = "${safety_k_position}"
+    force_abs_paths = "${force_abs_paths}"
   >
     <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:my_arm>
@@ -138,60 +109,14 @@
     tf_prefix = "${arm_B_tf_prefix}"
     parent = "ur_mount_B"
     ur_type = "${ur_B_ur_type}"
-    use_fake_hardware = "${use_fake_hardware}"
-    use_fake_sensor_commands = "${use_fake_sensor_commands}"
-    use_sim_gazebo = "${use_sim_gazebo}"
-    generate_ros2_control = "${generate_ros2_control}"
-    ur_robot_ip = "${ur_B_robot_ip}"
-    ur_reverse_ip = "${ur_reverse_ip}"
-    ur_reverse_port = "${ur_B_reverse_port}"
-    ur_script_sender_port = "${ur_B_script_sender_port}"
-    ur_script_command_port = "${ur_B_script_command_port}"
-    ur_trajectory_port = "${ur_B_trajectory_port}"
-    ur_headless_mode = "${ur_headless_mode}"
-    g2f85_com_port = "${gripper_com_port_B}"
     realsense_use_nominal_extrinsics = "${camera_use_nominal_extrinsics}"
+    safety_limits = "${safety_limits}"
+    safety_pos_margin = "${safety_pos_margin}"
+    safety_k_position = "${safety_k_position}"
+    force_abs_paths = "${force_abs_paths}"
   >
     <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:my_arm>
-
-  <!-- 创建 mujoco ros2 control 相关 -->
-  <!-- 只保留一个 ros2_control system：只启动一次 MujocoSystemInterface -->
-  <xacro:if value="${use_sim_mujoco}">
-    <xacro:property name="arm_A_ur_prefix" value="${arm_A_tf_prefix}ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    <xacro:property name="arm_B_ur_prefix" value="${arm_B_tf_prefix}ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    <xacro:property name="arm_A_realsense_prefix" value="${arm_A_tf_prefix}realsense_"/> <!-- ! append the '_' in the prefix -->
-    <xacro:property name="arm_B_realsense_prefix" value="${arm_B_tf_prefix}realsense_"/> <!-- ! append the '_' in the prefix -->
-    <xacro:property name="arm_A_g2f85_prefix" value="${arm_A_tf_prefix}"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    <xacro:property name="arm_B_g2f85_prefix" value="${arm_B_tf_prefix}"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    
-    <ros2_control name="my_env_ros2_mujoco" type="system">
-      <hardware>
-        <plugin>mujoco_ros2_simulation/MujocoSystemInterface</plugin>
-        <param name="mujoco_model">${mjcf_file_path}</param>
-        <!-- Override the slowdown settings in the Simulate App and run at 3x speed -->
-        <param name="sim_speed_factor">1.0</param>
-        <!-- If set to true, will not launch the Simulate App window -->
-        <param name="headless">false</param>
-        <!-- Publish camera images -->
-        <param name="camera_publish_rate">30.0</param>
-        <!-- Publish lidar scans at 10 hz -->
-        <param name="lidar_publish_rate">10.0</param>
-      </hardware>
-
-      <!-- 把两套机械臂的 joint/sensor 接口“塞进同一个 system”里 -->
-      <xacro:my_arm_mujoco_control
-          ur_tf_prefix="${arm_A_ur_prefix}"
-          realsense_tf_prefix="${arm_A_realsense_prefix}"
-          g2f85_tf_prefix="${arm_A_g2f85_prefix}"/>
-
-      <xacro:my_arm_mujoco_control
-          ur_tf_prefix="${arm_B_ur_prefix}"
-          realsense_tf_prefix="${arm_B_realsense_prefix}"
-          g2f85_tf_prefix="${arm_B_g2f85_prefix}"/>
-    </ros2_control>
-  </xacro:if>
-
 
 
   </xacro:macro>

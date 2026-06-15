@@ -15,29 +15,28 @@
   <xacro:arg name="arm_B_tf_prefix" default="arm_B_"/>
   <xacro:arg name="ur_B_ur_type" default="ur5e"/>
 
-  <!-- 控制参数 -->
-  <xacro:arg name="use_fake_hardware" default="true" />
-  <xacro:arg name="fake_sensor_commands" default="true" />
-  <xacro:arg name="use_sim_gazebo" default="false" />
-  <xacro:arg name="generate_ros2_control" default="false" />
-  
   <!-- 夹爪和相机参数 -->
   <xacro:arg name="camera_use_nominal_extrinsics" default="true"/>
+  <!-- UR 安全限位和路径参数 -->
+  <xacro:arg name="safety_limits" default="false"/>
+  <xacro:arg name="safety_pos_margin" default="0.15"/>
+  <xacro:arg name="safety_k_position" default="20"/>
+  <xacro:arg name="force_abs_paths" default="false"/>
 
 
-  <!-- 创建包含机器人的场景描述 - 传递my_env宏需要的所有参数 -->
+  <!-- Jazzy: 纯描述入口，用于 RViz/MoveIt，不包含 ros2_control -->
   <xacro:my_env 
     arm_A_tf_prefix="$(arg arm_A_tf_prefix)"
     arm_B_tf_prefix="$(arg arm_B_tf_prefix)"
-    use_fake_hardware="$(arg use_fake_hardware)"
-    use_fake_sensor_commands="$(arg fake_sensor_commands)"
-    generate_ros2_control="$(arg generate_ros2_control)"
-    mjcf_file_path=""
 
     ur_A_ur_type="$(arg ur_A_ur_type)"
     ur_B_ur_type="$(arg ur_B_ur_type)"
 
     camera_use_nominal_extrinsics="$(arg camera_use_nominal_extrinsics)"
+    safety_limits="$(arg safety_limits)"
+    safety_pos_margin="$(arg safety_pos_margin)"
+    safety_k_position="$(arg safety_k_position)"
+    force_abs_paths="$(arg force_abs_paths)"
 
   />
 
