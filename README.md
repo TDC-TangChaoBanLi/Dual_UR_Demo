@@ -12,30 +12,63 @@
 ROS2 换清华源: [清华大学开源软件镜像站 ROS2 软件仓库](https://mirror.tuna.tsinghua.edu.cn/help/ros2/)
 
 
+安装依赖：
+
 ```bash
 git clone https://github.com/TDC-TangChaoBanLi/Dual_UR_Demo.git
 cd Dual_UR_Demo
 git submodule update --init --recursive
 
 sudo apt install ros-${ROS_DISTRO}-ros2-control ros-${ROS_DISTRO}-ros2-controllers -y
+sudo apt install ros-${ROS_DISTRO}-moveit ros-${ROS_DISTRO}-moveit-ros-control-interface -y
 sudo apt-get install ros-${ROS_DISTRO}-ur -y
 sudo apt install ros-${ROS_DISTRO}-librealsense2* -y
 sudo apt install ros-${ROS_DISTRO}-realsense2-* -y
+```
 
+测试： (robot_ip 为机械臂IP地址, reverse_ip 为本机地址)
 
+```bash
+ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5 robot_ip:=192.168.1.17 reverse_ip:=192.168.1.100
+ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5e robot_ip:=192.168.1.11 reverse_ip:=192.168.1.100
+```
+
+编译本项目：
+
+```bash
 sudo apt install colcon -y
-sudo apt install libserial-dev
 colcon build --symlink-install --packages-select robotiq_driver robotiq_controllers robotiq_description
 colcon build --symlink-install --packages-select my_env_description my_env_moveit_config my_env_control
 ```
 
+提取机械臂校准文件：
 
+```bash
 ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.17 target_filename:="src/my_env/my_env_control/config/ur_A_kinematics_calibration.yaml"
 ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.11 target_filename:="src/my_env/my_env_control/config/ur_B_kinematics_calibration.yaml"
+```
+
+启动机械臂：
+
+```bash
+ros2 launch my_env_control start_my_env_control.launch.py activate_gripper_controller:=false use_fake_hardware:=false ur_headless_mode:=true
+```
+
+配置 MoveIt :
+
+```bash
+ros2 launch moveit_setup_assistant setup_assistant.launch.py
+```
 
 
-ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5 robot_ip:=192.168.1.17 reverse_ip:=192.168.1.100
-ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5e robot_ip:=192.168.1.11 reverse_ip:=192.168.1.100
+启动 MoveIt ：
+
+
+```bash
+ros2 launch my_env_control start_my_env_control.launch.py activate_gripper_controller:=false launch_rviz:=false
+ros2 launch my_env_moveit_config start_my_env_moveit.launch.py
+```
+
 
 
 

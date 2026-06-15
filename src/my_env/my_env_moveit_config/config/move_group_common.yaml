@@ -1,0 +1,16 @@
+move_group:
+  ros__parameters:
+    allow_trajectory_execution: true
+    moveit_manage_controllers: true
+
+    trajectory_execution.allowed_execution_duration_scaling: 1.2
+    trajectory_execution.allowed_goal_duration_margin: 0.5
+    trajectory_execution.allowed_start_tolerance: 0.01
+
+    # UR scaled_joint_trajectory_controller 建议关闭
+    trajectory_execution.execution_duration_monitoring: false
+
+    publish_planning_scene: true
+    publish_geometry_updates: true
+    publish_state_updates: true
+    publish_transforms_updates: true

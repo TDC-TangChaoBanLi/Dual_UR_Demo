@@ -1,0 +1,40 @@
+move_group:
+  ros__parameters:
+    planning_pipelines:
+      - ompl
+
+    default_planning_pipeline: ompl
+
+    ompl:
+      request_adapters:
+        - default_planning_request_adapters/ResolveConstraintFrames
+        - default_planning_request_adapters/ValidateWorkspaceBounds
+        - default_planning_request_adapters/CheckStartStateBounds
+        - default_planning_request_adapters/CheckStartStateCollision
+
+      planning_plugins:
+        - ompl_interface/OMPLPlanner
+
+      response_adapters:
+        - default_planning_response_adapters/AddTimeOptimalParameterization
+        - default_planning_response_adapters/ValidateSolution
+        - default_planning_response_adapters/DisplayMotionPath
+
+      start_state_max_bounds_error: 0.1
+
+      planner_configs:
+        RRTConnectkConfigDefault:
+          type: geometric::RRTConnect
+          range: 0.0
+
+      arm_A:
+        planner_configs:
+          - RRTConnectkConfigDefault
+        projection_evaluator: joints(arm_A_ur_shoulder_pan_joint,arm_A_ur_shoulder_lift_joint)
+        longest_valid_segment_fraction: 0.005
+
+      arm_B:
+        planner_configs:
+          - RRTConnectkConfigDefault
+        projection_evaluator: joints(arm_B_ur_shoulder_pan_joint,arm_B_ur_shoulder_lift_joint)
+        longest_valid_segment_fraction: 0.005

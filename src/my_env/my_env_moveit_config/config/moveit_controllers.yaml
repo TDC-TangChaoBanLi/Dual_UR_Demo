@@ -1,0 +1,10 @@
+# MoveIt uses ros2_control controller manager directly.
+# It discovers controllers from /controller_manager/list_controllers.
+
+moveit_controller_manager: moveit_ros_control_interface/Ros2ControlManager
+
+# Your ros2_control manager is /controller_manager,
+# so the namespace before /controller_manager is "/".
+ros_control_namespace: /
+
+controller_service_call_timeout: 5.0

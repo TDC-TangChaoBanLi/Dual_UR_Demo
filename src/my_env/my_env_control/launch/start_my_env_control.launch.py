@@ -177,9 +177,7 @@ def launch_setup(context, *args, **kwargs):
     initial_ur_suffix = LaunchConfiguration("initial_ur_controller").perform(context)
 
     # ### 激活的控制器列表 ###
-    controllers_active = ( 
-        BASE_ACTIVE_CONTROLLERS
-    )
+    controllers_active = list(BASE_ACTIVE_CONTROLLERS)
     # 添加初始ur控制器
     ur_A_initial_controller = f"{UR_A_CONTROLLER_PREFIX}{initial_ur_suffix}"
     ur_B_initial_controller = f"{UR_B_CONTROLLER_PREFIX}{initial_ur_suffix}"

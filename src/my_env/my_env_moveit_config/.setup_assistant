@@ -5,19 +5,23 @@ moveit_setup_assistant_config:
   srdf:
     relative_path: config/my_env.srdf
   package_settings:
-    author_name: TDC
-    author_email: lihao_0630@qq.com
-    generated_timestamp: 1774237638
+    author_name: ""
+    author_email: ""
+    generated_timestamp: 1781517563
   control_xacro:
     command:
-      []
+      - position
+      - velocity
     state:
-      []
+      - position
+      - velocity
   modified_urdf:
     xacros:
       - control_xacro
   control_xacro:
     command:
-      []
+      - position
+      - velocity
     state:
-      []
+      - position
+      - velocity
