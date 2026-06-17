@@ -1,0 +1,32 @@
+# moveit_controllers.yaml
+# 让 moveit 使用下面给定的控制器
+moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControllerManager
+
+moveit_simple_controller_manager:
+  controller_names:
+    - arm_A_ur_scaled_joint_trajectory_controller
+    - arm_B_ur_scaled_joint_trajectory_controller
+
+  arm_A_ur_scaled_joint_trajectory_controller:
+    type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+
+  arm_B_ur_scaled_joint_trajectory_controller:
+    type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint

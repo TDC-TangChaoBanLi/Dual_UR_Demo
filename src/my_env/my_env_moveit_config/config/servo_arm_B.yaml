@@ -1,0 +1,102 @@
+###############################################
+# MoveIt Servo config for UR arm_B
+###############################################
+
+use_gazebo: false
+
+###############################################
+# Incoming command
+###############################################
+
+command_in_type: "speed_units"
+
+scale:
+  # 初期调试建议保守一点，确认方向正确后再加大
+  linear: 0.1        # m/s
+  rotational: 0.5    # rad/s
+  joint: 0.1
+
+# 网络/控制延迟补偿，UR 官方示例中使用 0.04
+system_latency_compensation: 0.04
+
+###############################################
+# Outgoing command
+###############################################
+
+publish_period: 0.002
+low_latency_mode: false
+
+# 接 forward_position_controller / commands
+command_out_type: std_msgs/Float64MultiArray
+
+# forward_position_controller 需要位置命令
+publish_joint_positions: true
+publish_joint_velocities: false
+publish_joint_accelerations: false
+
+# 初期建议用 Butterworth，比较稳
+use_smoothing: true
+smoothing_filter_plugin_name: "online_signal_smoothing::ButterworthFilterPlugin"
+
+###############################################
+# Planning scene
+###############################################
+
+# 你已经启动 move_group，所以这里不要让 servo 当 primary planning scene monitor
+is_primary_planning_scene_monitor: false
+
+###############################################
+# MoveIt group and frames
+###############################################
+
+move_group_name: arm_B
+
+# 如果你的 TF 中没有 base_link/tool0，而是 arm_B_base_link/arm_B_tool0，
+# 就把下面三项改成带 arm_B_ 前缀的名字。
+planning_frame: world
+ee_frame: arm_B__tcp
+robot_link_command_frame: arm_B__tcp
+
+###############################################
+# Stop behavior
+###############################################
+
+incoming_command_timeout: 0.1
+num_outgoing_halt_msgs_to_publish: 4
+
+###############################################
+# Singularity and joint limits
+###############################################
+
+# UR 官方示例里阈值较大，避免过早触发奇异停止
+lower_singularity_threshold: 100.0
+hard_stop_singularity_threshold: 200.0
+
+joint_limit_margins: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+
+###############################################
+# Topics
+###############################################
+
+cartesian_command_in_topic: ~/delta_twist_cmds
+pose_command_in_topic: ~/pose_target_cmds
+joint_command_in_topic: ~/delta_joint_cmds
+
+joint_topic: /joint_states
+status_topic: ~/status
+
+command_out_topic: /arm_B_ur_forward_position_controller/commands
+
+###############################################
+# Collision checking
+###############################################
+
+check_collisions: true
+collision_check_rate: 5.0
+collision_check_type: threshold_distance
+
+self_collision_proximity_threshold: 0.01
+scene_collision_proximity_threshold: 0.02
+
+collision_distance_safety_factor: 1000.0
+min_allowable_collision_distance: 0.01

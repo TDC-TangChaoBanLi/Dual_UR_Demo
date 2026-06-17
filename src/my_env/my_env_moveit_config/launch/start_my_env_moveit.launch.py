@@ -166,8 +166,9 @@ def generate_launch_description():
     moveit_controllers = load_yaml(
         MOVEIT_CONFIG_PACKAGE,
         "config",
-        "moveit_controllers.yaml",
-    )
+        "moveit_controllers_SimpleControllerManager.yaml",
+        # "moveit_controllers_Ros2ControlManager.yaml",
+        )
 
     rviz_config = PathJoinSubstitution(
         [

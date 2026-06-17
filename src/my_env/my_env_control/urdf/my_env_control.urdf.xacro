@@ -171,10 +171,10 @@
   <!-- ============================================ -->
 
   <!-- arm_A 夹爪 ros2_control -->
-  <!-- <xacro:robotiq_gripper_ros2_control
+  <xacro:robotiq_gripper_ros2_control
     name="arm_A_g2f85"
     prefix="$(arg arm_A_tf_prefix)"
-    use_fake_hardware="$(arg use_fake_hardware)"
+    use_fake_hardware="True"
     mock_sensor_commands="$(arg use_fake_sensor_commands)"
     com_port="$(arg g2f85_A_com_port)"
     sim_gazebo="False"
@@ -186,13 +186,13 @@
     gripper_max_speed="$(arg g2f85_gripper_max_speed)"
     gripper_max_force="$(arg g2f85_gripper_max_force)"
     gripper_closed_position="$(arg g2f85_gripper_closed_position)"
-  /> -->
+  />
 
   <!-- arm_B 夹爪 ros2_control -->
-  <!-- <xacro:robotiq_gripper_ros2_control
+  <xacro:robotiq_gripper_ros2_control
     name="arm_B_g2f85"
     prefix="$(arg arm_B_tf_prefix)"
-    use_fake_hardware="$(arg use_fake_hardware)"
+    use_fake_hardware="True"
     mock_sensor_commands="$(arg use_fake_sensor_commands)"
     com_port="$(arg g2f85_B_com_port)"
     sim_gazebo="False"
@@ -204,6 +204,6 @@
     gripper_max_speed="$(arg g2f85_gripper_max_speed)"
     gripper_max_force="$(arg g2f85_gripper_max_force)"
     gripper_closed_position="$(arg g2f85_gripper_closed_position)"
-  /> -->
+  />
 
 </robot>

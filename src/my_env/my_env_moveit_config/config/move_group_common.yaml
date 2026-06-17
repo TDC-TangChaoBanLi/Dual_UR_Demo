@@ -1,7 +1,13 @@
 move_group:
   ros__parameters:
     allow_trajectory_execution: true
-    moveit_manage_controllers: true
+
+    # moveit 是否会自动管理控制器，true 会让 moveit 自动切换控制器。
+    # [WARN] 如果使用 Ros2ControlManager ，而且控制器使用 scaled_joint_trajectrol_controller ，
+    #        且该选项设置为 false 时，会无法执行，原因是 Ros2ControlManager 无法自动发现正确的控制器去执行。
+    # [WARN] 如果使用 Ros2ControlManager ，而且控制器使用 scaled_joint_trajectory_controller ，
+    #        且该选项设置为 true 时，会正常执行，但是 moveit 会自动切换到 joint_trajectory_controller 控制器去执行。
+    moveit_manage_controllers: false 
 
     trajectory_execution.allowed_execution_duration_scaling: 1.2
     trajectory_execution.allowed_goal_duration_margin: 0.5

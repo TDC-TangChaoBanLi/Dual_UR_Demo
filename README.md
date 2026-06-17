@@ -51,7 +51,7 @@ ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.
 启动机械臂：
 
 ```bash
-ros2 launch my_env_control start_my_env_control.launch.py activate_gripper_controller:=false use_fake_hardware:=false ur_headless_mode:=true
+ros2 launch my_env_control start_my_env_control.launch.py activate_gripper_controller:=false use_fake_hardware:=false ur_headless_mode:=true launch_rviz:=false
 ```
 
 配置 MoveIt :
@@ -70,6 +70,135 @@ ros2 launch my_env_moveit_config start_my_env_moveit.launch.py
 ```
 
 
+dashboard_client 服务
+```bash
+# 启停相关
+ros2 service call /arm_A/dashboard_client/power_on std_srvs/srv/Trigger {} # 给机器人电机上电，上电后还需要释放刹车
+ros2 service call /arm_A/dashboard_client/brake_release std_srvs/srv/Trigger {} # 释放刹车
+ros2 service call /arm_A/dashboard_client/power_off std_srvs/srv/Trigger {}  # 关闭机器人电机
+ros2 service call /arm_A/dashboard_client/shutdown std_srvs/srv/Trigger {} # 关闭机器人控制柜
+
+ros2 service call /arm_B/dashboard_client/power_on std_srvs/srv/Trigger {} # 给机器人电机上电，上电后还需要释放刹车
+ros2 service call /arm_B/dashboard_client/brake_release std_srvs/srv/Trigger {} # 释放刹车
+ros2 service call /arm_B/dashboard_client/power_off std_srvs/srv/Trigger {}  # 关闭机器人电机
+ros2 service call /arm_B/dashboard_client/shutdown std_srvs/srv/Trigger {} # 关闭机器人控制柜
+
+# 程序相关
+ros2 service call /arm_A/dashboard_client/load_program ur_dashboard_msgs/srv/Load "{filename: 'TDC-ROS2.urp'}" # 加载机器人上的程序
+ros2 service call /arm_A/dashboard_client/play std_srvs/srv/Trigger {} # 启动已加载的程序
+ros2 service call /arm_A/dashboard_client/pause std_srvs/srv/Trigger {} # 暂停已加载的程序
+ros2 service call /arm_A/dashboard_client/stop std_srvs/srv/Trigger {} # 停止已加载的程序
+
+ros2 service call /arm_B/dashboard_client/load_program ur_dashboard_msgs/srv/Load "{filename: 'TDC-ROS2.urp'}" # 加载机器人上的程序
+ros2 service call /arm_B/dashboard_client/play std_srvs/srv/Trigger {} # 启动已加载的程序
+ros2 service call /arm_B/dashboard_client/pause std_srvs/srv/Trigger {} # 暂停已加载的程序
+ros2 service call /arm_B/dashboard_client/stop std_srvs/srv/Trigger {} # 停止已加载的程序
+
+# 无头模式用这个
+ros2 service call /arm_A_ur_io_and_status_controller/resend_robot_program std_srvs/srv/Trigger {} # 重新发送机器人上的程序
+ros2 service call /arm_B_ur_io_and_status_controller/resend_robot_program std_srvs/srv/Trigger {} # 重新发送机器人上的程序
+
+# 状态相关
+ros2 service call /arm_A/dashboard_client/get_robot_mode ur_dashboard_msgs/srv/GetRobotMode {} # 查询机器人模式，例如 POWER_OFF、IDLE、RUNNING 等
+ros2 service call /arm_A/dashboard_client/get_safety_mode ur_dashboard_msgs/srv/GetSafetyMode {} # 查询安全模式
+ros2 service call /arm_A/dashboard_client/program_running ur_dashboard_msgs/srv/IsProgramRunning {} # 查询当前是否有程序正在运行
+ros2 service call /arm_B/dashboard_client/is_in_remote_control ur_dashboard_msgs/srv/IsInRemoteControl {} # 查询机器人是否处于 Remote Control 模式
+
+ros2 service call /arm_B/dashboard_client/get_robot_mode ur_dashboard_msgs/srv/GetRobotMode {} # 查询机器人模式，例如 POWER_OFF、IDLE、RUNNING 等
+ros2 service call /arm_B/dashboard_client/get_safety_mode ur_dashboard_msgs/srv/GetSafetyMode {} # 查询安全模式
+ros2 service call /arm_B/dashboard_client/program_running ur_dashboard_msgs/srv/IsProgramRunning {} # 查询当前是否有程序正在运行
+```
+
+
+MoveIt Servo:
+
+```bash
+ros2 launch my_env_control start_my_env_control.launch.py launch_rviz:=false activate_gripper_controller:=false initial_ur_controller:=forward_position_controller use_fake_hardware:=false ur_headless_mode:=true  
+
+ros2 launch my_env_moveit_config start_my_env_servo.launch.py
+```
+
+```bash
+ros2 control switch_controllers --deactivate arm_A_ur_forward_position_controller --activate arm_A_ur_scaled_joint_trajectory_controller
+ros2 control switch_controllers --deactivate arm_B_ur_forward_position_controller --activate arm_B_ur_scaled_joint_trajectory_controller
+
+ros2 control switch_controllers --deactivate arm_A_ur_scaled_joint_trajectory_controller --activate arm_A_ur_forward_position_controller
+ros2 control switch_controllers --deactivate arm_B_ur_scaled_joint_trajectory_controller --activate arm_B_ur_forward_position_controller
+
+ros2 control list_controllers
+
+ros2 service call /arm_A/servo_node/switch_command_type moveit_msgs/srv/ServoCommandType "{command_type: 2}"
+ros2 service call /arm_B/servo_node/switch_command_type moveit_msgs/srv/ServoCommandType "{command_type: 2}"
+```
+
+
+RealSense 权限：
+
+```bash
+sudo usermod -aG video $USER # 把当前用户加入 video 组
+sudo reboot # 重启
+groups # 查看权限组，应该有 video
+```
+
+RealSense 启动：
+
+```bash
+lsusb -t # 查看所有USB设备，确保 uvcvideo 设备的速度大于 500 Mbps
+rs-enumerate-devices -s # 查看 RealSense 相机序列号 (Serial Number)
+```
+
+```bash
+# 单独启动 arm_A 相机节点
+ros2 launch realsense2_camera rs_launch.py \
+  serial_no:=_401522071845 \
+  camera_name:=arm_A \
+  enable_depth:=true \
+  enable_color:=true \
+  depth_module.depth_profile:=640x480x30 \
+  rgb_camera.color_profile:=640x480x30 \
+  align_depth.enable:=true \
+  pointcloud.enable:=true \
+  spatial_filter.enable:=true \
+  temporal_filter.enable:=true
+
+# 单独启动 arm_B 相机节点
+ros2 launch realsense2_camera rs_launch.py \
+  serial_no:=_335222076295 \
+  camera_name:=arm_B \
+  enable_depth:=true \
+  enable_color:=true \
+  depth_module.depth_profile:=640x480x30 \
+  rgb_camera.color_profile:=640x480x30 \
+  align_depth.enable:=true \
+  pointcloud.enable:=true \
+  spatial_filter.enable:=true \
+  temporal_filter.enable:=true
+
+# 启动多相机节点
+ros2 launch realsense2_camera rs_multi_camera_launch.py \
+  serial_no1:=_401522071845 \
+  serial_no2:=_335222076295 \
+  camera_name1:=arm_A \
+  camera_name2:=arm_B \
+  camera_namespace1:=camera \
+  camera_namespace2:=camera \
+  enable_depth1:=true \
+  enable_depth2:=true \
+  enable_color1:=true \
+  enable_color2:=true \
+  depth_module.depth_profile1:=640x480x30 \
+  depth_module.depth_profile2:=640x480x30 \
+  rgb_camera.color_profile1:=640x480x30 \
+  rgb_camera.color_profile2:=640x480x30 \
+  align_depth.enable1:=true \
+  align_depth.enable2:=true \
+  pointcloud.enable1:=false \
+  pointcloud.enable2:=false \
+  spatial_filter.enable1:=true \
+  spatial_filter.enable2:=true \
+  temporal_filter.enable1:=true \
+  temporal_filter.enable2:=true
+```
 
 
 ## 项目结构概述

@@ -1,6 +1,7 @@
 # MoveIt uses ros2_control controller manager directly.
 # It discovers controllers from /controller_manager/list_controllers.
 
+# 让 moveit 自动发现 controller
 moveit_controller_manager: moveit_ros_control_interface/Ros2ControlManager
 
 # Your ros2_control manager is /controller_manager,
