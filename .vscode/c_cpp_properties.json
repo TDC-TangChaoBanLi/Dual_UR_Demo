@@ -7,7 +7,7 @@
             },
             "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/ros/humble/include/**",
+                "/opt/ros/jazzy/include/**",
                 "/home/tdc/Softwares/Mujoco/mujoco-3.3.4/**",
                 "/usr/include/eigen3"
             ],

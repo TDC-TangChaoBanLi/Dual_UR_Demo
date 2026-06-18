@@ -66,7 +66,7 @@ ros2 launch moveit_setup_assistant setup_assistant.launch.py
 
 ```bash
 ros2 launch my_env_control start_my_env_control.launch.py activate_gripper_controller:=false launch_rviz:=false
-ros2 launch my_env_moveit_config start_my_env_moveit.launch.py
+ros2 launch my_env_moveit_config start_my_env_moveit.launch.py launch_rviz:=false
 ```
 
 

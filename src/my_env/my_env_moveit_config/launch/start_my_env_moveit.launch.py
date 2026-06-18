@@ -33,8 +33,8 @@ DESCRIPTION_FILE = "urdf/my_env.urdf.xacro"
 # 这里只保留 MoveIt / RViz 真正需要的几何描述参数
 # ============================================================
 
-ARM_A_TF_PREFIX = "arm_A_"
-ARM_B_TF_PREFIX = "arm_B_"
+ARM_A_TF_PREFIX = "arm_A_" # [WARN] 不要改 Don't Change this
+ARM_B_TF_PREFIX = "arm_B_" # [WARN] 不要改 Don't Change this
 
 UR_A_TYPE = "ur5"
 UR_B_TYPE = "ur5e"
