@@ -9,13 +9,13 @@ class PosePub(Node):
         super().__init__("test_arm_A_pose_pub")
         self.pub = self.create_publisher(
             PoseStamped,
-            "/arm_A/servo_node/pose_target_cmds",
+            "/arm_A_servo_node/pose_target_cmds",
             10,
         )
 
         # 先用一个很小的位姿目标测试
         # 这里的数值要改成你当前末端附近的位置，不要一开始给很远目标
-        self.x = 0.3
+        self.x = 0.35
         self.y = 0.7
         self.z = 1.3
 

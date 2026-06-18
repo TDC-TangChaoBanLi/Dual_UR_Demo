@@ -127,8 +127,8 @@ ros2 control switch_controllers --deactivate arm_B_ur_scaled_joint_trajectory_co
 
 ros2 control list_controllers
 
-ros2 service call /arm_A/servo_node/switch_command_type moveit_msgs/srv/ServoCommandType "{command_type: 2}"
-ros2 service call /arm_B/servo_node/switch_command_type moveit_msgs/srv/ServoCommandType "{command_type: 2}"
+ros2 service call /arm_A_servo_node/switch_command_type moveit_msgs/srv/ServoCommandType "{command_type: 2}"
+ros2 service call /arm_B_servo_node/switch_command_type moveit_msgs/srv/ServoCommandType "{command_type: 2}"
 ```
 
 

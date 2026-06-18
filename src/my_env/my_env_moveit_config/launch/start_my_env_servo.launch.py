@@ -59,10 +59,10 @@ FORCE_ABS_PATHS = "false"
 # Servo node constants
 # ============================================================
 
-ARM_A_NAMESPACE = "arm_A"
-ARM_B_NAMESPACE = "arm_B"
+ARM_A_NODE_NAME_PREFIX = "arm_A_"
+ARM_B_NODE_NAME_PREFIX = "arm_B_"
 
-SERVO_NODE_NAME = "servo_node"
+SERVO_NODE_NAME_SUFFIX = "servo_node"
 
 JOINT_STATE_TOPIC = "/joint_states"
 
@@ -161,10 +161,10 @@ def generate_robot_description_planning():
     }
 
 
-def generate_planning_scene_monitor_parameters(arm_namespace: str):
+def generate_planning_scene_monitor_parameters(arm_node_name_prefix: str):
     return {
         "planning_scene_monitor_options": {
-            "name": f"{arm_namespace}_planning_scene_monitor",
+            "name": f"{arm_node_name_prefix}_planning_scene_monitor",
             "robot_description": "robot_description",
             "joint_state_topic": JOINT_STATE_TOPIC,
             "attached_collision_object_topic": "attached_collision_object",
@@ -205,7 +205,7 @@ def generate_servo_parameters(servo_config_file: str):
 
 
 def generate_servo_node(
-    arm_namespace: str,
+    arm_node_name_prefix: str,
     servo_config_file: str,
     use_sim_time,
     robot_description,
@@ -216,14 +216,14 @@ def generate_servo_node(
     servo_parameters = generate_servo_parameters(servo_config_file)
 
     planning_scene_monitor_parameters = generate_planning_scene_monitor_parameters(
-        arm_namespace
+        arm_node_name_prefix
     )
 
     return Node(
         package="moveit_servo",
         executable="servo_node",
-        namespace=arm_namespace,
-        name=SERVO_NODE_NAME,
+        # namespace=arm_namespace,
+        name=arm_node_name_prefix+SERVO_NODE_NAME_SUFFIX,
         output="screen",
         parameters=[
             {"use_sim_time": use_sim_time},
@@ -258,7 +258,7 @@ def launch_setup(context, *args, **kwargs):
     if servo_target in ["A", "both"]:
         nodes.append(
             generate_servo_node(
-                arm_namespace=ARM_A_NAMESPACE,
+                arm_node_name_prefix=ARM_A_NODE_NAME_PREFIX,
                 servo_config_file=SERVO_ARM_A_FILE,
                 use_sim_time=use_sim_time,
                 robot_description=copy.deepcopy(robot_description),
@@ -271,7 +271,7 @@ def launch_setup(context, *args, **kwargs):
     if servo_target in ["B", "both"]:
         nodes.append(
             generate_servo_node(
-                arm_namespace=ARM_B_NAMESPACE,
+                arm_node_name_prefix=ARM_B_NODE_NAME_PREFIX,
                 servo_config_file=SERVO_ARM_B_FILE,
                 use_sim_time=use_sim_time,
                 robot_description=copy.deepcopy(robot_description),
