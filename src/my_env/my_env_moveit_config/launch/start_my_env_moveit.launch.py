@@ -81,12 +81,6 @@ def generate_robot_description():
             description_file,
             " ",
 
-            "arm_A_tf_prefix:=", ARM_A_TF_PREFIX, " ",
-            "arm_B_tf_prefix:=", ARM_B_TF_PREFIX, " ",
-
-            "ur_A_ur_type:=", UR_A_TYPE, " ",
-            "ur_B_ur_type:=", UR_B_TYPE, " ",
-
             "camera_use_nominal_extrinsics:=", CAMERA_USE_NOMINAL_EXTRINSICS, " ",
 
             "safety_limits:=", SAFETY_LIMITS, " ",

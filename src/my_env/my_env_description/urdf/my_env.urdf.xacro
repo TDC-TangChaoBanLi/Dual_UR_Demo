@@ -6,14 +6,6 @@
 
   <!-- 我们需要指定用于参数化描述的参数 -->
   <!-- 为所需的ur_type创建一个文件夹，并从ur_description包中复制文件到那里 -->
-  
-  <!-- UR_A 机器人参数 -->
-  <xacro:arg name="arm_A_tf_prefix" default="arm_A_"/>
-  <xacro:arg name="ur_A_ur_type" default="ur5"/>
-
-  <!-- UR_B 机器人参数 -->
-  <xacro:arg name="arm_B_tf_prefix" default="arm_B_"/>
-  <xacro:arg name="ur_B_ur_type" default="ur5e"/>
 
   <!-- 夹爪和相机参数 -->
   <xacro:arg name="camera_use_nominal_extrinsics" default="true"/>
@@ -26,12 +18,6 @@
 
   <!-- Jazzy: 纯描述入口，用于 RViz/MoveIt，不包含 ros2_control -->
   <xacro:my_env 
-    arm_A_tf_prefix="$(arg arm_A_tf_prefix)"
-    arm_B_tf_prefix="$(arg arm_B_tf_prefix)"
-
-    ur_A_ur_type="$(arg ur_A_ur_type)"
-    ur_B_ur_type="$(arg ur_B_ur_type)"
-
     camera_use_nominal_extrinsics="$(arg camera_use_nominal_extrinsics)"
     safety_limits="$(arg safety_limits)"
     safety_pos_margin="$(arg safety_pos_margin)"

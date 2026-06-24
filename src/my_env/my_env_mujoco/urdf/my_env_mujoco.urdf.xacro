@@ -9,13 +9,13 @@
   <!-- 我们需要指定用于参数化描述的参数 -->
   <!-- 为所需的ur_type创建一个文件夹，并从ur_description包中复制文件到那里 -->
   
-  <!-- UR_A 机器人参数 -->
-  <xacro:arg name="arm_A_tf_prefix" default="arm_A_"/>
-  <xacro:arg name="ur_A_ur_type" default="ur5"/>
+  <!-- UR_A 机器人参数 (固定为 property) -->
+  <xacro:property name="arm_A_tf_prefix" value="arm_A_"/>
+  <xacro:property name="ur_A_ur_type" value="ur5"/>
 
-  <!-- UR_B 机器人参数 -->
-  <xacro:arg name="arm_B_tf_prefix" default="arm_B_"/>
-  <xacro:arg name="ur_B_ur_type" default="ur5e"/>
+  <!-- UR_B 机器人参数 (固定为 property) -->
+  <xacro:property name="arm_B_tf_prefix" value="arm_B_"/>
+  <xacro:property name="ur_B_ur_type" value="ur5e"/>
 
   <!-- 控制参数 -->
   <xacro:arg name="use_fake_hardware" default="true" />
@@ -48,11 +48,11 @@
 
   <!-- Jazzy: 纯几何描述（仅传几何参数给 my_env） -->
   <xacro:my_env 
-    arm_A_tf_prefix="$(arg arm_A_tf_prefix)"
-    arm_B_tf_prefix="$(arg arm_B_tf_prefix)"
+    arm_A_tf_prefix="${arm_A_tf_prefix}"
+    arm_B_tf_prefix="${arm_B_tf_prefix}"
 
-    ur_A_ur_type="$(arg ur_A_ur_type)"
-    ur_B_ur_type="$(arg ur_B_ur_type)"
+    ur_A_ur_type="${ur_A_ur_type}"
+    ur_B_ur_type="${ur_B_ur_type}"
 
     camera_use_nominal_extrinsics="$(arg camera_use_nominal_extrinsics)"
     safety_limits="$(arg safety_limits)"
@@ -66,12 +66,12 @@
   <!-- 只保留一个 ros2_control system：只启动一次 MujocoSystemInterface -->
   <!-- ============================================ -->
   <xacro:if value="$(arg use_sim_mujoco)">
-    <xacro:property name="arm_A_ur_prefix" value="$(arg arm_A_tf_prefix)ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    <xacro:property name="arm_B_ur_prefix" value="$(arg arm_B_tf_prefix)ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    <xacro:property name="arm_A_realsense_prefix" value="$(arg arm_A_tf_prefix)realsense_"/> <!-- ! append the '_' in the prefix -->
-    <xacro:property name="arm_B_realsense_prefix" value="$(arg arm_B_tf_prefix)realsense_"/> <!-- ! append the '_' in the prefix -->
-    <xacro:property name="arm_A_g2f85_prefix" value="$(arg arm_A_tf_prefix)"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    <xacro:property name="arm_B_g2f85_prefix" value="$(arg arm_B_tf_prefix)"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+    <xacro:property name="arm_A_ur_prefix" value="${arm_A_tf_prefix}ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+    <xacro:property name="arm_B_ur_prefix" value="${arm_B_tf_prefix}ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+    <xacro:property name="arm_A_realsense_prefix" value="${arm_A_tf_prefix}realsense_"/> <!-- ! append the '_' in the prefix -->
+    <xacro:property name="arm_B_realsense_prefix" value="${arm_B_tf_prefix}realsense_"/> <!-- ! append the '_' in the prefix -->
+    <xacro:property name="arm_A_g2f85_prefix" value="${arm_A_tf_prefix}"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+    <xacro:property name="arm_B_g2f85_prefix" value="${arm_B_tf_prefix}"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
     
     <ros2_control name="my_env_ros2_mujoco" type="system">
       <hardware>

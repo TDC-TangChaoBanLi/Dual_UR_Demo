@@ -5,10 +5,6 @@
 
   <!-- Jazzy: 纯几何描述，不包含 ros2_control -->
   <xacro:macro name="my_env" params="
-  arm_A_tf_prefix:=arm_A_
-  arm_B_tf_prefix:=arm_B_
-  ur_A_ur_type:=ur5
-  ur_B_ur_type:=ur5e
   camera_use_nominal_extrinsics:=true
   safety_limits:=false
   safety_pos_margin:=0.15
@@ -16,7 +12,10 @@
   force_abs_paths:=false
   ">
   
-
+  <xacro:property name="arm_A_tf_prefix" value="arm_A_"/>
+  <xacro:property name="ur_A_ur_type" value="ur5"/>
+  <xacro:property name="arm_B_tf_prefix" value="arm_B_"/>
+  <xacro:property name="ur_B_ur_type" value="ur5e"/>
 
   <!-- 定义材料 -->
   <material name="table_material">

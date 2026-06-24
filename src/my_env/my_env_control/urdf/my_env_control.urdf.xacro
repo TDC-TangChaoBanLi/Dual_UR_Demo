@@ -10,31 +10,27 @@
   <!-- 我们需要指定用于参数化描述的参数 -->
   <!-- 为所需的ur_type创建一个文件夹，并从ur_description包中复制文件到那里 -->
   <!-- 总体参数 -->
-  <xacro:arg name="arm_A_tf_prefix" default="arm_A_"/>
-  <xacro:arg name="arm_B_tf_prefix" default="arm_B_"/>
   <xacro:arg name="use_fake_hardware" default="true" />
   <xacro:arg name="use_fake_sensor_commands" default="true" />
   <!-- UR 机器人其他参数 -->
   <xacro:arg name="ur_reverse_ip" default="0.0.0.0"/>
   <xacro:arg name="ur_headless_mode" default="false"/>
-  <!-- UR_A 机器人参数 -->
-  <xacro:arg name="ur_A_ur_type" default="ur5"/>
+  <!-- UR_A 机器人参数 (前缀和型号固定为 property) -->
   <xacro:arg name="ur_A_robot_ip" default="192.168.1.101"/>
   <xacro:arg name="ur_A_reverse_port" default="50001"/>
   <xacro:arg name="ur_A_script_sender_port" default="50002"/>
   <xacro:arg name="ur_A_script_command_port" default="50003"/>
   <xacro:arg name="ur_A_trajectory_port" default="50004"/>
   <xacro:arg name="ur_A_rw_rate" default="0"/>
-  <xacro:arg name="ur_A_kinematics_parameters_file" default="$(find ur_description)/config/$(arg ur_A_ur_type)/default_kinematics.yaml"/>
-  <!-- UR_B 机器人参数 -->
-  <xacro:arg name="ur_B_ur_type" default="ur5e"/>
+  <xacro:arg name="ur_A_kinematics_parameters_file" default="$(find ur_description)/config/${ur_A_ur_type}/default_kinematics.yaml"/>
+  <!-- UR_B 机器人参数 (前缀和型号固定为 property) -->
   <xacro:arg name="ur_B_robot_ip" default="192.168.1.102"/>
   <xacro:arg name="ur_B_reverse_port" default="50011"/>
   <xacro:arg name="ur_B_script_sender_port" default="50012"/>
   <xacro:arg name="ur_B_script_command_port" default="50013"/>
   <xacro:arg name="ur_B_trajectory_port" default="50014"/>
   <xacro:arg name="ur_B_rw_rate" default="0"/>
-  <xacro:arg name="ur_B_kinematics_parameters_file" default="$(find ur_description)/config/$(arg ur_B_ur_type)/default_kinematics.yaml"/>
+  <xacro:arg name="ur_B_kinematics_parameters_file" default="$(find ur_description)/config/${ur_B_ur_type}/default_kinematics.yaml"/>
   <!-- 夹爪和相机参数 -->
   <xacro:arg name="g2f85_A_com_port" default="/dev/ttyUSB0"/>
   <xacro:arg name="g2f85_B_com_port" default="/dev/ttyUSB1"/>
@@ -83,12 +79,6 @@
 
   <!-- Jazzy: 纯几何描述（仅传几何参数给 my_env） -->
   <xacro:my_env 
-    arm_A_tf_prefix="$(arg arm_A_tf_prefix)"
-    arm_B_tf_prefix="$(arg arm_B_tf_prefix)"
-
-    ur_A_ur_type="$(arg ur_A_ur_type)"
-    ur_B_ur_type="$(arg ur_B_ur_type)"
-
     camera_use_nominal_extrinsics="$(arg camera_use_nominal_extrinsics)"
     safety_limits="$(arg safety_limits)"
     safety_pos_margin="$(arg safety_pos_margin)"
@@ -103,8 +93,8 @@
   <!-- arm_A UR ros2_control -->
   <xacro:ur_ros2_control
     name="ur_A"
-    tf_prefix="$(arg arm_A_tf_prefix)ur_"
-    kinematics_parameters_file="$(find ur_description)/config/$(arg ur_A_ur_type)/default_kinematics.yaml"
+    tf_prefix="${arm_A_tf_prefix}ur_"
+    kinematics_parameters_file="$(find ur_description)/config/${ur_A_ur_type}/default_kinematics.yaml"
     robot_ip="$(arg ur_A_robot_ip)"
     script_filename="$(arg script_filename)"
     output_recipe_filename="$(arg output_recipe_filename)"
@@ -136,8 +126,8 @@
   <!-- arm_B UR ros2_control -->
   <xacro:ur_ros2_control
     name="ur_B"
-    tf_prefix="$(arg arm_B_tf_prefix)ur_"
-    kinematics_parameters_file="$(find ur_description)/config/$(arg ur_B_ur_type)/default_kinematics.yaml"
+    tf_prefix="${arm_B_tf_prefix}ur_"
+    kinematics_parameters_file="$(find ur_description)/config/${ur_B_ur_type}/default_kinematics.yaml"
     robot_ip="$(arg ur_B_robot_ip)"
     script_filename="$(arg script_filename)"
     output_recipe_filename="$(arg output_recipe_filename)"
@@ -173,7 +163,7 @@
   <!-- arm_A 夹爪 ros2_control -->
   <xacro:robotiq_gripper_ros2_control
     name="arm_A_g2f85"
-    prefix="$(arg arm_A_tf_prefix)"
+    prefix="${arm_A_tf_prefix}"
     use_fake_hardware="True"
     mock_sensor_commands="$(arg use_fake_sensor_commands)"
     com_port="$(arg g2f85_A_com_port)"
@@ -191,7 +181,7 @@
   <!-- arm_B 夹爪 ros2_control -->
   <xacro:robotiq_gripper_ros2_control
     name="arm_B_g2f85"
-    prefix="$(arg arm_B_tf_prefix)"
+    prefix="${arm_B_tf_prefix}"
     use_fake_hardware="True"
     mock_sensor_commands="$(arg use_fake_sensor_commands)"
     com_port="$(arg g2f85_B_com_port)"

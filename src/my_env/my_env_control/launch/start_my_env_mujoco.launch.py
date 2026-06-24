@@ -48,8 +48,6 @@ def generate_launch_description():
     robot_description_content = Command([
         PathJoinSubstitution([FindExecutable(name='xacro')]), ' ',
         xacro_file_path, ' ',
-        'arm_A_tf_prefix:=', arm_A_tf_prefix, ' ',
-        'arm_B_tf_prefix:=', arm_B_tf_prefix, ' ',
         'use_fake_hardware:=true', ' ',
         'fake_sensor_commands:=true', ' ',
         'use_sim_mujoco:=true', ' ',

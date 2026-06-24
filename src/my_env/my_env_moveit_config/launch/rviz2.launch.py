@@ -14,12 +14,6 @@ DESCRIPTION_PACKAGE = "my_env_description"
 # 这里改成你的纯描述 xacro 文件名
 DESCRIPTION_FILE = "urdf/my_env.urdf.xacro"
 
-ARM_A_TF_PREFIX = "arm_A_" # [WARN] 不要改 Don't Change this
-ARM_B_TF_PREFIX = "arm_B_" # [WARN] 不要改 Don't Change this
-
-UR_A_TYPE = "ur5"
-UR_B_TYPE = "ur5e"
-
 CAMERA_USE_NOMINAL_EXTRINSICS = "true"
 
 SAFETY_LIMITS = "false"
@@ -56,10 +50,6 @@ def generate_robot_description():
             " ",
             description_file,
             " ",
-            "arm_A_tf_prefix:=", ARM_A_TF_PREFIX, " ",
-            "arm_B_tf_prefix:=", ARM_B_TF_PREFIX, " ",
-            "ur_A_ur_type:=", UR_A_TYPE, " ",
-            "ur_B_ur_type:=", UR_B_TYPE, " ",
             "camera_use_nominal_extrinsics:=", CAMERA_USE_NOMINAL_EXTRINSICS, " ",
             "safety_limits:=", SAFETY_LIMITS, " ",
             "safety_pos_margin:=", SAFETY_POS_MARGIN, " ",

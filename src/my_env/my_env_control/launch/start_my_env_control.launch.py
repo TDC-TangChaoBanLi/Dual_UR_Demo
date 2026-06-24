@@ -30,17 +30,6 @@ UR_A_KINEMATICS_PARAMETERS_FILE = "config/ur_A_kinematics_calibration.yaml"
 UR_B_KINEMATICS_PARAMETERS_FILE = "config/ur_B_kinematics_calibration.yaml"
 
 
-# 前缀。 
-# [WARN] 必须和 controller.yaml / MoveIt 配置保持一致
-ARM_A_TF_PREFIX = "arm_A_"
-ARM_B_TF_PREFIX = "arm_B_"
-
-# UR 型号
-UR_A_TYPE = "ur5"
-UR_B_TYPE = "ur5e"
-
-
-
 # 真实硬件 IP
 UR_REVERSE_IP = "192.168.1.100"
 UR_A_ROBOT_IP = "192.168.1.17"
@@ -242,14 +231,6 @@ def launch_setup(context, *args, **kwargs):
             "use_fake_hardware:=", use_fake_hardware, " ",
             "use_fake_sensor_commands:=", use_fake_sensor_commands, " ",
             "ur_headless_mode:=", ur_headless_mode, " ",
-
-            # 固定参数：双臂前缀
-            "arm_A_tf_prefix:=", ARM_A_TF_PREFIX, " ",
-            "arm_B_tf_prefix:=", ARM_B_TF_PREFIX, " ",
-
-            # 固定参数：UR 型号
-            "ur_A_ur_type:=", UR_A_TYPE, " ",
-            "ur_B_ur_type:=", UR_B_TYPE, " ",
 
             # 固定参数：UR 网络
             "ur_reverse_ip:=", UR_REVERSE_IP, " ",
