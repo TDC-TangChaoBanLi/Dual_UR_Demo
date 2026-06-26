@@ -1,19 +1,32 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
+  <!-- ============================================ -->
+  <!-- 通用依赖（所有夹爪类型都需要）               -->
+  <!-- ============================================ -->
   <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
-  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro" />
-  <xacro:include filename="$(find robotiq_description)/urdf/ur_to_robotiq_adapter.urdf.xacro" />
   <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
 
+  <!-- ============================================ -->
+  <!-- 夹爪类型条件依赖                             -->
+  <!-- ============================================ -->
+  <xacro:if value="${gripper_type == 'robotiq_2f85'}">
+    <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro" />
+    <xacro:include filename="$(find robotiq_description)/urdf/ur_to_robotiq_adapter.urdf.xacro" />
+  </xacro:if>
+  <xacro:if value="${gripper_type == 'dh_ag95'}">
+    <xacro:include filename="$(find dh_ag95_description)/urdf/dh_ag95_macro.urdf.xacro" />
+  </xacro:if>
 
-  <!-- 宏定义自己的机械臂结构 UR+Robotiq+RealSense -->
+
+  <!-- 宏定义自己的机械臂结构 UR+Gripper+RealSense -->
   <!-- Jazzy: 仅纯几何描述，不包含任何 ros2_control -->
   <xacro:macro name="my_arm" params="
     name:=my_arm
     tf_prefix:=my_arm
     parent:=world
     ur_type:=ur5e
+    gripper_type:=dh_ag95
     realsense_use_nominal_extrinsics:=false
     safety_limits:=false
     safety_pos_margin:=0.15
@@ -40,9 +53,17 @@
     <xacro:property name="_realsense_use_mesh" value="true" />
 
 
-    <!-- Robotiq 2f85 gripper parameters (Jazzy: 纯几何，不含 ros2_control) -->
-    <xacro:property name="_g2f85_name" value="${name}_g2f85" />
-    <xacro:property name="_g2f85_prefix" value="${tf_prefix}" /> <!-- ! Match the prefix in my_env_macro.urdf.xacro -->
+    <!-- 夹爪参数 —— 根据 gripper_type 分别设置 -->
+    <xacro:if value="${gripper_type == 'robotiq_2f85'}">
+      <!-- Robotiq 2f85 gripper parameters (Jazzy: 纯几何，不含 ros2_control) -->
+      <xacro:property name="_g2f85_name" value="${name}_g2f85" />
+      <xacro:property name="_g2f85_prefix" value="${tf_prefix}" /> <!-- ! Match the prefix in my_env_macro.urdf.xacro -->
+    </xacro:if>
+    <xacro:if value="${gripper_type == 'dh_ag95'}">
+      <!-- DH-Robotics AG-95 gripper parameters -->
+      <xacro:property name="_ag95_prefix" value="${tf_prefix}" />
+      <xacro:property name="_ag95_gripper_base_link" value="${_ag95_prefix}gripper_base_link" />
+    </xacro:if>
 
 
     <!-- 创建 UR 机器人 使用宏定义 (Jazzy: 纯描述，无 ros2_control 参数) -->
@@ -112,31 +133,71 @@
       <origin xyz="0 0.0875 0.013" rpy="0 ${-pi/2} ${-pi/2}"/>
     </xacro:sensor_d435>
 
-    <!-- 创建 robotiq 夹爪底座 使用宏定义 -->
-    <xacro:ur_to_robotiq
-      prefix="${_g2f85_prefix}robotiq_" 
-      parent="${_realsense_prefix}_shelf_child_side" 
-      child="${_g2f85_prefix}robotiq_ur_to_g2f85_child_side"
-    >
-    </xacro:ur_to_robotiq>
 
-    <!-- 创建 robotiq 夹爪 使用宏定义 (Jazzy: 纯几何，禁用 ros2_control) -->
-    <xacro:robotiq_gripper 
-      name="${_g2f85_name}" 
-      prefix="${_g2f85_prefix}" 
-      parent="${_g2f85_prefix}robotiq_ur_to_g2f85_child_side"
-      include_ros2_control="false"
-    >
-      <origin xyz="0 0 0" rpy="0 0 0" />
-    </xacro:robotiq_gripper>
+    <!-- ============================================ -->
+    <!-- Robotiq 2F-85 夹爪 几何                      -->
+    <!-- ============================================ -->
+    <xacro:if value="${gripper_type == 'robotiq_2f85'}">
 
-    <!-- 创建 tcp  -->
-    <link name="${tf_prefix}_tcp"/>
-    <joint name="${tf_prefix}_tcp_joint" type="fixed">
-        <origin xyz="0 0 0.14" rpy="0 0 0"/>
-        <parent link="${_g2f85_prefix}robotiq_85_base_link"/>
-        <child link="${tf_prefix}_tcp"/>
-    </joint>
+      <!-- 创建 robotiq 夹爪底座 使用宏定义 -->
+      <xacro:ur_to_robotiq
+        prefix="${_g2f85_prefix}robotiq_" 
+        parent="${_realsense_prefix}_shelf_child_side" 
+        child="${_g2f85_prefix}robotiq_ur_to_g2f85_child_side"
+      >
+      </xacro:ur_to_robotiq>
+
+      <!-- 创建 robotiq 夹爪 使用宏定义 (Jazzy: 纯几何，禁用 ros2_control) -->
+      <xacro:robotiq_gripper 
+        name="${_g2f85_name}" 
+        prefix="${_g2f85_prefix}" 
+        parent="${_g2f85_prefix}robotiq_ur_to_g2f85_child_side"
+        include_ros2_control="false"
+      >
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </xacro:robotiq_gripper>
+
+      <!-- 创建 TCP (Robotiq 末端) -->
+      <link name="${tf_prefix}_tcp"/>
+      <joint name="${tf_prefix}_tcp_joint" type="fixed">
+          <origin xyz="0 0 0.14" rpy="0 0 0"/>
+          <parent link="${_g2f85_prefix}robotiq_85_base_link"/>
+          <child link="${tf_prefix}_tcp"/>
+      </joint>
+
+    </xacro:if>
+
+
+    <!-- ============================================ -->
+    <!-- DH-Robotics AG-95 夹爪 几何                  -->
+    <!-- ============================================ -->
+    <xacro:if value="${gripper_type == 'dh_ag95'}">
+
+      <!-- 创建 dh_ag95 夹爪 使用宏定义 (Jazzy: 纯几何) -->
+      <!--
+        use_flange: 是否启用转接法兰。
+        法兰 mesh 文件需手动放入:
+          dh_ag95_description/meshes/visual/flange.STL
+        启用后会在 realsense_shelf_child_side 与 gripper_base_link 之间
+        插入一个 flange_link fixed joint。
+      -->
+      <xacro:dh_ag95_gripper
+        prefix="${_ag95_prefix}"
+        parent="${_realsense_prefix}_shelf_child_side"
+      >
+        <origin xyz="0 0 -0.0035" rpy="0 0 0" />
+      </xacro:dh_ag95_gripper>
+
+      <!-- 创建 TCP (AG-95 末端) -->
+      <!-- TODO: 请根据实际 AG-95 尺寸调整 origin xyz 偏移 -->
+      <link name="${tf_prefix}_tcp"/>
+      <joint name="${tf_prefix}_tcp_joint" type="fixed">
+          <origin xyz="0 0 0.14" rpy="0 0 0"/>
+          <parent link="${_ag95_gripper_base_link}"/>
+          <child link="${tf_prefix}_tcp"/>
+      </joint>
+
+    </xacro:if>
 
 
 

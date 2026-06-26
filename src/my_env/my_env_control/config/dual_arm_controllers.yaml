@@ -124,6 +124,15 @@ controller_manager:
       type: robotiq_controllers/RobotiqActivationController
 
     # ------------------------------------------------------------
+    # DH-Robotics AG-95 controllers
+    # ------------------------------------------------------------
+    arm_A_ag95_gripper_controller:
+      type: position_controllers/GripperActionController
+
+    arm_B_ag95_gripper_controller:
+      type: position_controllers/GripperActionController
+
+    # ------------------------------------------------------------
     # Jazzy 默认就是 false；这里显式写出，贴近 UR 官方配置
     # ------------------------------------------------------------
     enforce_command_limits: false
@@ -493,3 +502,20 @@ arm_B_g2f85_gripper_controller:
 arm_B_g2f85_activation_controller:
   ros__parameters:
     default: true
+
+
+# ============================================================
+# DH-Robotics AG-95 controllers parameters
+# ============================================================
+
+# arm_A_ag95_gripper_controller
+# [WARN] 必须和 launch 配置保持一致
+arm_A_ag95_gripper_controller:
+  ros__parameters:
+    joint: arm_A_gripper_finger1_joint
+
+# arm_B_ag95_gripper_controller
+# [WARN] 必须和 launch 配置保持一致
+arm_B_ag95_gripper_controller:
+  ros__parameters:
+    joint: arm_B_gripper_finger1_joint

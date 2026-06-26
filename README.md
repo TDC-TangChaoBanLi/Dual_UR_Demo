@@ -38,6 +38,7 @@ ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5e robot_ip:=192.168
 ```bash
 sudo apt install colcon -y
 colcon build --symlink-install --packages-select robotiq_driver robotiq_controllers robotiq_description
+colcon build --symlink-install --packages-select dh_ag95_description dh_ag95_controllers
 colcon build --symlink-install --packages-select my_env_description my_env_moveit_config my_env_control
 ```
 

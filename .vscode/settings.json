@@ -17,5 +17,6 @@
         }
     },
     "terminal.integrated.defaultProfile.linux": "ROS2 Bash",
-    "cmake.ignoreCMakeListsMissing": true
+    "cmake.ignoreCMakeListsMissing": true,
+    "github.copilot.chat.codeGeneration.useInstructionFiles": true
 }

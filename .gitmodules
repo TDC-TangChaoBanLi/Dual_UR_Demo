@@ -8,3 +8,6 @@
 [submodule "lib/mujoco_vendor"]
 	path = lib/mujoco_vendor
 	url = https://github.com/pal-robotics/mujoco_vendor.git
+[submodule "lib/dh_ag95_ros2"]
+	path = lib/dh_ag95_ros2
+	url = https://github.com/TDC-TangChaoBanLi/dh_ag95_ros2.git

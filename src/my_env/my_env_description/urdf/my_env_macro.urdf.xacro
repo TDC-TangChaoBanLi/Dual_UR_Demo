@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot name="my_env" xmlns:xacro="http://ros.org/wiki/xacro">
 
+  <xacro:include filename="$(find my_env_description)/urdf/dual_arm_config.xacro"/>
   <xacro:include filename="$(find my_env_description)/urdf/my_arm_macro.urdf.xacro"/>
 
   <!-- Jazzy: 纯几何描述，不包含 ros2_control -->
@@ -11,11 +12,6 @@
   safety_k_position:=20
   force_abs_paths:=false
   ">
-  
-  <xacro:property name="arm_A_tf_prefix" value="arm_A_"/>
-  <xacro:property name="ur_A_ur_type" value="ur5"/>
-  <xacro:property name="arm_B_tf_prefix" value="arm_B_"/>
-  <xacro:property name="ur_B_ur_type" value="ur5e"/>
 
   <!-- 定义材料 -->
   <material name="table_material">
@@ -94,6 +90,7 @@
     tf_prefix = "${arm_A_tf_prefix}"
     parent = "ur_mount_A"
     ur_type = "${ur_A_ur_type}"
+    gripper_type = "${gripper_type}"
     realsense_use_nominal_extrinsics = "${camera_use_nominal_extrinsics}"
     safety_limits = "${safety_limits}"
     safety_pos_margin = "${safety_pos_margin}"
@@ -108,6 +105,7 @@
     tf_prefix = "${arm_B_tf_prefix}"
     parent = "ur_mount_B"
     ur_type = "${ur_B_ur_type}"
+    gripper_type = "${gripper_type}"
     realsense_use_nominal_extrinsics = "${camera_use_nominal_extrinsics}"
     safety_limits = "${safety_limits}"
     safety_pos_margin = "${safety_pos_margin}"

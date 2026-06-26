@@ -3,12 +3,13 @@
 
   <!-- 首先包含自定义描述宏 -->
   <xacro:include filename="$(find my_env_description)/urdf/my_env_macro.urdf.xacro"/>
-  <!-- Jazzy: ros2_control 宏分别来自 ur_robot_driver 和 robotiq_description -->
+  <!-- Jazzy: ros2_control 宏分别来自 ur_robot_driver、robotiq_description 和 dh_ag95_description -->
   <xacro:include filename="$(find ur_robot_driver)/urdf/ur.ros2_control.xacro" />
   <xacro:include filename="$(find robotiq_description)/urdf/2f_85.ros2_control.xacro" />
+  <xacro:include filename="$(find dh_ag95_description)/urdf/dh_ag95.ros2_control.xacro" />
 
   <!-- 我们需要指定用于参数化描述的参数 -->
-  <!-- 为所需的ur_type创建一个文件夹，并从ur_description包中复制文件到那里 -->
+  <!-- 双臂前缀/型号等属性现在统一由 dual_arm_config.xacro 提供（通过 my_env_macro.urdf.xacro 间接 include） -->
   <!-- 总体参数 -->
   <xacro:arg name="use_fake_hardware" default="true" />
   <xacro:arg name="use_fake_sensor_commands" default="true" />
@@ -44,6 +45,26 @@
   <xacro:arg name="script_filename" default="$(find ur_client_library)/resources/external_control.urscript"/>
   <xacro:arg name="output_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_output_recipe.txt"/>
   <xacro:arg name="input_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_input_recipe.txt"/>
+  <!-- DH-Robotics AG-95 夹爪 共享参数（前缀 ag95_gripper_）-->
+  <xacro:arg name="ag95_gripper_transport_type" default="official_serial"/>
+  <xacro:arg name="ag95_gripper_serial_baudrate" default="115200"/>
+  <xacro:arg name="ag95_gripper_can_bitrate" default="500000"/>
+  <xacro:arg name="ag95_gripper_pcan_bitrate" default="500000"/>
+  <xacro:arg name="ag95_gripper_gripper_model" default="ag-160-95"/>
+  <xacro:arg name="ag95_gripper_default_force_percent" default="30"/>
+  <xacro:arg name="ag95_gripper_auto_initialize" default="true"/>
+  <xacro:arg name="ag95_gripper_rw_rate" default="25"/>
+  <xacro:arg name="ag95_gripper_command_interval_ms" default="10"/>
+  <!-- DH-Robotics AG-95 臂A 独立参数（前缀 ag95_A_）-->
+  <xacro:arg name="ag95_A_serial_port" default="/dev/ttyAG95_A"/>
+  <xacro:arg name="ag95_A_can_interface" default="can0"/>
+  <xacro:arg name="ag95_A_pcan_channel" default="PCAN_USBBUS1"/>
+  <xacro:arg name="ag95_A_gripper_id" default="1"/>
+  <!-- DH-Robotics AG-95 臂B 独立参数（前缀 ag95_B_）-->
+  <xacro:arg name="ag95_B_serial_port" default="/dev/ttyAG95_B"/>
+  <xacro:arg name="ag95_B_can_interface" default="can0"/>
+  <xacro:arg name="ag95_B_pcan_channel" default="PCAN_USBBUS1"/>
+  <xacro:arg name="ag95_B_gripper_id" default="2"/>
   <!-- 初始位置文件 -->
   <xacro:arg name="initial_positions_file" default="$(find ur_description)/config/initial_positions.yaml"/>
 
@@ -159,12 +180,13 @@
   <!-- ============================================ -->
   <!-- Jazzy: Robotiq 夹爪 ros2_control             -->
   <!-- ============================================ -->
+  <xacro:if value="${gripper_type == 'robotiq_2f85'}">
 
   <!-- arm_A 夹爪 ros2_control -->
   <xacro:robotiq_gripper_ros2_control
     name="arm_A_g2f85"
     prefix="${arm_A_tf_prefix}"
-    use_fake_hardware="True"
+    use_fake_hardware="$(arg use_fake_hardware)"
     mock_sensor_commands="$(arg use_fake_sensor_commands)"
     com_port="$(arg g2f85_A_com_port)"
     sim_gazebo="False"
@@ -182,7 +204,7 @@
   <xacro:robotiq_gripper_ros2_control
     name="arm_B_g2f85"
     prefix="${arm_B_tf_prefix}"
-    use_fake_hardware="True"
+    use_fake_hardware="$(arg use_fake_hardware)"
     mock_sensor_commands="$(arg use_fake_sensor_commands)"
     com_port="$(arg g2f85_B_com_port)"
     sim_gazebo="False"
@@ -195,5 +217,54 @@
     gripper_max_force="$(arg g2f85_gripper_max_force)"
     gripper_closed_position="$(arg g2f85_gripper_closed_position)"
   />
+
+  </xacro:if>
+
+  <!-- ============================================ -->
+  <!-- Jazzy: DH-Robotics AG-95 夹爪 ros2_control   -->
+  <!-- ============================================ -->
+  <xacro:if value="${gripper_type == 'dh_ag95'}">
+
+  <!-- arm_A AG-95 夹爪 ros2_control -->
+  <xacro:dh_ag95_ros2_control
+    prefix="${arm_A_tf_prefix}"
+    name="arm_A_ag95_hardware"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    transport_type="$(arg ag95_gripper_transport_type)"
+    serial_port="$(arg ag95_A_serial_port)"
+    serial_baudrate="$(arg ag95_gripper_serial_baudrate)"
+    can_interface="$(arg ag95_A_can_interface)"
+    can_bitrate="$(arg ag95_gripper_can_bitrate)"
+    pcan_channel="$(arg ag95_A_pcan_channel)"
+    pcan_bitrate="$(arg ag95_gripper_pcan_bitrate)"
+    gripper_id="$(arg ag95_A_gripper_id)"
+    gripper_model="$(arg ag95_gripper_gripper_model)"
+    default_force_percent="$(arg ag95_gripper_default_force_percent)"
+    auto_initialize="$(arg ag95_gripper_auto_initialize)"
+    rw_rate="$(arg ag95_gripper_rw_rate)"
+    command_interval_ms="$(arg ag95_gripper_command_interval_ms)"
+  />
+
+  <!-- arm_B AG-95 夹爪 ros2_control -->
+  <xacro:dh_ag95_ros2_control
+    prefix="${arm_B_tf_prefix}"
+    name="arm_B_ag95_hardware"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    transport_type="$(arg ag95_gripper_transport_type)"
+    serial_port="$(arg ag95_B_serial_port)"
+    serial_baudrate="$(arg ag95_gripper_serial_baudrate)"
+    can_interface="$(arg ag95_B_can_interface)"
+    can_bitrate="$(arg ag95_gripper_can_bitrate)"
+    pcan_channel="$(arg ag95_B_pcan_channel)"
+    pcan_bitrate="$(arg ag95_gripper_pcan_bitrate)"
+    gripper_id="$(arg ag95_B_gripper_id)"
+    gripper_model="$(arg ag95_gripper_gripper_model)"
+    default_force_percent="$(arg ag95_gripper_default_force_percent)"
+    auto_initialize="$(arg ag95_gripper_auto_initialize)"
+    rw_rate="$(arg ag95_gripper_rw_rate)"
+    command_interval_ms="$(arg ag95_gripper_command_interval_ms)"
+  />
+
+  </xacro:if>
 
 </robot>

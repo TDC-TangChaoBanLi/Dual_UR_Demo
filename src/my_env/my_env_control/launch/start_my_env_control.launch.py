@@ -22,8 +22,8 @@ from launch.actions import IncludeLaunchDescription
 CONTROL_PACKAGE = "my_env_control"
 
 DESCRIPTION_FILE = "urdf/my_env_control.urdf.xacro"
-CONTROLLERS_FILE = "config/dual_ur_g2f85_controllers.yaml"
-UPDATE_RATE_FILE = "config/dual_ur_update_rate.yaml"
+CONTROLLERS_FILE = "config/dual_arm_controllers.yaml"
+UPDATE_RATE_FILE = "config/dual_arm_update_rate.yaml"
 RVIZ_CONFIG_FILE = "rviz/my_env_control.rviz"
 # UR 运动学校准参数文件 my_env_control 包内
 UR_A_KINEMATICS_PARAMETERS_FILE = "config/ur_A_kinematics_calibration.yaml"
@@ -55,10 +55,31 @@ UR_B_RW_RATE = "500"
 G2F85_A_COM_PORT = "/dev/ttyUSB0"
 G2F85_B_COM_PORT = "/dev/ttyUSB1"
 
+# DH-Robotics AG-95 夹爪 共享参数
+AG95_GRIPPER_TRANSPORT_TYPE = "socketcan"
+AG95_GRIPPER_SERIAL_BAUDRATE = "115200"
+AG95_GRIPPER_CAN_BITRATE = "500000"
+AG95_GRIPPER_PCAN_BITRATE = "500000"
+AG95_GRIPPER_GRIPPER_MODEL = "ag-160-95"
+AG95_GRIPPER_DEFAULT_FORCE_PERCENT = "100"
+AG95_GRIPPER_AUTO_INITIALIZE = "true"
+AG95_GRIPPER_RW_RATE = "25"
+AG95_GRIPPER_COMMAND_INTERVAL_MS = "10"
+# DH-Robotics AG-95 臂A 独立参数
+AG95_A_SERIAL_PORT = "/dev/ttyAG95_A"
+AG95_A_CAN_INTERFACE = "can0"
+AG95_A_PCAN_CHANNEL = "PCAN_USBBUS1"
+AG95_A_GRIPPER_ID = "1"
+# DH-Robotics AG-95 臂B 独立参数
+AG95_B_SERIAL_PORT = "/dev/ttyAG95_B"
+AG95_B_CAN_INTERFACE = "can0"
+AG95_B_PCAN_CHANNEL = "PCAN_USBBUS1"
+AG95_B_GRIPPER_ID = "2"
+
 # 是否启动真实 UR 辅助节点
 LAUNCH_DASHBOARD_CLIENT = True
-LAUNCH_URSCRIPT_INTERFACE = True
-LAUNCH_ROBOT_STATE_HELPER = True
+LAUNCH_URSCRIPT_INTERFACE = False
+LAUNCH_ROBOT_STATE_HELPER = False
 
 # 说明：
 # controller_stopper_node 在“单全局 controller_manager + 双 UR”的场景下需要非常小心，
@@ -127,6 +148,11 @@ ALL_UR_B_STATE_CONTROLLERS = [
 GRIPPER_A_CONTROLLER_PREFIX = "arm_A_g2f85_"
 GRIPPER_B_CONTROLLER_PREFIX = "arm_B_g2f85_"
 
+# DH-Robotics AG-95 控制器前缀
+# [WARN] 必须和 controller.yaml / MoveIt 配置保持一致
+AG95_A_CONTROLLER_PREFIX = "arm_A_ag95_"
+AG95_B_CONTROLLER_PREFIX = "arm_B_ag95_"
+
 # 双 Robotiq 控制器名称后缀
 # [WARN] 必须与你的 controller.yaml 一致。
 
@@ -151,6 +177,17 @@ ALL_GRIPPER_EXTERNAL_CONTROLLERS = [
     f"{GRIPPER_B_CONTROLLER_PREFIX}{suffix}" for suffix in EXTERNAL_GRIPPER_CONTROLLERS_SUFFIXES
 ]
 
+# DH-Robotics AG-95 夹爪控制器后缀
+AG95_CONTROLLER_SUFFIXES = [
+    "gripper_controller",
+]
+
+ALL_AG95_CONTROLLERS = [
+    f"{AG95_A_CONTROLLER_PREFIX}{suffix}" for suffix in AG95_CONTROLLER_SUFFIXES
+] + [
+    f"{AG95_B_CONTROLLER_PREFIX}{suffix}" for suffix in AG95_CONTROLLER_SUFFIXES
+]
+
 
 
 def launch_setup(context, *args, **kwargs):
@@ -162,8 +199,10 @@ def launch_setup(context, *args, **kwargs):
     activate_ur_state_controller = LaunchConfiguration("activate_ur_state_controller")
     activate_gripper_controller = LaunchConfiguration("activate_gripper_controller")
     controller_spawner_timeout = LaunchConfiguration("controller_spawner_timeout")
+    gripper_type = LaunchConfiguration("gripper_type")
 
     initial_ur_suffix = LaunchConfiguration("initial_ur_controller").perform(context)
+    _gripper_type = gripper_type.perform(context)
 
     # ### 激活的控制器列表 ###
     controllers_active = list(BASE_ACTIVE_CONTROLLERS)
@@ -178,11 +217,14 @@ def launch_setup(context, *args, **kwargs):
     if activate_ur_state_controller.perform(context).lower() == "true" and use_fake_hardware.perform(context).lower() == "false":
         controllers_active += ALL_UR_A_STATE_CONTROLLERS
         controllers_active += ALL_UR_B_STATE_CONTROLLERS
-    # 添加初始gripper控制器
+    # 添加初始gripper控制器（根据 gripper_type 选择）
     if activate_gripper_controller.perform(context).lower() == "true":
-        controllers_active += ALL_GRIPPER_INNER_CONTROLLERS
-        if use_fake_hardware.perform(context).lower() == "false":
-            controllers_active += ALL_GRIPPER_EXTERNAL_CONTROLLERS
+        if _gripper_type == "robotiq_2f85":
+            controllers_active += ALL_GRIPPER_INNER_CONTROLLERS
+            if use_fake_hardware.perform(context).lower() == "false":
+                controllers_active += ALL_GRIPPER_EXTERNAL_CONTROLLERS
+        elif _gripper_type == "dh_ag95":
+            controllers_active += ALL_AG95_CONTROLLERS
 
     # ### 未激活的控制器列表 ###
     controllers_inactive = [] 
@@ -254,6 +296,27 @@ def launch_setup(context, *args, **kwargs):
             # 固定参数：Robotiq 串口
             "g2f85_A_com_port:=", G2F85_A_COM_PORT, " ",
             "g2f85_B_com_port:=", G2F85_B_COM_PORT, " ",
+
+            # 固定参数：DH-Robotics AG-95 共享
+            "ag95_gripper_transport_type:=", AG95_GRIPPER_TRANSPORT_TYPE, " ",
+            "ag95_gripper_serial_baudrate:=", AG95_GRIPPER_SERIAL_BAUDRATE, " ",
+            "ag95_gripper_can_bitrate:=", AG95_GRIPPER_CAN_BITRATE, " ",
+            "ag95_gripper_pcan_bitrate:=", AG95_GRIPPER_PCAN_BITRATE, " ",
+            "ag95_gripper_gripper_model:=", AG95_GRIPPER_GRIPPER_MODEL, " ",
+            "ag95_gripper_default_force_percent:=", AG95_GRIPPER_DEFAULT_FORCE_PERCENT, " ",
+            "ag95_gripper_auto_initialize:=", AG95_GRIPPER_AUTO_INITIALIZE, " ",
+            "ag95_gripper_rw_rate:=", AG95_GRIPPER_RW_RATE, " ",
+            "ag95_gripper_command_interval_ms:=", AG95_GRIPPER_COMMAND_INTERVAL_MS, " ",
+            # 固定参数：DH-Robotics AG-95 臂A
+            "ag95_A_serial_port:=", AG95_A_SERIAL_PORT, " ",
+            "ag95_A_can_interface:=", AG95_A_CAN_INTERFACE, " ",
+            "ag95_A_pcan_channel:=", AG95_A_PCAN_CHANNEL, " ",
+            "ag95_A_gripper_id:=", AG95_A_GRIPPER_ID, " ",
+            # 固定参数：DH-Robotics AG-95 臂B
+            "ag95_B_serial_port:=", AG95_B_SERIAL_PORT, " ",
+            "ag95_B_can_interface:=", AG95_B_CAN_INTERFACE, " ",
+            "ag95_B_pcan_channel:=", AG95_B_PCAN_CHANNEL, " ",
+            "ag95_B_gripper_id:=", AG95_B_GRIPPER_ID, " ",
         ]
     )
 
@@ -548,6 +611,15 @@ def generate_launch_description():
             "activate_gripper_controller",
             default_value="true",
             description="Activate the gripper controllers.",
+        )
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "gripper_type",
+            default_value="dh_ag95",
+            choices=["dh_ag95", "robotiq_2f85"],
+            description="Gripper type: dh_ag95 or robotiq_2f85.",
         )
     )
 
