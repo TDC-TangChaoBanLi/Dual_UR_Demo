@@ -35,7 +35,7 @@
   <!-- 夹爪和相机参数 -->
   <xacro:arg name="g2f85_A_com_port" default="/dev/ttyUSB0"/>
   <xacro:arg name="g2f85_B_com_port" default="/dev/ttyUSB1"/>
-  <xacro:arg name="camera_use_nominal_extrinsics" default="true"/>
+  <xacro:arg name="camera_use_nominal_extrinsics" default="false"/>
   <!-- UR 安全限位和路径参数（几何用） -->
   <xacro:arg name="safety_limits" default="false"/>
   <xacro:arg name="safety_pos_margin" default="0.15"/>

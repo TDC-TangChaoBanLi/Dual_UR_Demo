@@ -6,7 +6,7 @@
 
   <!-- Jazzy: 纯几何描述，不包含 ros2_control -->
   <xacro:macro name="my_env" params="
-  camera_use_nominal_extrinsics:=true
+  camera_use_nominal_extrinsics:=false
   safety_limits:=false
   safety_pos_margin:=0.15
   safety_k_position:=20
@@ -26,13 +26,13 @@
   <joint name="world_to_table" type="fixed">
     <parent link="world" />
     <child link="table" />
-    <origin xyz="0 ${1.0/2 + 0.05} 0" rpy="0 0 0" />
+    <origin xyz="0 ${0.863 + 0.05} 0" rpy="0 0 0" />
   </joint>
   <!-- world2arm_shelf joint -->
   <joint name="world_to_arm_shelf" type="fixed">
     <parent link="world" />
     <child link="arm_shelf" />
-    <origin xyz="0 ${-0.728/2} 0" rpy="0 0 0" />
+    <origin xyz="0 0 0.15" rpy="0 0 0" />
   </joint>
 
   <!-- 桌子 link -->
@@ -56,14 +56,14 @@
   <link name="arm_shelf">
     <visual>
       <geometry>
-        <box size="0.615 0.728 1.353"/> # L*W*H=0.615*0.728*1.353m
+        <mesh filename="package://my_env_description/meshes/arm_shelf.STL"/> # L*W*H=0.613*0.726*1.353m
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 ${1.353/2}" />
+      <origin rpy="0 0 0" xyz="0 0 0" />
       <material name="arm_shelf_material"/>
     </visual>
     <collision>
       <geometry>
-        <box size="0.615 0.728 1.353"/> # L*W*H=0.615*0.728*1.353m
+        <box size="0.726 0.613 1.353"/> # L*W*H=0.726*0.613*1.353m
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 ${1.353/2}" />
     </collision>
@@ -74,14 +74,14 @@
   <joint name="table_to_ur_mount_A" type="fixed">
     <parent link="arm_shelf"/>
     <child link="ur_mount_A"/>
-    <origin xyz="${0.615/2 + 0.068} ${0.728/2 - 0.13} ${1.353 - 0.13}" rpy="0 ${pi/2} 0" />
+    <origin xyz="0.431 0.1875 1.0575" rpy="0 ${pi/2} 0" />
   </joint>
 
   <link name="ur_mount_B"/>
   <joint name="table_to_ur_mount_B" type="fixed">
     <parent link="arm_shelf"/>
     <child link="ur_mount_B"/>
-    <origin xyz="${-0.615/2} ${0.728/2 - 0.13} ${1.353 - 0.13}" rpy="0 ${-pi/2} 0" />
+    <origin xyz="-0.363 0.1875 1.0575" rpy="0 ${-pi/2} 0" />
   </joint>
 
   <!-- 创建 UR 机器人 (Jazzy: 仅传几何相关参数) -->

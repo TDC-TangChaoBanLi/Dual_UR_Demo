@@ -52,7 +52,7 @@ ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.
 启动机械臂：
 
 ```bash
-ros2 launch my_env_control start_my_env_control.launch.py activate_gripper_controller:=false use_fake_hardware:=false  launch_rviz:=false ur_headless_mode:=true
+ros2 launch my_env_control start_my_env_control.launch.py use_fake_hardware:=false launch_rviz:=false ur_headless_mode:=true
 ```
 
 配置 MoveIt :
@@ -66,7 +66,7 @@ ros2 launch moveit_setup_assistant setup_assistant.launch.py
 
 
 ```bash
-ros2 launch my_env_control start_my_env_control.launch.py activate_gripper_controller:=false launch_rviz:=false
+ros2 launch my_env_control start_my_env_control.launch.py launch_rviz:=false
 ros2 launch my_env_moveit_config start_my_env_moveit.launch.py launch_rviz:=false
 ```
 
@@ -183,6 +183,8 @@ ros2 launch realsense2_camera rs_multi_camera_launch.py \
   camera_name2:=arm_B \
   camera_namespace1:=camera \
   camera_namespace2:=camera \
+  base_frame_id1:=realsense_link \
+  base_frame_id2:=realsense_link \
   enable_depth1:=true \
   enable_depth2:=true \
   enable_color1:=true \
@@ -193,8 +195,8 @@ ros2 launch realsense2_camera rs_multi_camera_launch.py \
   rgb_camera.color_profile2:=640x480x30 \
   align_depth.enable1:=true \
   align_depth.enable2:=true \
-  pointcloud.enable1:=false \
-  pointcloud.enable2:=false \
+  pointcloud.enable1:=true \
+  pointcloud.enable2:=true \
   spatial_filter.enable1:=true \
   spatial_filter.enable2:=true \
   temporal_filter.enable1:=true \

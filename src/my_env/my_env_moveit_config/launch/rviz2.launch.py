@@ -13,9 +13,11 @@ DESCRIPTION_PACKAGE = "my_env_description"
 
 # 这里改成你的纯描述 xacro 文件名
 DESCRIPTION_FILE = "urdf/my_env.urdf.xacro"
+MOVEIT_CONTROLLER_YAML = "config/moveit_controllers_SimpleControllerManager.yaml"
+SRDF_FILE = "config/my_env.srdf"
 
+# URDF 参数
 CAMERA_USE_NOMINAL_EXTRINSICS = "true"
-
 SAFETY_LIMITS = "false"
 SAFETY_POS_MARGIN = "0.15"
 SAFETY_K_POSITION = "20"
@@ -72,7 +74,7 @@ def generate_launch_description():
     robot_description_semantic = {
         "robot_description_semantic": load_file(
             MOVEIT_CONFIG_PACKAGE,
-            "config/my_env.srdf",
+            SRDF_FILE,
         )
     }
 
@@ -92,7 +94,7 @@ def generate_launch_description():
 
     moveit_controllers = load_yaml(
         MOVEIT_CONFIG_PACKAGE,
-        "config/moveit_controllers.yaml",
+        MOVEIT_CONTROLLER_YAML,
     )
 
     rviz_config = PathJoinSubstitution(
