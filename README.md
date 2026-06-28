@@ -52,7 +52,7 @@ ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.
 启动机械臂：
 
 ```bash
-ros2 launch my_env_control start_my_env_control.launch.py activate_gripper_controller:=false use_fake_hardware:=false ur_headless_mode:=true launch_rviz:=false
+ros2 launch my_env_control start_my_env_control.launch.py activate_gripper_controller:=false use_fake_hardware:=false  launch_rviz:=false ur_headless_mode:=true
 ```
 
 配置 MoveIt :
