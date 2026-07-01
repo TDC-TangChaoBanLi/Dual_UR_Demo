@@ -83,8 +83,46 @@ ros2 launch my_env_control start_my_env_control.launch.py use_fake_hardware:=fal
 启动 MoveIt move_group：
 
 ```bash
-ros2 launch moveit_move_group moveit_move_group.launch.py launch_rviz:=true
+ros2 launch my_env_moveit_config start_my_env_moveit.launch.py launch_rviz:=true
 ```
+
+启动 MoveIt servo：
+
+```bash
+# 切换控制器
+ros2 control switch_controllers --deactivate arm_A_ur_scaled_joint_trajectory_controller --activate arm_A_ur_forward_position_controller
+ros2 control switch_controllers --deactivate arm_B_ur_scaled_joint_trajectory_controller --activate arm_B_ur_forward_position_controller
+
+# 启动 servo
+ros2 launch my_env_moveit_config start_my_env_servo.launch.py
+```
+
+设置 Servo 模式：
+
+```bash
+# 设置 servo 模式为 position :
+ros2 service call /arm_A_servo_node/switch_command_type moveit_msgs/srv/ServoCommandType "{command_type: 2}"
+ros2 service call /arm_B_servo_node/switch_command_type moveit_msgs/srv/ServoCommandType "{command_type: 2}"
+# 设置 servo 模式为 twist :
+ros2 service call /arm_A_servo_node/switch_command_type moveit_msgs/srv/ServoCommandType "{command_type: 1}"
+ros2 service call /arm_B_servo_node/switch_command_type moveit_msgs/srv/ServoCommandType "{command_type: 1}"
+# 设置 servo 模式为 joint :
+ros2 service call /arm_A_servo_node/switch_command_type moveit_msgs/srv/ServoCommandType "{command_type: 0}"
+ros2 service call /arm_B_servo_node/switch_command_type moveit_msgs/srv/ServoCommandType "{command_type: 0}"
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
