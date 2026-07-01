@@ -49,11 +49,46 @@ ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.
 ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.11 target_filename:="src/my_env/my_env_control/config/ur_B_kinematics_calibration.yaml"
 ```
 
-启动机械臂：
+启动机械臂 dashboard_client：
 
 ```bash
-ros2 launch my_env_control start_my_env_control.launch.py use_fake_hardware:=false launch_rviz:=false ur_headless_mode:=true
+ros2 launch my_env_control start_dual_ur_dashboard_client.launch.py
 ```
+
+使用 dashboard_client 启动机械臂：
+
+```bash
+ros2 service call /arm_A/dashboard_client/load_program ur_dashboard_msgs/srv/Load "{filename: 'TDC-ROS2.urp'}" # 加载机器人上的程序
+ros2 service call /arm_B/dashboard_client/load_program ur_dashboard_msgs/srv/Load "{filename: 'TDC-ROS2.urp'}" # 加载机器人上的程序
+
+ros2 service call /arm_A/dashboard_client/power_on std_srvs/srv/Trigger {} # 给机器人电机上电，上电后还需要释放刹车
+ros2 service call /arm_A/dashboard_client/brake_release std_srvs/srv/Trigger {} # 释放刹车
+ros2 service call /arm_B/dashboard_client/power_on std_srvs/srv/Trigger {} # 给机器人电机上电，上电后还需要释放刹车
+ros2 service call /arm_B/dashboard_client/brake_release std_srvs/srv/Trigger {} # 释放刹车
+
+ros2 service call /arm_A/dashboard_client/play std_srvs/srv/Trigger {} # 启动已加载的程序
+ros2 service call /arm_B/dashboard_client/play std_srvs/srv/Trigger {} # 启动已加载的程序
+
+ros2 service call /arm_A/dashboard_client/program_running ur_dashboard_msgs/srv/IsProgramRunning {} # 查询当前是否有程序正在运行
+ros2 service call /arm_B/dashboard_client/program_running ur_dashboard_msgs/srv/IsProgramRunning {} # 查询当前是否有程序正在运行
+```
+
+
+启动机械臂 ros_control
+
+```bash
+ros2 launch my_env_control start_my_env_control.launch.py use_fake_hardware:=false launch_rviz:=false
+```
+
+启动 MoveIt move_group：
+
+```bash
+ros2 launch moveit_move_group moveit_move_group.launch.py launch_rviz:=true
+```
+
+
+
+
 
 配置 MoveIt :
 

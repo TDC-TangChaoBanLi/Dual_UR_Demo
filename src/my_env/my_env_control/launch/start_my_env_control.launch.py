@@ -1,5 +1,5 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, GroupAction, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import (
     Command,
@@ -7,12 +7,10 @@ from launch.substitutions import (
     LaunchConfiguration,
     PathJoinSubstitution,
 )
-from launch_ros.actions import Node, PushRosNamespace
+from launch_ros.actions import Node
 from launch_ros.descriptions import ParameterValue
 from launch_ros.parameter_descriptions import ParameterFile
 from launch_ros.substitutions import FindPackageShare
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.actions import IncludeLaunchDescription
 
 
 # ============================================================
@@ -77,7 +75,6 @@ AG95_B_PCAN_CHANNEL = "PCAN_USBBUS1"
 AG95_B_GRIPPER_ID = "2"
 
 # 是否启动真实 UR 辅助节点
-LAUNCH_DASHBOARD_CLIENT = True
 LAUNCH_URSCRIPT_INTERFACE = False
 LAUNCH_ROBOT_STATE_HELPER = False
 
@@ -345,59 +342,11 @@ def launch_setup(context, *args, **kwargs):
         ],
     )
 
-    # 3. Dashboard client：真实硬件时启动
+    # 3. 基础节点
     nodes = [
         robot_state_publisher_node,
         control_node,
     ]
-
-    if LAUNCH_DASHBOARD_CLIENT:
-        arm_A_dashboard_client = GroupAction(
-            actions=[
-                PushRosNamespace("arm_A"),
-                IncludeLaunchDescription(
-                    PythonLaunchDescriptionSource(
-                        PathJoinSubstitution(
-                            [
-                                FindPackageShare("ur_robot_driver"),
-                                "launch",
-                                "ur_dashboard_client.launch.py",
-                            ]
-                        )
-                    ),
-                    launch_arguments={
-                        "robot_ip": UR_A_ROBOT_IP,
-                    }.items(),
-                ),
-            ],
-            condition=UnlessCondition(use_fake_hardware),
-        )
-
-        arm_B_dashboard_client = GroupAction(
-            actions=[
-                PushRosNamespace("arm_B"),
-                IncludeLaunchDescription(
-                    PythonLaunchDescriptionSource(
-                        PathJoinSubstitution(
-                            [
-                                FindPackageShare("ur_robot_driver"),
-                                "launch",
-                                "ur_dashboard_client.launch.py",
-                            ]
-                        )
-                    ),
-                    launch_arguments={
-                        "robot_ip": UR_B_ROBOT_IP,
-                    }.items(),
-                ),
-            ],
-            condition=UnlessCondition(use_fake_hardware),
-        )
-
-        nodes += [
-            arm_A_dashboard_client,
-            arm_B_dashboard_client,
-        ]
 
     # 4. robot_state_helper：真实硬件时启动
     if LAUNCH_ROBOT_STATE_HELPER:
