@@ -5,8 +5,12 @@
   <xacro:include filename="$(find my_env_description)/urdf/my_env_macro.urdf.xacro"/>
   <!-- Jazzy: ros2_control 宏分别来自 ur_robot_driver、robotiq_description 和 dh_ag95_description -->
   <xacro:include filename="$(find ur_robot_driver)/urdf/ur.ros2_control.xacro" />
-  <xacro:include filename="$(find robotiq_description)/urdf/2f_85.ros2_control.xacro" />
-  <xacro:include filename="$(find dh_ag95_description)/urdf/dh_ag95.ros2_control.xacro" />
+  <xacro:if value="${gripper_type == 'robotiq_2f85'}">
+    <xacro:include filename="$(find robotiq_description)/urdf/2f_85.ros2_control.xacro" />
+  </xacro:if>
+  <xacro:if value="${gripper_type == 'dh_ag95'}">
+    <xacro:include filename="$(find dh_ag95_description)/urdf/dh_ag95.ros2_control.xacro" />
+  </xacro:if>
 
   <!-- 我们需要指定用于参数化描述的参数 -->
   <!-- 双臂前缀/型号等属性现在统一由 dual_arm_config.xacro 提供（通过 my_env_macro.urdf.xacro 间接 include） -->
@@ -23,7 +27,6 @@
   <xacro:arg name="ur_A_script_command_port" default="50003"/>
   <xacro:arg name="ur_A_trajectory_port" default="50004"/>
   <xacro:arg name="ur_A_rw_rate" default="0"/>
-  <xacro:arg name="ur_A_kinematics_parameters_file" default="$(find ur_description)/config/${ur_A_ur_type}/default_kinematics.yaml"/>
   <!-- UR_B 机器人参数 (前缀和型号固定为 property) -->
   <xacro:arg name="ur_B_robot_ip" default="192.168.1.102"/>
   <xacro:arg name="ur_B_reverse_port" default="50011"/>
@@ -31,7 +34,6 @@
   <xacro:arg name="ur_B_script_command_port" default="50013"/>
   <xacro:arg name="ur_B_trajectory_port" default="50014"/>
   <xacro:arg name="ur_B_rw_rate" default="0"/>
-  <xacro:arg name="ur_B_kinematics_parameters_file" default="$(find ur_description)/config/${ur_B_ur_type}/default_kinematics.yaml"/>
   <!-- 夹爪和相机参数 -->
   <xacro:arg name="g2f85_A_com_port" default="/dev/ttyUSB0"/>
   <xacro:arg name="g2f85_B_com_port" default="/dev/ttyUSB1"/>
@@ -66,7 +68,8 @@
   <xacro:arg name="ag95_B_pcan_channel" default="PCAN_USBBUS1"/>
   <xacro:arg name="ag95_B_gripper_id" default="2"/>
   <!-- 初始位置文件 -->
-  <xacro:arg name="initial_positions_file" default="$(find ur_description)/config/initial_positions.yaml"/>
+  <xacro:arg name="ur_A_initial_positions_file" default="$(find my_env_control)/config/ur_A_initial_positions.yaml"/>
+  <xacro:arg name="ur_B_initial_positions_file" default="$(find my_env_control)/config/ur_B_initial_positions.yaml"/>
 
   <!-- ============================================ -->
   <!-- UR ros2_control 可选参数（两臂共享）           -->
@@ -95,7 +98,8 @@
   <xacro:arg name="g2f85_gripper_closed_position" default="0.7929"/>
 
   <!-- 转换为 property 以便在调用中使用 substitution -->
-  <xacro:property name="initial_positions_file" default="$(arg initial_positions_file)"/>
+  <xacro:property name="ur_A_initial_positions_file" value="$(arg ur_A_initial_positions_file)"/>
+  <xacro:property name="ur_B_initial_positions_file" value="$(arg ur_B_initial_positions_file)"/>
 
 
   <!-- Jazzy: 纯几何描述（仅传几何参数给 my_env） -->
@@ -115,7 +119,7 @@
   <xacro:ur_ros2_control
     name="ur_A"
     tf_prefix="${arm_A_tf_prefix}ur_"
-    kinematics_parameters_file="$(find ur_description)/config/${ur_A_ur_type}/default_kinematics.yaml"
+    kinematics_parameters_file="${ur_A_kinematics_parameters_file}"
     robot_ip="$(arg ur_A_robot_ip)"
     script_filename="$(arg script_filename)"
     output_recipe_filename="$(arg output_recipe_filename)"
@@ -128,7 +132,7 @@
     use_mock_hardware="$(arg use_fake_hardware)"
     mock_sensor_commands="$(arg use_fake_sensor_commands)"
     headless_mode="$(arg ur_headless_mode)"
-    initial_positions="${xacro.load_yaml(initial_positions_file)}"
+    initial_positions="${xacro.load_yaml(ur_A_initial_positions_file)}"
     transmission_hw_interface="$(arg ur_transmission_hw_interface)"
     use_tool_communication="$(arg ur_use_tool_communication)"
     tool_voltage="$(arg ur_tool_voltage)"
@@ -148,7 +152,7 @@
   <xacro:ur_ros2_control
     name="ur_B"
     tf_prefix="${arm_B_tf_prefix}ur_"
-    kinematics_parameters_file="$(find ur_description)/config/${ur_B_ur_type}/default_kinematics.yaml"
+    kinematics_parameters_file="${ur_B_kinematics_parameters_file}"
     robot_ip="$(arg ur_B_robot_ip)"
     script_filename="$(arg script_filename)"
     output_recipe_filename="$(arg output_recipe_filename)"
@@ -161,7 +165,7 @@
     use_mock_hardware="$(arg use_fake_hardware)"
     mock_sensor_commands="$(arg use_fake_sensor_commands)"
     headless_mode="$(arg ur_headless_mode)"
-    initial_positions="${xacro.load_yaml(initial_positions_file)}"
+    initial_positions="${xacro.load_yaml(ur_B_initial_positions_file)}"
     transmission_hw_interface="$(arg ur_transmission_hw_interface)"
     use_tool_communication="$(arg ur_use_tool_communication)"
     tool_voltage="$(arg ur_tool_voltage)"

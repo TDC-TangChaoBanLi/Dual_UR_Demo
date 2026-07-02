@@ -1,3 +1,7 @@
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.conditions import IfCondition, UnlessCondition
@@ -18,14 +22,16 @@ from launch_ros.substitutions import FindPackageShare
 # ============================================================
 
 CONTROL_PACKAGE = "my_env_control"
+DESCRIPTION_PACKAGE = "my_env_description"
 
 DESCRIPTION_FILE = "urdf/my_env_control.urdf.xacro"
+DUAL_ARM_CONFIG_FILE = "urdf/dual_arm_config.xacro"
 CONTROLLERS_FILE = "config/dual_arm_controllers.yaml"
 UPDATE_RATE_FILE = "config/dual_arm_update_rate.yaml"
 RVIZ_CONFIG_FILE = "rviz/my_env_control.rviz"
-# UR 运动学校准参数文件 my_env_control 包内
-UR_A_KINEMATICS_PARAMETERS_FILE = "config/ur_A_kinematics_calibration.yaml"
-UR_B_KINEMATICS_PARAMETERS_FILE = "config/ur_B_kinematics_calibration.yaml"
+UR_A_INITIAL_POSITIONS_FILE = "config/ur_A_initial_positions.yaml"
+UR_B_INITIAL_POSITIONS_FILE = "config/ur_B_initial_positions.yaml"
+SUPPORTED_GRIPPER_TYPES = {"dh_ag95", "robotiq_2f85"}
 
 
 # 真实硬件 IP
@@ -186,6 +192,28 @@ ALL_AG95_CONTROLLERS = [
 ]
 
 
+def _read_configured_gripper_type():
+    config_file = (
+        Path(get_package_share_directory(DESCRIPTION_PACKAGE)) / DUAL_ARM_CONFIG_FILE
+    )
+    root = ET.parse(config_file).getroot()
+
+    for element in root.iter():
+        if not element.tag.endswith("property"):
+            continue
+        if element.attrib.get("name") == "gripper_type":
+            gripper_type = element.attrib.get("value")
+            if gripper_type in SUPPORTED_GRIPPER_TYPES:
+                return gripper_type
+            supported = ", ".join(sorted(SUPPORTED_GRIPPER_TYPES))
+            raise RuntimeError(
+                f"Unsupported gripper_type '{gripper_type}' in {config_file}. "
+                f"Supported values: {supported}."
+            )
+
+    raise RuntimeError(f"Missing gripper_type property in {config_file}.")
+
+
 
 def launch_setup(context, *args, **kwargs):
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
@@ -196,10 +224,9 @@ def launch_setup(context, *args, **kwargs):
     activate_ur_state_controller = LaunchConfiguration("activate_ur_state_controller")
     activate_gripper_controller = LaunchConfiguration("activate_gripper_controller")
     controller_spawner_timeout = LaunchConfiguration("controller_spawner_timeout")
-    gripper_type = LaunchConfiguration("gripper_type")
 
     initial_ur_suffix = LaunchConfiguration("initial_ur_controller").perform(context)
-    _gripper_type = gripper_type.perform(context)
+    _gripper_type = _read_configured_gripper_type()
 
     # ### 激活的控制器列表 ###
     controllers_active = list(BASE_ACTIVE_CONTROLLERS)
@@ -259,6 +286,20 @@ def launch_setup(context, *args, **kwargs):
         ]
     )
 
+    ur_A_initial_positions_file = PathJoinSubstitution(
+        [
+            FindPackageShare(CONTROL_PACKAGE),
+            UR_A_INITIAL_POSITIONS_FILE,
+        ]
+    )
+
+    ur_B_initial_positions_file = PathJoinSubstitution(
+        [
+            FindPackageShare(CONTROL_PACKAGE),
+            UR_B_INITIAL_POSITIONS_FILE,
+        ]
+    )
+
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -282,6 +323,7 @@ def launch_setup(context, *args, **kwargs):
             "ur_A_script_command_port:=", UR_A_SCRIPT_COMMAND_PORT, " ",
             "ur_A_trajectory_port:=", UR_A_TRAJECTORY_PORT, " ",
             "ur_A_rw_rate:=", UR_A_RW_RATE, " ",
+            "ur_A_initial_positions_file:=", ur_A_initial_positions_file, " ",
 
             # 固定参数：UR B 端口
             "ur_B_reverse_port:=", UR_B_REVERSE_PORT, " ",
@@ -289,6 +331,7 @@ def launch_setup(context, *args, **kwargs):
             "ur_B_script_command_port:=", UR_B_SCRIPT_COMMAND_PORT, " ",
             "ur_B_trajectory_port:=", UR_B_TRAJECTORY_PORT, " ",
             "ur_B_rw_rate:=", UR_B_RW_RATE, " ",
+            "ur_B_initial_positions_file:=", ur_B_initial_positions_file, " ",
 
             # 固定参数：Robotiq 串口
             "g2f85_A_com_port:=", G2F85_A_COM_PORT, " ",
@@ -560,15 +603,6 @@ def generate_launch_description():
             "activate_gripper_controller",
             default_value="true",
             description="Activate the gripper controllers.",
-        )
-    )
-
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "gripper_type",
-            default_value="dh_ag95",
-            choices=["dh_ag95", "robotiq_2f85"],
-            description="Gripper type: dh_ag95 or robotiq_2f85.",
         )
     )
 

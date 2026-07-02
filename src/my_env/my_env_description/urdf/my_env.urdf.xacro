@@ -6,11 +6,7 @@
 
   <!-- 我们需要指定用于参数化描述的参数 -->
   <!-- 为所需的ur_type创建一个文件夹，并从ur_description包中复制文件到那里 -->
-
-  <!-- 夹爪和相机参数 -->
-  <!-- gripper_type 默认在 dual_arm_config.xacro 中配置，此处可通过命令行覆盖 -->
-  <xacro:arg name="gripper_type" default="dh_ag95"/>
-  <xacro:property name="gripper_type" value="$(arg gripper_type)"/>
+  <!-- 夹爪类型统一由 dual_arm_config.xacro 配置 -->
   <xacro:arg name="camera_use_nominal_extrinsics" default="false"/>
   <!-- UR 安全限位和路径参数 -->
   <xacro:arg name="safety_limits" default="false"/>

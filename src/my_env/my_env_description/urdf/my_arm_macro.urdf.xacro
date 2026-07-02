@@ -26,6 +26,7 @@
     tf_prefix:=my_arm
     parent:=world
     ur_type:=ur5e
+    kinematics_parameters_file:=''
     gripper_type:=dh_ag95
     realsense_use_nominal_extrinsics:=false
     safety_limits:=false
@@ -40,7 +41,12 @@
     <xacro:property name="_ur_tf_prefix" value="${tf_prefix}ur_"/> <!-- ! Match the prefix in my_env_macro.urdf.xacro -->
     <xacro:property name="_ur_parent" value="${parent}"/>
     <xacro:property name="_ur_joint_limits_parameters_file" value="$(find ur_description)/config/${ur_type}/joint_limits.yaml"/>
-    <xacro:property name="_ur_kinematics_parameters_file" value="$(find ur_description)/config/${ur_type}/default_kinematics.yaml"/>
+    <xacro:if value="${kinematics_parameters_file == ''}">
+      <xacro:property name="_ur_kinematics_parameters_file" value="$(find ur_description)/config/${ur_type}/default_kinematics.yaml"/>
+    </xacro:if>
+    <xacro:unless value="${kinematics_parameters_file == ''}">
+      <xacro:property name="_ur_kinematics_parameters_file" value="${kinematics_parameters_file}"/>
+    </xacro:unless>
     <xacro:property name="_ur_physical_parameters_file" value="$(find ur_description)/config/${ur_type}/physical_parameters.yaml"/>
     <xacro:property name="_ur_visual_parameters_file" value="$(find ur_description)/config/${ur_type}/visual_parameters.yaml"/>
 
