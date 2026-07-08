@@ -6,7 +6,7 @@ Panels:
       Expanded:
         - /MotionPlanning1
       Splitter Ratio: 0.5
-    Tree Height: 349
+    Tree Height: 341
   - Class: rviz_common/Help
     Name: Help
   - Class: rviz_common/Views
@@ -70,6 +70,51 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          arm_A_gripper_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger1_finger_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger1_finger_tip_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger1_inner_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger1_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger2_finger_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger2_finger_tip_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger2_inner_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger2_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           arm_A_realsense_bottom_screw_frame:
             Alpha: 1
             Show Axes: false
@@ -120,60 +165,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          arm_A_robotiq_85_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_left_finger_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_left_finger_tip_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_left_inner_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_left_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_right_finger_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_right_finger_tip_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_right_inner_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_right_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_ur_to_g2f85_child_side:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          arm_A_robotiq_ur_to_robotiq_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           arm_A_ur_base:
             Alpha: 1
             Show Axes: false
@@ -233,6 +224,51 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          arm_B_gripper_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger1_finger_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger1_finger_tip_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger1_inner_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger1_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger2_finger_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger2_finger_tip_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger2_inner_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger2_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           arm_B_realsense_bottom_screw_frame:
             Alpha: 1
             Show Axes: false
@@ -283,60 +319,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          arm_B_robotiq_85_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_left_finger_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_left_finger_tip_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_left_inner_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_left_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_right_finger_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_right_finger_tip_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_right_inner_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_right_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_ur_to_g2f85_child_side:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          arm_B_robotiq_ur_to_robotiq_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           arm_B_ur_base:
             Alpha: 1
             Show Axes: false
@@ -464,6 +446,51 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          arm_A_gripper_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger1_finger_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger1_finger_tip_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger1_inner_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger1_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger2_finger_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger2_finger_tip_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger2_inner_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_A_gripper_finger2_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           arm_A_realsense_bottom_screw_frame:
             Alpha: 1
             Show Axes: false
@@ -514,60 +541,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          arm_A_robotiq_85_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_left_finger_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_left_finger_tip_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_left_inner_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_left_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_right_finger_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_right_finger_tip_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_right_inner_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_85_right_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_A_robotiq_ur_to_g2f85_child_side:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          arm_A_robotiq_ur_to_robotiq_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           arm_A_ur_base:
             Alpha: 1
             Show Axes: false
@@ -627,6 +600,51 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          arm_B_gripper_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger1_finger_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger1_finger_tip_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger1_inner_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger1_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger2_finger_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger2_finger_tip_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger2_inner_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          arm_B_gripper_finger2_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           arm_B_realsense_bottom_screw_frame:
             Alpha: 1
             Show Axes: false
@@ -677,60 +695,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          arm_B_robotiq_85_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_left_finger_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_left_finger_tip_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_left_inner_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_left_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_right_finger_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_right_finger_tip_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_right_inner_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_85_right_knuckle_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_B_robotiq_ur_to_g2f85_child_side:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          arm_B_robotiq_ur_to_robotiq_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           arm_B_ur_base:
             Alpha: 1
             Show Axes: false
@@ -813,6 +777,32 @@ Visualization Manager:
         Show Robot Visual: true
       Value: true
       Velocity_Scaling_Factor: 0.1
+    - Alpha: 1
+      Class: rviz_default_plugins/RobotModel
+      Collision Enabled: false
+      Description File: ""
+      Description Source: Topic
+      Description Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot_description
+      Enabled: false
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+      Mass Properties:
+        Inertia: false
+        Mass: false
+      Name: RobotModel
+      TF Prefix: ""
+      Update Interval: 0
+      Value: false
+      Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -831,7 +821,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 3.947645425796509
+      Distance: 3.326004981994629
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -846,10 +836,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8550000786781311
+      Pitch: 1.2050000429153442
       Target Frame: world
       Value: Orbit (rviz_default_plugins)
-      Yaw: 1.0069999694824219
+      Yaw: 1.8919999599456787
     Saved: ~
 Window Geometry:
   Displays:
@@ -863,9 +853,9 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002b400000379fc0200000005fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000003f00fffffffb000000100044006900730070006c006100790073010000003b000001de000000c700fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000021f000001950000016900fffffffb0000000800480065006c0070000000029a0000006e0000006e00fffffffb0000000a005600690065007700730000000300000000b4000000a000ffffff000004560000037900000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000002b400000373fc0200000005fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016fb000000100044006900730070006c006100790073010000003e000001d9000000ca00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000021d000001940000018900fffffffb0000000800480065006c0070000000029a0000006e0000006e00fffffffb0000000a005600690065007700730000000300000000b4000000a600ffffff000004560000037300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
   Width: 1808
-  X: 2840
-  Y: 111
+  X: 350
+  Y: 280

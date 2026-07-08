@@ -1,4 +1,4 @@
-move_group:
+/**:
   ros__parameters:
     allow_trajectory_execution: true
 

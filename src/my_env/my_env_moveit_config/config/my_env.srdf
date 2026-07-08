@@ -15,7 +15,7 @@
     <group name="arm_B">
         <chain base_link="arm_B_ur_base_link" tip_link="arm_B__tcp"/>
     </group>
-    <group name="dual_arm">
+    <group name="arm_BOTH">
         <group name="arm_A"/>
         <group name="arm_B"/>
     </group>

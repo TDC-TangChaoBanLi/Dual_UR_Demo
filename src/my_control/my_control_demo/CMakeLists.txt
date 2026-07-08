@@ -14,6 +14,7 @@ find_package(trajectory_msgs REQUIRED)
 find_package(control_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(moveit_msgs REQUIRED)
+find_package(rcl_interfaces REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
@@ -60,6 +61,7 @@ ament_target_dependencies(my_env_move_servo
     control_msgs
     geometry_msgs
     moveit_msgs
+    rcl_interfaces
     tf2
     tf2_ros
     tf2_geometry_msgs

@@ -117,7 +117,7 @@
 
   <!-- arm_A UR ros2_control -->
   <xacro:ur_ros2_control
-    name="ur_A"
+    name="arm_A_ur_hardware"
     tf_prefix="${arm_A_tf_prefix}ur_"
     kinematics_parameters_file="${ur_A_kinematics_parameters_file}"
     robot_ip="$(arg ur_A_robot_ip)"
@@ -150,7 +150,7 @@
 
   <!-- arm_B UR ros2_control -->
   <xacro:ur_ros2_control
-    name="ur_B"
+    name="arm_B_ur_hardware"
     tf_prefix="${arm_B_tf_prefix}ur_"
     kinematics_parameters_file="${ur_B_kinematics_parameters_file}"
     robot_ip="$(arg ur_B_robot_ip)"
@@ -188,7 +188,7 @@
 
   <!-- arm_A 夹爪 ros2_control -->
   <xacro:robotiq_gripper_ros2_control
-    name="arm_A_g2f85"
+    name="arm_A_g2f85_hardware"
     prefix="${arm_A_tf_prefix}"
     use_fake_hardware="$(arg use_fake_hardware)"
     mock_sensor_commands="$(arg use_fake_sensor_commands)"
@@ -206,7 +206,7 @@
 
   <!-- arm_B 夹爪 ros2_control -->
   <xacro:robotiq_gripper_ros2_control
-    name="arm_B_g2f85"
+    name="arm_B_g2f85_hardware"
     prefix="${arm_B_tf_prefix}"
     use_fake_hardware="$(arg use_fake_hardware)"
     mock_sensor_commands="$(arg use_fake_sensor_commands)"

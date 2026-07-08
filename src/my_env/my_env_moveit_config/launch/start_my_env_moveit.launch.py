@@ -33,11 +33,6 @@ DESCRIPTION_FILE = "urdf/my_env.urdf.xacro"
 # 这里只保留 MoveIt / RViz 真正需要的几何描述参数
 # ============================================================
 
-ARM_A_TF_PREFIX = "arm_A_" # [WARN] 不要改 Don't Change this
-ARM_B_TF_PREFIX = "arm_B_" # [WARN] 不要改 Don't Change this
-
-UR_A_TYPE = "ur5"
-UR_B_TYPE = "ur5e"
 
 CAMERA_USE_NOMINAL_EXTRINSICS = "true"
 
@@ -100,6 +95,7 @@ def generate_robot_description():
 
 def generate_launch_description():
     launch_rviz = LaunchConfiguration("launch_rviz")
+    move_group_node_name = LaunchConfiguration("move_group_node_name")
 
     declared_arguments = []
 
@@ -108,6 +104,14 @@ def generate_launch_description():
             "launch_rviz",
             default_value="true",
             description="Whether to launch RViz with MoveIt MotionPlanning plugin.",
+        )
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "move_group_node_name",
+            default_value="arm_BOTH_move_group",
+            description="Name of the move_group node.",
         )
     )
 
@@ -179,7 +183,7 @@ def generate_launch_description():
     move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
-        name="move_group",
+        name=move_group_node_name,
         output="screen",
         parameters=[
             robot_description,

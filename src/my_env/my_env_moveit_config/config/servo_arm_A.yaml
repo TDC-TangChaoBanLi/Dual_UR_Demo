@@ -5,25 +5,61 @@
 use_gazebo: false
 
 ###############################################
+# General
+###############################################
+
+# Servo 循环线程的实时调度优先级 (SCHED_FIFO)，略低于 ros2_control 默认值以减少抖动
+thread_priority: 40
+
+# 从生成指令到控制器收到指令的最大预期延迟 [秒]，用于滑动窗口补偿
+max_expected_latency: 0.1
+
+# 在线切换到 move group 的某个子组进行控制；留空表示控制整个 move group
+active_subgroup: ""
+
+###############################################
 # Incoming command
 ###############################################
 
+# 输入指令单位：unitless 表示 [-1,1] 归一化（如手柄），speed_units 表示 m/s 和 rad/s
 command_in_type: "speed_units"
 
 scale:
   # 初期调试建议保守一点，确认方向正确后再加大
-  linear: 0.1        # m/s
-  rotational: 0.5    # rad/s
-  joint: 0.1
+  # speed_units 模式下为最大线速度 [m/s]；pose 跟踪时为最大线速度上限
+  linear: 0.5        # m/s
+  # speed_units 模式下为最大角速度 [rad/s]；pose 跟踪时为最大角速度上限
+  rotational: 2.5    # rad/s
+  # 关节速度缩放，仅用于 unitless 的关节指令
+  joint: 0.5
 
 # 网络/控制延迟补偿，UR 官方示例中使用 0.04
 system_latency_compensation: 0.04
 
 ###############################################
+# Twist settings
+###############################################
+
+# true: twist 中的角速度绕末端(ee)坐标系各轴施加
+# false: 会因基座到末端的杠杆臂引入额外的线速度分量
+apply_twist_commands_about_ee_frame: true
+
+###############################################
+# Pose tracking settings
+###############################################
+
+# pose 跟踪时的容差（仅在 pose 模式生效）
+pose_tracking:
+  linear_tolerance: 0.001   # 允许的线性误差 [m]
+  angular_tolerance: 0.01   # 允许的角度误差 [rad]
+
+###############################################
 # Outgoing command
 ###############################################
 
+# 输出指令周期 [秒]，即 1/发布频率
 publish_period: 0.002
+# 低延迟模式：true 时每个循环立即发布，牺牲平滑度换取更低延迟
 low_latency_mode: false
 
 # 接 forward_position_controller / commands
@@ -45,6 +81,9 @@ smoothing_filter_plugin_name: "online_signal_smoothing::ButterworthFilterPlugin"
 # 你已经启动 move_group，所以这里不要让 servo 当 primary planning scene monitor
 is_primary_planning_scene_monitor: false
 
+# 是否同时监听 octomap 更新用于碰撞检测
+check_octomap_collisions: false
+
 ###############################################
 # MoveIt group and frames
 ###############################################
@@ -53,15 +92,17 @@ move_group_name: arm_A
 
 # 如果你的 TF 中没有 base_link/tool0，而是 arm_A_base_link/arm_A_tool0，
 # 就把下面三项改成带 arm_A_ 前缀的名字。
-planning_frame: world
-ee_frame: arm_A__tcp
-robot_link_command_frame: arm_A__tcp
+planning_frame: world # 机器人基坐标系
+ee_frame: arm_A__tcp  # 末端执行器坐标系
+robot_link_command_frame: world # 笛卡尔速度指令(twist)参考系
 
 ###############################################
 # Stop behavior
 ###############################################
 
+# 指令超时 [秒]：早于该时间的指令会被丢弃，防止 ROS 丢包导致执行陈旧指令
 incoming_command_timeout: 0.1
+# 指令超时后连续发布的停止(halt)消息数量
 num_outgoing_halt_msgs_to_publish: 4
 
 ###############################################
@@ -69,34 +110,67 @@ num_outgoing_halt_msgs_to_publish: 4
 ###############################################
 
 # UR 官方示例里阈值较大，避免过早触发奇异停止
-lower_singularity_threshold: 100.0
-hard_stop_singularity_threshold: 200.0
+lower_singularity_threshold: 100.0      # 条件数达到该值开始减速（接近奇异）
+hard_stop_singularity_threshold: 200.0  # 条件数达到该值直接停止
 
+# 触发 lower_singularity_threshold 但正在远离奇异时，移动速度为深入奇异时的多少倍
+leaving_singularity_threshold_multiplier: 2.0
+
+# 奇异检测时，朝奇异方向的测试向量的缩放因子
+singularity_step_scale: 0.01
+
+###############################################
+# Joint limiting
+###############################################
+
+# 关节模式下触发关节限位时：true 停止所有关节，false 只停到限位的关节
+halt_all_joints_in_joint_mode: true
+
+# 笛卡尔模式下触发关节限位时：true 停止所有关节，false 只停到限位的关节
+halt_all_joints_in_cartesian_mode: true
+
+# 关节位置限位的额外缓冲 [各关节单位]。可为长度 1（应用到所有关节）或等于自由度数。运动越快该值应越大
 joint_limit_margins: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+
+# Servo 覆盖速度时（例如接近奇异）的缩放因子，范围 [0,1]，0 表示不覆盖
+override_velocity_scaling_factor: 0.0
 
 ###############################################
 # Topics
 ###############################################
 
+# 笛卡尔速度(twist)指令输入话题
 cartesian_command_in_topic: ~/delta_twist_cmds
+# 位姿目标指令输入话题
 pose_command_in_topic: ~/pose_target_cmds
+# 关节增量(jog)指令输入话题
 joint_command_in_topic: ~/delta_joint_cmds
 
+# 监听关节状态的话题
 joint_topic: /joint_states
+# Servo 状态发布话题
 status_topic: ~/status
 
+# Servo 输出指令话题，需与所用控制器匹配
 command_out_topic: /arm_A_ur_forward_position_controller/commands
 
 ###############################################
 # Collision checking
 ###############################################
 
+# 是否基于 planning scene 做碰撞检测
 check_collisions: true
+# 碰撞检测频率 [Hz]，过高会占用 CPU
 collision_check_rate: 5.0
+# 碰撞检测类型：threshold_distance 基于阈值距离减速
 collision_check_type: threshold_distance
 
+# 自碰撞距离小于该值时开始减速 [m]
 self_collision_proximity_threshold: 0.01
+# 与场景碰撞距离小于该值时开始减速 [m]，应 >= 自碰撞阈值
 scene_collision_proximity_threshold: 0.02
 
+# 碰撞距离安全系数（threshold_distance 类型时用于计算减速曲线）
 collision_distance_safety_factor: 1000.0
+# 允许的最小碰撞距离 [m]
 min_allowable_collision_distance: 0.01

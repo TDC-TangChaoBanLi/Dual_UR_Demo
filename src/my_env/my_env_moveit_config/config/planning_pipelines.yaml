@@ -1,4 +1,4 @@
-move_group:
+/**:
   ros__parameters:
     planning_pipelines:
       - ompl

@@ -1,5 +1,6 @@
 #include <builtin_interfaces/msg/duration.hpp>
 #include <control_msgs/action/follow_joint_trajectory.hpp>
+#include <control_msgs/msg/joint_tolerance.hpp>
 #include <control_msgs/msg/joint_trajectory_controller_state.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
@@ -84,6 +85,7 @@ public:
     small_delta_rad_ = this->declare_parameter<double>("small_delta_rad", 0.03);
     medium_delta_rad_ = this->declare_parameter<double>("medium_delta_rad", 0.08);
     large_delta_rad_ = this->declare_parameter<double>("large_delta_rad", 0.15);
+    goal_position_tolerance_rad_ = this->declare_parameter<double>("goal_position_tolerance_rad", 0.01);
 
     joint_state_sub_ = this->create_subscription<sensor_msgs::msg::JointState>(
       joint_state_topic_, rclcpp::SensorDataQoS(),
@@ -357,6 +359,17 @@ private:
     goal.trajectory = build_trajectory(arm, waypoints);
     goal.goal_time_tolerance = duration_from_seconds(2.0);
 
+    // Per-joint goal tolerance so the controller actually verifies that the
+    // arm reached the target.  Without this, JTC only checks that the
+    // trajectory time elapsed and reports success even if the arm never moved.
+    for (const auto& joint : arm.joints)
+    {
+      control_msgs::msg::JointTolerance tol;
+      tol.name = joint;
+      tol.position = goal_position_tolerance_rad_;
+      goal.goal_tolerance.push_back(tol);
+    }
+
     auto options = rclcpp_action::Client<FollowJointTrajectory>::SendGoalOptions();
     options.goal_response_callback = [this, controller](GoalHandleFollowJointTrajectory::SharedPtr goal_handle) {
       if (!goal_handle)
@@ -502,6 +515,7 @@ private:
   double small_delta_rad_ = 0.03;
   double medium_delta_rad_ = 0.08;
   double large_delta_rad_ = 0.15;
+  double goal_position_tolerance_rad_ = 0.01;
 
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_sub_;
   std::vector<rclcpp::Subscription<control_msgs::msg::JointTrajectoryControllerState>::SharedPtr> controller_state_subs_;

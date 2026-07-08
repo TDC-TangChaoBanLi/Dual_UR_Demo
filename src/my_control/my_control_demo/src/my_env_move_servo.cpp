@@ -1,9 +1,9 @@
-#include <control_msgs/msg/joint_jog.hpp>
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
-#include <geometry_msgs/msg/twist_stamped.hpp>
 #include <moveit_msgs/msg/servo_status.hpp>
+#include <moveit_msgs/srv/servo_command_type.hpp>
+#include <rcl_interfaces/srv/get_parameters.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
@@ -26,13 +26,13 @@ namespace
 {
 struct ServoArm
 {
-  std::string id;
-  std::string pose_topic;
-  std::string twist_topic;
-  std::string joint_topic;
-  std::string status_topic;
-  std::string tcp_frame;
-  std::vector<std::string> joint_names;
+  std::string id;                            // "A" / "B"
+  std::string node_name;                     // Servo 节点名，如 "/arm_A_servo_node"
+  std::string pose_topic;                    // 查询得到并解析后的位姿指令话题
+  std::string status_topic;                  // 查询得到并解析后的状态话题
+  std::string switch_command_type_service;   // <node_name>/switch_command_type
+  std::string planning_frame;                // 查询得到的规划参考系
+  std::string tcp_frame;                     // 查询得到的末端执行器坐标系 (ee_frame)
 };
 
 std::string status_to_string(const moveit_msgs::msg::ServoStatus& status)
@@ -76,143 +76,314 @@ class MoveServoTester : public rclcpp::Node
 public:
   MoveServoTester() : Node("my_env_move_servo"), tf_buffer_(this->get_clock()), tf_listener_(tf_buffer_)
   {
-    servo_target_ = this->declare_parameter<std::string>("servo_target", "both");
-    command_type_ = this->declare_parameter<std::string>("command_type", "pose");
-    planning_frame_ = this->declare_parameter<std::string>("planning_frame", "world");
-    duration_sec_ = this->declare_parameter<double>("duration_sec", 30.0);
-    publish_rate_hz_ = this->declare_parameter<double>("publish_rate_hz", 50.0);
-    linear_speed_ = this->declare_parameter<double>("linear_speed", 0.01);
-    angular_speed_ = this->declare_parameter<double>("angular_speed", 0.05);
-    position_delta_m_ = this->declare_parameter<double>("position_delta_m", 0.02);
-    orientation_delta_rad_ = this->declare_parameter<double>("orientation_delta_rad", 0.05);
-    joint_delta_rad_ = this->declare_parameter<double>("joint_delta_rad", 0.03);
-    joint_velocity_rad_s_ = this->declare_parameter<double>("joint_velocity_rad_s", 0.05);
+    // 两个 Servo 节点名通过参数给入（始终测试两个臂）。
+    arm_a_servo_node_ = this->declare_parameter<std::string>("arm_a_servo_node", "/arm_A_servo_node");
+    arm_b_servo_node_ = this->declare_parameter<std::string>("arm_b_servo_node", "/arm_B_servo_node");
+
+    publish_rate_hz_ = this->declare_parameter<double>("publish_rate_hz", 100.0);
+
+    // 正弦轨迹参数
+    sine_period_sec_ = this->declare_parameter<double>("sine_period_sec", 6.0);
+    num_periods_ = this->declare_parameter<double>("num_periods", 3.0);
+    position_amplitude_m_ = this->declare_parameter<double>("position_amplitude_m", 0.05);
+    orientation_amplitude_rad_ = this->declare_parameter<double>("orientation_amplitude_rad", 0.1);
+    settle_time_sec_ = this->declare_parameter<double>("settle_time_sec", 1.0);
 
     RCLCPP_INFO(this->get_logger(), "my_env_move_servo initialized");
     RCLCPP_INFO(
       this->get_logger(),
-      "servo_target=%s command_type=%s planning_frame=%s duration_sec=%.2f publish_rate_hz=%.2f",
-      servo_target_.c_str(), command_type_.c_str(), planning_frame_.c_str(), duration_sec_, publish_rate_hz_);
+      "arm_a_servo_node=%s arm_b_servo_node=%s publish_rate_hz=%.2f",
+      arm_a_servo_node_.c_str(), arm_b_servo_node_.c_str(), publish_rate_hz_);
     RCLCPP_INFO(
       this->get_logger(),
-      "twist speeds: linear=%.4f m/s angular=%.4f rad/s; pose deltas: position=%.4f m orientation=%.4f rad; "
-      "joint delta=%.4f rad joint velocity=%.4f rad/s",
-      linear_speed_, angular_speed_, position_delta_m_, orientation_delta_rad_, joint_delta_rad_, joint_velocity_rad_s_);
+      "sine trajectory: period=%.2fs num_periods=%.2f position_amplitude=%.4f m "
+      "orientation_amplitude=%.4f rad settle_time=%.2fs",
+      sine_period_sec_, num_periods_, position_amplitude_m_, orientation_amplitude_rad_, settle_time_sec_);
   }
 
   void run()
   {
-    if (!valid_command_type())
-    {
-      RCLCPP_ERROR(this->get_logger(), "Invalid command_type '%s'. Use pose, twist, or joint.", command_type_.c_str());
-      return;
-    }
+    const std::vector<std::pair<std::string, std::string>> arm_nodes{
+      { "A", arm_a_servo_node_ },
+      { "B", arm_b_servo_node_ },
+    };
 
-    const auto arms = selected_arms();
-    if (arms.empty())
+    std::vector<ServoArm> arms;
+    for (const auto& [id, node_name] : arm_nodes)
     {
-      RCLCPP_ERROR(this->get_logger(), "Invalid servo_target '%s'. Use A, B, or both.", servo_target_.c_str());
-      return;
+      ServoArm arm;
+      if (!build_arm_from_servo_params(id, node_name, arm))
+      {
+        RCLCPP_ERROR(this->get_logger(), "Failed to query parameters from Servo node %s; aborting.",
+                     node_name.c_str());
+        return;
+      }
+      arms.push_back(arm);
     }
 
     create_publishers_and_subscribers(arms);
     wait_for_servo_subscribers(arms);
 
-    if (command_type_ == "pose" && !capture_start_poses(arms))
+    // 将每个臂切换到位置伺服模式 (POSE = 2)。
+    for (const auto& arm : arms)
     {
+      switch_to_pose_command_type(arm);
+    }
+
+    const auto stages = build_stages(arms);
+    RCLCPP_INFO(this->get_logger(), "Prepared %zu sine test stage(s).", stages.size());
+
+    for (std::size_t i = 0; i < stages.size() && rclcpp::ok(); ++i)
+    {
+      const auto& stage = stages[i];
+      RCLCPP_INFO(this->get_logger(),
+                  "===== Stage %zu/%zu '%s': arms=%zu position=%s orientation=%s =====",
+                  i + 1, stages.size(), stage.name.c_str(), stage.arms.size(),
+                  stage.use_position ? "yes" : "no", stage.use_orientation ? "yes" : "no");
+
+      if (!capture_start_poses(stage.arms))
+      {
+        RCLCPP_ERROR(this->get_logger(), "Skipping stage '%s' due to missing start pose.", stage.name.c_str());
+        continue;
+      }
+
+      run_sine_stage(stage);
+      publish_hold(stage.arms, settle_time_sec_);
+    }
+
+    RCLCPP_INFO(this->get_logger(), "All sine test stages finished.");
+    print_summary(arms);
+  }
+
+private:
+  struct SineStage
+  {
+    std::string name;
+    std::vector<ServoArm> arms;
+    bool use_position;
+    bool use_orientation;
+  };
+
+  // 将 Servo 的相对话题名（如 "~/pose_target_cmds" 或 "~/status"）解析为
+  // 全局话题名 "<node_name>/<topic>"。已是绝对路径的原样返回。
+  static std::string resolve_servo_topic(const std::string& node_name, const std::string& topic)
+  {
+    if (!topic.empty() && topic.front() == '/')
+    {
+      return topic;  // 已是绝对话题名
+    }
+    std::string relative = topic;
+    if (!relative.empty() && relative.front() == '~')
+    {
+      relative.erase(relative.begin());  // 去掉 '~'
+    }
+    if (!relative.empty() && relative.front() == '/')
+    {
+      relative.erase(relative.begin());  // 去掉 '/'
+    }
+    return node_name + "/" + relative;
+  }
+
+  // 通过 <node_name>/get_parameters 服务从 Servo 节点查询 planning_frame、
+  // ee_frame、pose_command_in_topic、status_topic，避免在此处写死。
+  bool build_arm_from_servo_params(const std::string& id, const std::string& node_name, ServoArm& arm)
+  {
+    const std::string service_name = node_name + "/get_parameters";
+    auto client = this->create_client<rcl_interfaces::srv::GetParameters>(service_name);
+    if (!client->wait_for_service(10s))
+    {
+      RCLCPP_ERROR(this->get_logger(), "Parameter service not available: %s", service_name.c_str());
+      return false;
+    }
+
+    auto request = std::make_shared<rcl_interfaces::srv::GetParameters::Request>();
+    request->names = { "moveit_servo.planning_frame", "moveit_servo.ee_frame",
+                       "moveit_servo.pose_command_in_topic", "moveit_servo.status_topic" };
+
+    auto future = client->async_send_request(request);
+    if (future.wait_for(5s) != std::future_status::ready)
+    {
+      RCLCPP_ERROR(this->get_logger(), "Timed out querying parameters from %s", service_name.c_str());
+      return false;
+    }
+
+    const auto response = future.get();
+    if (response->values.size() != request->names.size())
+    {
+      RCLCPP_ERROR(this->get_logger(), "Unexpected parameter count from %s", service_name.c_str());
+      return false;
+    }
+
+    const std::string planning_frame = response->values[0].string_value;
+    const std::string ee_frame = response->values[1].string_value;
+    const std::string pose_topic = response->values[2].string_value;
+    const std::string status_topic = response->values[3].string_value;
+
+    if (planning_frame.empty() || ee_frame.empty() || pose_topic.empty() || status_topic.empty())
+    {
+      RCLCPP_ERROR(this->get_logger(),
+                   "Servo node %s returned empty frame/topic parameters (planning_frame='%s' ee_frame='%s' "
+                   "pose_topic='%s' status_topic='%s')",
+                   node_name.c_str(), planning_frame.c_str(), ee_frame.c_str(), pose_topic.c_str(),
+                   status_topic.c_str());
+      return false;
+    }
+
+    arm.id = id;
+    arm.node_name = node_name;
+    arm.planning_frame = planning_frame;
+    arm.tcp_frame = ee_frame;
+    arm.pose_topic = resolve_servo_topic(node_name, pose_topic);
+    arm.status_topic = resolve_servo_topic(node_name, status_topic);
+    arm.switch_command_type_service = node_name + "/switch_command_type";
+
+    RCLCPP_INFO(this->get_logger(),
+                "arm_%s from %s: planning_frame=%s ee_frame=%s pose_topic=%s status_topic=%s",
+                arm.id.c_str(), node_name.c_str(), arm.planning_frame.c_str(), arm.tcp_frame.c_str(),
+                arm.pose_topic.c_str(), arm.status_topic.c_str());
+    return true;
+  }
+
+  // 构建测试阶段列表：
+  // 单臂阶段依次对每个选中臂执行 位置 / 姿态 / 位姿 三项；
+  // 若选中 both，最后追加一个双臂同步位姿阶段。
+  std::vector<SineStage> build_stages(const std::vector<ServoArm>& arms) const
+  {
+    std::vector<SineStage> stages;
+    for (const auto& arm : arms)
+    {
+      stages.push_back({ "arm_" + arm.id + "_position", { arm }, true, false });
+      stages.push_back({ "arm_" + arm.id + "_orientation", { arm }, false, true });
+      stages.push_back({ "arm_" + arm.id + "_pose", { arm }, true, true });
+    }
+    if (arms.size() > 1)
+    {
+      stages.push_back({ "dual_arm_pose", arms, true, true });
+    }
+    return stages;
+  }
+
+  // 通过 ServoCommandType 服务把指定臂切换到 POSE (2) 模式。
+  void switch_to_pose_command_type(const ServoArm& arm)
+  {
+    auto client = this->create_client<moveit_msgs::srv::ServoCommandType>(arm.switch_command_type_service);
+    if (!client->wait_for_service(5s))
+    {
+      RCLCPP_WARN(this->get_logger(), "Service %s not available; skipping command_type switch for arm_%s",
+                  arm.switch_command_type_service.c_str(), arm.id.c_str());
       return;
     }
 
-    const double safe_duration = std::max(0.1, duration_sec_);
-    const double phase_duration = safe_duration / 6.0;
+    auto request = std::make_shared<moveit_msgs::srv::ServoCommandType::Request>();
+    request->command_type = moveit_msgs::srv::ServoCommandType::Request::POSE;
+
+    auto future = client->async_send_request(request);
+    if (future.wait_for(3s) != std::future_status::ready)
+    {
+      RCLCPP_WARN(this->get_logger(), "Timed out switching arm_%s to POSE command type", arm.id.c_str());
+      return;
+    }
+
+    if (future.get()->success)
+    {
+      RCLCPP_INFO(this->get_logger(), "arm_%s switched to POSE command type", arm.id.c_str());
+    }
+    else
+    {
+      RCLCPP_WARN(this->get_logger(), "arm_%s reported failure switching to POSE command type", arm.id.c_str());
+    }
+  }
+
+  // 运行单个正弦阶段：目标 = 起点 + 幅值·sin(2π t / period)，各轴同相位同幅值。
+  void run_sine_stage(const SineStage& stage)
+  {
+    const double stage_duration = std::max(0.0, num_periods_) * std::max(0.1, sine_period_sec_);
+    const double omega = 2.0 * M_PI / std::max(0.1, sine_period_sec_);
     const auto start = std::chrono::steady_clock::now();
     auto next_log = start;
     rclcpp::Rate rate(std::max(1.0, publish_rate_hz_));
 
-    RCLCPP_INFO(this->get_logger(), "Starting %s Servo command test for %.2f seconds", command_type_.c_str(), safe_duration);
+    RCLCPP_INFO(this->get_logger(), "Running sine stage '%s' for %.2fs", stage.name.c_str(), stage_duration);
     while (rclcpp::ok())
     {
       const auto now = std::chrono::steady_clock::now();
-      const double elapsed = std::chrono::duration<double>(now - start).count();
-      if (elapsed >= safe_duration)
+      const double t = std::chrono::duration<double>(now - start).count();
+      if (t >= stage_duration)
       {
         break;
       }
 
-      const int phase = std::min(5, static_cast<int>(elapsed / phase_duration));
-      const double phase_elapsed = std::fmod(elapsed, phase_duration);
-      const double sign = phase_elapsed < (phase_duration / 2.0) ? 1.0 : -1.0;
-
-      publish_command(arms, phase, sign);
+      const double s = std::sin(omega * t);
+      for (const auto& arm : stage.arms)
+      {
+        const auto pose_cmd = make_sine_pose(arm, s, stage.use_position, stage.use_orientation);
+        last_target_poses_[arm.id] = pose_cmd.pose;
+        pose_publishers_[arm.id]->publish(pose_cmd);
+      }
 
       if (now >= next_log)
       {
-        print_progress(arms, phase, safe_duration - elapsed);
+        print_progress(stage.arms, stage.name, stage_duration - t);
         next_log = now + 1s;
       }
 
       rate.sleep();
     }
-
-    publish_stop_commands(arms);
-    print_summary(arms);
   }
 
-private:
-  bool valid_command_type() const
+  // 目标位姿 = 起点位姿 + sin 系数 s * 幅值（position/orientation 由 stage 决定是否启用）。
+  geometry_msgs::msg::PoseStamped make_sine_pose(
+    const ServoArm& arm, double s, bool use_position, bool use_orientation) const
   {
-    return command_type_ == "pose" || command_type_ == "twist" || command_type_ == "joint";
+    const double dpos = use_position ? s * position_amplitude_m_ : 0.0;
+    const double dori = use_orientation ? s * orientation_amplitude_rad_ : 0.0;
+
+    geometry_msgs::msg::PoseStamped pose;
+    pose.header.stamp = this->now();
+    pose.header.frame_id = arm.planning_frame;
+    pose.pose = offset_pose(start_poses_.at(arm.id), dpos, dpos, dpos, dori, dori, dori);
+    return pose;
   }
 
-  std::vector<ServoArm> selected_arms() const
+  // 在阶段结束后，持续发布起点位姿，让机械臂回到起点并稳定。
+  void publish_hold(const std::vector<ServoArm>& arms, double hold_sec)
   {
-    const ServoArm arm_a{
-      "A", "/arm_A_servo_node/pose_target_cmds", "/arm_A_servo_node/delta_twist_cmds",
-      "/arm_A_servo_node/delta_joint_cmds", "/arm_A_servo_node/status", "arm_A__tcp",
-      { "arm_A_ur_shoulder_pan_joint", "arm_A_ur_shoulder_lift_joint", "arm_A_ur_elbow_joint",
-        "arm_A_ur_wrist_1_joint", "arm_A_ur_wrist_2_joint", "arm_A_ur_wrist_3_joint" }
-    };
-    const ServoArm arm_b{
-      "B", "/arm_B_servo_node/pose_target_cmds", "/arm_B_servo_node/delta_twist_cmds",
-      "/arm_B_servo_node/delta_joint_cmds", "/arm_B_servo_node/status", "arm_B__tcp",
-      { "arm_B_ur_shoulder_pan_joint", "arm_B_ur_shoulder_lift_joint", "arm_B_ur_elbow_joint",
-        "arm_B_ur_wrist_1_joint", "arm_B_ur_wrist_2_joint", "arm_B_ur_wrist_3_joint" }
-    };
-
-    if (servo_target_ == "A" || servo_target_ == "a")
+    if (hold_sec <= 0.0)
     {
-      return { arm_a };
+      return;
     }
-    if (servo_target_ == "B" || servo_target_ == "b")
+    const auto start = std::chrono::steady_clock::now();
+    rclcpp::Rate rate(std::max(1.0, publish_rate_hz_));
+    while (rclcpp::ok())
     {
-      return { arm_b };
+      const double t = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
+      if (t >= hold_sec)
+      {
+        break;
+      }
+      for (const auto& arm : arms)
+      {
+        const auto it = start_poses_.find(arm.id);
+        if (it == start_poses_.end())
+        {
+          continue;
+        }
+        geometry_msgs::msg::PoseStamped pose;
+        pose.header.stamp = this->now();
+        pose.header.frame_id = arm.planning_frame;
+        pose.pose = it->second;
+        pose_publishers_[arm.id]->publish(pose);
+      }
+      rate.sleep();
     }
-    if (servo_target_ == "both" || servo_target_ == "Both" || servo_target_ == "BOTH")
-    {
-      return { arm_a, arm_b };
-    }
-    return {};
   }
 
   void create_publishers_and_subscribers(const std::vector<ServoArm>& arms)
   {
     for (const auto& arm : arms)
     {
-      if (command_type_ == "pose")
-      {
-        pose_publishers_[arm.id] = this->create_publisher<geometry_msgs::msg::PoseStamped>(arm.pose_topic, 10);
-        RCLCPP_INFO(this->get_logger(), "Publishing arm_%s PoseStamped to %s", arm.id.c_str(), arm.pose_topic.c_str());
-      }
-      else if (command_type_ == "twist")
-      {
-        twist_publishers_[arm.id] = this->create_publisher<geometry_msgs::msg::TwistStamped>(arm.twist_topic, 10);
-        RCLCPP_INFO(this->get_logger(), "Publishing arm_%s TwistStamped to %s", arm.id.c_str(), arm.twist_topic.c_str());
-      }
-      else
-      {
-        joint_publishers_[arm.id] = this->create_publisher<control_msgs::msg::JointJog>(arm.joint_topic, 10);
-        RCLCPP_INFO(this->get_logger(), "Publishing arm_%s JointJog to %s", arm.id.c_str(), arm.joint_topic.c_str());
-      }
+      pose_publishers_[arm.id] = this->create_publisher<geometry_msgs::msg::PoseStamped>(arm.pose_topic, 10);
+      RCLCPP_INFO(this->get_logger(), "Publishing arm_%s PoseStamped to %s", arm.id.c_str(), arm.pose_topic.c_str());
 
       status_subs_.push_back(this->create_subscription<moveit_msgs::msg::ServoStatus>(
         arm.status_topic, 10,
@@ -227,171 +398,24 @@ private:
 
   bool capture_start_poses(const std::vector<ServoArm>& arms)
   {
-    RCLCPP_INFO(this->get_logger(), "Capturing start poses from TF frame %s", planning_frame_.c_str());
     bool ok = true;
     for (const auto& arm : arms)
     {
       try
       {
-        const auto transform = tf_buffer_.lookupTransform(planning_frame_, arm.tcp_frame, tf2::TimePointZero, 5s);
+        const auto transform = tf_buffer_.lookupTransform(arm.planning_frame, arm.tcp_frame, tf2::TimePointZero, 5s);
         start_poses_[arm.id] = pose_from_transform(transform);
         RCLCPP_INFO(this->get_logger(), "arm_%s start pose captured from %s -> %s", arm.id.c_str(),
-                    planning_frame_.c_str(), arm.tcp_frame.c_str());
+                    arm.planning_frame.c_str(), arm.tcp_frame.c_str());
       }
       catch (const tf2::TransformException& ex)
       {
-        RCLCPP_ERROR(this->get_logger(), "Failed to lookup TF %s -> %s: %s", planning_frame_.c_str(),
+        RCLCPP_ERROR(this->get_logger(), "Failed to lookup TF %s -> %s: %s", arm.planning_frame.c_str(),
                      arm.tcp_frame.c_str(), ex.what());
         ok = false;
       }
     }
     return ok;
-  }
-
-  void publish_command(const std::vector<ServoArm>& arms, int phase, double sign)
-  {
-    for (const auto& arm : arms)
-    {
-      if (command_type_ == "pose")
-      {
-        pose_publishers_[arm.id]->publish(make_pose_command(arm, phase, sign));
-      }
-      else if (command_type_ == "twist")
-      {
-        twist_publishers_[arm.id]->publish(make_twist_command(arm, phase, sign));
-      }
-      else
-      {
-        joint_publishers_[arm.id]->publish(make_joint_command(arm, phase, sign));
-      }
-    }
-  }
-
-  geometry_msgs::msg::PoseStamped make_pose_command(const ServoArm& arm, int phase, double sign) const
-  {
-    double dx = 0.0;
-    double dy = 0.0;
-    double dz = 0.0;
-    double droll = 0.0;
-    double dpitch = 0.0;
-    double dyaw = 0.0;
-
-    switch (phase)
-    {
-      case 0:
-        dx = sign * position_delta_m_;
-        break;
-      case 1:
-        dy = sign * position_delta_m_;
-        break;
-      case 2:
-        dz = sign * position_delta_m_;
-        break;
-      case 3:
-        droll = sign * orientation_delta_rad_;
-        break;
-      case 4:
-        dpitch = sign * orientation_delta_rad_;
-        break;
-      default:
-        dyaw = sign * orientation_delta_rad_;
-        break;
-    }
-
-    geometry_msgs::msg::PoseStamped pose;
-    pose.header.stamp = this->now();
-    pose.header.frame_id = planning_frame_;
-    pose.pose = offset_pose(start_poses_.at(arm.id), dx, dy, dz, droll, dpitch, dyaw);
-    return pose;
-  }
-
-  geometry_msgs::msg::TwistStamped make_twist_command(const ServoArm& arm, int phase, double sign) const
-  {
-    geometry_msgs::msg::TwistStamped twist;
-    twist.header.stamp = this->now();
-    twist.header.frame_id = arm.tcp_frame;
-
-    switch (phase)
-    {
-      case 0:
-        twist.twist.linear.x = sign * linear_speed_;
-        break;
-      case 1:
-        twist.twist.linear.y = sign * linear_speed_;
-        break;
-      case 2:
-        twist.twist.linear.z = sign * linear_speed_;
-        break;
-      case 3:
-        twist.twist.angular.x = sign * angular_speed_;
-        break;
-      case 4:
-        twist.twist.angular.y = sign * angular_speed_;
-        break;
-      default:
-        twist.twist.angular.z = sign * angular_speed_;
-        break;
-    }
-
-    return twist;
-  }
-
-  control_msgs::msg::JointJog make_joint_command(const ServoArm& arm, int phase, double sign) const
-  {
-    control_msgs::msg::JointJog jog;
-    jog.header.stamp = this->now();
-    jog.header.frame_id = arm.tcp_frame;
-    const std::size_t index = static_cast<std::size_t>(std::clamp(phase, 0, 5));
-    jog.joint_names = { arm.joint_names[index] };
-    jog.displacements = { sign * joint_delta_rad_ };
-    jog.velocities = { sign * joint_velocity_rad_s_ };
-    jog.duration = 1.0 / std::max(1.0, publish_rate_hz_);
-    return jog;
-  }
-
-  std::string phase_name(int phase) const
-  {
-    switch (phase)
-    {
-      case 0:
-        return command_type_ == "joint" ? "joint_1" : "x_or_roll_stage_1";
-      case 1:
-        return command_type_ == "joint" ? "joint_2" : "y_or_pitch_stage_2";
-      case 2:
-        return command_type_ == "joint" ? "joint_3" : "z_or_yaw_stage_3";
-      case 3:
-        return command_type_ == "joint" ? "joint_4" : "roll";
-      case 4:
-        return command_type_ == "joint" ? "joint_5" : "pitch";
-      default:
-        return command_type_ == "joint" ? "joint_6" : "yaw";
-    }
-  }
-
-  bool publisher_has_subscribers(const ServoArm& arm) const
-  {
-    if (command_type_ == "pose")
-    {
-      return pose_publishers_.at(arm.id)->get_subscription_count() > 0;
-    }
-    if (command_type_ == "twist")
-    {
-      return twist_publishers_.at(arm.id)->get_subscription_count() > 0;
-    }
-    return joint_publishers_.at(arm.id)->get_subscription_count() > 0;
-  }
-
-  std::string command_topic(const ServoArm& arm) const
-  {
-    if (command_type_ == "pose")
-    {
-      return arm.pose_topic;
-    }
-    if (command_type_ == "twist")
-    {
-      return arm.twist_topic;
-    }
-    return arm.joint_topic;
   }
 
   void wait_for_servo_subscribers(const std::vector<ServoArm>& arms)
@@ -402,11 +426,11 @@ private:
       bool all_ready = true;
       for (const auto& arm : arms)
       {
-        all_ready = all_ready && publisher_has_subscribers(arm);
+        all_ready = all_ready && (pose_publishers_.at(arm.id)->get_subscription_count() > 0);
       }
       if (all_ready)
       {
-        RCLCPP_INFO(this->get_logger(), "All selected Servo command topics have subscribers.");
+        RCLCPP_INFO(this->get_logger(), "All selected Servo pose command topics have subscribers.");
         return;
       }
       std::this_thread::sleep_for(100ms);
@@ -414,62 +438,73 @@ private:
 
     for (const auto& arm : arms)
     {
-      if (!publisher_has_subscribers(arm))
+      if (pose_publishers_.at(arm.id)->get_subscription_count() == 0)
       {
-        RCLCPP_WARN(this->get_logger(), "No subscriber detected on %s before streaming", command_topic(arm).c_str());
+        RCLCPP_WARN(this->get_logger(), "No subscriber detected on %s before streaming", arm.pose_topic.c_str());
       }
     }
   }
 
-  void print_progress(const std::vector<ServoArm>& arms, int phase, double remaining_sec) const
+  // Compute tracking error between the last commanded target pose and the
+  // current actual TCP pose read from TF.  Returns false if unavailable
+  // (e.g. no target sent yet, or TF lookup failed).
+  bool compute_pose_tracking_error(const ServoArm& arm, double& position_error_m, double& orientation_error_rad) const
   {
-    RCLCPP_INFO(this->get_logger(), "Servo command_type=%s phase=%s remaining=%.1fs", command_type_.c_str(),
-                phase_name(phase).c_str(), remaining_sec);
+    const auto target_it = last_target_poses_.find(arm.id);
+    if (target_it == last_target_poses_.end())
+    {
+      return false;
+    }
+
+    geometry_msgs::msg::Pose actual;
+    try
+    {
+      const auto transform = tf_buffer_.lookupTransform(arm.planning_frame, arm.tcp_frame, tf2::TimePointZero);
+      actual = pose_from_transform(transform);
+    }
+    catch (const tf2::TransformException&)
+    {
+      return false;
+    }
+
+    const auto& target = target_it->second;
+    const double dx = target.position.x - actual.position.x;
+    const double dy = target.position.y - actual.position.y;
+    const double dz = target.position.z - actual.position.z;
+    position_error_m = std::sqrt(dx * dx + dy * dy + dz * dz);
+
+    tf2::Quaternion q_target;
+    tf2::Quaternion q_actual;
+    tf2::fromMsg(target.orientation, q_target);
+    tf2::fromMsg(actual.orientation, q_actual);
+    // Relative rotation from actual to target; its angle is the orientation error.
+    const tf2::Quaternion q_error = q_target * q_actual.inverse();
+    orientation_error_rad = std::abs(q_error.normalized().getAngle());
+    if (orientation_error_rad > M_PI)
+    {
+      orientation_error_rad = 2.0 * M_PI - orientation_error_rad;
+    }
+    return true;
+  }
+
+  void print_progress(const std::vector<ServoArm>& arms, const std::string& stage_name, double remaining_sec) const
+  {
+    RCLCPP_INFO(this->get_logger(), "Stage '%s' remaining=%.1fs", stage_name.c_str(), remaining_sec);
     for (const auto& arm : arms)
     {
-      const auto it = latest_status_.find(arm.id);
-      const std::string status = it == latest_status_.end() ? "no status received yet" : status_to_string(it->second);
-      RCLCPP_INFO(this->get_logger(), "arm_%s topic=%s last_status=%s", arm.id.c_str(), command_topic(arm).c_str(),
-                  status.c_str());
-    }
-  }
-
-  void publish_stop_commands(const std::vector<ServoArm>& arms)
-  {
-    RCLCPP_INFO(this->get_logger(), "Publishing stop commands for command_type=%s", command_type_.c_str());
-    rclcpp::Rate rate(std::max(1.0, publish_rate_hz_));
-    for (int i = 0; i < 10 && rclcpp::ok(); ++i)
-    {
-      for (const auto& arm : arms)
+      double position_error_m = 0.0;
+      double orientation_error_rad = 0.0;
+      if (compute_pose_tracking_error(arm, position_error_m, orientation_error_rad))
       {
-        if (command_type_ == "pose")
-        {
-          geometry_msgs::msg::PoseStamped pose;
-          pose.header.stamp = this->now();
-          pose.header.frame_id = planning_frame_;
-          pose.pose = start_poses_.at(arm.id);
-          pose_publishers_[arm.id]->publish(pose);
-        }
-        else if (command_type_ == "twist")
-        {
-          geometry_msgs::msg::TwistStamped twist;
-          twist.header.stamp = this->now();
-          twist.header.frame_id = arm.tcp_frame;
-          twist_publishers_[arm.id]->publish(twist);
-        }
-        else
-        {
-          control_msgs::msg::JointJog jog;
-          jog.header.stamp = this->now();
-          jog.header.frame_id = arm.tcp_frame;
-          jog.joint_names = arm.joint_names;
-          jog.displacements.assign(arm.joint_names.size(), 0.0);
-          jog.velocities.assign(arm.joint_names.size(), 0.0);
-          jog.duration = 1.0 / std::max(1.0, publish_rate_hz_);
-          joint_publishers_[arm.id]->publish(jog);
-        }
+        RCLCPP_INFO(this->get_logger(),
+                    "arm_%s tracking error: position=%.4f m orientation=%.4f rad (%.2f deg)", arm.id.c_str(),
+                    position_error_m, orientation_error_rad, orientation_error_rad * 180.0 / M_PI);
       }
-      rate.sleep();
+      else
+      {
+        RCLCPP_INFO(this->get_logger(), "arm_%s tracking error: unavailable (no target or TF lookup failed)",
+                    arm.id.c_str());
+      }
     }
   }
 
@@ -484,24 +519,20 @@ private:
     }
   }
 
-  std::string servo_target_;
-  std::string command_type_;
-  std::string planning_frame_;
-  double duration_sec_ = 30.0;
-  double publish_rate_hz_ = 50.0;
-  double linear_speed_ = 0.01;
-  double angular_speed_ = 0.05;
-  double position_delta_m_ = 0.02;
-  double orientation_delta_rad_ = 0.05;
-  double joint_delta_rad_ = 0.03;
-  double joint_velocity_rad_s_ = 0.05;
+  std::string arm_a_servo_node_;
+  std::string arm_b_servo_node_;
+  double publish_rate_hz_ = 100.0;
+  double sine_period_sec_ = 6.0;
+  double num_periods_ = 3.0;
+  double position_amplitude_m_ = 0.05;
+  double orientation_amplitude_rad_ = 0.1;
+  double settle_time_sec_ = 1.0;
 
   tf2_ros::Buffer tf_buffer_;
   tf2_ros::TransformListener tf_listener_;
   std::map<std::string, geometry_msgs::msg::Pose> start_poses_;
+  std::map<std::string, geometry_msgs::msg::Pose> last_target_poses_;
   std::map<std::string, rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr> pose_publishers_;
-  std::map<std::string, rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr> twist_publishers_;
-  std::map<std::string, rclcpp::Publisher<control_msgs::msg::JointJog>::SharedPtr> joint_publishers_;
   std::vector<rclcpp::Subscription<moveit_msgs::msg::ServoStatus>::SharedPtr> status_subs_;
   std::map<std::string, moveit_msgs::msg::ServoStatus> latest_status_;
 };

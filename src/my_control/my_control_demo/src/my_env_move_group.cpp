@@ -24,7 +24,7 @@ namespace
 {
 const char* ARM_A_GROUP = "arm_A";
 const char* ARM_B_GROUP = "arm_B";
-const char* DUAL_ARM_GROUP = "dual_arm";
+const char* ARM_BOTH_GROUP = "arm_BOTH";
 const char* ARM_A_TCP = "arm_A__tcp";
 const char* ARM_B_TCP = "arm_B__tcp";
 
@@ -92,7 +92,7 @@ bool copy_move_group_parameters(const rclcpp::Node::SharedPtr& node)
     return true;
   }
 
-  const std::string source_node = node->declare_parameter<std::string>("move_group_parameter_node", "/move_group");
+  const std::string source_node = node->declare_parameter<std::string>("move_group_parameter_node", "/arm_BOTH_move_group");
   const std::vector<std::string> names{
     "robot_description",
     "robot_description_semantic",
@@ -193,11 +193,11 @@ public:
   {
     arm_a_group_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(node_, ARM_A_GROUP);
     arm_b_group_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(node_, ARM_B_GROUP);
-    dual_arm_group_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(node_, DUAL_ARM_GROUP);
+    arm_both_group_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(node_, ARM_BOTH_GROUP);
 
     configure_group(arm_a_group_);
     configure_group(arm_b_group_);
-    configure_group(dual_arm_group_);
+    configure_group(arm_both_group_);
 
     RCLCPP_INFO(node_->get_logger(), "my_env_move_group initialized");
   }
@@ -207,10 +207,10 @@ public:
     RCLCPP_INFO(node_->get_logger(), "=== Starting MoveGroup planning/execution tests ===");
     bool arm_a_ok = test_single_arm(arm_a_group_, ARM_A_GROUP, ARM_A_TCP);
     bool arm_b_ok = test_single_arm(arm_b_group_, ARM_B_GROUP, ARM_B_TCP);
-    bool dual_ok = test_dual_arm();
+    bool arm_both_ok = test_both_arm();
 
-    RCLCPP_INFO(node_->get_logger(), "=== MoveGroup test summary: arm_A=%s arm_B=%s dual_arm=%s ===",
-                arm_a_ok ? "OK" : "FAILED", arm_b_ok ? "OK" : "FAILED", dual_ok ? "OK" : "FAILED");
+    RCLCPP_INFO(node_->get_logger(), "=== MoveGroup test summary: arm_A=%s arm_B=%s arm_BOTH=%s ===",
+                arm_a_ok ? "OK" : "FAILED", arm_b_ok ? "OK" : "FAILED", arm_both_ok ? "OK" : "FAILED");
   }
 
 private:
@@ -293,41 +293,41 @@ private:
     return ok;
   }
 
-  bool move_dual_to_poses(
+  bool move_both_to_poses(
     const geometry_msgs::msg::Pose& arm_a_pose, const geometry_msgs::msg::Pose& arm_b_pose,
     const std::string& target_name)
   {
-    dual_arm_group_->clearPoseTargets();
-    const bool a_set = dual_arm_group_->setPoseTarget(arm_a_pose, ARM_A_TCP);
-    const bool b_set = dual_arm_group_->setPoseTarget(arm_b_pose, ARM_B_TCP);
+    arm_both_group_->clearPoseTargets();
+    const bool a_set = arm_both_group_->setPoseTarget(arm_a_pose, ARM_A_TCP);
+    const bool b_set = arm_both_group_->setPoseTarget(arm_b_pose, ARM_B_TCP);
     if (!a_set || !b_set)
     {
-      RCLCPP_ERROR(node_->get_logger(), "dual_arm failed to set pose targets for %s", target_name.c_str());
+      RCLCPP_ERROR(node_->get_logger(), "arm_BOTH failed to set pose targets for %s", target_name.c_str());
       return false;
     }
 
-    RCLCPP_INFO(node_->get_logger(), "dual_arm %s target %s: %s", target_name.c_str(), ARM_A_TCP,
+    RCLCPP_INFO(node_->get_logger(), "arm_BOTH %s target %s: %s", target_name.c_str(), ARM_A_TCP,
                 format_pose(arm_a_pose).c_str());
-    RCLCPP_INFO(node_->get_logger(), "dual_arm %s target %s: %s", target_name.c_str(), ARM_B_TCP,
+    RCLCPP_INFO(node_->get_logger(), "arm_BOTH %s target %s: %s", target_name.c_str(), ARM_B_TCP,
                 format_pose(arm_b_pose).c_str());
-    return plan_and_execute(dual_arm_group_, "dual_arm " + target_name);
+    return plan_and_execute(arm_both_group_, "arm_BOTH " + target_name);
   }
 
-  bool test_dual_arm()
+  bool test_both_arm()
   {
-    RCLCPP_INFO(node_->get_logger(), "=== Testing planning group dual_arm ===");
-    const auto initial_a = dual_arm_group_->getCurrentPose(ARM_A_TCP);
-    const auto initial_b = dual_arm_group_->getCurrentPose(ARM_B_TCP);
-    RCLCPP_INFO(node_->get_logger(), "dual_arm current pose %s: %s", ARM_A_TCP, format_pose(initial_a.pose).c_str());
-    RCLCPP_INFO(node_->get_logger(), "dual_arm current pose %s: %s", ARM_B_TCP, format_pose(initial_b.pose).c_str());
+    RCLCPP_INFO(node_->get_logger(), "=== Testing planning group arm_BOTH ===");
+    const auto initial_a = arm_both_group_->getCurrentPose(ARM_A_TCP);
+    const auto initial_b = arm_both_group_->getCurrentPose(ARM_B_TCP);
+    RCLCPP_INFO(node_->get_logger(), "arm_BOTH current pose %s: %s", ARM_A_TCP, format_pose(initial_a.pose).c_str());
+    RCLCPP_INFO(node_->get_logger(), "arm_BOTH current pose %s: %s", ARM_B_TCP, format_pose(initial_b.pose).c_str());
 
-    struct DualTarget
+    struct BothTarget
     {
       geometry_msgs::msg::Pose a;
       geometry_msgs::msg::Pose b;
     };
 
-    const std::vector<DualTarget> targets{
+    const std::vector<BothTarget> targets{
       { offset_pose(initial_a.pose, 0.02, 0.0, 0.0, 0.05, 0.0, 0.0),
         offset_pose(initial_b.pose, -0.02, 0.0, 0.0, -0.05, 0.0, 0.0) },
       { offset_pose(initial_a.pose, 0.0, 0.02, 0.0, 0.0, 0.05, 0.0),
@@ -339,18 +339,18 @@ private:
     bool ok = true;
     for (std::size_t i = 0; i < targets.size(); ++i)
     {
-      ok = move_dual_to_poses(targets[i].a, targets[i].b, "target_" + std::to_string(i + 1)) && ok;
+      ok = move_both_to_poses(targets[i].a, targets[i].b, "target_" + std::to_string(i + 1)) && ok;
     }
 
-    RCLCPP_INFO(node_->get_logger(), "dual_arm returning to initial poses");
-    ok = move_dual_to_poses(initial_a.pose, initial_b.pose, "return_initial") && ok;
+    RCLCPP_INFO(node_->get_logger(), "arm_BOTH returning to initial poses");
+    ok = move_both_to_poses(initial_a.pose, initial_b.pose, "return_initial") && ok;
     return ok;
   }
 
   rclcpp::Node::SharedPtr node_;
   std::shared_ptr<moveit::planning_interface::MoveGroupInterface> arm_a_group_;
   std::shared_ptr<moveit::planning_interface::MoveGroupInterface> arm_b_group_;
-  std::shared_ptr<moveit::planning_interface::MoveGroupInterface> dual_arm_group_;
+  std::shared_ptr<moveit::planning_interface::MoveGroupInterface> arm_both_group_;
 };
 
 int main(int argc, char** argv)

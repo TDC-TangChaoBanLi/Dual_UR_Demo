@@ -40,6 +40,7 @@ sudo apt install colcon -y
 colcon build --symlink-install --packages-select robotiq_driver robotiq_controllers robotiq_description
 colcon build --symlink-install --packages-select dh_ag95_description dh_ag95_controllers
 colcon build --symlink-install --packages-select my_env_description my_env_moveit_config my_env_control
+colcon build --symlink-install --packages-select my_control_demo
 ```
 
 提取机械臂校准文件：
@@ -47,6 +48,14 @@ colcon build --symlink-install --packages-select my_env_description my_env_movei
 ```bash
 ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.17 target_filename:="src/my_env/my_env_control/config/ur_A_kinematics_calibration.yaml"
 ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.11 target_filename:="src/my_env/my_env_control/config/ur_B_kinematics_calibration.yaml"
+```
+
+打开 CAN0 接口：
+
+```bash
+sudo ip link set can0 down
+sudo ip link set can0 type can bitrate 500000
+sudo ip link set can0 up
 ```
 
 启动机械臂 dashboard_client：
