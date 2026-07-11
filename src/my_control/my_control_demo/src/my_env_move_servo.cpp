@@ -258,7 +258,7 @@ private:
     }
     if (arms.size() > 1)
     {
-      stages.push_back({ "dual_arm_pose", arms, true, true });
+      stages.push_back({ "arm_BOTH_pose", arms, true, true });
     }
     return stages;
   }

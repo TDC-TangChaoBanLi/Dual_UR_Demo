@@ -36,7 +36,7 @@
         <joint name="arm_B_ur_wrist_2_joint" value="1.5708"/>
         <joint name="arm_B_ur_wrist_3_joint" value="1.5708"/>
     </group_state>
-    <group_state name="dual_arm_home" group="dual_arm">
+    <group_state name="arm_BOTH_home" group="arm_BOTH">
         <joint name="arm_A_ur_elbow_joint" value="1"/>
         <joint name="arm_A_ur_shoulder_lift_joint" value="-0.5"/>
         <joint name="arm_A_ur_shoulder_pan_joint" value="1.5708"/>
