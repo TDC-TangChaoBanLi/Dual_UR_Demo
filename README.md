@@ -196,7 +196,7 @@ ros2 service call /arm_B/dashboard_client/program_running ur_dashboard_msgs/srv/
 MoveIt Servo:
 
 ```bash
-ros2 launch my_env_control start_my_env_control.launch.py launch_rviz:=false activate_gripper_controller:=false initial_ur_controller:=forward_position_controller use_fake_hardware:=false ur_headless_mode:=true  
+ros2 launch my_env_control start_my_env_control.launch.py launch_rviz:=false activate_gripper_controller:=false initial_ur_controller:=forward_position_controller use_fake_hardware:=false ur_headless_mode:=true
 
 ros2 launch my_env_moveit_config start_my_env_servo.launch.py
 ```

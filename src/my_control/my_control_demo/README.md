@@ -1,6 +1,6 @@
 # my_control_demo
 
-双臂 UR 机械臂控制系统的**演示与测试节点**集合。提供四个独立的可执行节点，分别演示 ros2_control 轨迹控制、MoveIt 运动规划、MoveIt Servo 实时伺服以及 Mujoco 仿真控制。
+双臂 UR 机械臂控制系统的**演示与测试节点**集合。提供 ros2_control 轨迹控制、MoveIt 运动规划、MoveIt Servo 实时伺服、小车联动以及 Mujoco 仿真控制节点。
 
 > 仅支持 ROS2 Jazzy。所有节点默认针对双臂命名空间 `arm_A` / `arm_B`。
 
@@ -18,6 +18,7 @@ source install/setup.bash
 | `my_env_ros2_control` | `src/my_env_ros2_control.cpp` | 直接向 ros2_control 控制器发送关节轨迹（action / topic / forward position），验证底层控制器 |
 | `my_env_move_group` | `src/my_env_move_group.cpp` | 通过 MoveIt MoveGroup 接口做规划+执行，测试单臂与双臂规划组 |
 | `my_env_move_servo` | `src/my_env_move_servo.cpp` | 向 MoveIt Servo 发送连续正弦位姿目标，测试实时伺服跟踪 |
+| `railcar_sine_servo` | `src/railcar_sine_servo.cpp` | 读取小车正弦运动位置，并映射到 arm_A TCP 的 y 轴目标 |
 | `my_env_mujoco_control` | `src/my_env_mujoco_control.cpp` | 向 forward_position_controller 与夹爪循环发送预设动作，用于 Mujoco 仿真 |
 
 ---
@@ -126,7 +127,30 @@ ros2 run my_control_demo my_env_move_servo --ros-args \
 
 ---
 
-## 4. my_env_mujoco_control
+## 4. railcar_sine_servo
+
+启动时直接通过 TF 读取 `world` 到 `arm_A__tcp` 的变换并保存 TCP 初始位姿，不请求任何 ROS 服务。随后每 50 ms 向小车发送固定正弦指令（0.1 Hz、20 mm、5 周期），读取当前位置，并发布：
+
+```text
+目标 TCP y = 初始 TCP y + 小车当前位置(mm) / 1000
+```
+
+目标发布到 `/arm_A_servo_node/pose_target_cmds`；TCP 的 x、z 和姿态保持初始值。退出时节点会向小车发送停止帧。
+
+```bash
+ros2 run my_control_demo railcar_sine_servo
+
+# 可按现场网络配置覆盖参数
+ros2 run my_control_demo railcar_sine_servo --ros-args \
+  -p railcar_ip:=192.168.1.88 -p railcar_port:=6000 \
+  -p local_ip:="" -p local_port:=6000
+```
+
+TF 参考系固定为 `planning_frame=world`、`tcp_frame=arm_A__tcp`。参数默认值：`pose_topic=/arm_A_servo_node/pose_target_cmds`、`railcar_ip=192.168.1.88`、`railcar_port=6000`、`local_ip=""`、`local_port=6000`。
+
+---
+
+## 5. my_env_mujoco_control
 
 面向 Mujoco 仿真的循环动作演示。每 5 秒切换一次动作：初始位姿(开夹爪) → home 位姿 → 闭合夹爪。向 `/arm_{A,B}_forward_position_controller/commands` 发布关节位置，向 `/arm_{A,B}_robotiq_gripper_controller/gripper_cmd` 发送夹爪 action。
 
