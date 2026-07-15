@@ -10,7 +10,8 @@ from launch.substitutions import (
     LaunchConfiguration,
     PathJoinSubstitution,
 )
-from launch_ros.actions import Node
+from launch_ros.actions import ComposableNodeContainer, Node
+from launch_ros.descriptions import ComposableNode
 from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
@@ -165,7 +166,7 @@ def generate_planning_scene_monitor_parameters(arm_node_name_prefix: str):
             "joint_state_topic": JOINT_STATE_TOPIC,
             "attached_collision_object_topic": "attached_collision_object",
             "publish_planning_scene_topic": "planning_scene",
-            "monitored_planning_scene_topic": "monitored_planning_scene",
+            "monitored_planning_scene_topic": "~/monitored_planning_scene",
             "wait_for_initial_state_timeout": 10.0,
         }
     }
@@ -177,30 +178,17 @@ def generate_servo_parameters(servo_config_file: str):
         servo_config_file,
     )
 
-    # ------------------------------------------------------------
-    # 当前启动文件按“不启动 move_group”的方式运行。
-    #
-    # 因此 Servo 自己作为 primary planning scene monitor。
-    # 如果以后你重新改成和 move_group 同时运行，可以在 YAML 中改回 false，
-    # 并删除这里的强制覆盖。
-    # ------------------------------------------------------------
-    servo_yaml["is_primary_planning_scene_monitor"] = True
-
-    # 避免两个 Servo 节点同时启动时共用全局 /planning_scene 造成混乱。
-    # 这里使用相对 topic，最终会被解析到：
-    # /arm_A/monitored_planning_scene
-    # /arm_B/monitored_planning_scene
-    servo_yaml["monitored_planning_scene_topic"] = "monitored_planning_scene"
-
-    # 双臂共用 joint_states。
-    servo_yaml["joint_topic"] = JOINT_STATE_TOPIC
+    # Butterworth 插件从节点根命名空间读取该参数，而不是 moveit_servo.*。
+    # 配置文件将它和对应机械臂的 Servo 参数放在一起维护，加载时再拆开。
+    butterworth_filter_coeff = servo_yaml.pop("butterworth_filter_coeff")
 
     return {
-        "moveit_servo": servo_yaml
+        "moveit_servo": servo_yaml,
+        "butterworth_filter_coeff": butterworth_filter_coeff,
     }
 
 
-def generate_servo_node(
+def generate_servo_description(
     arm_node_name_prefix: str,
     servo_config_file: str,
     use_sim_time,
@@ -208,6 +196,7 @@ def generate_servo_node(
     robot_description_semantic,
     robot_description_kinematics,
     robot_description_planning,
+    launch_as_component,
 ):
     servo_parameters = generate_servo_parameters(servo_config_file)
 
@@ -215,13 +204,10 @@ def generate_servo_node(
         arm_node_name_prefix
     )
 
-    return Node(
-        package="moveit_servo",
-        executable="servo_node",
-        # namespace=arm_namespace,
-        name=arm_node_name_prefix+SERVO_NODE_NAME_SUFFIX,
-        output="screen",
-        parameters=[
+    common_arguments = {
+        "package": "moveit_servo",
+        "name": arm_node_name_prefix + SERVO_NODE_NAME_SUFFIX,
+        "parameters": [
             {"use_sim_time": use_sim_time},
             robot_description,
             robot_description_semantic,
@@ -230,11 +216,22 @@ def generate_servo_node(
             planning_scene_monitor_parameters,
             servo_parameters,
         ],
+    }
+    if launch_as_component:
+        return ComposableNode(
+            plugin="moveit_servo::ServoNode",
+            **common_arguments,
+        )
+    return Node(
+        executable="servo_node",
+        output="screen",
+        **common_arguments,
     )
 
 
 def launch_setup(context, *args, **kwargs):
     servo_target = LaunchConfiguration("servo_target").perform(context)
+    launch_as_component = LaunchConfiguration("launch_as_component").perform(context).lower() == "true"
     use_sim_time = LaunchConfiguration("use_sim_time")
 
     servo_target = servo_target.strip()
@@ -253,7 +250,7 @@ def launch_setup(context, *args, **kwargs):
 
     if servo_target in ["A", "both"]:
         nodes.append(
-            generate_servo_node(
+            generate_servo_description(
                 arm_node_name_prefix=ARM_A_NODE_NAME_PREFIX,
                 servo_config_file=SERVO_ARM_A_FILE,
                 use_sim_time=use_sim_time,
@@ -261,12 +258,13 @@ def launch_setup(context, *args, **kwargs):
                 robot_description_semantic=copy.deepcopy(robot_description_semantic),
                 robot_description_kinematics=copy.deepcopy(robot_description_kinematics),
                 robot_description_planning=copy.deepcopy(robot_description_planning),
+                launch_as_component=launch_as_component,
             )
         )
 
     if servo_target in ["B", "both"]:
         nodes.append(
-            generate_servo_node(
+            generate_servo_description(
                 arm_node_name_prefix=ARM_B_NODE_NAME_PREFIX,
                 servo_config_file=SERVO_ARM_B_FILE,
                 use_sim_time=use_sim_time,
@@ -274,8 +272,21 @@ def launch_setup(context, *args, **kwargs):
                 robot_description_semantic=copy.deepcopy(robot_description_semantic),
                 robot_description_kinematics=copy.deepcopy(robot_description_kinematics),
                 robot_description_planning=copy.deepcopy(robot_description_planning),
+                launch_as_component=launch_as_component,
             )
         )
+
+    if launch_as_component:
+        return [
+            ComposableNodeContainer(
+                name="my_env_servo_container",
+                namespace="/",
+                package="rclcpp_components",
+                executable="component_container_mt",
+                composable_node_descriptions=nodes,
+                output="screen",
+            )
+        ]
 
     return nodes
 
@@ -292,6 +303,11 @@ def generate_launch_description():
                 "use_sim_time",
                 default_value="false",
                 description="Use simulation clock if true",
+            ),
+            DeclareLaunchArgument(
+                "launch_as_component",
+                default_value="true",
+                description="Launch Servo nodes in a multithreaded component container",
             ),
             OpaqueFunction(function=launch_setup),
         ]

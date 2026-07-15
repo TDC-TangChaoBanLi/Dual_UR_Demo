@@ -22,9 +22,11 @@ def generate_launch_description():
         #     name='my_env_move_servo',
         #     output='screen',
         #     parameters=[{
-        #         'servo_target': 'both',
-        #         'command_type': 'pose',  # pose, twist, or joint
-        #         'duration_sec': 30.0,
+        #         'arm_a_planning_frame': 'world',
+        #         'arm_a_tcp_frame': 'arm_A__tcp',
+        #         'arm_b_planning_frame': 'world',
+        #         'arm_b_tcp_frame': 'arm_B__tcp',
+        #         'publish_rate_hz': 100.0,
         #     }],
         # ),
         # Node(

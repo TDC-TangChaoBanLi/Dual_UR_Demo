@@ -2,8 +2,6 @@
 # MoveIt Servo config for UR arm_B
 ###############################################
 
-use_gazebo: false
-
 ###############################################
 # General
 ###############################################
@@ -11,7 +9,8 @@ use_gazebo: false
 # Servo 循环线程的实时调度优先级 (SCHED_FIFO)，略低于 ros2_control 默认值以减少抖动
 thread_priority: 40
 
-# 从生成指令到控制器收到指令的最大预期延迟 [秒]，用于滑动窗口补偿
+# 从生成指令到控制器收到指令的最大预期延迟 [秒]。
+# 仅 JointTrajectory 输出使用滑动窗口；当前 Float64MultiArray 输出不使用该窗口。
 max_expected_latency: 0.1
 
 # 在线切换到 move group 的某个子组进行控制；留空表示控制整个 move group
@@ -32,9 +31,6 @@ scale:
   rotational: 2.5    # rad/s
   # 关节速度缩放，仅用于 unitless 的关节指令
   joint: 0.5
-
-# 网络/控制延迟补偿，UR 官方示例中使用 0.04
-system_latency_compensation: 0.04
 
 ###############################################
 # Twist settings
@@ -57,10 +53,8 @@ pose_tracking:
 # Outgoing command
 ###############################################
 
-# 输出指令周期 [秒]，即 1/发布频率
+# 输出指令周期 [秒]。arm B 是 UR5e，匹配硬件 500 Hz 读写频率。
 publish_period: 0.002
-# 低延迟模式：true 时每个循环立即发布，牺牲平滑度换取更低延迟
-low_latency_mode: false
 
 # 接 forward_position_controller / commands
 command_out_type: std_msgs/Float64MultiArray
@@ -73,13 +67,19 @@ publish_joint_accelerations: false
 # 初期建议用 Butterworth，比较稳
 use_smoothing: true
 smoothing_filter_plugin_name: "online_signal_smoothing::ButterworthFilterPlugin"
+# Butterworth 插件参数属于 Servo 节点根命名空间；launch 会从本文件提取后单独传入。
+# 必须 > 1；越大越平滑，但跟踪滞后也越大。
+butterworth_filter_coeff: 1.5
 
 ###############################################
 # Planning scene
 ###############################################
 
-# 你已经启动 move_group，所以这里不要让 servo 当 primary planning scene monitor
-is_primary_planning_scene_monitor: false
+# 当前 Servo launch 不启动 move_group，因此由 Servo 自己维护 primary planning scene。
+is_primary_planning_scene_monitor: true
+
+# 使用节点私有话题，避免双 Servo 节点共用同一个 monitored planning scene topic。
+monitored_planning_scene_topic: ~/monitored_planning_scene
 
 # 是否同时监听 octomap 更新用于碰撞检测
 check_octomap_collisions: false
@@ -90,21 +90,12 @@ check_octomap_collisions: false
 
 move_group_name: arm_B
 
-# 如果你的 TF 中没有 base_link/tool0，而是 arm_B_base_link/arm_B_tool0，
-# 就把下面三项改成带 arm_B_ 前缀的名字。
-planning_frame: world
-ee_frame: arm_B__tcp
-robot_link_command_frame: world
-
 ###############################################
 # Stop behavior
 ###############################################
 
 # 指令超时 [秒]：早于该时间的指令会被丢弃，防止 ROS 丢包导致执行陈旧指令
 incoming_command_timeout: 0.1
-# 指令超时后连续发布的停止(halt)消息数量
-num_outgoing_halt_msgs_to_publish: 4
-
 ###############################################
 # Singularity and joint limits
 ###############################################
@@ -162,15 +153,7 @@ command_out_topic: /arm_B_ur_forward_position_controller/commands
 check_collisions: true
 # 碰撞检测频率 [Hz]，过高会占用 CPU
 collision_check_rate: 5.0
-# 碰撞检测类型：threshold_distance 基于阈值距离减速
-collision_check_type: threshold_distance
-
 # 自碰撞距离小于该值时开始减速 [m]
 self_collision_proximity_threshold: 0.01
 # 与场景碰撞距离小于该值时开始减速 [m]，应 >= 自碰撞阈值
 scene_collision_proximity_threshold: 0.02
-
-# 碰撞距离安全系数（threshold_distance 类型时用于计算减速曲线）
-collision_distance_safety_factor: 1000.0
-# 允许的最小碰撞距离 [m]
-min_allowable_collision_distance: 0.01

@@ -80,34 +80,40 @@ ros2 run my_control_demo my_env_move_group
 
 向 MoveIt Servo 发送**预设连续正弦位姿目标**，测试实时位姿伺服跟踪。目标位姿 = 阶段起始实际位姿 + 幅值·sin(2π·t/period)，相邻目标点的时间间隔由 `publish_rate_hz` 决定。
 
-启动时自动通过 `/arm_<id>_servo_node/switch_command_type` 服务把每个臂切换到 **POSE** 伺服模式（command_type=2）。
+测试节点不访问 Servo 的参数服务，也不自动切换指令类型。两个机械臂的 frame 和 topic 均由本节点参数传入；运行测试前需在外部把相应 Servo 节点切换到 **POSE** 模式（command_type=2）。
 
 ### 测试流程
 
 每阶段时长 = `num_periods × sine_period_sec`：
 
-1. 单臂阶段：依次遍历每个选中臂（先 A 后 B），每臂执行：
+1. 单臂阶段：依次遍历两个机械臂（先 A 后 B），每臂执行：
    - 3 轴位置正弦（仅平移）
    - 3 轴姿态正弦（仅旋转）
    - 6 轴位姿正弦（平移 + 旋转）
-2. 双臂阶段（仅 `servo_target=both`）：两臂**同时**做 6 轴位姿正弦
+2. 双臂阶段：两臂**同时**做 6 轴位姿正弦
 
-所以 `A` / `B` 各 3 个阶段，`both` 共 7 个阶段（3+3+1）。正弦各轴同相位同幅值，从 0 相位起，保证连续无跳变。
+测试固定执行 7 个阶段（3+3+1）。X/Y/Z（以及 roll/pitch/yaw）依次使用 0°、120°、240° 相位；每轴减去其初始相位值，使阶段开始和完整周期结束时目标都等于阶段起始位姿，避免指令跳变。
 
 ### 参数
 
 | 参数 | 默认值 | 说明 |
 |------|--------|------|
-| `servo_target` | `both` | 目标臂：`A` / `B` / `both` |
-| `planning_frame` | `world` | 位姿目标参考系 |
+| `arm_a_planning_frame` | `world` | arm A 位姿目标及误差计算参考系 |
+| `arm_a_tcp_frame` | `arm_A__tcp` | arm A 实际 TCP 的 TF frame |
+| `arm_a_pose_topic` | `/arm_A_servo_node/pose_target_cmds` | arm A 位姿目标话题 |
+| `arm_a_status_topic` | `/arm_A_servo_node/status` | arm A Servo 状态话题 |
+| `arm_b_planning_frame` | `world` | arm B 位姿目标及误差计算参考系 |
+| `arm_b_tcp_frame` | `arm_B__tcp` | arm B 实际 TCP 的 TF frame |
+| `arm_b_pose_topic` | `/arm_B_servo_node/pose_target_cmds` | arm B 位姿目标话题 |
+| `arm_b_status_topic` | `/arm_B_servo_node/status` | arm B Servo 状态话题 |
 | `publish_rate_hz` | `100.0` | 目标点发布频率（决定相邻目标点时间间隔） |
 | `sine_period_sec` | `6.0` | 正弦周期时长 |
 | `num_periods` | `3.0` | 每阶段持续周期数 |
-| `position_amplitude_m` | `0.05` | 位置正弦幅值（米） |
-| `orientation_amplitude_rad` | `0.1` | 姿态正弦幅值（弧度） |
+| `position_amplitude_m` | `0.05` | 每个位置轴正弦分量的幅值（米） |
+| `orientation_amplitude_rad` | `0.1` | 每个 RPY 轴正弦分量的幅值（弧度） |
 | `settle_time_sec` | `1.0` | 阶段间保持起点稳定的时间 |
 
-运行时每秒打印一次跟踪误差（目标位姿 vs 从 TF 读取的实际 TCP 位姿）：位置误差(m) 与姿态误差(rad/deg)。
+测试节点在每个目标发布周期采集一次“最新目标位姿 vs 从 TF 读取的最新实际 TCP 位姿”误差，并把样本保存在内存中。每个阶段结束后分别输出各机械臂的位置误差和姿态误差统计：有效样本数、不可用样本数、最大值、平均值和总体标准差；不再按固定周期打印瞬时误差。
 
 ### 运行
 
@@ -115,14 +121,19 @@ ros2 run my_control_demo my_env_move_group
 # 先启动控制器（forward_position_controller）与 Servo
 ros2 launch my_env_control start_my_env_control.launch.py \
   launch_rviz:=false initial_ur_controller:=forward_position_controller
-ros2 launch my_env_moveit_config start_my_env_servo.launch.py
+# 可组合组件方式会让 Servo 的状态监视回调在初始化期间得到执行；双臂本机测试推荐使用
+ros2 launch my_env_moveit_config start_my_env_servo.launch.py launch_as_component:=true
 
-# 单臂测试（3 阶段）
-ros2 run my_control_demo my_env_move_servo --ros-args -p servo_target:=A
+# 测试节点不再调用服务；先在外部把两个 Servo 节点切换为 POSE 模式
+ros2 service call /arm_A_servo_node/switch_command_type \
+  moveit_msgs/srv/ServoCommandType "{command_type: 2}"
+ros2 service call /arm_B_servo_node/switch_command_type \
+  moveit_msgs/srv/ServoCommandType "{command_type: 2}"
 
-# 双臂测试（7 阶段），自定义幅值与周期
+# 双臂测试（共 7 个阶段），自定义幅值、周期和 arm A TCP frame
 ros2 run my_control_demo my_env_move_servo --ros-args \
-  -p servo_target:=both -p sine_period_sec:=8.0 -p position_amplitude_m:=0.03
+  -p sine_period_sec:=8.0 -p position_amplitude_m:=0.03 \
+  -p arm_a_tcp_frame:=arm_A__tcp
 ```
 
 ---

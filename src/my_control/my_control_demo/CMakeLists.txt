@@ -45,6 +45,7 @@ add_executable(my_env_move_group
 target_include_directories(my_env_move_group PUBLIC ${COMMON_INCLUDE_DIRS})
 ament_target_dependencies(my_env_move_group
     rclcpp
+    rcl_interfaces
     geometry_msgs
     moveit_ros_planning_interface
     tf2
@@ -61,7 +62,6 @@ ament_target_dependencies(my_env_move_servo
     control_msgs
     geometry_msgs
     moveit_msgs
-    rcl_interfaces
     tf2
     tf2_ros
     tf2_geometry_msgs

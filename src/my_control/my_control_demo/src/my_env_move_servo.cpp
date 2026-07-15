@@ -2,8 +2,6 @@
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <moveit_msgs/msg/servo_status.hpp>
-#include <moveit_msgs/srv/servo_command_type.hpp>
-#include <rcl_interfaces/srv/get_parameters.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
@@ -11,6 +9,7 @@
 #include <tf2_ros/transform_listener.h>
 
 #include <algorithm>
+#include <cctype>
 #include <chrono>
 #include <cmath>
 #include <map>
@@ -18,6 +17,7 @@
 #include <sstream>
 #include <string>
 #include <thread>
+#include <utility>
 #include <vector>
 
 using namespace std::chrono_literals;
@@ -26,13 +26,11 @@ namespace
 {
 struct ServoArm
 {
-  std::string id;                            // "A" / "B"
-  std::string node_name;                     // Servo 节点名，如 "/arm_A_servo_node"
-  std::string pose_topic;                    // 查询得到并解析后的位姿指令话题
-  std::string status_topic;                  // 查询得到并解析后的状态话题
-  std::string switch_command_type_service;   // <node_name>/switch_command_type
-  std::string planning_frame;                // 查询得到的规划参考系
-  std::string tcp_frame;                     // 查询得到的末端执行器坐标系 (ee_frame)
+  std::string id;              // "A" / "B"
+  std::string pose_topic;      // Servo 位姿指令话题
+  std::string status_topic;    // Servo 状态话题
+  std::string planning_frame;  // 位姿目标和误差计算的参考系
+  std::string tcp_frame;       // 实际 TCP 的 TF frame
 };
 
 std::string status_to_string(const moveit_msgs::msg::ServoStatus& status)
@@ -76,9 +74,10 @@ class MoveServoTester : public rclcpp::Node
 public:
   MoveServoTester() : Node("my_env_move_servo"), tf_buffer_(this->get_clock()), tf_listener_(tf_buffer_)
   {
-    // 两个 Servo 节点名通过参数给入（始终测试两个臂）。
-    arm_a_servo_node_ = this->declare_parameter<std::string>("arm_a_servo_node", "/arm_A_servo_node");
-    arm_b_servo_node_ = this->declare_parameter<std::string>("arm_b_servo_node", "/arm_B_servo_node");
+    arm_a_ = declare_arm_parameters(
+      "A", "world", "arm_A__tcp", "/arm_A_servo_node/pose_target_cmds", "/arm_A_servo_node/status");
+    arm_b_ = declare_arm_parameters(
+      "B", "world", "arm_B__tcp", "/arm_B_servo_node/pose_target_cmds", "/arm_B_servo_node/status");
 
     publish_rate_hz_ = this->declare_parameter<double>("publish_rate_hz", 100.0);
 
@@ -92,43 +91,26 @@ public:
     RCLCPP_INFO(this->get_logger(), "my_env_move_servo initialized");
     RCLCPP_INFO(
       this->get_logger(),
-      "arm_a_servo_node=%s arm_b_servo_node=%s publish_rate_hz=%.2f",
-      arm_a_servo_node_.c_str(), arm_b_servo_node_.c_str(), publish_rate_hz_);
+      "arm_A: planning_frame=%s tcp_frame=%s pose_topic=%s status_topic=%s",
+      arm_a_.planning_frame.c_str(), arm_a_.tcp_frame.c_str(), arm_a_.pose_topic.c_str(), arm_a_.status_topic.c_str());
     RCLCPP_INFO(
       this->get_logger(),
-      "sine trajectory: period=%.2fs num_periods=%.2f position_amplitude=%.4f m "
+      "arm_B: planning_frame=%s tcp_frame=%s pose_topic=%s status_topic=%s",
+      arm_b_.planning_frame.c_str(), arm_b_.tcp_frame.c_str(), arm_b_.pose_topic.c_str(), arm_b_.status_topic.c_str());
+    RCLCPP_INFO(
+      this->get_logger(),
+      "sine trajectory: publish_rate=%.2f Hz period=%.2fs num_periods=%.2f position_amplitude=%.4f m "
       "orientation_amplitude=%.4f rad settle_time=%.2fs",
-      sine_period_sec_, num_periods_, position_amplitude_m_, orientation_amplitude_rad_, settle_time_sec_);
+      publish_rate_hz_, sine_period_sec_, num_periods_, position_amplitude_m_, orientation_amplitude_rad_,
+      settle_time_sec_);
   }
 
   void run()
   {
-    const std::vector<std::pair<std::string, std::string>> arm_nodes{
-      { "A", arm_a_servo_node_ },
-      { "B", arm_b_servo_node_ },
-    };
-
-    std::vector<ServoArm> arms;
-    for (const auto& [id, node_name] : arm_nodes)
-    {
-      ServoArm arm;
-      if (!build_arm_from_servo_params(id, node_name, arm))
-      {
-        RCLCPP_ERROR(this->get_logger(), "Failed to query parameters from Servo node %s; aborting.",
-                     node_name.c_str());
-        return;
-      }
-      arms.push_back(arm);
-    }
+    const std::vector<ServoArm> arms{ arm_a_, arm_b_ };
 
     create_publishers_and_subscribers(arms);
     wait_for_servo_subscribers(arms);
-
-    // 将每个臂切换到位置伺服模式 (POSE = 2)。
-    for (const auto& arm : arms)
-    {
-      switch_to_pose_command_type(arm);
-    }
 
     const auto stages = build_stages(arms);
     RCLCPP_INFO(this->get_logger(), "Prepared %zu sine test stage(s).", stages.size());
@@ -164,89 +146,49 @@ private:
     bool use_orientation;
   };
 
-  // 将 Servo 的相对话题名（如 "~/pose_target_cmds" 或 "~/status"）解析为
-  // 全局话题名 "<node_name>/<topic>"。已是绝对路径的原样返回。
-  static std::string resolve_servo_topic(const std::string& node_name, const std::string& topic)
+  struct TrackingErrorSample
   {
-    if (!topic.empty() && topic.front() == '/')
-    {
-      return topic;  // 已是绝对话题名
-    }
-    std::string relative = topic;
-    if (!relative.empty() && relative.front() == '~')
-    {
-      relative.erase(relative.begin());  // 去掉 '~'
-    }
-    if (!relative.empty() && relative.front() == '/')
-    {
-      relative.erase(relative.begin());  // 去掉 '/'
-    }
-    return node_name + "/" + relative;
-  }
+    double elapsed_sec;
+    double position_error_m;
+    double orientation_error_rad;
+  };
 
-  // 通过 <node_name>/get_parameters 服务从 Servo 节点查询 planning_frame、
-  // ee_frame、pose_command_in_topic、status_topic，避免在此处写死。
-  bool build_arm_from_servo_params(const std::string& id, const std::string& node_name, ServoArm& arm)
+  struct ArmStageErrorSamples
   {
-    const std::string service_name = node_name + "/get_parameters";
-    auto client = this->create_client<rcl_interfaces::srv::GetParameters>(service_name);
-    if (!client->wait_for_service(10s))
-    {
-      RCLCPP_ERROR(this->get_logger(), "Parameter service not available: %s", service_name.c_str());
-      return false;
-    }
+    std::vector<TrackingErrorSample> samples;
+    std::size_t unavailable_samples = 0;
+  };
 
-    auto request = std::make_shared<rcl_interfaces::srv::GetParameters::Request>();
-    request->names = { "moveit_servo.planning_frame", "moveit_servo.ee_frame",
-                       "moveit_servo.pose_command_in_topic", "moveit_servo.status_topic" };
+  struct StageErrorRecord
+  {
+    std::string stage_name;
+    std::map<std::string, ArmStageErrorSamples> arm_samples;
+  };
 
-    auto future = client->async_send_request(request);
-    if (future.wait_for(5s) != std::future_status::ready)
-    {
-      RCLCPP_ERROR(this->get_logger(), "Timed out querying parameters from %s", service_name.c_str());
-      return false;
-    }
+  struct ErrorStatistics
+  {
+    std::size_t count = 0;
+    double maximum = 0.0;
+    double mean = 0.0;
+    double standard_deviation = 0.0;
+  };
 
-    const auto response = future.get();
-    if (response->values.size() != request->names.size())
-    {
-      RCLCPP_ERROR(this->get_logger(), "Unexpected parameter count from %s", service_name.c_str());
-      return false;
-    }
-
-    const std::string planning_frame = response->values[0].string_value;
-    const std::string ee_frame = response->values[1].string_value;
-    const std::string pose_topic = response->values[2].string_value;
-    const std::string status_topic = response->values[3].string_value;
-
-    if (planning_frame.empty() || ee_frame.empty() || pose_topic.empty() || status_topic.empty())
-    {
-      RCLCPP_ERROR(this->get_logger(),
-                   "Servo node %s returned empty frame/topic parameters (planning_frame='%s' ee_frame='%s' "
-                   "pose_topic='%s' status_topic='%s')",
-                   node_name.c_str(), planning_frame.c_str(), ee_frame.c_str(), pose_topic.c_str(),
-                   status_topic.c_str());
-      return false;
-    }
-
-    arm.id = id;
-    arm.node_name = node_name;
-    arm.planning_frame = planning_frame;
-    arm.tcp_frame = ee_frame;
-    arm.pose_topic = resolve_servo_topic(node_name, pose_topic);
-    arm.status_topic = resolve_servo_topic(node_name, status_topic);
-    arm.switch_command_type_service = node_name + "/switch_command_type";
-
-    RCLCPP_INFO(this->get_logger(),
-                "arm_%s from %s: planning_frame=%s ee_frame=%s pose_topic=%s status_topic=%s",
-                arm.id.c_str(), node_name.c_str(), arm.planning_frame.c_str(), arm.tcp_frame.c_str(),
-                arm.pose_topic.c_str(), arm.status_topic.c_str());
-    return true;
+  ServoArm declare_arm_parameters(
+    const std::string& id, const std::string& default_planning_frame, const std::string& default_tcp_frame,
+    const std::string& default_pose_topic, const std::string& default_status_topic)
+  {
+    const std::string prefix = "arm_" + std::string(1, static_cast<char>(std::tolower(id.front()))) + "_";
+    return ServoArm{
+      id,
+      this->declare_parameter<std::string>(prefix + "pose_topic", default_pose_topic),
+      this->declare_parameter<std::string>(prefix + "status_topic", default_status_topic),
+      this->declare_parameter<std::string>(prefix + "planning_frame", default_planning_frame),
+      this->declare_parameter<std::string>(prefix + "tcp_frame", default_tcp_frame),
+    };
   }
 
   // 构建测试阶段列表：
-  // 单臂阶段依次对每个选中臂执行 位置 / 姿态 / 位姿 三项；
-  // 若选中 both，最后追加一个双臂同步位姿阶段。
+  // 单臂阶段依次对 A、B 执行位置 / 姿态 / 位姿三项，最后追加双臂同步位姿阶段。
   std::vector<SineStage> build_stages(const std::vector<ServoArm>& arms) const
   {
     std::vector<SineStage> stages;
@@ -263,45 +205,19 @@ private:
     return stages;
   }
 
-  // 通过 ServoCommandType 服务把指定臂切换到 POSE (2) 模式。
-  void switch_to_pose_command_type(const ServoArm& arm)
-  {
-    auto client = this->create_client<moveit_msgs::srv::ServoCommandType>(arm.switch_command_type_service);
-    if (!client->wait_for_service(5s))
-    {
-      RCLCPP_WARN(this->get_logger(), "Service %s not available; skipping command_type switch for arm_%s",
-                  arm.switch_command_type_service.c_str(), arm.id.c_str());
-      return;
-    }
-
-    auto request = std::make_shared<moveit_msgs::srv::ServoCommandType::Request>();
-    request->command_type = moveit_msgs::srv::ServoCommandType::Request::POSE;
-
-    auto future = client->async_send_request(request);
-    if (future.wait_for(3s) != std::future_status::ready)
-    {
-      RCLCPP_WARN(this->get_logger(), "Timed out switching arm_%s to POSE command type", arm.id.c_str());
-      return;
-    }
-
-    if (future.get()->success)
-    {
-      RCLCPP_INFO(this->get_logger(), "arm_%s switched to POSE command type", arm.id.c_str());
-    }
-    else
-    {
-      RCLCPP_WARN(this->get_logger(), "arm_%s reported failure switching to POSE command type", arm.id.c_str());
-    }
-  }
-
-  // 运行单个正弦阶段：目标 = 起点 + 幅值·sin(2π t / period)，各轴同相位同幅值。
+  // 运行单个正弦阶段：X/Y/Z（或 roll/pitch/yaw）依次相差 120°。
   void run_sine_stage(const SineStage& stage)
   {
     const double stage_duration = std::max(0.0, num_periods_) * std::max(0.1, sine_period_sec_);
     const double omega = 2.0 * M_PI / std::max(0.1, sine_period_sec_);
     const auto start = std::chrono::steady_clock::now();
-    auto next_log = start;
     rclcpp::Rate rate(std::max(1.0, publish_rate_hz_));
+    StageErrorRecord error_record;
+    error_record.stage_name = stage.name;
+    for (const auto& arm : stage.arms)
+    {
+      error_record.arm_samples.emplace(arm.id, ArmStageErrorSamples{});
+    }
 
     RCLCPP_INFO(this->get_logger(), "Running sine stage '%s' for %.2fs", stage.name.c_str(), stage_duration);
     while (rclcpp::ok())
@@ -313,35 +229,63 @@ private:
         break;
       }
 
-      const double s = std::sin(omega * t);
       for (const auto& arm : stage.arms)
       {
-        const auto pose_cmd = make_sine_pose(arm, s, stage.use_position, stage.use_orientation);
+        const auto pose_cmd = make_sine_pose(arm, omega * t, stage.use_position, stage.use_orientation);
         last_target_poses_[arm.id] = pose_cmd.pose;
         pose_publishers_[arm.id]->publish(pose_cmd);
       }
 
-      if (now >= next_log)
+      // 每个目标发布周期都采集一次“最新目标 vs 最新 TCP TF”的误差。
+      for (const auto& arm : stage.arms)
       {
-        print_progress(stage.arms, stage.name, stage_duration - t);
-        next_log = now + 1s;
+        double position_error_m = 0.0;
+        double orientation_error_rad = 0.0;
+        auto& arm_error_samples = error_record.arm_samples.at(arm.id);
+        if (compute_pose_tracking_error(arm, position_error_m, orientation_error_rad))
+        {
+          arm_error_samples.samples.push_back({ t, position_error_m, orientation_error_rad });
+        }
+        else
+        {
+          ++arm_error_samples.unavailable_samples;
+        }
       }
 
       rate.sleep();
     }
+
+    print_stage_error_summary(error_record);
+    stage_error_history_.push_back(std::move(error_record));
   }
 
-  // 目标位姿 = 起点位姿 + sin 系数 s * 幅值（position/orientation 由 stage 决定是否启用）。
+  // 三轴相位依次为 0、2π/3、4π/3。减去各轴在 phase=0 时的值，
+  // 使目标在阶段起点以及完整周期结束时都严格等于捕获的起始位姿，避免指令跳变。
   geometry_msgs::msg::PoseStamped make_sine_pose(
-    const ServoArm& arm, double s, bool use_position, bool use_orientation) const
+    const ServoArm& arm, double phase, bool use_position, bool use_orientation) const
   {
-    const double dpos = use_position ? s * position_amplitude_m_ : 0.0;
-    const double dori = use_orientation ? s * orientation_amplitude_rad_ : 0.0;
+    constexpr double phase_x = 4.0 * M_PI / 3.0;
+    constexpr double phase_y = 0.0;
+    constexpr double phase_z = 2.0 * M_PI / 3.0;
+    const auto phase_shifted_sine = [phase](double axis_phase) {
+      return std::sin(phase + axis_phase) - std::sin(axis_phase);
+    };
+
+    const double sx = phase_shifted_sine(phase_x);
+    const double sy = phase_shifted_sine(phase_y);
+    const double sz = phase_shifted_sine(phase_z);
+
+    const double dx = use_position ? sx * position_amplitude_m_ : 0.0;
+    const double dy = use_position ? sy * position_amplitude_m_ : 0.0;
+    const double dz = use_position ? sz * position_amplitude_m_ : 0.0;
+    const double droll = use_orientation ? sx * orientation_amplitude_rad_ : 0.0;
+    const double dpitch = use_orientation ? sy * orientation_amplitude_rad_ : 0.0;
+    const double dyaw = use_orientation ? sz * orientation_amplitude_rad_ : 0.0;
 
     geometry_msgs::msg::PoseStamped pose;
     pose.header.stamp = this->now();
     pose.header.frame_id = arm.planning_frame;
-    pose.pose = offset_pose(start_poses_.at(arm.id), dpos, dpos, dpos, dori, dori, dori);
+    pose.pose = offset_pose(start_poses_.at(arm.id), dx, dy, dz, droll, dpitch, dyaw);
     return pose;
   }
 
@@ -487,30 +431,67 @@ private:
     return true;
   }
 
-  void print_progress(const std::vector<ServoArm>& arms, const std::string& stage_name, double remaining_sec) const
+  static ErrorStatistics calculate_statistics(
+    const std::vector<TrackingErrorSample>& samples, bool use_position_error)
   {
-    RCLCPP_INFO(this->get_logger(), "Stage '%s' remaining=%.1fs", stage_name.c_str(), remaining_sec);
-    for (const auto& arm : arms)
+    ErrorStatistics statistics;
+    statistics.count = samples.size();
+    if (samples.empty())
     {
-      double position_error_m = 0.0;
-      double orientation_error_rad = 0.0;
-      if (compute_pose_tracking_error(arm, position_error_m, orientation_error_rad))
+      return statistics;
+    }
+
+    // Welford 在线算法的离线等价写法，避免大样本求和时的数值消减。
+    double mean = 0.0;
+    double squared_difference_sum = 0.0;
+    std::size_t count = 0;
+    for (const auto& sample : samples)
+    {
+      const double value = use_position_error ? sample.position_error_m : sample.orientation_error_rad;
+      statistics.maximum = std::max(statistics.maximum, value);
+      ++count;
+      const double delta = value - mean;
+      mean += delta / static_cast<double>(count);
+      const double delta_after_mean_update = value - mean;
+      squared_difference_sum += delta * delta_after_mean_update;
+    }
+    statistics.mean = mean;
+    statistics.standard_deviation = std::sqrt(squared_difference_sum / static_cast<double>(count));
+    return statistics;
+  }
+
+  void print_stage_error_summary(const StageErrorRecord& record) const
+  {
+    RCLCPP_INFO(this->get_logger(), "===== Stage '%s' tracking error summary =====", record.stage_name.c_str());
+    for (const auto& [arm_id, arm_error_samples] : record.arm_samples)
+    {
+      const auto position = calculate_statistics(arm_error_samples.samples, true);
+      const auto orientation = calculate_statistics(arm_error_samples.samples, false);
+      if (position.count == 0)
       {
-        RCLCPP_INFO(this->get_logger(),
-                    "arm_%s tracking error: position=%.4f m orientation=%.4f rad (%.2f deg)", arm.id.c_str(),
-                    position_error_m, orientation_error_rad, orientation_error_rad * 180.0 / M_PI);
+        RCLCPP_WARN(this->get_logger(), "arm_%s: no valid tracking error samples; unavailable=%zu", arm_id.c_str(),
+                    arm_error_samples.unavailable_samples);
+        continue;
       }
-      else
-      {
-        RCLCPP_INFO(this->get_logger(), "arm_%s tracking error: unavailable (no target or TF lookup failed)",
-                    arm.id.c_str());
-      }
+
+      RCLCPP_INFO(this->get_logger(),
+                  "arm_%s samples=%zu unavailable=%zu position_error[m]: max=%.6f mean=%.6f stddev=%.6f",
+                  arm_id.c_str(), position.count, arm_error_samples.unavailable_samples, position.maximum,
+                  position.mean, position.standard_deviation);
+      RCLCPP_INFO(this->get_logger(),
+                  "arm_%s orientation_error[rad]: max=%.6f mean=%.6f stddev=%.6f "
+                  "([deg]: max=%.3f mean=%.3f stddev=%.3f)",
+                  arm_id.c_str(), orientation.maximum, orientation.mean, orientation.standard_deviation,
+                  orientation.maximum * 180.0 / M_PI, orientation.mean * 180.0 / M_PI,
+                  orientation.standard_deviation * 180.0 / M_PI);
     }
   }
 
   void print_summary(const std::vector<ServoArm>& arms) const
   {
     RCLCPP_INFO(this->get_logger(), "=== MoveIt Servo test summary ===");
+    RCLCPP_INFO(this->get_logger(), "Stored tracking error history for %zu completed stage(s).",
+                stage_error_history_.size());
     for (const auto& arm : arms)
     {
       const auto it = latest_status_.find(arm.id);
@@ -519,8 +500,8 @@ private:
     }
   }
 
-  std::string arm_a_servo_node_;
-  std::string arm_b_servo_node_;
+  ServoArm arm_a_;
+  ServoArm arm_b_;
   double publish_rate_hz_ = 100.0;
   double sine_period_sec_ = 6.0;
   double num_periods_ = 3.0;
@@ -532,6 +513,7 @@ private:
   tf2_ros::TransformListener tf_listener_;
   std::map<std::string, geometry_msgs::msg::Pose> start_poses_;
   std::map<std::string, geometry_msgs::msg::Pose> last_target_poses_;
+  std::vector<StageErrorRecord> stage_error_history_;
   std::map<std::string, rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr> pose_publishers_;
   std::vector<rclcpp::Subscription<moveit_msgs::msg::ServoStatus>::SharedPtr> status_subs_;
   std::map<std::string, moveit_msgs::msg::ServoStatus> latest_status_;

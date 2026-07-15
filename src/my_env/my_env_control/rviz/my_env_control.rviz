@@ -4,9 +4,9 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /RobotModel1
+        - /TF1/Frames1
       Splitter Ratio: 0.5
-    Tree Height: 544
+    Tree Height: 1033
   - Class: rviz_common/Views
     Expanded:
       - /Current View1
@@ -325,11 +325,254 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Filter (blacklist): ""
+      Filter (whitelist): ""
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+        arm_A__tcp:
+          Value: true
+        arm_A_gripper_base_link:
+          Value: false
+        arm_A_gripper_finger1_finger_link:
+          Value: false
+        arm_A_gripper_finger1_finger_tip_link:
+          Value: false
+        arm_A_gripper_finger1_inner_knuckle_link:
+          Value: false
+        arm_A_gripper_finger1_knuckle_link:
+          Value: false
+        arm_A_gripper_finger2_finger_link:
+          Value: false
+        arm_A_gripper_finger2_finger_tip_link:
+          Value: false
+        arm_A_gripper_finger2_inner_knuckle_link:
+          Value: false
+        arm_A_gripper_finger2_knuckle_link:
+          Value: false
+        arm_A_realsense_bottom_screw_frame:
+          Value: false
+        arm_A_realsense_link:
+          Value: false
+        arm_A_realsense_shelf:
+          Value: false
+        arm_A_realsense_shelf_child_side:
+          Value: false
+        arm_A_ur_base:
+          Value: false
+        arm_A_ur_base_link:
+          Value: false
+        arm_A_ur_base_link_inertia:
+          Value: false
+        arm_A_ur_flange:
+          Value: false
+        arm_A_ur_forearm_link:
+          Value: false
+        arm_A_ur_ft_frame:
+          Value: false
+        arm_A_ur_shoulder_link:
+          Value: false
+        arm_A_ur_tool0:
+          Value: false
+        arm_A_ur_upper_arm_link:
+          Value: false
+        arm_A_ur_wrist_1_link:
+          Value: false
+        arm_A_ur_wrist_2_link:
+          Value: false
+        arm_A_ur_wrist_3_link:
+          Value: false
+        arm_B__tcp:
+          Value: true
+        arm_B_gripper_base_link:
+          Value: false
+        arm_B_gripper_finger1_finger_link:
+          Value: false
+        arm_B_gripper_finger1_finger_tip_link:
+          Value: false
+        arm_B_gripper_finger1_inner_knuckle_link:
+          Value: false
+        arm_B_gripper_finger1_knuckle_link:
+          Value: false
+        arm_B_gripper_finger2_finger_link:
+          Value: false
+        arm_B_gripper_finger2_finger_tip_link:
+          Value: false
+        arm_B_gripper_finger2_inner_knuckle_link:
+          Value: false
+        arm_B_gripper_finger2_knuckle_link:
+          Value: false
+        arm_B_realsense_bottom_screw_frame:
+          Value: false
+        arm_B_realsense_link:
+          Value: false
+        arm_B_realsense_shelf:
+          Value: false
+        arm_B_realsense_shelf_child_side:
+          Value: false
+        arm_B_ur_base:
+          Value: false
+        arm_B_ur_base_link:
+          Value: false
+        arm_B_ur_base_link_inertia:
+          Value: false
+        arm_B_ur_flange:
+          Value: false
+        arm_B_ur_forearm_link:
+          Value: false
+        arm_B_ur_ft_frame:
+          Value: false
+        arm_B_ur_shoulder_link:
+          Value: false
+        arm_B_ur_tool0:
+          Value: false
+        arm_B_ur_upper_arm_link:
+          Value: false
+        arm_B_ur_wrist_1_link:
+          Value: false
+        arm_B_ur_wrist_2_link:
+          Value: false
+        arm_B_ur_wrist_3_link:
+          Value: false
+        arm_shelf:
+          Value: false
+        table:
+          Value: false
+        ur_mount_A:
+          Value: false
+        ur_mount_B:
+          Value: false
+        world:
+          Value: false
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+      Tree:
+        world:
+          arm_shelf:
+            ur_mount_A:
+              arm_A_ur_base_link:
+                arm_A_ur_base:
+                  {}
+                arm_A_ur_base_link_inertia:
+                  arm_A_ur_shoulder_link:
+                    arm_A_ur_upper_arm_link:
+                      arm_A_ur_forearm_link:
+                        arm_A_ur_wrist_1_link:
+                          arm_A_ur_wrist_2_link:
+                            arm_A_ur_wrist_3_link:
+                              arm_A_ur_flange:
+                                arm_A_ur_tool0:
+                                  arm_A_realsense_shelf:
+                                    arm_A_realsense_bottom_screw_frame:
+                                      arm_A_realsense_link:
+                                        {}
+                                    arm_A_realsense_shelf_child_side:
+                                      arm_A_gripper_base_link:
+                                        arm_A__tcp:
+                                          {}
+                                        arm_A_gripper_finger1_inner_knuckle_link:
+                                          arm_A_gripper_finger1_finger_tip_link:
+                                            {}
+                                        arm_A_gripper_finger1_knuckle_link:
+                                          arm_A_gripper_finger1_finger_link:
+                                            {}
+                                        arm_A_gripper_finger2_inner_knuckle_link:
+                                          arm_A_gripper_finger2_finger_tip_link:
+                                            {}
+                                        arm_A_gripper_finger2_knuckle_link:
+                                          arm_A_gripper_finger2_finger_link:
+                                            {}
+                              arm_A_ur_ft_frame:
+                                {}
+            ur_mount_B:
+              arm_B_ur_base_link:
+                arm_B_ur_base:
+                  {}
+                arm_B_ur_base_link_inertia:
+                  arm_B_ur_shoulder_link:
+                    arm_B_ur_upper_arm_link:
+                      arm_B_ur_forearm_link:
+                        arm_B_ur_wrist_1_link:
+                          arm_B_ur_wrist_2_link:
+                            arm_B_ur_wrist_3_link:
+                              arm_B_ur_flange:
+                                arm_B_ur_tool0:
+                                  arm_B_realsense_shelf:
+                                    arm_B_realsense_bottom_screw_frame:
+                                      arm_B_realsense_link:
+                                        {}
+                                    arm_B_realsense_shelf_child_side:
+                                      arm_B_gripper_base_link:
+                                        arm_B__tcp:
+                                          {}
+                                        arm_B_gripper_finger1_inner_knuckle_link:
+                                          arm_B_gripper_finger1_finger_tip_link:
+                                            {}
+                                        arm_B_gripper_finger1_knuckle_link:
+                                          arm_B_gripper_finger1_finger_link:
+                                            {}
+                                        arm_B_gripper_finger2_inner_knuckle_link:
+                                          arm_B_gripper_finger2_finger_tip_link:
+                                            {}
+                                        arm_B_gripper_finger2_knuckle_link:
+                                          arm_B_gripper_finger2_finger_link:
+                                            {}
+                              arm_B_ur_ft_frame:
+                                {}
+          table:
+            {}
+      Update Interval: 0
+      Value: true
+    - Alpha: 1
+      Axes Length: 0.25
+      Axes Radius: 0.009999999776482582
+      Class: rviz_default_plugins/Pose
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.30000001192092896
+      Head Radius: 0.10000000149011612
+      Name: Pose
+      Shaft Length: 1
+      Shaft Radius: 0.05000000074505806
+      Shape: Axes
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /arm_A_servo_node/pose_target_cmds
+      Value: true
+    - Alpha: 1
+      Axes Length: 0.25
+      Axes Radius: 0.009999999776482582
+      Class: rviz_default_plugins/Pose
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.30000001192092896
+      Head Radius: 0.10000000149011612
+      Name: Pose
+      Shaft Length: 1
+      Shaft Radius: 0.05000000074505806
+      Shape: Axes
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /arm_B_servo_node/pose_target_cmds
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Fixed Frame: world
-    Frame Rate: 30
+    Frame Rate: 60
   Name: root
   Tools:
     - Class: rviz_default_plugins/MoveCamera
@@ -340,25 +583,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.8851181268692017
+      Distance: 2.139052629470825
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.34029513597488403
-        Y: 0.5394840240478516
-        Z: 1.4147154092788696
+        X: 0.5947816967964172
+        Y: -0.03396504744887352
+        Z: 0.6389513611793518
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.059999704360962
+      Pitch: 1.3497962951660156
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.0068206787109375
+      Yaw: 3.130007028579712
     Saved: ~
 Window Geometry:
   Displays:
@@ -366,9 +609,9 @@ Window Geometry:
   Height: 1265
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000001ad00000495fc0200000002fb000000100044006900730070006c006100790073010000003e000002b5000000ca00fffffffb0000000a0056006900650077007301000002f9000001da000000a600ffffff000007a70000049500000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000001ad0000049bfc0200000002fb000000100044006900730070006c006100790073010000003b0000049b000000c700fffffffb0000000a0056006900650077007300000002fa000001dc000000a000ffffff000007a70000049b00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
   Width: 2394
-  X: 29
-  Y: 134
+  X: 24
+  Y: 20
