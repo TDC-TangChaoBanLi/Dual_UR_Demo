@@ -33,7 +33,7 @@
         <joint name="arm_B_ur_shoulder_lift_joint" value="-0.6"/>
         <joint name="arm_B_ur_shoulder_pan_joint" value="1.5708"/>
         <joint name="arm_B_ur_wrist_1_joint" value="-2.3708"/>
-        <joint name="arm_B_ur_wrist_2_joint" value="1.5708"/>
+        <joint name="arm_B_ur_wrist_2_joint" value="-1.5708"/>
         <joint name="arm_B_ur_wrist_3_joint" value="1.5708"/>
     </group_state>
     <group_state name="arm_BOTH_home" group="arm_BOTH">
@@ -47,7 +47,7 @@
         <joint name="arm_B_ur_shoulder_lift_joint" value="-0.6"/>
         <joint name="arm_B_ur_shoulder_pan_joint" value="1.5708"/>
         <joint name="arm_B_ur_wrist_1_joint" value="-2.3708"/>
-        <joint name="arm_B_ur_wrist_2_joint" value="1.5708"/>
+        <joint name="arm_B_ur_wrist_2_joint" value="-1.5708"/>
         <joint name="arm_B_ur_wrist_3_joint" value="1.5708"/>
     </group_state>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->

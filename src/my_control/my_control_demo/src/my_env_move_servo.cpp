@@ -9,11 +9,13 @@
 #include <tf2_ros/transform_listener.h>
 
 #include <algorithm>
+#include <atomic>
 #include <cctype>
 #include <chrono>
 #include <cmath>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <sstream>
 #include <string>
 #include <thread>
@@ -206,20 +208,82 @@ private:
   }
 
   // 运行单个正弦阶段：X/Y/Z（或 roll/pitch/yaw）依次相差 120°。
+  // 热循环只负责发布位姿指令；误差采集由后台线程独立完成，避免 TF 查询阻塞发布。
   void run_sine_stage(const SineStage& stage)
   {
     const double stage_duration = std::max(0.0, num_periods_) * std::max(0.1, sine_period_sec_);
     const double omega = 2.0 * M_PI / std::max(0.1, sine_period_sec_);
+    const auto stage_period = std::chrono::nanoseconds(static_cast<int64_t>(1.0e9 / std::max(1.0, publish_rate_hz_)));
+    const auto stage_period_double = std::chrono::duration<double>(stage_period).count();
     const auto start = std::chrono::steady_clock::now();
-    rclcpp::Rate rate(std::max(1.0, publish_rate_hz_));
+
+    // 误差记录由后台线程写入、阶段结束时由主线程读取，需要互斥保护
     StageErrorRecord error_record;
     error_record.stage_name = stage.name;
     for (const auto& arm : stage.arms)
     {
       error_record.arm_samples.emplace(arm.id, ArmStageErrorSamples{});
     }
+    std::mutex error_record_mutex;
+
+    // 启动后台误差采集线程（~50 Hz），独立于发布热循环
+    error_collector_running_ = true;
+    std::thread error_collector([this, &stage, &error_record, &error_record_mutex, start]() {
+      const auto collector_period = std::chrono::milliseconds(20);
+      auto next_wake = std::chrono::steady_clock::now() + collector_period;
+      while (error_collector_running_ && rclcpp::ok())
+      {
+        const auto now = std::chrono::steady_clock::now();
+        const double t = std::chrono::duration<double>(now - start).count();
+
+        // 快照式复制最新目标位姿，尽量缩短持锁时间
+        std::map<std::string, geometry_msgs::msg::Pose> targets_snapshot;
+        {
+          std::lock_guard<std::mutex> lock(target_pose_mutex_);
+          targets_snapshot = last_target_poses_;
+        }
+
+        for (const auto& arm : stage.arms)
+        {
+          double position_error_m = 0.0;
+          double orientation_error_rad = 0.0;
+
+          const auto target_it = targets_snapshot.find(arm.id);
+          if (target_it == targets_snapshot.end())
+          {
+            std::lock_guard<std::mutex> lock(error_record_mutex);
+            ++error_record.arm_samples.at(arm.id).unavailable_samples;
+            continue;
+          }
+
+          if (compute_pose_tracking_error(arm, target_it->second, position_error_m, orientation_error_rad))
+          {
+            std::lock_guard<std::mutex> lock(error_record_mutex);
+            error_record.arm_samples.at(arm.id).samples.push_back(
+              { t, position_error_m, orientation_error_rad });
+          }
+          else
+          {
+            std::lock_guard<std::mutex> lock(error_record_mutex);
+            ++error_record.arm_samples.at(arm.id).unavailable_samples;
+          }
+        }
+
+        // 手动控速，避免 rclcpp::Rate 潜在的 ROS 时钟问题
+        next_wake += collector_period;
+        std::this_thread::sleep_until(next_wake);
+      }
+    });
 
     RCLCPP_INFO(this->get_logger(), "Running sine stage '%s' for %.2fs", stage.name.c_str(), stage_duration);
+
+    // === 热循环：仅发布位姿指令，不做任何 TF 查询 ===
+    // 使用 std::chrono 手动控速，不依赖 rclcpp::Rate，避免 ROS 时钟层的任何不确定性。
+    auto next_wake = std::chrono::steady_clock::now() + stage_period;
+    auto prev_iteration = std::chrono::steady_clock::now();
+    uint64_t stall_count = 0;
+    uint64_t iteration_count = 0;
+
     while (rclcpp::ok())
     {
       const auto now = std::chrono::steady_clock::now();
@@ -229,30 +293,48 @@ private:
         break;
       }
 
+      // stall 检测：两次迭代间隔超过 2 倍预期周期时告警
+      ++iteration_count;
+      const double iteration_gap = std::chrono::duration<double>(now - prev_iteration).count();
+      if (iteration_gap > 2.0 * stage_period_double)
+      {
+        ++stall_count;
+        RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
+                             "Stage '%s': hot loop stall detected! gap=%.3fs (expected %.3fs), "
+                             "iteration=%lu stall_count=%lu",
+                             stage.name.c_str(), iteration_gap, stage_period_double,
+                             iteration_count, stall_count);
+      }
+      prev_iteration = now;
+
       for (const auto& arm : stage.arms)
       {
         const auto pose_cmd = make_sine_pose(arm, omega * t, stage.use_position, stage.use_orientation);
-        last_target_poses_[arm.id] = pose_cmd.pose;
+        {
+          std::lock_guard<std::mutex> lock(target_pose_mutex_);
+          last_target_poses_[arm.id] = pose_cmd.pose;
+        }
         pose_publishers_[arm.id]->publish(pose_cmd);
       }
 
-      // 每个目标发布周期都采集一次“最新目标 vs 最新 TCP TF”的误差。
-      for (const auto& arm : stage.arms)
-      {
-        double position_error_m = 0.0;
-        double orientation_error_rad = 0.0;
-        auto& arm_error_samples = error_record.arm_samples.at(arm.id);
-        if (compute_pose_tracking_error(arm, position_error_m, orientation_error_rad))
-        {
-          arm_error_samples.samples.push_back({ t, position_error_m, orientation_error_rad });
-        }
-        else
-        {
-          ++arm_error_samples.unavailable_samples;
-        }
-      }
+      // 手动控速：sleep_until 基于单调时钟，不受 use_sim_time 影响
+      next_wake += stage_period;
+      std::this_thread::sleep_until(next_wake);
+    }
 
-      rate.sleep();
+    if (stall_count > 0)
+    {
+      RCLCPP_WARN(this->get_logger(),
+                  "Stage '%s': %lu stall(s) detected out of %lu iterations (%.1f%%)",
+                  stage.name.c_str(), stall_count, iteration_count,
+                  100.0 * static_cast<double>(stall_count) / static_cast<double>(iteration_count));
+    }
+
+    // 停止后台误差采集线程并等待其结束
+    error_collector_running_ = false;
+    if (error_collector.joinable())
+    {
+      error_collector.join();
     }
 
     print_stage_error_summary(error_record);
@@ -296,8 +378,9 @@ private:
     {
       return;
     }
+    const auto hold_period = std::chrono::nanoseconds(static_cast<int64_t>(1.0e9 / std::max(1.0, publish_rate_hz_)));
     const auto start = std::chrono::steady_clock::now();
-    rclcpp::Rate rate(std::max(1.0, publish_rate_hz_));
+    auto next_wake = std::chrono::steady_clock::now() + hold_period;
     while (rclcpp::ok())
     {
       const double t = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
@@ -318,15 +401,22 @@ private:
         pose.pose = it->second;
         pose_publishers_[arm.id]->publish(pose);
       }
-      rate.sleep();
+      next_wake += hold_period;
+      std::this_thread::sleep_until(next_wake);
     }
   }
 
   void create_publishers_and_subscribers(const std::vector<ServoArm>& arms)
   {
+    // 使用 BEST_EFFORT 而非默认的 RELIABLE，避免 DDS 可靠传输的 ACK 反压
+    // 在 Servo 处理变慢（碰撞检测/IK）时阻塞 publish() 导致指令发布停顿。
+    // 100 Hz 控制流中个别丢帧不影响 Servo 跟踪——它始终取最新到达的指令。
+    rclcpp::QoS pose_qos(rclcpp::KeepLast(10));
+    pose_qos.best_effort();
+
     for (const auto& arm : arms)
     {
-      pose_publishers_[arm.id] = this->create_publisher<geometry_msgs::msg::PoseStamped>(arm.pose_topic, 10);
+      pose_publishers_[arm.id] = this->create_publisher<geometry_msgs::msg::PoseStamped>(arm.pose_topic, pose_qos);
       RCLCPP_INFO(this->get_logger(), "Publishing arm_%s PoseStamped to %s", arm.id.c_str(), arm.pose_topic.c_str());
 
       status_subs_.push_back(this->create_subscription<moveit_msgs::msg::ServoStatus>(
@@ -389,17 +479,12 @@ private:
     }
   }
 
-  // Compute tracking error between the last commanded target pose and the
-  // current actual TCP pose read from TF.  Returns false if unavailable
-  // (e.g. no target sent yet, or TF lookup failed).
-  bool compute_pose_tracking_error(const ServoArm& arm, double& position_error_m, double& orientation_error_rad) const
+  // 计算给定位姿目标与当前 TF 中实际 TCP 位姿之间的跟踪误差。
+  // 返回 false 表示 TF 查询失败（不可用）。
+  bool compute_pose_tracking_error(
+    const ServoArm& arm, const geometry_msgs::msg::Pose& target,
+    double& position_error_m, double& orientation_error_rad) const
   {
-    const auto target_it = last_target_poses_.find(arm.id);
-    if (target_it == last_target_poses_.end())
-    {
-      return false;
-    }
-
     geometry_msgs::msg::Pose actual;
     try
     {
@@ -411,7 +496,6 @@ private:
       return false;
     }
 
-    const auto& target = target_it->second;
     const double dx = target.position.x - actual.position.x;
     const double dy = target.position.y - actual.position.y;
     const double dz = target.position.z - actual.position.z;
@@ -517,6 +601,8 @@ private:
   std::map<std::string, rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr> pose_publishers_;
   std::vector<rclcpp::Subscription<moveit_msgs::msg::ServoStatus>::SharedPtr> status_subs_;
   std::map<std::string, moveit_msgs::msg::ServoStatus> latest_status_;
+  std::mutex target_pose_mutex_;
+  std::atomic<bool> error_collector_running_{false};
 };
 
 int main(int argc, char* argv[])

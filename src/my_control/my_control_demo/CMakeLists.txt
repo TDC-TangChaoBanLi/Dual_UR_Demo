@@ -68,16 +68,6 @@ ament_target_dependencies(my_env_move_servo
 )
 target_compile_features(my_env_move_servo PUBLIC c_std_99 cxx_std_17)
 
-add_executable(railcar_sine_servo
-    src/railcar_sine_servo.cpp
-)
-target_include_directories(railcar_sine_servo PUBLIC ${COMMON_INCLUDE_DIRS})
-ament_target_dependencies(railcar_sine_servo
-    rclcpp
-    geometry_msgs
-    tf2_ros
-)
-target_compile_features(railcar_sine_servo PUBLIC c_std_99 cxx_std_17)
 
 add_executable(my_env_mujoco_control
     src/my_env_mujoco_control.cpp
@@ -96,7 +86,6 @@ install(TARGETS
     my_env_ros2_control
     my_env_move_group
     my_env_move_servo
-    railcar_sine_servo
     my_env_mujoco_control
     DESTINATION lib/${PROJECT_NAME}
 )

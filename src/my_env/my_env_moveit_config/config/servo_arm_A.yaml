@@ -95,17 +95,17 @@ move_group_name: arm_A
 ###############################################
 
 # 指令超时 [秒]：早于该时间的指令会被丢弃，防止 ROS 丢包导致执行陈旧指令
-incoming_command_timeout: 0.1
+incoming_command_timeout: 0.3
 ###############################################
 # Singularity and joint limits
 ###############################################
 
 # UR 官方示例里阈值较大，避免过早触发奇异停止
-lower_singularity_threshold: 100.0      # 条件数达到该值开始减速（接近奇异）
-hard_stop_singularity_threshold: 200.0  # 条件数达到该值直接停止
+lower_singularity_threshold: 200.0      # 条件数达到该值开始减速（接近奇异）
+hard_stop_singularity_threshold: 500.0  # 条件数达到该值直接停止
 
 # 触发 lower_singularity_threshold 但正在远离奇异时，移动速度为深入奇异时的多少倍
-leaving_singularity_threshold_multiplier: 2.0
+leaving_singularity_threshold_multiplier: 5.0
 
 # 奇异检测时，朝奇异方向的测试向量的缩放因子
 singularity_step_scale: 0.01
