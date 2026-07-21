@@ -4,7 +4,7 @@ project(my_env_mujoco)
 find_package(ament_cmake REQUIRED)
 
 install(DIRECTORY
-  # launch
+  launch
   # meshes
   urdf
   mjcf

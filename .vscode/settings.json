@@ -1,11 +1,11 @@
 {
     "python.autoComplete.extraPaths": [
-        "/opt/ros/humble/lib/python3.10/site-packages",
-        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+        "/opt/ros/${ROS_DISTRO}/lib/python3.10/site-packages",
+        "/opt/ros/${ROS_DISTRO}/local/lib/python3.10/dist-packages"
     ],
     "python.analysis.extraPaths": [
-        "/opt/ros/humble/lib/python3.10/site-packages",
-        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+        "/opt/ros/${ROS_DISTRO}/lib/python3.10/site-packages",
+        "/opt/ros/${ROS_DISTRO}/local/lib/python3.10/dist-packages"
     ],
     "terminal.integrated.profiles.linux": {
         "ROS2 Bash": {
@@ -18,5 +18,6 @@
     },
     "terminal.integrated.defaultProfile.linux": "ROS2 Bash",
     "cmake.ignoreCMakeListsMissing": true,
-    "github.copilot.chat.codeGeneration.useInstructionFiles": true
+    "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+    "ROS2.distro": "jazzy"
 }

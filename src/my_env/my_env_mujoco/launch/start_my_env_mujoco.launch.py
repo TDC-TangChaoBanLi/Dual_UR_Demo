@@ -37,9 +37,9 @@ def generate_launch_description():
 
     xacro_file_path = PathJoinSubstitution([pkg_my_env_mujoco, LaunchConfiguration('xacro_file_path')])
     mjcf_file_path = PathJoinSubstitution([pkg_my_env_mujoco, LaunchConfiguration('mjcf_file_path')])
-    pids_config_file_path = PathJoinSubstitution([pkg_my_env_control, 'config', 'mujoco_pids_config.yaml'])
-    controller_parameters = PathJoinSubstitution([pkg_my_env_control, "config", "my_env_mujoco_controller.yaml"])
-    mujoco_plugins_file = PathJoinSubstitution([pkg_my_env_control, "config", "mujoco_ros2_control_plugins.yaml"])
+    pids_config_file_path = PathJoinSubstitution([pkg_my_env_mujoco, 'config', 'mujoco_pids_config.yaml'])
+    controller_parameters = PathJoinSubstitution([pkg_my_env_mujoco, "config", "my_env_mujoco_controller.yaml"])
+    mujoco_plugins_file = PathJoinSubstitution([pkg_my_env_mujoco, "config", "mujoco_ros2_control_plugins.yaml"])
     rviz_file_path = PathJoinSubstitution([pkg_my_env_control, 'rviz', 'my_env_mujoco.rviz'])
 
 

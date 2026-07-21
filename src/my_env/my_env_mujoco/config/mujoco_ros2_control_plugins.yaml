@@ -1,0 +1,23 @@
+/**:
+  ros__parameters:
+    mujoco_plugins:
+      heart_beat_plugin:
+        type: "mujoco_ros2_control_plugins/HeartbeatPublisherPlugin"
+        update_rate: 1.0
+      mujoco_camera_plugin:
+        type: "mujoco_ros2_control_plugins/CameraPlugin"
+        camera_publish_rate: 30.0
+        # arm_A RealSense 相机
+        arm_A_realsense_camera:
+          policy: streaming
+          frame_name: arm_A_realsense_link
+          info_topic: /arm_A_realsense_camera/camera_info
+          image_topic: /arm_A_realsense_camera/color
+          depth_topic: /arm_A_realsense_camera/depth
+        # arm_B RealSense 相机
+        arm_B_realsense_camera:
+          policy: streaming
+          frame_name: arm_B_realsense_link
+          info_topic: /arm_B_realsense_camera/camera_info
+          image_topic: /arm_B_realsense_camera/color
+          depth_topic: /arm_B_realsense_camera/depth

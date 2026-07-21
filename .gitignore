@@ -6,3 +6,4 @@ __pycache__/
 
 
 src/my_env/my_env_mujoco/meshes/*
+MUJOCO_LOG.TXT

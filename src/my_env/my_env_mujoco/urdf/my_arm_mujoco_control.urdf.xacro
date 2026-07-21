@@ -3,15 +3,13 @@
   <xacro:macro name="my_arm_mujoco_control" params="
     ur_tf_prefix
     realsense_tf_prefix
-    g2f85_tf_prefix
+    gripper_tf_prefix
     ur_initial_positions:=${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}
   "> 
 
     <xacro:property name="_ur_tf_prefix" value="${ur_tf_prefix}"/>
     <xacro:property name="_ur_initial_positions" value="${ur_initial_positions}"/>
-    <xacro:property name="_realsense_tf_prefix" value="${realsense_tf_prefix}"/>
-    <xacro:property name="_g2f85_tf_prefix" value="${g2f85_tf_prefix}"/>
-    <xacro:property name="_g2f85_closed_position" value="0.7929"/>
+    <xacro:property name="_gripper_tf_prefix" value="${gripper_tf_prefix}"/>
 
     <!-- UR 机械臂相关 -->
     <joint name="${_ur_tf_prefix}shoulder_pan_joint">
@@ -99,24 +97,32 @@
       <state_interface name="torque.z"/>
     </sensor>
 
-      <!-- ! For cameras, the sensor name _must_ match the camera name in the MJCF -->
-    <sensor name="${_realsense_tf_prefix}camera">
+    <!-- ============================================ -->
+    <!-- 夹爪（根据 gripper_type 条件选择）            -->
+    <!-- gripper_type 由 dual_arm_config.xacro 定义   -->
+    <!-- ============================================ -->
 
-      <!-- Parameters will be used as is -->
-      <param name="frame_name">${_realsense_tf_prefix}link</param>
-      <param name="info_topic">/${_realsense_tf_prefix}camera/camera_info</param>
-      <param name="image_topic">/${_realsense_tf_prefix}camera/color</param>
-      <param name="depth_topic">/${_realsense_tf_prefix}camera/depth</param>
-    </sensor>
-
-    <!-- Robotiq 2f85 Gripper 相关 -->
-    <joint name="${_g2f85_tf_prefix}robotiq_85_left_knuckle_joint">
+    <!-- Robotiq 2F-85 夹爪 -->
+    <xacro:if value="${gripper_type == 'robotiq_2f85'}">
+    <joint name="${_gripper_tf_prefix}robotiq_85_left_knuckle_joint">
         <command_interface name="position" />
         <state_interface name="position">
-            <param name="initial_value">${_g2f85_closed_position}</param>
+            <param name="initial_value">0.7929</param>
         </state_interface>
         <state_interface name="velocity"/>
     </joint>
+    </xacro:if>
+
+    <!-- DH-Robotics AG-95 夹爪 -->
+    <xacro:if value="${gripper_type == 'dh_ag95'}">
+    <joint name="${_gripper_tf_prefix}gripper_finger1_joint">
+        <command_interface name="position" />
+        <state_interface name="position">
+            <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+    </joint>
+    </xacro:if>
 
 
   </xacro:macro>
