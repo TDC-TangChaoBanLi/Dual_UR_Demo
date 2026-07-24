@@ -74,10 +74,6 @@
     Main kinematic values, joint names, mimic multipliers, inertial values and mesh filenames are taken
     from the official dh_robotics_ag95_description xacro.
   -->
-  <!-- 我们需要指定用于参数化描述的参数 -->
-  <!-- 为所需的ur_type创建一个文件夹，并从ur_description包中复制文件到那里 -->
-  <!-- <xacro:arg name="ur_A_initial_positions" default="{shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0}"/> -->
-  <!-- <xacro:arg name="ur_B_initial_positions" default="{shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0}"/> -->
   <!-- 定义材料 -->
   <material name="table_material">
     <color rgba="0.863 0.875 0.890 1"/>
@@ -458,75 +454,23 @@
       <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257"/>
     </inertial>
   </link>
-  <!-- camera depth joints and links -->
-  <joint name="arm_A_realsense_depth_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-    <parent link="arm_A_realsense_link"/>
-    <child link="arm_A_realsense_depth_frame"/>
-  </joint>
-  <link name="arm_A_realsense_depth_frame"/>
-  <joint name="arm_A_realsense_depth_optical_joint" type="fixed">
-    <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0"/>
-    <parent link="arm_A_realsense_depth_frame"/>
-    <child link="arm_A_realsense_depth_optical_frame"/>
-  </joint>
-  <link name="arm_A_realsense_depth_optical_frame"/>
-  <!-- camera left IR joints and links -->
-  <joint name="arm_A_realsense_infra1_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.0 0"/>
-    <parent link="arm_A_realsense_link"/>
-    <child link="arm_A_realsense_infra1_frame"/>
-  </joint>
-  <link name="arm_A_realsense_infra1_frame"/>
-  <joint name="arm_A_realsense_infra1_optical_joint" type="fixed">
-    <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0"/>
-    <parent link="arm_A_realsense_infra1_frame"/>
-    <child link="arm_A_realsense_infra1_optical_frame"/>
-  </joint>
-  <link name="arm_A_realsense_infra1_optical_frame"/>
-  <!-- camera right IR joints and links -->
-  <joint name="arm_A_realsense_infra2_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 -0.05 0"/>
-    <parent link="arm_A_realsense_link"/>
-    <child link="arm_A_realsense_infra2_frame"/>
-  </joint>
-  <link name="arm_A_realsense_infra2_frame"/>
-  <joint name="arm_A_realsense_infra2_optical_joint" type="fixed">
-    <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0"/>
-    <parent link="arm_A_realsense_infra2_frame"/>
-    <child link="arm_A_realsense_infra2_optical_frame"/>
-  </joint>
-  <link name="arm_A_realsense_infra2_optical_frame"/>
-  <!-- camera color joints and links -->
-  <joint name="arm_A_realsense_color_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.015 0"/>
-    <parent link="arm_A_realsense_link"/>
-    <child link="arm_A_realsense_color_frame"/>
-  </joint>
-  <link name="arm_A_realsense_color_frame"/>
-  <joint name="arm_A_realsense_color_optical_joint" type="fixed">
-    <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0"/>
-    <parent link="arm_A_realsense_color_frame"/>
-    <child link="arm_A_realsense_color_optical_frame"/>
-  </joint>
-  <link name="arm_A_realsense_color_optical_frame"/>
-  <material name="arm_A_dh_ag95_gripper_black_material">
+  <material name="arm_A_dhag95_dh_ag95_gripper_black_material">
     <color rgba="0.15 0.15 0.15 1.0"/>
   </material>
-  <material name="arm_A_dh_ag95_gripper_white_material">
+  <material name="arm_A_dhag95_dh_ag95_gripper_white_material">
     <color rgba="0.85 0.85 0.85 1.0"/>
   </material>
-  <joint name="arm_A_gripper_base_joint" type="fixed">
+  <joint name="arm_A_dhag95_gripper_base_joint" type="fixed">
     <parent link="arm_A_realsense_shelf_child_side"/>
-    <child link="arm_A_gripper_base_link"/>
+    <child link="arm_A_dhag95_gripper_base_link"/>
     <origin rpy="0 0 0" xyz="0 0 -0.0035"/>
   </joint>
-  <link name="arm_A_gripper_base_link">
+  <link name="arm_A_dhag95_gripper_base_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/base_link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_A_dh_ag95_gripper_black_material"/>
+      <material name="arm_A_dhag95_dh_ag95_gripper_black_material"/>
     </visual>
     <collision>
       <geometry>
@@ -539,27 +483,27 @@
       <inertia ixx="0.0013016" ixy="-6.9374e-07" ixz="5.9848e-07" iyy="0.00049972" iyz="2.0244e-07" izz="0.001498"/>
     </inertial>
   </link>
-  <joint name="arm_A_gripper_finger1_joint" type="revolute">
-    <parent link="arm_A_gripper_base_link"/>
-    <child link="arm_A_gripper_finger1_knuckle_link"/>
+  <joint name="arm_A_dhag95_gripper_finger1_joint" type="revolute">
+    <parent link="arm_A_dhag95_gripper_base_link"/>
+    <child link="arm_A_dhag95_gripper_finger1_knuckle_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 3.141592653589793" xyz="-0.016 0 0.10586"/>
     <limit effort="1000" lower="0.0" upper="0.65" velocity="2.0"/>
   </joint>
-  <joint name="arm_A_gripper_finger2_joint" type="revolute">
-    <parent link="arm_A_gripper_base_link"/>
-    <child link="arm_A_gripper_finger2_knuckle_link"/>
+  <joint name="arm_A_dhag95_gripper_finger2_joint" type="revolute">
+    <parent link="arm_A_dhag95_gripper_base_link"/>
+    <child link="arm_A_dhag95_gripper_finger2_knuckle_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 0" xyz="0.016 0 0.10586"/>
     <limit effort="1000" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_A_gripper_finger1_joint" multiplier="1.0" offset="0.0"/>
+    <mimic joint="arm_A_dhag95_gripper_finger1_joint" multiplier="1.0" offset="0.0"/>
   </joint>
-  <link name="arm_A_gripper_finger1_knuckle_link">
+  <link name="arm_A_dhag95_gripper_finger1_knuckle_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/crank_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_A_dh_ag95_gripper_white_material"/>
+      <material name="arm_A_dhag95_dh_ag95_gripper_white_material"/>
     </visual>
     <collision>
       <geometry>
@@ -572,12 +516,12 @@
       <inertia ixx="3.88172e-06" ixy="-2.29456e-13" ixz="8.33e-07" iyy="1.92174e-06" iyz="2.04435e-13" izz="4.32374e-06"/>
     </inertial>
   </link>
-  <link name="arm_A_gripper_finger2_knuckle_link">
+  <link name="arm_A_dhag95_gripper_finger2_knuckle_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/crank_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_A_dh_ag95_gripper_white_material"/>
+      <material name="arm_A_dhag95_dh_ag95_gripper_white_material"/>
     </visual>
     <collision>
       <geometry>
@@ -590,28 +534,28 @@
       <inertia ixx="3.88172e-06" ixy="-2.29456e-13" ixz="8.33e-07" iyy="1.92174e-06" iyz="2.04435e-13" izz="4.32374e-06"/>
     </inertial>
   </link>
-  <joint name="arm_A_gripper_finger1_finger_joint" type="continuous">
-    <parent link="arm_A_gripper_finger1_knuckle_link"/>
-    <child link="arm_A_gripper_finger1_finger_link"/>
+  <joint name="arm_A_dhag95_gripper_finger1_finger_joint" type="continuous">
+    <parent link="arm_A_dhag95_gripper_finger1_knuckle_link"/>
+    <child link="arm_A_dhag95_gripper_finger1_finger_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 0" xyz="0.0292080077784 0 -0.0227132622407"/>
     <limit effort="0.1" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_A_gripper_finger1_joint" multiplier="0.4563942" offset="0"/>
+    <mimic joint="arm_A_dhag95_gripper_finger1_joint" multiplier="0.4563942" offset="0"/>
   </joint>
-  <joint name="arm_A_gripper_finger2_finger_joint" type="continuous">
-    <parent link="arm_A_gripper_finger2_knuckle_link"/>
-    <child link="arm_A_gripper_finger2_finger_link"/>
+  <joint name="arm_A_dhag95_gripper_finger2_finger_joint" type="continuous">
+    <parent link="arm_A_dhag95_gripper_finger2_knuckle_link"/>
+    <child link="arm_A_dhag95_gripper_finger2_finger_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 0" xyz="0.0292080077784 0 -0.0227132622407"/>
     <limit effort="0.1" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_A_gripper_finger1_joint" multiplier="0.4563942" offset="0"/>
+    <mimic joint="arm_A_dhag95_gripper_finger1_joint" multiplier="0.4563942" offset="0"/>
   </joint>
-  <link name="arm_A_gripper_finger1_finger_link">
+  <link name="arm_A_dhag95_gripper_finger1_finger_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/rod_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_A_dh_ag95_gripper_black_material"/>
+      <material name="arm_A_dhag95_dh_ag95_gripper_black_material"/>
     </visual>
     <collision>
       <geometry>
@@ -624,12 +568,12 @@
       <inertia ixx="8.72836e-06" ixy="7.0843e-15" ixz="-2.18833e-06" iyy="7.26157e-06" iyz="7.6579e-15" izz="3.3425e-06"/>
     </inertial>
   </link>
-  <link name="arm_A_gripper_finger2_finger_link">
+  <link name="arm_A_dhag95_gripper_finger2_finger_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/rod_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_A_dh_ag95_gripper_black_material"/>
+      <material name="arm_A_dhag95_dh_ag95_gripper_black_material"/>
     </visual>
     <collision>
       <geometry>
@@ -642,28 +586,28 @@
       <inertia ixx="8.72836e-06" ixy="7.0843e-15" ixz="-2.18833e-06" iyy="7.26157e-06" iyz="7.6579e-15" izz="3.3425e-06"/>
     </inertial>
   </link>
-  <joint name="arm_A_gripper_finger1_inner_knuckle_joint" type="continuous">
-    <parent link="arm_A_gripper_base_link"/>
-    <child link="arm_A_gripper_finger1_inner_knuckle_link"/>
+  <joint name="arm_A_dhag95_gripper_finger1_inner_knuckle_joint" type="continuous">
+    <parent link="arm_A_dhag95_gripper_base_link"/>
+    <child link="arm_A_dhag95_gripper_finger1_inner_knuckle_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 3.141592653589793" xyz="-0.016 0 0.10586"/>
     <limit effort="0.1" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_A_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
+    <mimic joint="arm_A_dhag95_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
   </joint>
-  <joint name="arm_A_gripper_finger2_inner_knuckle_joint" type="continuous">
-    <parent link="arm_A_gripper_base_link"/>
-    <child link="arm_A_gripper_finger2_inner_knuckle_link"/>
+  <joint name="arm_A_dhag95_gripper_finger2_inner_knuckle_joint" type="continuous">
+    <parent link="arm_A_dhag95_gripper_base_link"/>
+    <child link="arm_A_dhag95_gripper_finger2_inner_knuckle_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 0" xyz="0.016 0 0.10586"/>
     <limit effort="0.1" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_A_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
+    <mimic joint="arm_A_dhag95_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
   </joint>
-  <link name="arm_A_gripper_finger1_inner_knuckle_link">
+  <link name="arm_A_dhag95_gripper_finger1_inner_knuckle_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/proximal_phalanx_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_A_dh_ag95_gripper_black_material"/>
+      <material name="arm_A_dhag95_dh_ag95_gripper_black_material"/>
     </visual>
     <collision>
       <geometry>
@@ -676,12 +620,12 @@
       <inertia ixx="1.39848e-05" ixy="-9.54763e-15" ixz="-5.01422e-06" iyy="1.04943e-05" iyz="8.94585e-16" izz="1.36183e-05"/>
     </inertial>
   </link>
-  <link name="arm_A_gripper_finger2_inner_knuckle_link">
+  <link name="arm_A_dhag95_gripper_finger2_inner_knuckle_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/proximal_phalanx_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_A_dh_ag95_gripper_black_material"/>
+      <material name="arm_A_dhag95_dh_ag95_gripper_black_material"/>
     </visual>
     <collision>
       <geometry>
@@ -694,28 +638,28 @@
       <inertia ixx="1.39848e-05" ixy="-9.54763e-15" ixz="-5.01422e-06" iyy="1.04943e-05" iyz="8.94585e-16" izz="1.36183e-05"/>
     </inertial>
   </link>
-  <joint name="arm_A_gripper_finger1_finger_tip_joint" type="continuous">
-    <parent link="arm_A_gripper_finger1_inner_knuckle_link"/>
-    <child link="arm_A_gripper_finger1_finger_tip_link"/>
+  <joint name="arm_A_dhag95_gripper_finger1_finger_tip_joint" type="continuous">
+    <parent link="arm_A_dhag95_gripper_finger1_inner_knuckle_link"/>
+    <child link="arm_A_dhag95_gripper_finger1_finger_tip_link"/>
     <axis xyz="0 1 0"/>
     <origin rpy="0 0 0" xyz="0.0394969463769 0 0.0382752038125"/>
     <limit effort="0.1" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_A_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
+    <mimic joint="arm_A_dhag95_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
   </joint>
-  <joint name="arm_A_gripper_finger2_finger_tip_joint" type="continuous">
-    <parent link="arm_A_gripper_finger2_inner_knuckle_link"/>
-    <child link="arm_A_gripper_finger2_finger_tip_link"/>
+  <joint name="arm_A_dhag95_gripper_finger2_finger_tip_joint" type="continuous">
+    <parent link="arm_A_dhag95_gripper_finger2_inner_knuckle_link"/>
+    <child link="arm_A_dhag95_gripper_finger2_finger_tip_link"/>
     <axis xyz="0 1 0"/>
     <origin rpy="0 0 0" xyz="0.0394969463769 0 0.0382752038125"/>
     <limit effort="0.1" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_A_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
+    <mimic joint="arm_A_dhag95_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
   </joint>
-  <link name="arm_A_gripper_finger1_finger_tip_link">
+  <link name="arm_A_dhag95_gripper_finger1_finger_tip_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/distal_phalanx_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_A_dh_ag95_gripper_white_material"/>
+      <material name="arm_A_dhag95_dh_ag95_gripper_white_material"/>
     </visual>
     <collision>
       <geometry>
@@ -728,12 +672,12 @@
       <inertia ixx="2.84217e-06" ixy="-2.48048e-15" ixz="8.24539e-07" iyy="3.03961e-06" iyz="2.16427e-13" izz="1.11815e-06"/>
     </inertial>
   </link>
-  <link name="arm_A_gripper_finger2_finger_tip_link">
+  <link name="arm_A_dhag95_gripper_finger2_finger_tip_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/distal_phalanx_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_A_dh_ag95_gripper_white_material"/>
+      <material name="arm_A_dhag95_dh_ag95_gripper_white_material"/>
     </visual>
     <collision>
       <geometry>
@@ -751,7 +695,7 @@
   <link name="arm_A__tcp"/>
   <joint name="arm_A__tcp_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 0.14"/>
-    <parent link="arm_A_gripper_base_link"/>
+    <parent link="arm_A_dhag95_gripper_base_link"/>
     <child link="arm_A__tcp"/>
   </joint>
   <!-- links -  main serial chain -->
@@ -1061,75 +1005,23 @@
       <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257"/>
     </inertial>
   </link>
-  <!-- camera depth joints and links -->
-  <joint name="arm_B_realsense_depth_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-    <parent link="arm_B_realsense_link"/>
-    <child link="arm_B_realsense_depth_frame"/>
-  </joint>
-  <link name="arm_B_realsense_depth_frame"/>
-  <joint name="arm_B_realsense_depth_optical_joint" type="fixed">
-    <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0"/>
-    <parent link="arm_B_realsense_depth_frame"/>
-    <child link="arm_B_realsense_depth_optical_frame"/>
-  </joint>
-  <link name="arm_B_realsense_depth_optical_frame"/>
-  <!-- camera left IR joints and links -->
-  <joint name="arm_B_realsense_infra1_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.0 0"/>
-    <parent link="arm_B_realsense_link"/>
-    <child link="arm_B_realsense_infra1_frame"/>
-  </joint>
-  <link name="arm_B_realsense_infra1_frame"/>
-  <joint name="arm_B_realsense_infra1_optical_joint" type="fixed">
-    <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0"/>
-    <parent link="arm_B_realsense_infra1_frame"/>
-    <child link="arm_B_realsense_infra1_optical_frame"/>
-  </joint>
-  <link name="arm_B_realsense_infra1_optical_frame"/>
-  <!-- camera right IR joints and links -->
-  <joint name="arm_B_realsense_infra2_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 -0.05 0"/>
-    <parent link="arm_B_realsense_link"/>
-    <child link="arm_B_realsense_infra2_frame"/>
-  </joint>
-  <link name="arm_B_realsense_infra2_frame"/>
-  <joint name="arm_B_realsense_infra2_optical_joint" type="fixed">
-    <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0"/>
-    <parent link="arm_B_realsense_infra2_frame"/>
-    <child link="arm_B_realsense_infra2_optical_frame"/>
-  </joint>
-  <link name="arm_B_realsense_infra2_optical_frame"/>
-  <!-- camera color joints and links -->
-  <joint name="arm_B_realsense_color_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.015 0"/>
-    <parent link="arm_B_realsense_link"/>
-    <child link="arm_B_realsense_color_frame"/>
-  </joint>
-  <link name="arm_B_realsense_color_frame"/>
-  <joint name="arm_B_realsense_color_optical_joint" type="fixed">
-    <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0"/>
-    <parent link="arm_B_realsense_color_frame"/>
-    <child link="arm_B_realsense_color_optical_frame"/>
-  </joint>
-  <link name="arm_B_realsense_color_optical_frame"/>
-  <material name="arm_B_dh_ag95_gripper_black_material">
+  <material name="arm_B_dhag95_dh_ag95_gripper_black_material">
     <color rgba="0.15 0.15 0.15 1.0"/>
   </material>
-  <material name="arm_B_dh_ag95_gripper_white_material">
+  <material name="arm_B_dhag95_dh_ag95_gripper_white_material">
     <color rgba="0.85 0.85 0.85 1.0"/>
   </material>
-  <joint name="arm_B_gripper_base_joint" type="fixed">
+  <joint name="arm_B_dhag95_gripper_base_joint" type="fixed">
     <parent link="arm_B_realsense_shelf_child_side"/>
-    <child link="arm_B_gripper_base_link"/>
+    <child link="arm_B_dhag95_gripper_base_link"/>
     <origin rpy="0 0 0" xyz="0 0 -0.0035"/>
   </joint>
-  <link name="arm_B_gripper_base_link">
+  <link name="arm_B_dhag95_gripper_base_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/base_link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_B_dh_ag95_gripper_black_material"/>
+      <material name="arm_B_dhag95_dh_ag95_gripper_black_material"/>
     </visual>
     <collision>
       <geometry>
@@ -1142,27 +1034,27 @@
       <inertia ixx="0.0013016" ixy="-6.9374e-07" ixz="5.9848e-07" iyy="0.00049972" iyz="2.0244e-07" izz="0.001498"/>
     </inertial>
   </link>
-  <joint name="arm_B_gripper_finger1_joint" type="revolute">
-    <parent link="arm_B_gripper_base_link"/>
-    <child link="arm_B_gripper_finger1_knuckle_link"/>
+  <joint name="arm_B_dhag95_gripper_finger1_joint" type="revolute">
+    <parent link="arm_B_dhag95_gripper_base_link"/>
+    <child link="arm_B_dhag95_gripper_finger1_knuckle_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 3.141592653589793" xyz="-0.016 0 0.10586"/>
     <limit effort="1000" lower="0.0" upper="0.65" velocity="2.0"/>
   </joint>
-  <joint name="arm_B_gripper_finger2_joint" type="revolute">
-    <parent link="arm_B_gripper_base_link"/>
-    <child link="arm_B_gripper_finger2_knuckle_link"/>
+  <joint name="arm_B_dhag95_gripper_finger2_joint" type="revolute">
+    <parent link="arm_B_dhag95_gripper_base_link"/>
+    <child link="arm_B_dhag95_gripper_finger2_knuckle_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 0" xyz="0.016 0 0.10586"/>
     <limit effort="1000" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_B_gripper_finger1_joint" multiplier="1.0" offset="0.0"/>
+    <mimic joint="arm_B_dhag95_gripper_finger1_joint" multiplier="1.0" offset="0.0"/>
   </joint>
-  <link name="arm_B_gripper_finger1_knuckle_link">
+  <link name="arm_B_dhag95_gripper_finger1_knuckle_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/crank_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_B_dh_ag95_gripper_white_material"/>
+      <material name="arm_B_dhag95_dh_ag95_gripper_white_material"/>
     </visual>
     <collision>
       <geometry>
@@ -1175,12 +1067,12 @@
       <inertia ixx="3.88172e-06" ixy="-2.29456e-13" ixz="8.33e-07" iyy="1.92174e-06" iyz="2.04435e-13" izz="4.32374e-06"/>
     </inertial>
   </link>
-  <link name="arm_B_gripper_finger2_knuckle_link">
+  <link name="arm_B_dhag95_gripper_finger2_knuckle_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/crank_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_B_dh_ag95_gripper_white_material"/>
+      <material name="arm_B_dhag95_dh_ag95_gripper_white_material"/>
     </visual>
     <collision>
       <geometry>
@@ -1193,28 +1085,28 @@
       <inertia ixx="3.88172e-06" ixy="-2.29456e-13" ixz="8.33e-07" iyy="1.92174e-06" iyz="2.04435e-13" izz="4.32374e-06"/>
     </inertial>
   </link>
-  <joint name="arm_B_gripper_finger1_finger_joint" type="continuous">
-    <parent link="arm_B_gripper_finger1_knuckle_link"/>
-    <child link="arm_B_gripper_finger1_finger_link"/>
+  <joint name="arm_B_dhag95_gripper_finger1_finger_joint" type="continuous">
+    <parent link="arm_B_dhag95_gripper_finger1_knuckle_link"/>
+    <child link="arm_B_dhag95_gripper_finger1_finger_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 0" xyz="0.0292080077784 0 -0.0227132622407"/>
     <limit effort="0.1" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_B_gripper_finger1_joint" multiplier="0.4563942" offset="0"/>
+    <mimic joint="arm_B_dhag95_gripper_finger1_joint" multiplier="0.4563942" offset="0"/>
   </joint>
-  <joint name="arm_B_gripper_finger2_finger_joint" type="continuous">
-    <parent link="arm_B_gripper_finger2_knuckle_link"/>
-    <child link="arm_B_gripper_finger2_finger_link"/>
+  <joint name="arm_B_dhag95_gripper_finger2_finger_joint" type="continuous">
+    <parent link="arm_B_dhag95_gripper_finger2_knuckle_link"/>
+    <child link="arm_B_dhag95_gripper_finger2_finger_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 0" xyz="0.0292080077784 0 -0.0227132622407"/>
     <limit effort="0.1" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_B_gripper_finger1_joint" multiplier="0.4563942" offset="0"/>
+    <mimic joint="arm_B_dhag95_gripper_finger1_joint" multiplier="0.4563942" offset="0"/>
   </joint>
-  <link name="arm_B_gripper_finger1_finger_link">
+  <link name="arm_B_dhag95_gripper_finger1_finger_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/rod_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_B_dh_ag95_gripper_black_material"/>
+      <material name="arm_B_dhag95_dh_ag95_gripper_black_material"/>
     </visual>
     <collision>
       <geometry>
@@ -1227,12 +1119,12 @@
       <inertia ixx="8.72836e-06" ixy="7.0843e-15" ixz="-2.18833e-06" iyy="7.26157e-06" iyz="7.6579e-15" izz="3.3425e-06"/>
     </inertial>
   </link>
-  <link name="arm_B_gripper_finger2_finger_link">
+  <link name="arm_B_dhag95_gripper_finger2_finger_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/rod_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_B_dh_ag95_gripper_black_material"/>
+      <material name="arm_B_dhag95_dh_ag95_gripper_black_material"/>
     </visual>
     <collision>
       <geometry>
@@ -1245,28 +1137,28 @@
       <inertia ixx="8.72836e-06" ixy="7.0843e-15" ixz="-2.18833e-06" iyy="7.26157e-06" iyz="7.6579e-15" izz="3.3425e-06"/>
     </inertial>
   </link>
-  <joint name="arm_B_gripper_finger1_inner_knuckle_joint" type="continuous">
-    <parent link="arm_B_gripper_base_link"/>
-    <child link="arm_B_gripper_finger1_inner_knuckle_link"/>
+  <joint name="arm_B_dhag95_gripper_finger1_inner_knuckle_joint" type="continuous">
+    <parent link="arm_B_dhag95_gripper_base_link"/>
+    <child link="arm_B_dhag95_gripper_finger1_inner_knuckle_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 3.141592653589793" xyz="-0.016 0 0.10586"/>
     <limit effort="0.1" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_B_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
+    <mimic joint="arm_B_dhag95_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
   </joint>
-  <joint name="arm_B_gripper_finger2_inner_knuckle_joint" type="continuous">
-    <parent link="arm_B_gripper_base_link"/>
-    <child link="arm_B_gripper_finger2_inner_knuckle_link"/>
+  <joint name="arm_B_dhag95_gripper_finger2_inner_knuckle_joint" type="continuous">
+    <parent link="arm_B_dhag95_gripper_base_link"/>
+    <child link="arm_B_dhag95_gripper_finger2_inner_knuckle_link"/>
     <axis xyz="0 -1 0"/>
     <origin rpy="0 0 0" xyz="0.016 0 0.10586"/>
     <limit effort="0.1" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_B_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
+    <mimic joint="arm_B_dhag95_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
   </joint>
-  <link name="arm_B_gripper_finger1_inner_knuckle_link">
+  <link name="arm_B_dhag95_gripper_finger1_inner_knuckle_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/proximal_phalanx_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_B_dh_ag95_gripper_black_material"/>
+      <material name="arm_B_dhag95_dh_ag95_gripper_black_material"/>
     </visual>
     <collision>
       <geometry>
@@ -1279,12 +1171,12 @@
       <inertia ixx="1.39848e-05" ixy="-9.54763e-15" ixz="-5.01422e-06" iyy="1.04943e-05" iyz="8.94585e-16" izz="1.36183e-05"/>
     </inertial>
   </link>
-  <link name="arm_B_gripper_finger2_inner_knuckle_link">
+  <link name="arm_B_dhag95_gripper_finger2_inner_knuckle_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/proximal_phalanx_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_B_dh_ag95_gripper_black_material"/>
+      <material name="arm_B_dhag95_dh_ag95_gripper_black_material"/>
     </visual>
     <collision>
       <geometry>
@@ -1297,28 +1189,28 @@
       <inertia ixx="1.39848e-05" ixy="-9.54763e-15" ixz="-5.01422e-06" iyy="1.04943e-05" iyz="8.94585e-16" izz="1.36183e-05"/>
     </inertial>
   </link>
-  <joint name="arm_B_gripper_finger1_finger_tip_joint" type="continuous">
-    <parent link="arm_B_gripper_finger1_inner_knuckle_link"/>
-    <child link="arm_B_gripper_finger1_finger_tip_link"/>
+  <joint name="arm_B_dhag95_gripper_finger1_finger_tip_joint" type="continuous">
+    <parent link="arm_B_dhag95_gripper_finger1_inner_knuckle_link"/>
+    <child link="arm_B_dhag95_gripper_finger1_finger_tip_link"/>
     <axis xyz="0 1 0"/>
     <origin rpy="0 0 0" xyz="0.0394969463769 0 0.0382752038125"/>
     <limit effort="0.1" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_B_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
+    <mimic joint="arm_B_dhag95_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
   </joint>
-  <joint name="arm_B_gripper_finger2_finger_tip_joint" type="continuous">
-    <parent link="arm_B_gripper_finger2_inner_knuckle_link"/>
-    <child link="arm_B_gripper_finger2_finger_tip_link"/>
+  <joint name="arm_B_dhag95_gripper_finger2_finger_tip_joint" type="continuous">
+    <parent link="arm_B_dhag95_gripper_finger2_inner_knuckle_link"/>
+    <child link="arm_B_dhag95_gripper_finger2_finger_tip_link"/>
     <axis xyz="0 1 0"/>
     <origin rpy="0 0 0" xyz="0.0394969463769 0 0.0382752038125"/>
     <limit effort="0.1" lower="-3.14" upper="3.14" velocity="100.0"/>
-    <mimic joint="arm_B_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
+    <mimic joint="arm_B_dhag95_gripper_finger1_joint" multiplier="1.49462955" offset="0"/>
   </joint>
-  <link name="arm_B_gripper_finger1_finger_tip_link">
+  <link name="arm_B_dhag95_gripper_finger1_finger_tip_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/distal_phalanx_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_B_dh_ag95_gripper_white_material"/>
+      <material name="arm_B_dhag95_dh_ag95_gripper_white_material"/>
     </visual>
     <collision>
       <geometry>
@@ -1331,12 +1223,12 @@
       <inertia ixx="2.84217e-06" ixy="-2.48048e-15" ixz="8.24539e-07" iyy="3.03961e-06" iyz="2.16427e-13" izz="1.11815e-06"/>
     </inertial>
   </link>
-  <link name="arm_B_gripper_finger2_finger_tip_link">
+  <link name="arm_B_dhag95_gripper_finger2_finger_tip_link">
     <visual>
       <geometry>
         <mesh filename="package://dh_ag95_description/meshes/visual/distal_phalanx_Link.STL" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="arm_B_dh_ag95_gripper_white_material"/>
+      <material name="arm_B_dhag95_dh_ag95_gripper_white_material"/>
     </visual>
     <collision>
       <geometry>
@@ -1354,7 +1246,7 @@
   <link name="arm_B__tcp"/>
   <joint name="arm_B__tcp_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 0.14"/>
-    <parent link="arm_B_gripper_base_link"/>
+    <parent link="arm_B_dhag95_gripper_base_link"/>
     <child link="arm_B__tcp"/>
   </joint>
   <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
@@ -1362,6 +1254,9 @@
     <hardware>
       <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
       <param name="mujoco_model">/home/tdc/CodeProjects/Dual_UR_Demo/install/my_env_mujoco/share/my_env_mujoco/mjcf/my_env_mujoco.xml</param>
+      <!-- Optional: load PID gains from a ROS parameters YAML file.
+        Enables position/velocity PID control for velocity, motor, and custom actuators. -->
+      <param name="pids_config_file">/home/tdc/CodeProjects/Dual_UR_Demo/install/my_env_control/share/my_env_control/config/mujoco_pids_config.yaml</param>
       <!-- Override the slowdown settings in the Simulate App -->
       <param name="sim_speed_factor">1.0</param>
       <!-- If set to true, will not launch the Simulate App window -->
@@ -1374,7 +1269,7 @@
       <command_interface name="effort"/>
       <state_interface name="position">
         <!-- initial position for the FakeSystem and simulation -->
-        <param name="initial_value">-1.57</param>
+        <param name="initial_value">-1.5708</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -1385,7 +1280,7 @@
       <command_interface name="effort"/>
       <state_interface name="position">
         <!-- initial position for the FakeSystem and simulation -->
-        <param name="initial_value">-1.27</param>
+        <param name="initial_value">3.6416</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -1396,7 +1291,7 @@
       <command_interface name="effort"/>
       <state_interface name="position">
         <!-- initial position for the FakeSystem and simulation -->
-        <param name="initial_value">1.0</param>
+        <param name="initial_value">-1.4</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -1407,7 +1302,7 @@
       <command_interface name="effort"/>
       <state_interface name="position">
         <!-- initial position for the FakeSystem and simulation -->
-        <param name="initial_value">-1.3</param>
+        <param name="initial_value">-0.6708</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -1418,7 +1313,7 @@
       <command_interface name="effort"/>
       <state_interface name="position">
         <!-- initial position for the FakeSystem and simulation -->
-        <param name="initial_value">-1.57</param>
+        <param name="initial_value">1.5708</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -1429,7 +1324,7 @@
       <command_interface name="effort"/>
       <state_interface name="position">
         <!-- initial position for the FakeSystem and simulation -->
-        <param name="initial_value">-1.57</param>
+        <param name="initial_value">-1.5708</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -1468,7 +1363,7 @@
       <command_interface name="effort"/>
       <state_interface name="position">
         <!-- initial position for the FakeSystem and simulation -->
-        <param name="initial_value">-1.57</param>
+        <param name="initial_value">1.5708</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -1479,7 +1374,7 @@
       <command_interface name="effort"/>
       <state_interface name="position">
         <!-- initial position for the FakeSystem and simulation -->
-        <param name="initial_value">-2.27</param>
+        <param name="initial_value">-0.6</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -1490,7 +1385,7 @@
       <command_interface name="effort"/>
       <state_interface name="position">
         <!-- initial position for the FakeSystem and simulation -->
-        <param name="initial_value">-0.2</param>
+        <param name="initial_value">1.4</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -1501,7 +1396,7 @@
       <command_interface name="effort"/>
       <state_interface name="position">
         <!-- initial position for the FakeSystem and simulation -->
-        <param name="initial_value">-2.24</param>
+        <param name="initial_value">-2.3708</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -1512,7 +1407,7 @@
       <command_interface name="effort"/>
       <state_interface name="position">
         <!-- initial position for the FakeSystem and simulation -->
-        <param name="initial_value">1.57</param>
+        <param name="initial_value">-1.5708</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -1523,7 +1418,7 @@
       <command_interface name="effort"/>
       <state_interface name="position">
         <!-- initial position for the FakeSystem and simulation -->
-        <param name="initial_value">1.57</param>
+        <param name="initial_value">1.5708</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>

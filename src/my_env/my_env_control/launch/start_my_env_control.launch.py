@@ -153,8 +153,8 @@ GRIPPER_B_CONTROLLER_PREFIX = "arm_B_g2f85_"
 
 # DH-Robotics AG-95 控制器前缀
 # [WARN] 必须和 controller.yaml / MoveIt 配置保持一致
-AG95_A_CONTROLLER_PREFIX = "arm_A_ag95_"
-AG95_B_CONTROLLER_PREFIX = "arm_B_ag95_"
+AG95_A_CONTROLLER_PREFIX = "arm_A_dhag95_"
+AG95_B_CONTROLLER_PREFIX = "arm_B_dhag95_"
 
 # 双 Robotiq 控制器名称后缀
 # [WARN] 必须与你的 controller.yaml 一致。

@@ -231,7 +231,7 @@
 
   <!-- arm_A AG-95 夹爪 ros2_control -->
   <xacro:dh_ag95_ros2_control
-    prefix="${arm_A_tf_prefix}"
+    prefix="${arm_A_tf_prefix}dhag95_"
     name="arm_A_ag95_hardware"
     use_fake_hardware="$(arg use_fake_hardware)"
     transport_type="$(arg ag95_gripper_transport_type)"
@@ -251,7 +251,7 @@
 
   <!-- arm_B AG-95 夹爪 ros2_control -->
   <xacro:dh_ag95_ros2_control
-    prefix="${arm_B_tf_prefix}"
+    prefix="${arm_B_tf_prefix}dhag95_"
     name="arm_B_ag95_hardware"
     use_fake_hardware="$(arg use_fake_hardware)"
     transport_type="$(arg ag95_gripper_transport_type)"

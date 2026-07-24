@@ -114,10 +114,10 @@
     <material name="plastic" rgba="0.1 0.1 0.1 1"/>
     <material name="table_material" rgba="0.863 0.875 0.890 1"/>
     <material name="arm_shelf_material" rgba="0.15 0.15 0.15 1"/>
-    <material name="arm_A_dh_ag95_gripper_black_material" rgba="0.15 0.15 0.15 1.0"/>
-    <material name="arm_A_dh_ag95_gripper_white_material" rgba="0.85 0.85 0.85 1.0"/>
-    <material name="arm_B_dh_ag95_gripper_black_material" rgba="0.15 0.15 0.15 1.0"/>
-    <material name="arm_B_dh_ag95_gripper_white_material" rgba="0.85 0.85 0.85 1.0"/>
+    <material name="arm_A_dhag95_dh_ag95_gripper_black_material" rgba="0.15 0.15 0.15 1.0"/>
+    <material name="arm_A_dhag95_dh_ag95_gripper_white_material" rgba="0.85 0.85 0.85 1.0"/>
+    <material name="arm_B_dhag95_dh_ag95_gripper_black_material" rgba="0.15 0.15 0.15 1.0"/>
+    <material name="arm_B_dhag95_dh_ag95_gripper_white_material" rgba="0.85 0.85 0.85 1.0"/>
   </asset>
   <worldbody>
     <body name="table" pos="0.883 0 0" quat="1.0 0.0 0.0 0.0" gravcomp="1">
@@ -190,56 +190,56 @@
                               <geom class="collision" name="COLLISION_arm_A_realsense_shelf_0" type="mesh" mesh="MESH_RealSense_D435_Shelf_d359ca29" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                               <geom class="visual" name="VISUAL_arm_A_realsense_shelf_0" type="mesh" mesh="MESH_RealSense_D435_Shelf_d359ca29" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                               <body name="arm_A_realsense_shelf_child_side" pos="0.0 0.0 0.006" quat="1.0 0.0 0.0 0.0" gravcomp="1">
-                                <body name="arm_A_gripper_base_link" pos="0 0 -0.0035" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                <body name="arm_A_dhag95_gripper_base_link" pos="0 0 -0.0035" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                   <inertial mass="0.83416" diaginertia="0.0004997193585541065 0.0013015987775450344 0.001498001863900859" pos="0 0 0" quat="0.7074119273558204 -0.0010056564148689783 -0.0011484842788531933 -0.706799854749391"/>
-                                  <geom class="collision" name="COLLISION_arm_A_gripper_base_link_0" type="mesh" mesh="MESH_base_link_36df6ff8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                  <geom class="visual" name="VISUAL_arm_A_gripper_base_link_0" type="mesh" mesh="MESH_base_link_36df6ff8" material="arm_A_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                  <body name="arm_A_gripper_finger1_knuckle_link" pos="-0.016 0 0.10586" quat="6.123233995736766e-17 0.0 0.0 1.0" gravcomp="1">
+                                  <geom class="collision" name="COLLISION_arm_A_dhag95_gripper_base_link_0" type="mesh" mesh="MESH_base_link_36df6ff8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                  <geom class="visual" name="VISUAL_arm_A_dhag95_gripper_base_link_0" type="mesh" mesh="MESH_base_link_36df6ff8" material="arm_A_dhag95_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                  <body name="arm_A_dhag95_gripper_finger1_knuckle_link" pos="-0.016 0 0.10586" quat="6.123233995736766e-17 0.0 0.0 1.0" gravcomp="1">
                                     <inertial mass="0.011111" diaginertia="1.9217399999999276e-06 3.2409095894155918e-06 4.964550410584478e-06" pos="0 0 0" quat="0.22770314809660452 0.6694410849460193 0.6694409310521997 -0.22770320587369108"/>
-                                    <joint name="arm_A_gripper_finger1_joint" type="hinge" axis="0 -1 0" ref="" range="0.0 0.65"/>
-                                    <geom class="collision" name="COLLISION_arm_A_gripper_finger1_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <geom class="visual" name="VISUAL_arm_A_gripper_finger1_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" material="arm_A_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <body name="arm_A_gripper_finger1_finger_link" pos="0.0292080077784 0 -0.0227132622407" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                    <joint name="arm_A_dhag95_gripper_finger1_joint" type="hinge" axis="0 -1 0" ref="" range="0.0 0.65"/>
+                                    <geom class="collision" name="COLLISION_arm_A_dhag95_gripper_finger1_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <geom class="visual" name="VISUAL_arm_A_dhag95_gripper_finger1_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" material="arm_A_dhag95_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <body name="arm_A_dhag95_gripper_finger1_finger_link" pos="0.0292080077784 0 -0.0227132622407" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                       <inertial mass="0.0222871" diaginertia="2.5654645572614138e-06 7.261569999999999e-06 9.505395442738587e-06" pos="0 0 0" quat="0.5767958804318123 -3.0512106522056137e-10 -0.81688831079707 -1.337536987981771e-09"/>
-                                      <joint name="arm_A_gripper_finger1_finger_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
-                                      <geom class="collision" name="COLLISION_arm_A_gripper_finger1_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                      <geom class="visual" name="VISUAL_arm_A_gripper_finger1_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" material="arm_A_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <joint name="arm_A_dhag95_gripper_finger1_finger_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
+                                      <geom class="collision" name="COLLISION_arm_A_dhag95_gripper_finger1_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <geom class="visual" name="VISUAL_arm_A_dhag95_gripper_finger1_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" material="arm_A_dhag95_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                     </body>
                                   </body>
-                                  <body name="arm_A_gripper_finger2_knuckle_link" pos="0.016 0 0.10586" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                  <body name="arm_A_dhag95_gripper_finger2_knuckle_link" pos="0.016 0 0.10586" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                     <inertial mass="0.011111" diaginertia="1.9217399999999276e-06 3.2409095894155918e-06 4.964550410584478e-06" pos="0 0 0" quat="0.22770314809660452 0.6694410849460193 0.6694409310521997 -0.22770320587369108"/>
-                                    <joint name="arm_A_gripper_finger2_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
-                                    <geom class="collision" name="COLLISION_arm_A_gripper_finger2_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <geom class="visual" name="VISUAL_arm_A_gripper_finger2_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" material="arm_A_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <body name="arm_A_gripper_finger2_finger_link" pos="0.0292080077784 0 -0.0227132622407" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                    <joint name="arm_A_dhag95_gripper_finger2_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
+                                    <geom class="collision" name="COLLISION_arm_A_dhag95_gripper_finger2_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <geom class="visual" name="VISUAL_arm_A_dhag95_gripper_finger2_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" material="arm_A_dhag95_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <body name="arm_A_dhag95_gripper_finger2_finger_link" pos="0.0292080077784 0 -0.0227132622407" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                       <inertial mass="0.0222871" diaginertia="2.5654645572614138e-06 7.261569999999999e-06 9.505395442738587e-06" pos="0 0 0" quat="0.5767958804318123 -3.0512106522056137e-10 -0.81688831079707 -1.337536987981771e-09"/>
-                                      <joint name="arm_A_gripper_finger2_finger_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
-                                      <geom class="collision" name="COLLISION_arm_A_gripper_finger2_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                      <geom class="visual" name="VISUAL_arm_A_gripper_finger2_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" material="arm_A_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <joint name="arm_A_dhag95_gripper_finger2_finger_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
+                                      <geom class="collision" name="COLLISION_arm_A_dhag95_gripper_finger2_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <geom class="visual" name="VISUAL_arm_A_dhag95_gripper_finger2_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" material="arm_A_dhag95_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                     </body>
                                   </body>
-                                  <body name="arm_A_gripper_finger1_inner_knuckle_link" pos="-0.016 0 0.10586" quat="6.123233995736766e-17 0.0 0.0 1.0" gravcomp="1">
+                                  <body name="arm_A_dhag95_gripper_finger1_inner_knuckle_link" pos="-0.016 0 0.10586" quat="6.123233995736766e-17 0.0 0.0 1.0" gravcomp="1">
                                     <inertial mass="0.0318004" diaginertia="8.78398258431937e-06 1.04943e-05 1.881911741568063e-05" pos="0 0 0" quat="1.098312052799846e-09 -0.9203462169693297 -1.4336587921626676e-09 -0.39110464189298955"/>
-                                    <joint name="arm_A_gripper_finger1_inner_knuckle_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
-                                    <geom class="collision" name="COLLISION_arm_A_gripper_finger1_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <geom class="visual" name="VISUAL_arm_A_gripper_finger1_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" material="arm_A_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <body name="arm_A_gripper_finger1_finger_tip_link" pos="0.0394969463769 0 0.0382752038125" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                    <joint name="arm_A_dhag95_gripper_finger1_inner_knuckle_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
+                                    <geom class="collision" name="COLLISION_arm_A_dhag95_gripper_finger1_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <geom class="visual" name="VISUAL_arm_A_dhag95_gripper_finger1_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" material="arm_A_dhag95_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <body name="arm_A_dhag95_gripper_finger1_finger_tip_link" pos="0.0394969463769 0 0.0382752038125" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                       <inertial mass="0.0124305" diaginertia="7.872954634238462e-07 3.0396099999999733e-06 3.1730245365761823e-06" pos="0 0 0" quat="0.828371460624389 2.17974023867519e-07 -0.5601791884950102 -2.0147877606367402e-07"/>
-                                      <joint name="arm_A_gripper_finger1_finger_tip_joint" type="hinge" axis="0 1 0" ref="" range="-3.14 3.14"/>
-                                      <geom class="collision" name="COLLISION_arm_A_gripper_finger1_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                      <geom class="visual" name="VISUAL_arm_A_gripper_finger1_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" material="arm_A_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <joint name="arm_A_dhag95_gripper_finger1_finger_tip_joint" type="hinge" axis="0 1 0" ref="" range="-3.14 3.14"/>
+                                      <geom class="collision" name="COLLISION_arm_A_dhag95_gripper_finger1_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <geom class="visual" name="VISUAL_arm_A_dhag95_gripper_finger1_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" material="arm_A_dhag95_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                     </body>
                                   </body>
-                                  <body name="arm_A_gripper_finger2_inner_knuckle_link" pos="0.016 0 0.10586" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                  <body name="arm_A_dhag95_gripper_finger2_inner_knuckle_link" pos="0.016 0 0.10586" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                     <inertial mass="0.0318004" diaginertia="8.78398258431937e-06 1.04943e-05 1.881911741568063e-05" pos="0 0 0" quat="1.098312052799846e-09 -0.9203462169693297 -1.4336587921626676e-09 -0.39110464189298955"/>
-                                    <joint name="arm_A_gripper_finger2_inner_knuckle_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
-                                    <geom class="collision" name="COLLISION_arm_A_gripper_finger2_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <geom class="visual" name="VISUAL_arm_A_gripper_finger2_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" material="arm_A_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <body name="arm_A_gripper_finger2_finger_tip_link" pos="0.0394969463769 0 0.0382752038125" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                    <joint name="arm_A_dhag95_gripper_finger2_inner_knuckle_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
+                                    <geom class="collision" name="COLLISION_arm_A_dhag95_gripper_finger2_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <geom class="visual" name="VISUAL_arm_A_dhag95_gripper_finger2_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" material="arm_A_dhag95_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <body name="arm_A_dhag95_gripper_finger2_finger_tip_link" pos="0.0394969463769 0 0.0382752038125" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                       <inertial mass="0.0124305" diaginertia="7.872954634238462e-07 3.0396099999999733e-06 3.1730245365761823e-06" pos="0 0 0" quat="0.828371460624389 2.17974023867519e-07 -0.5601791884950102 -2.0147877606367402e-07"/>
-                                      <joint name="arm_A_gripper_finger2_finger_tip_joint" type="hinge" axis="0 1 0" ref="" range="-3.14 3.14"/>
-                                      <geom class="collision" name="COLLISION_arm_A_gripper_finger2_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                      <geom class="visual" name="VISUAL_arm_A_gripper_finger2_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" material="arm_A_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <joint name="arm_A_dhag95_gripper_finger2_finger_tip_joint" type="hinge" axis="0 1 0" ref="" range="-3.14 3.14"/>
+                                      <geom class="collision" name="COLLISION_arm_A_dhag95_gripper_finger2_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <geom class="visual" name="VISUAL_arm_A_dhag95_gripper_finger2_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" material="arm_A_dhag95_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                     </body>
                                   </body>
                                   <body name="arm_A__tcp" pos="0 0 0.14" quat="1.0 0.0 0.0 0.0" gravcomp="1"/>
@@ -267,18 +267,6 @@
                                   <geom class="visual" name="VISUAL_arm_A_realsense_link_15" type="mesh" mesh="MESH_d435_6743a526_15" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
                                   <geom class="visual" name="VISUAL_arm_A_realsense_link_16" type="mesh" mesh="MESH_d435_6743a526_16" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
                                   <geom class="visual" name="VISUAL_arm_A_realsense_link_17" type="mesh" mesh="MESH_d435_6743a526_17" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
-                                  <body name="arm_A_realsense_depth_frame" pos="0 0 0" quat="1.0 0.0 0.0 0.0" gravcomp="1">
-                                    <body name="arm_A_realsense_depth_optical_frame" pos="0 0 0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5" gravcomp="1"/>
-                                  </body>
-                                  <body name="arm_A_realsense_infra1_frame" pos="0 0.0 0" quat="1.0 0.0 0.0 0.0" gravcomp="1">
-                                    <body name="arm_A_realsense_infra1_optical_frame" pos="0 0 0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5" gravcomp="1"/>
-                                  </body>
-                                  <body name="arm_A_realsense_infra2_frame" pos="0 -0.05 0" quat="1.0 0.0 0.0 0.0" gravcomp="1">
-                                    <body name="arm_A_realsense_infra2_optical_frame" pos="0 0 0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5" gravcomp="1"/>
-                                  </body>
-                                  <body name="arm_A_realsense_color_frame" pos="0 0.015 0" quat="1.0 0.0 0.0 0.0" gravcomp="1">
-                                    <body name="arm_A_realsense_color_optical_frame" pos="0 0 0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5" gravcomp="1"/>
-                                  </body>
                                   <camera name="arm_A_realsense_camera" mode="fixed" pos="0 0 0" euler="0 -1.5708 -1.5708" fovy="75" resolution="640 480"/>
                                 </body>
                               </body>
@@ -361,56 +349,56 @@
                               <geom class="collision" name="COLLISION_arm_B_realsense_shelf_0" type="mesh" mesh="MESH_RealSense_D435_Shelf_d359ca29" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                               <geom class="visual" name="VISUAL_arm_B_realsense_shelf_0" type="mesh" mesh="MESH_RealSense_D435_Shelf_d359ca29" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                               <body name="arm_B_realsense_shelf_child_side" pos="0.0 0.0 0.006" quat="1.0 0.0 0.0 0.0" gravcomp="1">
-                                <body name="arm_B_gripper_base_link" pos="0 0 -0.0035" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                <body name="arm_B_dhag95_gripper_base_link" pos="0 0 -0.0035" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                   <inertial mass="0.83416" diaginertia="0.0004997193585541065 0.0013015987775450344 0.001498001863900859" pos="0 0 0" quat="0.7074119273558204 -0.0010056564148689783 -0.0011484842788531933 -0.706799854749391"/>
-                                  <geom class="collision" name="COLLISION_arm_B_gripper_base_link_0" type="mesh" mesh="MESH_base_link_36df6ff8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                  <geom class="visual" name="VISUAL_arm_B_gripper_base_link_0" type="mesh" mesh="MESH_base_link_36df6ff8" material="arm_B_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                  <body name="arm_B_gripper_finger1_knuckle_link" pos="-0.016 0 0.10586" quat="6.123233995736766e-17 0.0 0.0 1.0" gravcomp="1">
+                                  <geom class="collision" name="COLLISION_arm_B_dhag95_gripper_base_link_0" type="mesh" mesh="MESH_base_link_36df6ff8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                  <geom class="visual" name="VISUAL_arm_B_dhag95_gripper_base_link_0" type="mesh" mesh="MESH_base_link_36df6ff8" material="arm_B_dhag95_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                  <body name="arm_B_dhag95_gripper_finger1_knuckle_link" pos="-0.016 0 0.10586" quat="6.123233995736766e-17 0.0 0.0 1.0" gravcomp="1">
                                     <inertial mass="0.011111" diaginertia="1.9217399999999276e-06 3.2409095894155918e-06 4.964550410584478e-06" pos="0 0 0" quat="0.22770314809660452 0.6694410849460193 0.6694409310521997 -0.22770320587369108"/>
-                                    <joint name="arm_B_gripper_finger1_joint" type="hinge" axis="0 -1 0" ref="" range="0.0 0.65"/>
-                                    <geom class="collision" name="COLLISION_arm_B_gripper_finger1_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <geom class="visual" name="VISUAL_arm_B_gripper_finger1_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" material="arm_B_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <body name="arm_B_gripper_finger1_finger_link" pos="0.0292080077784 0 -0.0227132622407" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                    <joint name="arm_B_dhag95_gripper_finger1_joint" type="hinge" axis="0 -1 0" ref="" range="0.0 0.65"/>
+                                    <geom class="collision" name="COLLISION_arm_B_dhag95_gripper_finger1_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <geom class="visual" name="VISUAL_arm_B_dhag95_gripper_finger1_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" material="arm_B_dhag95_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <body name="arm_B_dhag95_gripper_finger1_finger_link" pos="0.0292080077784 0 -0.0227132622407" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                       <inertial mass="0.0222871" diaginertia="2.5654645572614138e-06 7.261569999999999e-06 9.505395442738587e-06" pos="0 0 0" quat="0.5767958804318123 -3.0512106522056137e-10 -0.81688831079707 -1.337536987981771e-09"/>
-                                      <joint name="arm_B_gripper_finger1_finger_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
-                                      <geom class="collision" name="COLLISION_arm_B_gripper_finger1_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                      <geom class="visual" name="VISUAL_arm_B_gripper_finger1_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" material="arm_B_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <joint name="arm_B_dhag95_gripper_finger1_finger_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
+                                      <geom class="collision" name="COLLISION_arm_B_dhag95_gripper_finger1_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <geom class="visual" name="VISUAL_arm_B_dhag95_gripper_finger1_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" material="arm_B_dhag95_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                     </body>
                                   </body>
-                                  <body name="arm_B_gripper_finger2_knuckle_link" pos="0.016 0 0.10586" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                  <body name="arm_B_dhag95_gripper_finger2_knuckle_link" pos="0.016 0 0.10586" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                     <inertial mass="0.011111" diaginertia="1.9217399999999276e-06 3.2409095894155918e-06 4.964550410584478e-06" pos="0 0 0" quat="0.22770314809660452 0.6694410849460193 0.6694409310521997 -0.22770320587369108"/>
-                                    <joint name="arm_B_gripper_finger2_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
-                                    <geom class="collision" name="COLLISION_arm_B_gripper_finger2_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <geom class="visual" name="VISUAL_arm_B_gripper_finger2_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" material="arm_B_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <body name="arm_B_gripper_finger2_finger_link" pos="0.0292080077784 0 -0.0227132622407" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                    <joint name="arm_B_dhag95_gripper_finger2_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
+                                    <geom class="collision" name="COLLISION_arm_B_dhag95_gripper_finger2_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <geom class="visual" name="VISUAL_arm_B_dhag95_gripper_finger2_knuckle_link_0" type="mesh" mesh="MESH_crank_Link_27946ce5" material="arm_B_dhag95_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <body name="arm_B_dhag95_gripper_finger2_finger_link" pos="0.0292080077784 0 -0.0227132622407" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                       <inertial mass="0.0222871" diaginertia="2.5654645572614138e-06 7.261569999999999e-06 9.505395442738587e-06" pos="0 0 0" quat="0.5767958804318123 -3.0512106522056137e-10 -0.81688831079707 -1.337536987981771e-09"/>
-                                      <joint name="arm_B_gripper_finger2_finger_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
-                                      <geom class="collision" name="COLLISION_arm_B_gripper_finger2_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                      <geom class="visual" name="VISUAL_arm_B_gripper_finger2_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" material="arm_B_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <joint name="arm_B_dhag95_gripper_finger2_finger_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
+                                      <geom class="collision" name="COLLISION_arm_B_dhag95_gripper_finger2_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <geom class="visual" name="VISUAL_arm_B_dhag95_gripper_finger2_finger_link_0" type="mesh" mesh="MESH_rod_Link_4ed0e7b8" material="arm_B_dhag95_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                     </body>
                                   </body>
-                                  <body name="arm_B_gripper_finger1_inner_knuckle_link" pos="-0.016 0 0.10586" quat="6.123233995736766e-17 0.0 0.0 1.0" gravcomp="1">
+                                  <body name="arm_B_dhag95_gripper_finger1_inner_knuckle_link" pos="-0.016 0 0.10586" quat="6.123233995736766e-17 0.0 0.0 1.0" gravcomp="1">
                                     <inertial mass="0.0318004" diaginertia="8.78398258431937e-06 1.04943e-05 1.881911741568063e-05" pos="0 0 0" quat="1.098312052799846e-09 -0.9203462169693297 -1.4336587921626676e-09 -0.39110464189298955"/>
-                                    <joint name="arm_B_gripper_finger1_inner_knuckle_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
-                                    <geom class="collision" name="COLLISION_arm_B_gripper_finger1_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <geom class="visual" name="VISUAL_arm_B_gripper_finger1_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" material="arm_B_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <body name="arm_B_gripper_finger1_finger_tip_link" pos="0.0394969463769 0 0.0382752038125" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                    <joint name="arm_B_dhag95_gripper_finger1_inner_knuckle_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
+                                    <geom class="collision" name="COLLISION_arm_B_dhag95_gripper_finger1_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <geom class="visual" name="VISUAL_arm_B_dhag95_gripper_finger1_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" material="arm_B_dhag95_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <body name="arm_B_dhag95_gripper_finger1_finger_tip_link" pos="0.0394969463769 0 0.0382752038125" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                       <inertial mass="0.0124305" diaginertia="7.872954634238462e-07 3.0396099999999733e-06 3.1730245365761823e-06" pos="0 0 0" quat="0.828371460624389 2.17974023867519e-07 -0.5601791884950102 -2.0147877606367402e-07"/>
-                                      <joint name="arm_B_gripper_finger1_finger_tip_joint" type="hinge" axis="0 1 0" ref="" range="-3.14 3.14"/>
-                                      <geom class="collision" name="COLLISION_arm_B_gripper_finger1_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                      <geom class="visual" name="VISUAL_arm_B_gripper_finger1_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" material="arm_B_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <joint name="arm_B_dhag95_gripper_finger1_finger_tip_joint" type="hinge" axis="0 1 0" ref="" range="-3.14 3.14"/>
+                                      <geom class="collision" name="COLLISION_arm_B_dhag95_gripper_finger1_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <geom class="visual" name="VISUAL_arm_B_dhag95_gripper_finger1_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" material="arm_B_dhag95_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                     </body>
                                   </body>
-                                  <body name="arm_B_gripper_finger2_inner_knuckle_link" pos="0.016 0 0.10586" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                  <body name="arm_B_dhag95_gripper_finger2_inner_knuckle_link" pos="0.016 0 0.10586" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                     <inertial mass="0.0318004" diaginertia="8.78398258431937e-06 1.04943e-05 1.881911741568063e-05" pos="0 0 0" quat="1.098312052799846e-09 -0.9203462169693297 -1.4336587921626676e-09 -0.39110464189298955"/>
-                                    <joint name="arm_B_gripper_finger2_inner_knuckle_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
-                                    <geom class="collision" name="COLLISION_arm_B_gripper_finger2_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <geom class="visual" name="VISUAL_arm_B_gripper_finger2_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" material="arm_B_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                    <body name="arm_B_gripper_finger2_finger_tip_link" pos="0.0394969463769 0 0.0382752038125" quat="1.0 0.0 0.0 0.0" gravcomp="1">
+                                    <joint name="arm_B_dhag95_gripper_finger2_inner_knuckle_joint" type="hinge" axis="0 -1 0" ref="" range="-3.14 3.14"/>
+                                    <geom class="collision" name="COLLISION_arm_B_dhag95_gripper_finger2_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <geom class="visual" name="VISUAL_arm_B_dhag95_gripper_finger2_inner_knuckle_link_0" type="mesh" mesh="MESH_proximal_phalanx_Link_d2c93b56" material="arm_B_dhag95_dh_ag95_gripper_black_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <body name="arm_B_dhag95_gripper_finger2_finger_tip_link" pos="0.0394969463769 0 0.0382752038125" quat="1.0 0.0 0.0 0.0" gravcomp="1">
                                       <inertial mass="0.0124305" diaginertia="7.872954634238462e-07 3.0396099999999733e-06 3.1730245365761823e-06" pos="0 0 0" quat="0.828371460624389 2.17974023867519e-07 -0.5601791884950102 -2.0147877606367402e-07"/>
-                                      <joint name="arm_B_gripper_finger2_finger_tip_joint" type="hinge" axis="0 1 0" ref="" range="-3.14 3.14"/>
-                                      <geom class="collision" name="COLLISION_arm_B_gripper_finger2_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-                                      <geom class="visual" name="VISUAL_arm_B_gripper_finger2_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" material="arm_B_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <joint name="arm_B_dhag95_gripper_finger2_finger_tip_joint" type="hinge" axis="0 1 0" ref="" range="-3.14 3.14"/>
+                                      <geom class="collision" name="COLLISION_arm_B_dhag95_gripper_finger2_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                      <geom class="visual" name="VISUAL_arm_B_dhag95_gripper_finger2_finger_tip_link_0" type="mesh" mesh="MESH_distal_phalanx_Link_710b7cbe" material="arm_B_dhag95_dh_ag95_gripper_white_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
                                     </body>
                                   </body>
                                   <body name="arm_B__tcp" pos="0 0 0.14" quat="1.0 0.0 0.0 0.0" gravcomp="1"/>
@@ -438,18 +426,6 @@
                                   <geom class="visual" name="VISUAL_arm_B_realsense_link_15" type="mesh" mesh="MESH_d435_6743a526_15" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
                                   <geom class="visual" name="VISUAL_arm_B_realsense_link_16" type="mesh" mesh="MESH_d435_6743a526_16" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
                                   <geom class="visual" name="VISUAL_arm_B_realsense_link_17" type="mesh" mesh="MESH_d435_6743a526_17" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
-                                  <body name="arm_B_realsense_depth_frame" pos="0 0 0" quat="1.0 0.0 0.0 0.0" gravcomp="1">
-                                    <body name="arm_B_realsense_depth_optical_frame" pos="0 0 0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5" gravcomp="1"/>
-                                  </body>
-                                  <body name="arm_B_realsense_infra1_frame" pos="0 0.0 0" quat="1.0 0.0 0.0 0.0" gravcomp="1">
-                                    <body name="arm_B_realsense_infra1_optical_frame" pos="0 0 0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5" gravcomp="1"/>
-                                  </body>
-                                  <body name="arm_B_realsense_infra2_frame" pos="0 -0.05 0" quat="1.0 0.0 0.0 0.0" gravcomp="1">
-                                    <body name="arm_B_realsense_infra2_optical_frame" pos="0 0 0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5" gravcomp="1"/>
-                                  </body>
-                                  <body name="arm_B_realsense_color_frame" pos="0 0.015 0" quat="1.0 0.0 0.0 0.0" gravcomp="1">
-                                    <body name="arm_B_realsense_color_optical_frame" pos="0 0 0" quat="0.5000000000000001 -0.5 0.4999999999999999 -0.5" gravcomp="1"/>
-                                  </body>
                                   <camera name="arm_B_realsense_camera" mode="fixed" pos="0 0 0" euler="0 -1.5708 -1.5708" fovy="75" resolution="640 480"/>
                                 </body>
                               </body>
@@ -468,7 +444,7 @@
       </body>
     </body>
     <geom name="floor" type="plane" size="0 0 0.05" material="floor"/>
-    <light name="default_light" pos="0 0 10" dir="0 0 -1" directional="true"/>
+    <light name="default_light" pos="5 0 5" dir="-1 0 -1" directional="true" intensity="100000"/>
   </worldbody>
   <contact>
     <exclude body1="arm_A_ur_base_link_inertia" body2="arm_A_ur_shoulder_link"/>
@@ -477,76 +453,90 @@
     <exclude body1="arm_A_ur_forearm_link" body2="arm_A_ur_wrist_1_link"/>
     <exclude body1="arm_A_ur_wrist_1_link" body2="arm_A_ur_wrist_2_link"/>
     <exclude body1="arm_A_ur_wrist_2_link" body2="arm_A_ur_wrist_3_link"/>
-    <exclude body1="arm_A_gripper_base_link" body2="arm_A_gripper_finger1_knuckle_link"/>
-    <exclude body1="arm_A_gripper_base_link" body2="arm_A_gripper_finger2_knuckle_link"/>
-    <exclude body1="arm_A_gripper_finger1_knuckle_link" body2="arm_A_gripper_finger1_finger_link"/>
-    <exclude body1="arm_A_gripper_finger2_knuckle_link" body2="arm_A_gripper_finger2_finger_link"/>
-    <exclude body1="arm_A_gripper_base_link" body2="arm_A_gripper_finger1_inner_knuckle_link"/>
-    <exclude body1="arm_A_gripper_base_link" body2="arm_A_gripper_finger2_inner_knuckle_link"/>
-    <exclude body1="arm_A_gripper_finger1_inner_knuckle_link" body2="arm_A_gripper_finger1_finger_tip_link"/>
-    <exclude body1="arm_A_gripper_finger2_inner_knuckle_link" body2="arm_A_gripper_finger2_finger_tip_link"/>
+    <exclude body1="arm_A_dhag95_gripper_base_link" body2="arm_A_dhag95_gripper_finger1_knuckle_link"/>
+    <exclude body1="arm_A_dhag95_gripper_base_link" body2="arm_A_dhag95_gripper_finger2_knuckle_link"/>
+    <exclude body1="arm_A_dhag95_gripper_finger1_knuckle_link" body2="arm_A_dhag95_gripper_finger1_finger_link"/>
+    <exclude body1="arm_A_dhag95_gripper_finger2_knuckle_link" body2="arm_A_dhag95_gripper_finger2_finger_link"/>
+    <exclude body1="arm_A_dhag95_gripper_base_link" body2="arm_A_dhag95_gripper_finger1_inner_knuckle_link"/>
+    <exclude body1="arm_A_dhag95_gripper_base_link" body2="arm_A_dhag95_gripper_finger2_inner_knuckle_link"/>
+    <exclude body1="arm_A_dhag95_gripper_finger1_inner_knuckle_link" body2="arm_A_dhag95_gripper_finger1_finger_tip_link"/>
+    <exclude body1="arm_A_dhag95_gripper_finger2_inner_knuckle_link" body2="arm_A_dhag95_gripper_finger2_finger_tip_link"/>
     <exclude body1="arm_B_ur_base_link_inertia" body2="arm_B_ur_shoulder_link"/>
     <exclude body1="arm_B_ur_shoulder_link" body2="arm_B_ur_upper_arm_link"/>
     <exclude body1="arm_B_ur_upper_arm_link" body2="arm_B_ur_forearm_link"/>
     <exclude body1="arm_B_ur_forearm_link" body2="arm_B_ur_wrist_1_link"/>
     <exclude body1="arm_B_ur_wrist_1_link" body2="arm_B_ur_wrist_2_link"/>
     <exclude body1="arm_B_ur_wrist_2_link" body2="arm_B_ur_wrist_3_link"/>
-    <exclude body1="arm_B_gripper_base_link" body2="arm_B_gripper_finger1_knuckle_link"/>
-    <exclude body1="arm_B_gripper_base_link" body2="arm_B_gripper_finger2_knuckle_link"/>
-    <exclude body1="arm_B_gripper_finger1_knuckle_link" body2="arm_B_gripper_finger1_finger_link"/>
-    <exclude body1="arm_B_gripper_finger2_knuckle_link" body2="arm_B_gripper_finger2_finger_link"/>
-    <exclude body1="arm_B_gripper_base_link" body2="arm_B_gripper_finger1_inner_knuckle_link"/>
-    <exclude body1="arm_B_gripper_base_link" body2="arm_B_gripper_finger2_inner_knuckle_link"/>
-    <exclude body1="arm_B_gripper_finger1_inner_knuckle_link" body2="arm_B_gripper_finger1_finger_tip_link"/>
-    <exclude body1="arm_B_gripper_finger2_inner_knuckle_link" body2="arm_B_gripper_finger2_finger_tip_link"/>
-    <exclude body1="arm_A_gripper_finger1_finger_tip_link" body2="arm_A_gripper_finger1_finger_link"/>
-    <exclude body1="arm_A_gripper_finger2_finger_tip_link" body2="arm_A_gripper_finger2_finger_link"/>
-    <exclude body1="arm_A_gripper_finger1_knuckle_link" body2="arm_A_gripper_finger1_inner_knuckle_link"/>
-    <exclude body1="arm_A_gripper_finger2_knuckle_link" body2="arm_A_gripper_finger2_inner_knuckle_link"/>
-    <exclude body1="arm_A_gripper_finger1_finger_link" body2="arm_A_gripper_finger1_inner_knuckle_link"/>
-    <exclude body1="arm_A_gripper_finger2_finger_link" body2="arm_A_gripper_finger2_inner_knuckle_link"/>
-    <exclude body1="arm_A_gripper_finger1_finger_link" body2="arm_A_gripper_base_link"/>
-    <exclude body1="arm_A_gripper_finger2_finger_link" body2="arm_A_gripper_base_link"/>
-    <exclude body1="arm_B_gripper_finger1_finger_tip_link" body2="arm_B_gripper_finger1_finger_link"/>
-    <exclude body1="arm_B_gripper_finger2_finger_tip_link" body2="arm_B_gripper_finger2_finger_link"/>
-    <exclude body1="arm_B_gripper_finger1_knuckle_link" body2="arm_B_gripper_finger1_inner_knuckle_link"/>
-    <exclude body1="arm_B_gripper_finger2_knuckle_link" body2="arm_B_gripper_finger2_inner_knuckle_link"/>
-    <exclude body1="arm_B_gripper_finger1_finger_link" body2="arm_B_gripper_finger1_inner_knuckle_link"/>
-    <exclude body1="arm_B_gripper_finger2_finger_link" body2="arm_B_gripper_finger2_inner_knuckle_link"/>
-    <exclude body1="arm_B_gripper_finger1_finger_link" body2="arm_B_gripper_base_link"/>
-    <exclude body1="arm_B_gripper_finger2_finger_link" body2="arm_B_gripper_base_link"/>
+    <exclude body1="arm_B_dhag95_gripper_base_link" body2="arm_B_dhag95_gripper_finger1_knuckle_link"/>
+    <exclude body1="arm_B_dhag95_gripper_base_link" body2="arm_B_dhag95_gripper_finger2_knuckle_link"/>
+    <exclude body1="arm_B_dhag95_gripper_finger1_knuckle_link" body2="arm_B_dhag95_gripper_finger1_finger_link"/>
+    <exclude body1="arm_B_dhag95_gripper_finger2_knuckle_link" body2="arm_B_dhag95_gripper_finger2_finger_link"/>
+    <exclude body1="arm_B_dhag95_gripper_base_link" body2="arm_B_dhag95_gripper_finger1_inner_knuckle_link"/>
+    <exclude body1="arm_B_dhag95_gripper_base_link" body2="arm_B_dhag95_gripper_finger2_inner_knuckle_link"/>
+    <exclude body1="arm_B_dhag95_gripper_finger1_inner_knuckle_link" body2="arm_B_dhag95_gripper_finger1_finger_tip_link"/>
+    <exclude body1="arm_B_dhag95_gripper_finger2_inner_knuckle_link" body2="arm_B_dhag95_gripper_finger2_finger_tip_link"/>
+    <exclude body1="arm_A_dhag95_gripper_finger1_finger_tip_link" body2="arm_A_dhag95_gripper_finger1_finger_link"/>
+    <exclude body1="arm_A_dhag95_gripper_finger2_finger_tip_link" body2="arm_A_dhag95_gripper_finger2_finger_link"/>
+    <exclude body1="arm_A_dhag95_gripper_finger1_knuckle_link" body2="arm_A_dhag95_gripper_finger1_inner_knuckle_link"/>
+    <exclude body1="arm_A_dhag95_gripper_finger2_knuckle_link" body2="arm_A_dhag95_gripper_finger2_inner_knuckle_link"/>
+    <exclude body1="arm_A_dhag95_gripper_finger1_finger_link" body2="arm_A_dhag95_gripper_finger1_inner_knuckle_link"/>
+    <exclude body1="arm_A_dhag95_gripper_finger2_finger_link" body2="arm_A_dhag95_gripper_finger2_inner_knuckle_link"/>
+    <exclude body1="arm_A_dhag95_gripper_finger1_finger_link" body2="arm_A_dhag95_gripper_base_link"/>
+    <exclude body1="arm_A_dhag95_gripper_finger2_finger_link" body2="arm_A_dhag95_gripper_base_link"/>
+    <exclude body1="arm_B_dhag95_gripper_finger1_finger_tip_link" body2="arm_B_dhag95_gripper_finger1_finger_link"/>
+    <exclude body1="arm_B_dhag95_gripper_finger2_finger_tip_link" body2="arm_B_dhag95_gripper_finger2_finger_link"/>
+    <exclude body1="arm_B_dhag95_gripper_finger1_knuckle_link" body2="arm_B_dhag95_gripper_finger1_inner_knuckle_link"/>
+    <exclude body1="arm_B_dhag95_gripper_finger2_knuckle_link" body2="arm_B_dhag95_gripper_finger2_inner_knuckle_link"/>
+    <exclude body1="arm_B_dhag95_gripper_finger1_finger_link" body2="arm_B_dhag95_gripper_finger1_inner_knuckle_link"/>
+    <exclude body1="arm_B_dhag95_gripper_finger2_finger_link" body2="arm_B_dhag95_gripper_finger2_inner_knuckle_link"/>
+    <exclude body1="arm_B_dhag95_gripper_finger1_finger_link" body2="arm_B_dhag95_gripper_base_link"/>
+    <exclude body1="arm_B_dhag95_gripper_finger2_finger_link" body2="arm_B_dhag95_gripper_base_link"/>
   </contact>
   <actuator>
-    <position group="1" kp="100" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION" joint="arm_A_ur_shoulder_pan_joint"/>
+    <motor group="0" ctrlrange="-150 150" name="arm_A_ur_shoulder_pan_joint_ACTUATOR_MOTOR" joint="arm_A_ur_shoulder_pan_joint"/>
+    <motor group="0" ctrlrange="-150 150" name="arm_A_ur_shoulder_lift_joint_ACTUATOR_MOTOR" joint="arm_A_ur_shoulder_lift_joint"/>
+    <motor group="0" ctrlrange="-150 150" name="arm_A_ur_elbow_joint_ACTUATOR_MOTOR" joint="arm_A_ur_elbow_joint"/>
+    <motor group="0" ctrlrange="-28  28" name="arm_A_ur_wrist_1_joint_ACTUATOR_MOTOR" joint="arm_A_ur_wrist_1_joint"/>
+    <motor group="0" ctrlrange="-28  28" name="arm_A_ur_wrist_2_joint_ACTUATOR_MOTOR" joint="arm_A_ur_wrist_2_joint"/>
+    <motor group="0" ctrlrange="-28  28" name="arm_A_ur_wrist_3_joint_ACTUATOR_MOTOR" joint="arm_A_ur_wrist_3_joint"/>
+    <motor group="0" ctrlrange="-5   5" name="arm_A_dhag95_gripper_finger1_joint_ACTUATOR_MOTOR" joint="arm_A_dhag95_gripper_finger1_joint"/>
+    <motor group="0" ctrlrange="-150 150" name="arm_B_ur_shoulder_pan_joint_ACTUATOR_MOTOR" joint="arm_B_ur_shoulder_pan_joint"/>
+    <motor group="0" ctrlrange="-150 150" name="arm_B_ur_shoulder_lift_joint_ACTUATOR_MOTOR" joint="arm_B_ur_shoulder_lift_joint"/>
+    <motor group="0" ctrlrange="-150 150" name="arm_B_ur_elbow_joint_ACTUATOR_MOTOR" joint="arm_B_ur_elbow_joint"/>
+    <motor group="0" ctrlrange="-28  28" name="arm_B_ur_wrist_1_joint_ACTUATOR_MOTOR" joint="arm_B_ur_wrist_1_joint"/>
+    <motor group="0" ctrlrange="-28  28" name="arm_B_ur_wrist_2_joint_ACTUATOR_MOTOR" joint="arm_B_ur_wrist_2_joint"/>
+    <motor group="0" ctrlrange="-28  28" name="arm_B_ur_wrist_3_joint_ACTUATOR_MOTOR" joint="arm_B_ur_wrist_3_joint"/>
+    <motor group="0" ctrlrange="-5   5" name="arm_B_dhag95_gripper_finger1_joint_ACTUATOR_MOTOR" joint="arm_B_dhag95_gripper_finger1_joint"/>
+    <!-- <position group="1" kp="100" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION" joint="arm_A_ur_shoulder_pan_joint"/>
     <position group="1" kp="100" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION" joint="arm_A_ur_shoulder_lift_joint"/>
     <position group="1" kp="100" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_A_ur_elbow_joint_ACTUATOR_POSITION" joint="arm_A_ur_elbow_joint"/>
     <position group="1" kp="50" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_A_ur_wrist_1_joint_ACTUATOR_POSITION" joint="arm_A_ur_wrist_1_joint"/>
     <position group="1" kp="30" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_A_ur_wrist_2_joint_ACTUATOR_POSITION" joint="arm_A_ur_wrist_2_joint"/>
     <position group="1" kp="30" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_A_ur_wrist_3_joint_ACTUATOR_POSITION" joint="arm_A_ur_wrist_3_joint"/>
-    <position group="1" kp="5" dampratio="0.95" ctrlrange="0.0 0.65" name="arm_A_gripper_finger1_joint_ACTUATOR_POSITION" joint="arm_A_gripper_finger1_joint"/>
+    <position group="1" kp="5" dampratio="0.95" ctrlrange="0.0 0.65" name="arm_A_dhag95_gripper_finger1_joint_ACTUATOR_POSITION" joint="arm_A_dhag95_gripper_finger1_joint"/>
     <position group="1" kp="100" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_B_ur_shoulder_pan_joint_ACTUATOR_POSITION" joint="arm_B_ur_shoulder_pan_joint"/>
     <position group="1" kp="100" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_B_ur_shoulder_lift_joint_ACTUATOR_POSITION" joint="arm_B_ur_shoulder_lift_joint"/>
     <position group="1" kp="100" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_B_ur_elbow_joint_ACTUATOR_POSITION" joint="arm_B_ur_elbow_joint"/>
     <position group="1" kp="50" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_B_ur_wrist_1_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_1_joint"/>
     <position group="1" kp="30" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_B_ur_wrist_2_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_2_joint"/>
     <position group="1" kp="30" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_B_ur_wrist_3_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_3_joint"/>
-    <position group="1" kp="5" dampratio="0.95" ctrlrange="0.0 0.65" name="arm_B_gripper_finger1_joint_ACTUATOR_POSITION" joint="arm_B_gripper_finger1_joint"/>
+    <position group="1" kp="5" dampratio="0.95" ctrlrange="0.0 0.65" name="arm_B_dhag95_gripper_finger1_joint_ACTUATOR_POSITION" joint="arm_B_dhag95_gripper_finger1_joint"/> -->
   </actuator>
   <equality>
-    <joint joint1="arm_A_gripper_finger2_joint" joint2="arm_A_gripper_finger1_joint" polycoef="0.0 1.0 0.0 0.0 0.0"/>
-    <joint joint1="arm_A_gripper_finger1_finger_joint" joint2="arm_A_gripper_finger1_joint" polycoef="0.0 0.4563942 0.0 0.0 0.0"/>
-    <joint joint1="arm_A_gripper_finger2_finger_joint" joint2="arm_A_gripper_finger1_joint" polycoef="0.0 0.4563942 0.0 0.0 0.0"/>
-    <joint joint1="arm_A_gripper_finger1_inner_knuckle_joint" joint2="arm_A_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
-    <joint joint1="arm_A_gripper_finger2_inner_knuckle_joint" joint2="arm_A_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
-    <joint joint1="arm_A_gripper_finger1_finger_tip_joint" joint2="arm_A_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
-    <joint joint1="arm_A_gripper_finger2_finger_tip_joint" joint2="arm_A_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
-    <joint joint1="arm_B_gripper_finger2_joint" joint2="arm_B_gripper_finger1_joint" polycoef="0.0 1.0 0.0 0.0 0.0"/>
-    <joint joint1="arm_B_gripper_finger1_finger_joint" joint2="arm_B_gripper_finger1_joint" polycoef="0.0 0.4563942 0.0 0.0 0.0"/>
-    <joint joint1="arm_B_gripper_finger2_finger_joint" joint2="arm_B_gripper_finger1_joint" polycoef="0.0 0.4563942 0.0 0.0 0.0"/>
-    <joint joint1="arm_B_gripper_finger1_inner_knuckle_joint" joint2="arm_B_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
-    <joint joint1="arm_B_gripper_finger2_inner_knuckle_joint" joint2="arm_B_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
-    <joint joint1="arm_B_gripper_finger1_finger_tip_joint" joint2="arm_B_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
-    <joint joint1="arm_B_gripper_finger2_finger_tip_joint" joint2="arm_B_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
+    <joint joint1="arm_A_dhag95_gripper_finger2_joint" joint2="arm_A_dhag95_gripper_finger1_joint" polycoef="0.0 1.0 0.0 0.0 0.0"/>
+    <joint joint1="arm_A_dhag95_gripper_finger1_finger_joint" joint2="arm_A_dhag95_gripper_finger1_joint" polycoef="0.0 0.4563942 0.0 0.0 0.0"/>
+    <joint joint1="arm_A_dhag95_gripper_finger2_finger_joint" joint2="arm_A_dhag95_gripper_finger1_joint" polycoef="0.0 0.4563942 0.0 0.0 0.0"/>
+    <joint joint1="arm_A_dhag95_gripper_finger1_inner_knuckle_joint" joint2="arm_A_dhag95_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
+    <joint joint1="arm_A_dhag95_gripper_finger2_inner_knuckle_joint" joint2="arm_A_dhag95_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
+    <joint joint1="arm_A_dhag95_gripper_finger1_finger_tip_joint" joint2="arm_A_dhag95_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
+    <joint joint1="arm_A_dhag95_gripper_finger2_finger_tip_joint" joint2="arm_A_dhag95_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
+    <joint joint1="arm_B_dhag95_gripper_finger2_joint" joint2="arm_B_dhag95_gripper_finger1_joint" polycoef="0.0 1.0 0.0 0.0 0.0"/>
+    <joint joint1="arm_B_dhag95_gripper_finger1_finger_joint" joint2="arm_B_dhag95_gripper_finger1_joint" polycoef="0.0 0.4563942 0.0 0.0 0.0"/>
+    <joint joint1="arm_B_dhag95_gripper_finger2_finger_joint" joint2="arm_B_dhag95_gripper_finger1_joint" polycoef="0.0 0.4563942 0.0 0.0 0.0"/>
+    <joint joint1="arm_B_dhag95_gripper_finger1_inner_knuckle_joint" joint2="arm_B_dhag95_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
+    <joint joint1="arm_B_dhag95_gripper_finger2_inner_knuckle_joint" joint2="arm_B_dhag95_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
+    <joint joint1="arm_B_dhag95_gripper_finger1_finger_tip_joint" joint2="arm_B_dhag95_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
+    <joint joint1="arm_B_dhag95_gripper_finger2_finger_tip_joint" joint2="arm_B_dhag95_gripper_finger1_joint" polycoef="0.0 1.49462955 0.0 0.0 0.0"/>
   </equality>
   <sensor>
     <force name="arm_A_ur_tcp_fts_sensor_force" site="arm_A_ur_ft_frame_SITE"/>

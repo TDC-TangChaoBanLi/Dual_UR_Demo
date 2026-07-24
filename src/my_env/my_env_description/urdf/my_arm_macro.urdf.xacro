@@ -67,7 +67,7 @@
     </xacro:if>
     <xacro:if value="${gripper_type == 'dh_ag95'}">
       <!-- DH-Robotics AG-95 gripper parameters -->
-      <xacro:property name="_ag95_prefix" value="${tf_prefix}" />
+      <xacro:property name="_ag95_prefix" value="${tf_prefix}dhag95_" />
       <xacro:property name="_ag95_gripper_base_link" value="${_ag95_prefix}gripper_base_link" />
     </xacro:if>
 

@@ -3,7 +3,7 @@
     pid_gains:
       position:
         arm_A_ur_shoulder_pan_joint:
-          p: 250.0
+          p: 200.0
           i: 0.0
           d: 50.0
           u_clamp_max: 150.0
@@ -11,7 +11,7 @@
           i_clamp_max: 40.0
           i_clamp_min: -40.0
         arm_A_ur_shoulder_lift_joint:
-          p: 250.0
+          p: 200.0
           i: 0.0
           d: 50.0
           u_clamp_max: 150.0
@@ -19,102 +19,119 @@
           i_clamp_max: 40.0
           i_clamp_min: -40.0
         arm_A_ur_elbow_joint:
-          p: 250.0
+          p: 100.0
           i: 0.0
-          d: 45.0
+          d: 25.0
           u_clamp_max: 150.0
           u_clamp_min: -150.0
           i_clamp_max: 40.0
           i_clamp_min: -40.0
         arm_A_ur_wrist_1_joint:
-          p: 30.0
+          p: 5.0
           i: 0.0
-          d: 5.0
+          d: 1.0
           u_clamp_max: 28.0
           u_clamp_min: -28.0
           i_clamp_max: 5.0
           i_clamp_min: -5.0
         arm_A_ur_wrist_2_joint:
-          p: 30.0
+          p: 5.0
           i: 0.0
-          d: 5.0
+          d: 1.0
           u_clamp_max: 28.0
           u_clamp_min: -28.0
           i_clamp_max: 5.0
           i_clamp_min: -5.0
         arm_A_ur_wrist_3_joint:
-          p: 20.0
+          p: 5.0
           i: 0.0
-          d: 3.0
+          d: 1.0
           u_clamp_max: 28.0
           u_clamp_min: -28.0
           i_clamp_max: 5.0
           i_clamp_min: -5.0
-        arm_A_robotiq_85_left_knuckle_joint:
-          p: 5.0
+        # arm_A_robotiq_85_left_knuckle_joint:
+        #   p: 1.0
+        #   i: 0.0
+        #   d: 0.0
+        #   u_clamp_max: 5.0
+        #   u_clamp_min: -5.0
+        #   i_clamp_max: 1.0
+        #   i_clamp_min: -1.0
+        arm_A_dhag95_gripper_finger1_joint:
+          p: 0.1
           i: 0.0
-          d: 0.2
-          u_clamp_max: 10.0
-          u_clamp_min: -10.0
+          d: 0.0
+          u_clamp_max: 5.0
+          u_clamp_min: -5.0
           i_clamp_max: 1.0
           i_clamp_min: -1.0
         
         arm_B_ur_shoulder_pan_joint:
-          p: 250.0
+          p: 200.0
           i: 0.0
-          d: 60.0
+          d: 50.0
           u_clamp_max: 150.0
           u_clamp_min: -150.0
           i_clamp_max: 40.0
           i_clamp_min: -40.0
         arm_B_ur_shoulder_lift_joint:
-          p: 250.0
+          p: 200.0
           i: 0.0
-          d: 60.0
+          d: 50.0
           u_clamp_max: 150.0
           u_clamp_min: -150.0
           i_clamp_max: 40.0
           i_clamp_min: -40.0
         arm_B_ur_elbow_joint:
-          p: 250.0
+          p: 100.0
           i: 0.0
-          d: 45.0
+          d: 25.0
           u_clamp_max: 150.0
           u_clamp_min: -150.0
           i_clamp_max: 40.0
           i_clamp_min: -40.0
         arm_B_ur_wrist_1_joint:
-          p: 30.0
+          p: 5.0
           i: 0.0
-          d: 5.0
+          d: 1.0
           u_clamp_max: 28.0
           u_clamp_min: -28.0
           i_clamp_max: 5.0
           i_clamp_min: -5.0
         arm_B_ur_wrist_2_joint:
-          p: 25.0
+          p: 5.0
           i: 0.0
-          d: 4.0
+          d: 1.0
           u_clamp_max: 28.0
           u_clamp_min: -28.0
           i_clamp_max: 5.0
           i_clamp_min: -5.0
         arm_B_ur_wrist_3_joint:
-          p: 20.0
+          p: 5.0
           i: 0.0
-          d: 3.0
+          d: 1.0
           u_clamp_max: 28.0
           u_clamp_min: -28.0
           i_clamp_max: 5.0
           i_clamp_min: -5.0
-        arm_B_robotiq_85_left_knuckle_joint:
-          p: 5.0
+        # arm_B_robotiq_85_left_knuckle_joint:
+        #   p: 1.0
+        #   i: 0.0
+        #   d: 0.0
+        #   u_clamp_max: 5.0
+        #   u_clamp_min: -5.0
+        #   i_clamp_max: 1.0
+        #   i_clamp_min: -1.0
+        arm_B_dhag95_gripper_finger1_joint:
+          p: 0.1
           i: 0.0
-          d: 0.2
-          u_clamp_max: 10.0
-          u_clamp_min: -10.0
+          d: 0.0
+          u_clamp_max: 5.0
+          u_clamp_min: -5.0
           i_clamp_max: 1.0
           i_clamp_min: -1.0
+
     pid_gains:
       velocity:
         arm_A_ur_shoulder_pan_joint:

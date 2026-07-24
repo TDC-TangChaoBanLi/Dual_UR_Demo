@@ -6,28 +6,14 @@
   <!-- Jazzy: mujoco ros2_control 宏（已移至 my_env_mujoco 包） -->
   <xacro:include filename="$(find my_env_mujoco)/urdf/my_arm_mujoco_control.urdf.xacro"/>
 
-  <!-- 我们需要指定用于参数化描述的参数 -->
-  <!-- 为所需的ur_type创建一个文件夹，并从ur_description包中复制文件到那里 -->
-  
-  <!-- UR_A 机器人参数 (固定为 property) -->
-  <xacro:property name="arm_A_tf_prefix" value="arm_A_"/>
-  <xacro:property name="ur_A_ur_type" value="ur5"/>
-
-  <!-- UR_B 机器人参数 (固定为 property) -->
-  <xacro:property name="arm_B_tf_prefix" value="arm_B_"/>
-  <xacro:property name="ur_B_ur_type" value="ur5e"/>
-
   <!-- 控制参数 -->
-  <xacro:arg name="use_fake_hardware" default="true" />
-  <xacro:arg name="fake_sensor_commands" default="true" />
-  <xacro:arg name="use_sim_mujoco" default="true" />
   <xacro:arg name="mjcf_file_path" default="$(find my_env_mujoco)/mjcf/my_env_mujoco.xml"/>
-  <xacro:arg name="generate_ros2_control" default="false" />
-  <!-- <xacro:arg name="ur_A_initial_positions" default="{shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0}"/> -->
-  <!-- <xacro:arg name="ur_B_initial_positions" default="{shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0}"/> -->
-  
+  <xacro:arg name="pids_config_file_path" default="$(find my_env_control)/config/mujoco_pids_config.yaml"/>
+  <xacro:arg name="ur_A_initial_positions_file" default="$(find my_env_control)/config/ur_A_initial_positions.yaml"/>
+  <xacro:arg name="ur_B_initial_positions_file" default="$(find my_env_control)/config/ur_B_initial_positions.yaml"/>
+
   <!-- 夹爪和相机参数 -->
-  <xacro:arg name="camera_use_nominal_extrinsics" default="true"/>
+  <xacro:arg name="camera_use_nominal_extrinsics" default="false"/>
   <!-- UR 安全限位和路径参数（几何用） -->
   <xacro:arg name="safety_limits" default="false"/>
   <xacro:arg name="safety_pos_margin" default="0.15"/>
@@ -39,10 +25,8 @@
   <!-- ============================================ -->
   <xacro:arg name="mujoco_sim_speed_factor" default="1.0"/>
   <xacro:arg name="mujoco_headless" default="false"/>
-
-  <!-- 两臂初始关节角（property 形式，可在 launch 文件中通过 xacro 参数覆盖） -->
-  <xacro:property name="ur_A_initial_positions" value="${dict(shoulder_pan_joint=-1.57,shoulder_lift_joint=-1.27,elbow_joint=1.0,wrist_1_joint=-1.3,wrist_2_joint=-1.57,wrist_3_joint=-1.57)}"/>
-  <xacro:property name="ur_B_initial_positions" value="${dict(shoulder_pan_joint=-1.57,shoulder_lift_joint=-2.27,elbow_joint=-0.2,wrist_1_joint=-2.24,wrist_2_joint=1.57,wrist_3_joint=1.57)}"/>
+  <xacro:property name="ur_A_initial_positions_file" value="$(arg ur_A_initial_positions_file)"/>
+  <xacro:property name="ur_B_initial_positions_file" value="$(arg ur_B_initial_positions_file)"/>
 
   <!-- Jazzy: 纯几何描述（仅传几何参数给 my_env） -->
   <xacro:my_env 
@@ -57,37 +41,38 @@
   <!-- Jazzy: Mujoco ros2_control（从 my_env_macro 移至此） -->
   <!-- 只保留一个 ros2_control system：只启动一次 MujocoSystemInterface -->
   <!-- ============================================ -->
-  <xacro:if value="$(arg use_sim_mujoco)">
-    <xacro:property name="arm_A_ur_prefix" value="${arm_A_tf_prefix}ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    <xacro:property name="arm_B_ur_prefix" value="${arm_B_tf_prefix}ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    <xacro:property name="arm_A_realsense_prefix" value="${arm_A_tf_prefix}realsense_"/> <!-- ! append the '_' in the prefix -->
-    <xacro:property name="arm_B_realsense_prefix" value="${arm_B_tf_prefix}realsense_"/> <!-- ! append the '_' in the prefix -->
-    <xacro:property name="arm_A_gripper_prefix" value="${arm_A_tf_prefix}"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    <xacro:property name="arm_B_gripper_prefix" value="${arm_B_tf_prefix}"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
-    
-    <ros2_control name="my_env_ros2_mujoco" type="system">
-      <hardware>
-        <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
-        <param name="mujoco_model">$(arg mjcf_file_path)</param>
-        <!-- Override the slowdown settings in the Simulate App -->
-        <param name="sim_speed_factor">$(arg mujoco_sim_speed_factor)</param>
-        <!-- If set to true, will not launch the Simulate App window -->
-        <param name="headless">$(arg mujoco_headless)</param>
-      </hardware>
+  <xacro:property name="arm_A_ur_prefix" value="${arm_A_tf_prefix}ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+  <xacro:property name="arm_B_ur_prefix" value="${arm_B_tf_prefix}ur_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+  <xacro:property name="arm_A_realsense_prefix" value="${arm_A_tf_prefix}realsense_"/> <!-- ! append the '_' in the prefix -->
+  <xacro:property name="arm_B_realsense_prefix" value="${arm_B_tf_prefix}realsense_"/> <!-- ! append the '_' in the prefix -->
+  <xacro:property name="arm_A_gripper_prefix" value="${arm_A_tf_prefix}dhag95_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+  <xacro:property name="arm_B_gripper_prefix" value="${arm_B_tf_prefix}dhag95_"/> <!-- ! Match the prefix in my_arm_macro.urdf.xacro -->
+  
+  <ros2_control name="my_env_ros2_mujoco" type="system">
+    <hardware>
+      <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
+      <param name="mujoco_model">$(arg mjcf_file_path)</param>
+      <!-- Optional: load PID gains from a ROS parameters YAML file.
+        Enables position/velocity PID control for velocity, motor, and custom actuators. -->
+      <param name="pids_config_file">$(arg pids_config_file_path)</param>
+      <!-- Override the slowdown settings in the Simulate App -->
+      <param name="sim_speed_factor">$(arg mujoco_sim_speed_factor)</param>
+      <!-- If set to true, will not launch the Simulate App window -->
+      <param name="headless">$(arg mujoco_headless)</param>
+    </hardware>
 
-      <!-- 把两套机械臂的 joint/sensor 接口“塞进同一个 system”里 -->
-      <xacro:my_arm_mujoco_control
-          ur_tf_prefix="${arm_A_ur_prefix}"
-          realsense_tf_prefix="${arm_A_realsense_prefix}"
-          gripper_tf_prefix="${arm_A_gripper_prefix}"
-          ur_initial_positions="${ur_A_initial_positions}"/>
+    <!-- 把两套机械臂的 joint/sensor 接口“塞进同一个 system”里 -->
+    <xacro:my_arm_mujoco_control
+        ur_tf_prefix="${arm_A_ur_prefix}"
+        realsense_tf_prefix="${arm_A_realsense_prefix}"
+        gripper_tf_prefix="${arm_A_gripper_prefix}"
+        ur_initial_positions="${xacro.load_yaml(ur_A_initial_positions_file)}"/>
 
-      <xacro:my_arm_mujoco_control
-          ur_tf_prefix="${arm_B_ur_prefix}"
-          realsense_tf_prefix="${arm_B_realsense_prefix}"
-          gripper_tf_prefix="${arm_B_gripper_prefix}"
-          ur_initial_positions="${ur_B_initial_positions}"/>
-    </ros2_control>
-  </xacro:if>
+    <xacro:my_arm_mujoco_control
+        ur_tf_prefix="${arm_B_ur_prefix}"
+        realsense_tf_prefix="${arm_B_realsense_prefix}"
+        gripper_tf_prefix="${arm_B_gripper_prefix}"
+        ur_initial_positions="${xacro.load_yaml(ur_B_initial_positions_file)}"/>
+  </ros2_control>
 
 </robot>

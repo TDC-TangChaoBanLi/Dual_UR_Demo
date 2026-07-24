@@ -5,7 +5,7 @@ find_package(ament_cmake REQUIRED)
 
 install(DIRECTORY
   launch
-  # meshes
+  meshes
   urdf
   mjcf
   config
