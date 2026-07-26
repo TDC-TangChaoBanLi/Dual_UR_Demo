@@ -5,11 +5,17 @@
 这是一个基于ROS2的双臂UR机械臂控制系统，集成了UR5和UR5e机械臂、Robotiq 2F-85夹爪/DH-AG95夹爪 和RealSense D435相机，目前支持rviz仿真、真实机械臂控制，包含 MoveIt 规划、MoveIt Servo 笛卡尔/关节空间伺服控制。
 
 
-![my_env_rviz](my_env_rviz.png)
+<table>
+  <tr>
+    <td ><center><img src=".doc/my_env_rviz.png" >my_env_rviz </center></td>
+    <td ><center><img src=".doc/my_env_real.jpg"  >my_env_real </center></td>
+  </tr>
 
-![my_env_real](my_env_real.jpg)
-
-
+  <tr>
+    <td><center><img src=".doc/my_env_mujoco_rviz.png" >my_env_mujoco_rviz </center></td>
+    <td ><center><img src=".doc/my_env_mujoco.png"  >my_env_mujoco </center> </td>
+  </tr>
+</table>
 
 
 

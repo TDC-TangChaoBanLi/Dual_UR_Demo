@@ -1,0 +1,104 @@
+# ============================================================
+# Dual UR OCS2 控制器配置（独立文件）
+# 仅包含 OCS2 模式所需的控制器，不包含普通 UR 控制器
+# ============================================================
+
+controller_manager:
+  ros__parameters:
+    update_rate: 60  # Hz
+
+    # ---- 全局 joint state broadcaster ----
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    # ---- OCS2 双臂控制器 ----
+    ocs2_arm_controller:
+      type: ocs2_arm_controller/Ocs2ArmController
+
+    # ---- Adaptive 夹爪控制器 ----
+    arm_A_adaptive_gripper_controller:
+      type: adaptive_gripper_controller/AdaptiveGripperController
+
+    arm_B_adaptive_gripper_controller:
+      type: adaptive_gripper_controller/AdaptiveGripperController
+
+
+# ============================================================
+# OCS2 Arm Controller — 双臂统一控制
+# ============================================================
+ocs2_arm_controller:
+  ros__parameters:
+    # 控制频率
+    update_rate: 60               # [Hz] 控制频率
+    mpc_frequency: 10              # [Hz] MPC 求解频率（12 关节双臂计算量大，降低频率保证求解完成）
+
+    # OCS2 任务配置文件
+    info_file_name: dual_ur_task   # 对应 config/ocs2/dual_ur_task.info
+
+    # 关节列表（顺序必须匹配 URDF kinematic chain → Pinocchio 状态向量）
+    # arm_A = 右臂 (索引 0-5), arm_B = 左臂 (索引 6-11)
+    # 注意：代码中 left=arm_A, right=arm_B（与物理左右相反，仅影响 RViz marker 标签）
+    joints:
+      # Arm A (UR5) — 右臂
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+      # Arm B (UR5e) — 左臂
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint
+
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+
+    # URDF 相关参数
+    robot_name: my_env
+    planning_urdf_variant: xacro
+    planning_urdf_path: "/tmp/dual_ur_ocs2_planning.urdf"
+
+    # OCS2 CppAD 库缓存目录
+    ocs2_library_folder: "/tmp/ocs2_ros2/dual_ur"
+
+    # 未来时刻插值偏移（仿真环境可用较小值）
+    future_time_offset: 1.5
+
+    # home 位姿：12 关节 (arm_A 右臂 在前, arm_B 左臂 在后)
+    home_pos: [
+      -1.5708, 3.6416, -1.4, -0.6708, 1.5708, -1.5708,   # arm_A (右臂)
+      1.5708, -0.6, 1.4, -2.3708, -1.5708, 1.5708        # arm_B (左臂)
+    ]
+
+    # FSM 参数
+    home_duration: 3.0
+    home_interpolation_type: linear
+    hold_position_threshold: 0.1
+    hold_first_check_position_threshold: 0.1
+
+    # MoveJ 参数
+    movej_duration: 3.0
+    movej_interpolation_type: linear
+
+
+# ============================================================
+# Adaptive Gripper Controller A
+# ============================================================
+arm_A_adaptive_gripper_controller:
+  ros__parameters:
+    joint: arm_A_dhag95_gripper_finger1_joint
+    use_effort_interface: false
+
+# ============================================================
+# Adaptive Gripper Controller B
+# ============================================================
+arm_B_adaptive_gripper_controller:
+  ros__parameters:
+    joint: arm_B_dhag95_gripper_finger1_joint
+    use_effort_interface: false
