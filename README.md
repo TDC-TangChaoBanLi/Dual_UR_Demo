@@ -256,3 +256,16 @@ ros2 launch realsense2_camera rs_multi_camera_launch.py \
   unite_imu_method:=false
 ```
 
+OCS2 适配：
+
+下载 deb 包：
+- [ros-jazzy-arms-ros2-control](https://github.com/fiveages-sim/arms_ros2_control/releases/latest)
+- [ros-jazzy-robot-descriptions-common](https://github.com/fiveages-sim/robot-descriptions-common/releases/latest)
+
+安装 deb 包及其依赖：
+```bash
+sudo dpkg -i ros-jazzy-arms-ros2-control_1.0.0-1_all.deb
+sudo dpkg -i ros-jazzy-robot-descriptions-common_1.0.0-1_all.deb
+# sudo apt --fix-broken install # 修复依赖关系
+```
+

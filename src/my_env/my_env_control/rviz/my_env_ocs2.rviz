@@ -3,9 +3,10 @@ Panels:
     Help Height: 87
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /RobotModel1
       Splitter Ratio: 0.5
-    Tree Height: 715
+    Tree Height: 238
   - Class: rviz_common/Views
     Expanded:
       - /Current View1
@@ -17,6 +18,10 @@ Panels:
     right_gripper_open: false
   - Class: arms_rviz_control_plugin/OCS2FSMPanel
     Name: OCS2FSMPanel
+  - Class: arms_rviz_control_plugin/JointControlPanel
+    DisplayUnit: m_rad
+    Name: JointControlPanel
+    RelativeKeepInput: 0
 Visualization Manager:
   Class: ""
   Displays:
@@ -305,11 +310,14 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         table:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         ur_mount_A:
           Alpha: 1
           Show Axes: false
@@ -443,6 +451,8 @@ Visualization Manager:
           Value: false
         arm_shelf:
           Value: false
+        base_link:
+          Value: true
         table:
           Value: false
         ur_mount_A:
@@ -458,79 +468,80 @@ Visualization Manager:
       Show Names: false
       Tree:
         world:
-          arm_shelf:
-            ur_mount_A:
-              arm_A_ur_base_link:
-                arm_A_ur_base:
-                  {}
-                arm_A_ur_base_link_inertia:
-                  arm_A_ur_shoulder_link:
-                    arm_A_ur_upper_arm_link:
-                      arm_A_ur_forearm_link:
-                        arm_A_ur_wrist_1_link:
-                          arm_A_ur_wrist_2_link:
-                            arm_A_ur_wrist_3_link:
-                              arm_A_ur_flange:
-                                arm_A_ur_tool0:
-                                  arm_A_realsense_shelf:
-                                    arm_A_realsense_bottom_screw_frame:
-                                      arm_A_realsense_link:
-                                        {}
-                                    arm_A_realsense_shelf_child_side:
-                                      arm_A_dhag95_gripper_base_link:
-                                        arm_A__tcp:
+          base_link:
+            arm_shelf:
+              ur_mount_A:
+                arm_A_ur_base_link:
+                  arm_A_ur_base:
+                    {}
+                  arm_A_ur_base_link_inertia:
+                    arm_A_ur_shoulder_link:
+                      arm_A_ur_upper_arm_link:
+                        arm_A_ur_forearm_link:
+                          arm_A_ur_wrist_1_link:
+                            arm_A_ur_wrist_2_link:
+                              arm_A_ur_wrist_3_link:
+                                arm_A_ur_flange:
+                                  arm_A_ur_tool0:
+                                    arm_A_realsense_shelf:
+                                      arm_A_realsense_bottom_screw_frame:
+                                        arm_A_realsense_link:
                                           {}
-                                        arm_A_dhag95_gripper_finger1_inner_knuckle_link:
-                                          arm_A_dhag95_gripper_finger1_finger_tip_link:
+                                      arm_A_realsense_shelf_child_side:
+                                        arm_A_dhag95_gripper_base_link:
+                                          arm_A__tcp:
                                             {}
-                                        arm_A_dhag95_gripper_finger1_knuckle_link:
-                                          arm_A_dhag95_gripper_finger1_finger_link:
-                                            {}
-                                        arm_A_dhag95_gripper_finger2_inner_knuckle_link:
-                                          arm_A_dhag95_gripper_finger2_finger_tip_link:
-                                            {}
-                                        arm_A_dhag95_gripper_finger2_knuckle_link:
-                                          arm_A_dhag95_gripper_finger2_finger_link:
-                                            {}
-                              arm_A_ur_ft_frame:
-                                {}
-            ur_mount_B:
-              arm_B_ur_base_link:
-                arm_B_ur_base:
-                  {}
-                arm_B_ur_base_link_inertia:
-                  arm_B_ur_shoulder_link:
-                    arm_B_ur_upper_arm_link:
-                      arm_B_ur_forearm_link:
-                        arm_B_ur_wrist_1_link:
-                          arm_B_ur_wrist_2_link:
-                            arm_B_ur_wrist_3_link:
-                              arm_B_ur_flange:
-                                arm_B_ur_tool0:
-                                  arm_B_realsense_shelf:
-                                    arm_B_realsense_bottom_screw_frame:
-                                      arm_B_realsense_link:
-                                        {}
-                                    arm_B_realsense_shelf_child_side:
-                                      arm_B_dhag95_gripper_base_link:
-                                        arm_B__tcp:
+                                          arm_A_dhag95_gripper_finger1_inner_knuckle_link:
+                                            arm_A_dhag95_gripper_finger1_finger_tip_link:
+                                              {}
+                                          arm_A_dhag95_gripper_finger1_knuckle_link:
+                                            arm_A_dhag95_gripper_finger1_finger_link:
+                                              {}
+                                          arm_A_dhag95_gripper_finger2_inner_knuckle_link:
+                                            arm_A_dhag95_gripper_finger2_finger_tip_link:
+                                              {}
+                                          arm_A_dhag95_gripper_finger2_knuckle_link:
+                                            arm_A_dhag95_gripper_finger2_finger_link:
+                                              {}
+                                arm_A_ur_ft_frame:
+                                  {}
+              ur_mount_B:
+                arm_B_ur_base_link:
+                  arm_B_ur_base:
+                    {}
+                  arm_B_ur_base_link_inertia:
+                    arm_B_ur_shoulder_link:
+                      arm_B_ur_upper_arm_link:
+                        arm_B_ur_forearm_link:
+                          arm_B_ur_wrist_1_link:
+                            arm_B_ur_wrist_2_link:
+                              arm_B_ur_wrist_3_link:
+                                arm_B_ur_flange:
+                                  arm_B_ur_tool0:
+                                    arm_B_realsense_shelf:
+                                      arm_B_realsense_bottom_screw_frame:
+                                        arm_B_realsense_link:
                                           {}
-                                        arm_B_dhag95_gripper_finger1_inner_knuckle_link:
-                                          arm_B_dhag95_gripper_finger1_finger_tip_link:
+                                      arm_B_realsense_shelf_child_side:
+                                        arm_B_dhag95_gripper_base_link:
+                                          arm_B__tcp:
                                             {}
-                                        arm_B_dhag95_gripper_finger1_knuckle_link:
-                                          arm_B_dhag95_gripper_finger1_finger_link:
-                                            {}
-                                        arm_B_dhag95_gripper_finger2_inner_knuckle_link:
-                                          arm_B_dhag95_gripper_finger2_finger_tip_link:
-                                            {}
-                                        arm_B_dhag95_gripper_finger2_knuckle_link:
-                                          arm_B_dhag95_gripper_finger2_finger_link:
-                                            {}
-                              arm_B_ur_ft_frame:
-                                {}
-          table:
-            {}
+                                          arm_B_dhag95_gripper_finger1_inner_knuckle_link:
+                                            arm_B_dhag95_gripper_finger1_finger_tip_link:
+                                              {}
+                                          arm_B_dhag95_gripper_finger1_knuckle_link:
+                                            arm_B_dhag95_gripper_finger1_finger_link:
+                                              {}
+                                          arm_B_dhag95_gripper_finger2_inner_knuckle_link:
+                                            arm_B_dhag95_gripper_finger2_finger_tip_link:
+                                              {}
+                                          arm_B_dhag95_gripper_finger2_knuckle_link:
+                                            arm_B_dhag95_gripper_finger2_finger_link:
+                                              {}
+                                arm_B_ur_ft_frame:
+                                  {}
+            table:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -605,32 +616,34 @@ Visualization Manager:
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.9330580830574036
-        Y: -0.02084103785455227
-        Z: 0.9570353031158447
+        X: 0.1272020787000656
+        Y: -0.09569363296031952
+        Z: 0.44321921467781067
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.1647963523864746
+      Pitch: 0.7697972655296326
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.015010908246040344
+      Yaw: 1.7550103664398193
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
   GripperControlPanel:
     collapsed: false
-  Height: 1265
+  Height: 787
   Hide Left Dock: false
   Hide Right Dock: false
+  JointControlPanel:
+    collapsed: false
   OCS2FSMPanel:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000001f40000049bfc0200000004fb000000100044006900730070006c006100790073010000003b0000035d000000c700fffffffb0000000a0056006900650077007300000002fa000001dc000000a000fffffffb0000002600470072006900700070006500720043006f006e00740072006f006c00500061006e0065006c0000000313000000b70000004b00fffffffb00000018004f00430053003200460053004d00500061006e0065006c010000039e000001380000010600ffffff000007600000049b00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000002000000000000018b000002bdfc0200000004fb000000100044006900730070006c006100790073010000003b00000180000000c700fffffffb0000000a0056006900650077007300000002fa000001dc000000a000fffffffb0000002600470072006900700070006500720043006f006e00740072006f006c00500061006e0065006c01000001c1000000670000004b00fffffffb00000018004f00430053003200460053004d00500061006e0065006c010000022e000000ca000000ca00ffffff0000000100000107000002bdfc0200000001fb00000022004a006f0069006e00740043006f006e00740072006f006c00500061006e0065006c010000003b000002bd0000004200ffffff0000039e000002bd00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
-  Width: 2394
-  X: 2597
-  Y: -31
+  Width: 1596
+  X: 116
+  Y: 68

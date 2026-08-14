@@ -11,6 +11,3 @@
 [submodule "lib/dh_ag95_ros2"]
 	path = lib/dh_ag95_ros2
 	url = https://github.com/TDC-TangChaoBanLi/dh_ag95_ros2.git
-[submodule "lib/arms_ros2_control"]
-	path = lib/arms_ros2_control
-	url = https://github.com/fiveages-sim/arms_ros2_control.git

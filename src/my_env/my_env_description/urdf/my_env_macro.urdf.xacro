@@ -22,31 +22,36 @@
   </material>
 
   <link name="world"/>
+  <link name="base_link"/>
+  <joint name="world_to_base_link" type="fixed">
+    <parent link="world" />
+    <child link="base_link" />
+  </joint>
   <!-- world2tabel joint -->
   <joint name="world_to_table" type="fixed">
-    <parent link="world" />
+    <parent link="base_link" />
     <child link="table" />
-    <origin xyz="${0.863 + 0.02} 0 0" rpy="0 0 0" />
+    <origin xyz="0 ${0.863 + 0.02} 0" rpy="0 0 0" />
   </joint>
   <!-- world2arm_shelf joint -->
   <joint name="world_to_arm_shelf" type="fixed">
-    <parent link="world" />
+    <parent link="base_link" />
     <child link="arm_shelf" />
-    <origin xyz="0 0 0.15" rpy="0 0 ${-pi/2}" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
   </joint>
 
   <!-- 桌子 link -->
   <link name="table">
     <visual>
       <geometry>
-        <box size="1.0 2.7 0.765"/> # L*W*H=2.7*1.0*0.765m
+        <box size="2.7 1.0 0.765"/> # L*W*H=2.7*1.0*0.765m
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 ${0.765/2}" />
       <material name="table_material"/>
     </visual>
     <collision>
       <geometry>
-        <box size="1.0 2.7 0.765"/> # L*W*H=2.7*1.0*0.765m
+        <box size="2.7 1.0 0.765"/> # L*W*H=2.7*1.0*0.765m
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 ${0.765/2}" />
     </collision>
@@ -58,14 +63,14 @@
       <geometry>
         <mesh filename="package://my_env_description/meshes/arm_shelf.STL"/> # L*W*H=0.613*0.726*1.353m
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0" />
+      <origin rpy="0 0 0" xyz="0 0 0.15" />
       <material name="arm_shelf_material"/>
     </visual>
     <collision>
       <geometry>
         <box size="0.726 0.613 1.353"/> # L*W*H=0.726*0.613*1.353m
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 ${1.353/2}" />
+      <origin rpy="0 0 0" xyz="0 0 ${1.353/2+0.15}" />
     </collision>
     <inertial>
       <mass value="50.0"/>

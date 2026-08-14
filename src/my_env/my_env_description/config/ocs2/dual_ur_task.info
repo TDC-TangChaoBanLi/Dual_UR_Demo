@@ -7,8 +7,8 @@
 model_information {
   manipulatorModelType     0      ; 0: Default-arm (fixed base)
 
-  ; base frame — arm_shelf（有惯性属性的 link，满足 Pinocchio 动力学计算要求）
-  baseFrame                 "arm_shelf"
+  ; base frame 
+  baseFrame                 "base_link"
 
   ; end-effector frames — eeFrame 对应 OCS2 leftArm, eeFrame1 对应 rightArm
   eeFrame                   "arm_A__tcp"
@@ -42,6 +42,9 @@ ddp {
   displayShortSummary        false
   checkNumericalStability    false
 
+  debugPrintRollout          false
+  debugCaching               false
+
   AbsTolODE                  1e-5
   RelTolODE                  1e-3
   maxNumStepsPerSecond       100000
@@ -59,7 +62,9 @@ ddp {
     minStepLength            1e-2
     maxStepLength            1.0
     hessianCorrectionStrategy DIAGONAL_SHIFT
-    hessianCorrectionMultiple 1e-5
+    ; 对齐 ROKAE 参考（1e-3）：末端跟踪权重提高后代价 Hessian 放大，
+    ; 过小的修正（1e-5）会导致 Riccati 回代数值爆炸（SLQ 段错误）。
+    hessianCorrectionMultiple 1e-3
   }
 }
 
@@ -79,12 +84,12 @@ rollout {
 ; MPC 设置
 ; ============================================================
 mpc {
-  timeHorizon                2.0     ; [s] 预测时域
-  solutionTimeWindow         0.4     ; [s]
+  timeHorizon                1.0     ; [s] 预测时域
+  solutionTimeWindow         0.2     ; [s]
   coldStart                  false
-
-  mpcDesiredFrequency        50      ; [Hz] MPC 求解频率
-  mrtDesiredFrequency        200     ; [Hz] MRT 策略评估频率
+  debugPrint                 false
+  mpcDesiredFrequency        100      ; [Hz] MPC 求解频率
+  mrtDesiredFrequency        400     ; [Hz] MRT 策略评估频率
 }
 
 ; ============================================================
@@ -122,29 +127,40 @@ inputCost {
     arm {
       scaling 1e-3
       ; Arm A (右臂, 索引 0-5)
-      (0,0)  1.0   (1,1)  1.0   (2,2)  1.0
-      (3,3)  1.0   (4,4)  1.0   (5,5)  1.0
+      (0,0)  1.0   
+      (1,1)  1.0   
+      (2,2)  1.0
+      (3,3)  1.0   
+      (4,4)  1.0   
+      (5,5)  1.0
       ; Arm B (左臂, 索引 6-11)
-      (6,6)  1.0   (7,7)  1.0   (8,8)  1.0
-      (9,9)  1.0  (10,10) 1.0  (11,11) 1.0
+      (6,6)  1.0   
+      (7,7)  1.0   
+      (8,8)  1.0
+      (9,9)  1.0  
+      (10,10) 1.0  
+      (11,11) 1.0
     }
   }
 }
 
 ; ============================================================
 ; 末端执行器跟踪代价
+; 在 ROKAE 参考（endEffector 100/50, final 200/100）与数值稳定性间折中：
+;   12 关节双臂 + 高权重下 SLQ Riccati 回代会数值爆炸（段错误），
+;   故采用 4 倍提升（20/10, 40/20）兼顾跟踪响应与稳定。
 ; ============================================================
 endEffector {
   dualArmMode      true
 
   leftArm {
-    muPosition      5.0
-    muOrientation   2.5
+    muPosition      20.0
+    muOrientation   10.0
   }
 
   rightArm {
-    muPosition      5.0
-    muOrientation   2.5
+    muPosition      20.0
+    muOrientation   10.0
   }
 }
 
@@ -152,13 +168,13 @@ finalEndEffector {
   dualArmMode      true
 
   leftArm {
-    muPosition      5.0
-    muOrientation   2.5
+    muPosition      40.0
+    muOrientation   20.0
   }
 
   rightArm {
-    muPosition      5.0
-    muOrientation   2.5
+    muPosition      40.0
+    muOrientation   20.0
   }
 }
 
@@ -170,6 +186,12 @@ selfCollision {
   minimumDistance  0.015
   mu      1e-2
   delta   1e-3
+  collisionObjectPairs
+  {
+  }
+  collisionLinkPairs
+  {
+  }
 }
 
 ; ============================================================
@@ -186,22 +208,50 @@ jointVelocityLimits {
   delta    1e-3
 
   lowerBound {
+    base
+    {
+      defaultManipulator
+      {
+      }
+    }
     arm {
       ; Arm A (右臂): 6 joints @ ±3.14 rad/s
-      (0,0)  -3.14  (1,0)  -3.14  (2,0)  -3.14
-      (3,0)  -3.14  (4,0)  -3.14  (5,0)  -3.14
+      (0,0)  -3.14  
+      (1,0)  -3.14  
+      (2,0)  -3.14
+      (3,0)  -3.14  
+      (4,0)  -3.14  
+      (5,0)  -3.14
       ; Arm B (左臂): 6 joints @ ±3.14 rad/s
-      (6,0)  -3.14  (7,0)  -3.14  (8,0)  -3.14
-      (9,0)  -3.14  (10,0) -3.14  (11,0) -3.14
+      (6,0)  -3.14  
+      (7,0)  -3.14  
+      (8,0)  -3.14
+      (9,0)  -3.14  
+      (10,0) -3.14  
+      (11,0) -3.14
     }
   }
 
   upperBound {
+    base
+    {
+      defaultManipulator
+      {
+      }
+    }
     arm {
-      (0,0)   3.14  (1,0)   3.14  (2,0)   3.14
-      (3,0)   3.14  (4,0)   3.14  (5,0)   3.14
-      (6,0)   3.14  (7,0)   3.14  (8,0)   3.14
-      (9,0)   3.14  (10,0)  3.14  (11,0)  3.14
+      (0,0)   3.14  
+      (1,0)   3.14  
+      (2,0)   3.14
+      (3,0)   3.14  
+      (4,0)   3.14  
+      (5,0)   3.14
+      (6,0)   3.14  
+      (7,0)   3.14  
+      (8,0)   3.14
+      (9,0)   3.14  
+      (10,0)  3.14  
+      (11,0)  3.14
     }
   }
 }

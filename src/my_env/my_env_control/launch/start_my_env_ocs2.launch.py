@@ -125,6 +125,7 @@ def launch_setup(context, *args, **kwargs):
     fake_sensor = LaunchConfiguration("use_fake_sensor_commands").perform(context)
     headless = LaunchConfiguration("ur_headless_mode").perform(context)
     launch_rviz = LaunchConfiguration("launch_rviz")
+    use_sim_time = LaunchConfiguration("use_sim_time").perform(context).lower() == "true"
 
     control_share = get_package_share_directory(CONTROL_PACKAGE)
     xacro_input = os.path.join(control_share, DESCRIPTION_FILE)
@@ -153,12 +154,14 @@ def launch_setup(context, *args, **kwargs):
 
     nodes = [
         Node(package="robot_state_publisher", executable="robot_state_publisher",
-             output="screen", parameters=[robot_description]),
+             output="screen",
+             parameters=[robot_description, {"use_sim_time": use_sim_time}]),
 
         Node(package="controller_manager", executable="ros2_control_node",
              output="screen",
              parameters=[robot_description,
-                        ParameterFile(controllers_path, allow_substs=True)]),
+                         {"use_sim_time": use_sim_time},
+                         ParameterFile(controllers_path, allow_substs=True)]),
 
         Node(package="controller_manager", executable="spawner", output="screen",
              arguments=["--controller-manager", "/controller_manager",
@@ -175,7 +178,7 @@ def launch_setup(context, *args, **kwargs):
                  "hand_controllers": ["arm_A_adaptive_gripper_controller",
                                       "arm_B_adaptive_gripper_controller"],
                  "linear_scale": 0.005, "angular_scale": 0.05,
-                 "enable_vr": False, "use_sim_time": True,
+                 "enable_vr": False, "use_sim_time": use_sim_time,
              }], condition=UnlessCondition(LaunchConfiguration("no_arms_target_manager"))),
     ]
 
@@ -183,8 +186,7 @@ def launch_setup(context, *args, **kwargs):
         nodes.append(
             Node(package="rviz2", executable="rviz2", output="log",
                  arguments=["-d", rviz_path],
-                 parameters=[{"use_sim_time": True}],
-                 condition=UnlessCondition(LaunchConfiguration("no_rviz"))),
+                 parameters=[{"use_sim_time": use_sim_time}]),
         )
 
     return nodes
@@ -197,7 +199,9 @@ def generate_launch_description():
         DeclareLaunchArgument("use_fake_sensor_commands", default_value="true"),
         DeclareLaunchArgument("ur_headless_mode", default_value="false"),
         DeclareLaunchArgument("launch_rviz", default_value="true"),
-        DeclareLaunchArgument("no_rviz", default_value="false"),
+        # 默认 false：fake hardware 场景无 /clock 发布者，使用 wall clock。
+        # 仿真（MuJoCo 等，有 /clock）或需要同步仿真时钟时传 use_sim_time:=true。
+        DeclareLaunchArgument("use_sim_time", default_value="false"),
         DeclareLaunchArgument("no_arms_target_manager", default_value="false"),
         OpaqueFunction(function=launch_setup),
     ])

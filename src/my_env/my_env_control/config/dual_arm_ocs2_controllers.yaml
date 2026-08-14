@@ -5,7 +5,7 @@
 
 controller_manager:
   ros__parameters:
-    update_rate: 60  # Hz
+    update_rate: 500  # Hz
 
     # ---- 全局 joint state broadcaster ----
     joint_state_broadcaster:
@@ -29,8 +29,8 @@ controller_manager:
 ocs2_arm_controller:
   ros__parameters:
     # 控制频率
-    update_rate: 60               # [Hz] 控制频率
-    mpc_frequency: 10              # [Hz] MPC 求解频率（12 关节双臂计算量大，降低频率保证求解完成）
+    update_rate: 500               # [Hz] 控制频率
+    mpc_frequency: 100              # [Hz] MPC 求解频率（12 关节双臂计算量大，降低频率保证求解完成）
 
     # OCS2 任务配置文件
     info_file_name: dual_ur_task   # 对应 config/ocs2/dual_ur_task.info
@@ -68,23 +68,27 @@ ocs2_arm_controller:
     ocs2_library_folder: "/tmp/ocs2_ros2/dual_ur"
 
     # 未来时刻插值偏移（仿真环境可用较小值）
-    future_time_offset: 1.5
+    future_time_offset: 1.0
 
     # home 位姿：12 关节 (arm_A 右臂 在前, arm_B 左臂 在后)
-    home_pos: [
+    home_1: [
       -1.5708, 3.6416, -1.4, -0.6708, 1.5708, -1.5708,   # arm_A (右臂)
       1.5708, -0.6, 1.4, -2.3708, -1.5708, 1.5708        # arm_B (左臂)
     ]
+    rest_pos: [
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+    ]
 
     # FSM 参数
-    home_duration: 3.0
+    home_duration: 5.0
     home_interpolation_type: linear
     hold_position_threshold: 0.1
     hold_first_check_position_threshold: 0.1
 
-    # MoveJ 参数
-    movej_duration: 3.0
-    movej_interpolation_type: linear
+    # # MoveJ 参数
+    # movej_duration: 3.0
+    # movej_interpolation_type: linear
 
 
 # ============================================================
