@@ -30,7 +30,7 @@
             ]
         },
 
-        "option": { "timestep": 0.001, "gravity": "0 0 -9.81", "noslip_iterations":"5", "integrator": "implicitfast", "impratio": "20"},
+        "option": { "timestep": 0.001, "gravity": "0 0 -9.81", "cone":"elliptic", "impratio": "10"},
         "compiler": { "angle": "radian", "balanceinertia": true },
 
         "gravcomp": {
@@ -70,21 +70,21 @@
                 {"group": 0, "ctrlrange":"-5   5"  , "name": "arm_B_dhag95_gripper_finger1_joint_ACTUATOR_MOTOR",       "joint": "arm_B_dhag95_gripper_finger1_joint"}
             ],
             "position":[
-                {"group": 1, "kp":100, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_A_ur_shoulder_pan_joint"},
-                {"group": 1, "kp":100, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_A_ur_shoulder_lift_joint"},
-                {"group": 1, "kp":100, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_elbow_joint_ACTUATOR_POSITION",                  "joint": "arm_A_ur_elbow_joint"},
-                {"group": 1, "kp":50, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_1_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_1_joint"},
-                {"group": 1, "kp":30, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_2_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_2_joint"},
-                {"group": 1, "kp":30, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_3_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_3_joint"},
-                {"group": 1, "kp":5 , "dampratio":0.95, "ctrlrange":"0.0 0.65",      "name": "arm_A_dhag95_gripper_finger1_joint_ACTUATOR_POSITION",              "joint": "arm_A_dhag95_gripper_finger1_joint"},
+                {"group": 1, "kp":600, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_A_ur_shoulder_pan_joint"},
+                {"group": 1, "kp":600, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_A_ur_shoulder_lift_joint"},
+                {"group": 1, "kp":300, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_elbow_joint_ACTUATOR_POSITION",                  "joint": "arm_A_ur_elbow_joint"},
+                {"group": 1, "kp":150, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_1_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_1_joint"},
+                {"group": 1, "kp":130, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_2_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_2_joint"},
+                {"group": 1, "kp":100, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_3_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_3_joint"},
+                {"group": 1, "kp":1 , "dampratio":1.0, "ctrlrange":"0.0 0.65",      "name": "arm_A_dhag95_gripper_finger1_joint_ACTUATOR_POSITION",              "joint": "arm_A_dhag95_gripper_finger1_joint"},
 
-                {"group": 1, "kp":100, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_B_ur_shoulder_pan_joint"},
-                {"group": 1, "kp":100, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_B_ur_shoulder_lift_joint"},
-                {"group": 1, "kp":100, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_elbow_joint_ACTUATOR_POSITION",                  "joint": "arm_B_ur_elbow_joint"},
-                {"group": 1, "kp":50, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_1_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_1_joint"},
-                {"group": 1, "kp":30, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_2_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_2_joint"},
-                {"group": 1, "kp":30, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_3_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_3_joint"},
-                {"group": 1, "kp":5 , "dampratio":0.95, "ctrlrange":"0.0 0.65",      "name": "arm_B_dhag95_gripper_finger1_joint_ACTUATOR_POSITION",              "joint": "arm_B_dhag95_gripper_finger1_joint"}
+                {"group": 1, "kp":600, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_B_ur_shoulder_pan_joint"},
+                {"group": 1, "kp":600, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_B_ur_shoulder_lift_joint"},
+                {"group": 1, "kp":200, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_elbow_joint_ACTUATOR_POSITION",                  "joint": "arm_B_ur_elbow_joint"},
+                {"group": 1, "kp":150, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_1_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_1_joint"},
+                {"group": 1, "kp":130, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_2_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_2_joint"},
+                {"group": 1, "kp":100, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_3_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_3_joint"},
+                {"group": 1, "kp":1 , "dampratio":1.0, "ctrlrange":"0.0 0.65",      "name": "arm_B_dhag95_gripper_finger1_joint_ACTUATOR_POSITION",              "joint": "arm_B_dhag95_gripper_finger1_joint"}
             ]
         },
         "site":{

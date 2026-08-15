@@ -19,6 +19,11 @@
   <exec_depend>rviz2</exec_depend>
   <exec_depend>xacro</exec_depend>
   <exec_depend>controller_manager</exec_depend>
+  <!-- OCS2 仿真版 launch（start_my_env_mujoco_ocs2.launch.py）运行依赖 -->
+  <exec_depend>my_env_control</exec_depend>
+  <exec_depend>my_env_description</exec_depend>
+  <exec_depend>mujoco_ros2_control</exec_depend>
+  <exec_depend>mujoco_ros2_control_plugins</exec_depend>
 
 
   <export>

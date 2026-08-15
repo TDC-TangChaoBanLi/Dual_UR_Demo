@@ -52,6 +52,7 @@ ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5e robot_ip:=192.168
 # colcon build --symlink-install --packages-select robotiq_driver robotiq_controllers robotiq_description
 colcon build --symlink-install --packages-select dh_ag95_description dh_ag95_controllers
 colcon build --symlink-install --packages-select my_env_description my_env_moveit_config my_env_control
+colcon build --symlink-install --packages-select my_env_mujoco
 colcon build --symlink-install --packages-select my_control_demo
 ```
 
@@ -258,14 +259,121 @@ ros2 launch realsense2_camera rs_multi_camera_launch.py \
 
 OCS2 适配：
 
-下载 deb 包：
-- [ros-jazzy-arms-ros2-control](https://github.com/fiveages-sim/arms_ros2_control/releases/latest)
-- [ros-jazzy-robot-descriptions-common](https://github.com/fiveages-sim/robot-descriptions-common/releases/latest)
+下载 deb 包（按顺序安装，`ocs2_ros2` 为 OCS2 核心依赖，需先安装）：
+- [ocs2_ros2 (legubiao)](https://github.com/legubiao/ocs2_ros2/releases/latest)
+- [robot-descriptions-common](https://github.com/fiveages-sim/robot-descriptions-common/releases/latest)
+- [arms_ros2_control](https://github.com/fiveages-sim/arms_ros2_control/releases/latest)
 
 安装 deb 包及其依赖：
 ```bash
-sudo dpkg -i ros-jazzy-arms-ros2-control_1.0.0-1_all.deb
-sudo dpkg -i ros-jazzy-robot-descriptions-common_1.0.0-1_all.deb
-# sudo apt --fix-broken install # 修复依赖关系
+# 1. OCS2 核心库（ocs2_core / ocs2_mpc / ocs2_ros_interfaces 等）
+sudo dpkg -i ros-jazzy-ocs2-ros2_*.deb
+
+# 2. 机器人描述公共库（被 arms_ros2_control 依赖）
+sudo dpkg -i ros-jazzy-robot-descriptions-common_*.deb
+
+# 3. 双臂控制栈（ocs2_arm_controller / adaptive_gripper_controller /
+#    arms_target_manager / arms_rviz_control_plugin 等）
+sudo dpkg -i ros-jazzy-arms-ros2-control_*.deb
+
+# sudo apt --fix-broken install # 若缺少依赖，先修复再重试
+```
+
+> 说明：`arms_ros2_control` 提供了本项目的 OCS2 双臂控制器（`ocs2_arm_controller`）、自适应夹爪控制器（`adaptive_gripper_controller`）、目标管理器（`arms_target_manager`，发布 RViz Interactive Markers）以及 RViz 插件（`arms_rviz_control_plugin`，GripperControlPanel / OCS2FSMPanel / JointControlPanel）。
+
+
+
+## OCS2 控制启动
+
+> 前置：已完成上述 OCS2 deb 安装，并编译本项目。
+
+### 1. 无硬件 / 真实硬件模式（ros2_control）
+
+```bash
+source install/setup.bash
+
+# 仿真（默认 use_fake_hardware:=true，无需连接真实机械臂）
+ros2 launch my_env_control start_my_env_ocs2.launch.py
+
+# 真实硬件（需先启动 dashboard_client 并 power_on / brake_release）
+ros2 launch my_env_control start_my_env_ocs2.launch.py use_fake_hardware:=false
+```
+
+常用参数：
+| 参数 | 默认值 | 说明 |
+|---|---|---|
+| `use_fake_hardware` | `true` | 使用 mock 硬件（命令镜像到状态，无需真机） |
+| `ur_headless_mode` | `false` | UR 驱动 headless 模式 |
+| `launch_rviz` | `true` | 是否启动 RViz |
+| `use_sim_time` | `false` | 同步仿真时钟（MuJoCo 场景由专用 launch 管理） |
+
+### 2. MuJoCo 仿真模式（mujoco_ros2_control）
+
+```bash
+source install/setup.bash
+
+# 启动 MuJoCo 仿真 + OCS2 控制器 + RViz（带 MuJoCo 视窗）
+ros2 launch my_env_mujoco start_my_env_mujoco_ocs2.launch.py
+
+# 无头模式（不弹 MuJoCo 视窗，可配合 RViz 使用）
+ros2 launch my_env_mujoco start_my_env_mujoco_ocs2.launch.py mujoco_headless:=true
+```
+
+常用参数：
+| 参数 | 默认值 | 说明 |
+|---|---|---|
+| `mujoco_headless` | `false` | 是否隐藏 MuJoCo Simulate 视窗 |
+| `mujoco_sim_speed_factor` | `1.0` | 仿真速度倍率（1.0 = 实时） |
+| `launch_rviz` | `true` | 是否启动 RViz |
+
+### 3. 操作方式
+
+启动后在 RViz 中：
+- **拖动 marker**：`Left Arm Target`（左臂 / arm_B）与 `Right Arm Target`（右臂 / arm_A）为 6-DOF Interactive Marker，可拖拽设定双臂末端目标位姿（`arms_target_manager` 会将其发布到 OCS2 控制器）
+- **FSM 面板**（OCS2FSMPanel）：切换 `HOME → HOLD → OCS2` 状态，进入 OCS2 后机械臂会向 marker 目标运动
+- **夹爪面板**（GripperControlPanel）：左右夹爪的开/关按钮与位置（0~1）控制，分别对应 `left/right_adaptive_gripper_controller`
+
+
+
+## MuJoCo 仿真
+
+MuJoCo 仿真基于 [mujoco_ros2_control](https://github.com/ros-controls/mujoco_ros2_control)，将 MuJoCo 作为 ros2_control 硬件接口运行物理仿真。
+
+### 生成仿真资源
+
+首次使用（或修改 URDF 后）需重新生成仿真模型：
+
+```bash
+# 1. 从 xacro 生成 urdf
+xacro src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf.xacro -o src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf
+
+# 2. 用 urdf2mjcf 转换为 MuJoCo XML（需先安装 urdf2mjcf）
+source ~/CodeProjects/urdf2mjcf/.venv/bin/activate
+urdf2mjcf src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf \
+  -o src/my_env/my_env_mujoco/mjcf/my_env_mujoco.xml \
+  -m src/my_env/my_env_mujoco/meshes \
+  -j src/my_env/my_env_mujoco/config/my_env_config.json -c
+
+# 3. 编译
+colcon build --symlink-install --packages-select my_env_mujoco
+```
+
+### 启动仿真
+
+```bash
+source install/setup.bash
+
+# 普通 ros2_control 控制（forward_position / joint_trajectory 等仿真控制器）
+ros2 launch my_env_mujoco start_my_env_mujoco.launch.py
+
+# OCS2 控制（见上方「OCS2 控制启动」第 2 节）
+ros2 launch my_env_mujoco start_my_env_mujoco_ocs2.launch.py
+```
+
+仿真演示（预置动作循环）：
+
+```bash
+source install/setup.bash
+ros2 run my_control_demo my_env_mujoco_control
 ```
 
