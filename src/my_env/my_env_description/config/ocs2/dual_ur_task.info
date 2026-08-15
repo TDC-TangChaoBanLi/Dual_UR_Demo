@@ -1,7 +1,9 @@
 ; ============================================================
 ; Dual UR OCS2 Task Configuration
 ; Arm A: UR5 (右臂/right), Arm B: UR5e (左臂/left)
-; 注意: OCS2 leftArm=arm_A(eeFrame), rightArm=arm_B(eeFrame1)
+; OCS2 leftArm=arm_B(eeFrame), rightArm=arm_A(eeFrame1)
+; —— 与物理左右一致：Left Arm Target 显示在 arm_B（物理左臂），
+;    Right Arm Target 显示在 arm_A（物理右臂）。
 ; ============================================================
 
 model_information {
@@ -11,8 +13,8 @@ model_information {
   baseFrame                 "base_link"
 
   ; end-effector frames — eeFrame 对应 OCS2 leftArm, eeFrame1 对应 rightArm
-  eeFrame                   "arm_A__tcp"
-  eeFrame1                  "arm_B__tcp"
+  eeFrame                   "arm_B__tcp"
+  eeFrame1                  "arm_A__tcp"
 
   ; 锁定 gripper 关节（仅保留 12 个 arm 关节参与 MPC 优化）
   removeJoints {

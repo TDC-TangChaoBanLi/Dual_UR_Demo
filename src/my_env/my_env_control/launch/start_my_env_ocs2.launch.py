@@ -11,11 +11,11 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
+import yaml
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
-from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterFile
@@ -27,76 +27,63 @@ DESCRIPTION_FILE = "urdf/my_env_control.urdf.xacro"
 OCS2_CONTROLLERS_FILE = "config/dual_arm_ocs2_controllers.yaml"
 OCS2_RVIZ_FILE = "rviz/my_env_ocs2.rviz"
 
-# ---- 硬件网络常量（与 start_my_env_control.launch.py 保持一致） ----
-UR_REVERSE_IP = "192.168.8.100"
-UR_A_ROBOT_IP = "192.168.8.17"
-UR_B_ROBOT_IP = "192.168.8.11"
-UR_A_REVERSE_PORT = "50001"; UR_A_SCRIPT_SENDER_PORT = "50002"
-UR_A_SCRIPT_COMMAND_PORT = "50003"; UR_A_TRAJECTORY_PORT = "50004"
-UR_B_REVERSE_PORT = "50011"; UR_B_SCRIPT_SENDER_PORT = "50012"
-UR_B_SCRIPT_COMMAND_PORT = "50013"; UR_B_TRAJECTORY_PORT = "50014"
-UR_A_RW_RATE = "125"; UR_B_RW_RATE = "500"
-G2F85_A_COM_PORT = "/dev/ttyUSB0"; G2F85_B_COM_PORT = "/dev/ttyUSB1"
 
-# ---- DH-Robotics AG-95 ----
-AG95_GRIPPER_TRANSPORT_TYPE = "socketcan"
-AG95_GRIPPER_SERIAL_BAUDRATE = "115200"
-AG95_GRIPPER_CAN_BITRATE = "500000"
-AG95_GRIPPER_PCAN_BITRATE = "500000"
-AG95_GRIPPER_GRIPPER_MODEL = "ag-160-95"
-AG95_GRIPPER_DEFAULT_FORCE_PERCENT = "100"
-AG95_GRIPPER_AUTO_INITIALIZE = "true"
-AG95_GRIPPER_RW_RATE = "25"
-AG95_GRIPPER_COMMAND_INTERVAL_MS = "10"
-AG95_A_SERIAL_PORT = "/dev/ttyAG95_A"
-AG95_A_CAN_INTERFACE = "can0"; AG95_A_PCAN_CHANNEL = "PCAN_USBBUS1"
-AG95_A_GRIPPER_ID = "1"
-AG95_B_SERIAL_PORT = "/dev/ttyAG95_B"
-AG95_B_CAN_INTERFACE = "can0"; AG95_B_PCAN_CHANNEL = "PCAN_USBBUS1"
-AG95_B_GRIPPER_ID = "2"
+def _load_hardware_params():
+    """读取统一硬件接口参数配置文件。
+
+    硬件参数（UR 网络 / Robotiq 串口 / DH-AG95 夹爪）集中定义在
+    config/hardware_interface_controller_params.yaml，供两个 launch 文件共用。
+    """
+    config_file = os.path.join(
+        get_package_share_directory(CONTROL_PACKAGE),
+        "config", "hardware_interface_controller_params.yaml",
+    )
+    with open(config_file, "r") as f:
+        return yaml.safe_load(f)
 
 
-def _build_xacro_cmd(xacro_input, fake_hw, fake_sensor, headless, ur_a_init, ur_b_init):
+def _build_xacro_cmd(xacro_input, fake_hw, headless):
     """构建 xacro 命令行参数列表（单一定义，避免重复）。"""
+    HW = _load_hardware_params()
+    ur = HW["ur"]
+    g2 = HW["g2f85"]
+    ag = HW["ag95"]
     return [
         "xacro", xacro_input,
         "use_fake_hardware:=" + fake_hw,
-        "use_fake_sensor_commands:=" + fake_sensor,
         "ur_headless_mode:=" + headless,
-        "ur_reverse_ip:=" + UR_REVERSE_IP,
-        "ur_A_robot_ip:=" + UR_A_ROBOT_IP,
-        "ur_B_robot_ip:=" + UR_B_ROBOT_IP,
-        "ur_A_reverse_port:=" + UR_A_REVERSE_PORT,
-        "ur_A_script_sender_port:=" + UR_A_SCRIPT_SENDER_PORT,
-        "ur_A_script_command_port:=" + UR_A_SCRIPT_COMMAND_PORT,
-        "ur_A_trajectory_port:=" + UR_A_TRAJECTORY_PORT,
-        "ur_A_rw_rate:=" + UR_A_RW_RATE,
-        "ur_A_initial_positions_file:=" + ur_a_init,
-        "ur_B_reverse_port:=" + UR_B_REVERSE_PORT,
-        "ur_B_script_sender_port:=" + UR_B_SCRIPT_SENDER_PORT,
-        "ur_B_script_command_port:=" + UR_B_SCRIPT_COMMAND_PORT,
-        "ur_B_trajectory_port:=" + UR_B_TRAJECTORY_PORT,
-        "ur_B_rw_rate:=" + UR_B_RW_RATE,
-        "ur_B_initial_positions_file:=" + ur_b_init,
-        "g2f85_A_com_port:=" + G2F85_A_COM_PORT,
-        "g2f85_B_com_port:=" + G2F85_B_COM_PORT,
-        "ag95_gripper_transport_type:=" + AG95_GRIPPER_TRANSPORT_TYPE,
-        "ag95_gripper_serial_baudrate:=" + AG95_GRIPPER_SERIAL_BAUDRATE,
-        "ag95_gripper_can_bitrate:=" + AG95_GRIPPER_CAN_BITRATE,
-        "ag95_gripper_pcan_bitrate:=" + AG95_GRIPPER_PCAN_BITRATE,
-        "ag95_gripper_gripper_model:=" + AG95_GRIPPER_GRIPPER_MODEL,
-        "ag95_gripper_default_force_percent:=" + AG95_GRIPPER_DEFAULT_FORCE_PERCENT,
-        "ag95_gripper_auto_initialize:=" + AG95_GRIPPER_AUTO_INITIALIZE,
-        "ag95_gripper_rw_rate:=" + AG95_GRIPPER_RW_RATE,
-        "ag95_gripper_command_interval_ms:=" + AG95_GRIPPER_COMMAND_INTERVAL_MS,
-        "ag95_A_serial_port:=" + AG95_A_SERIAL_PORT,
-        "ag95_A_can_interface:=" + AG95_A_CAN_INTERFACE,
-        "ag95_A_pcan_channel:=" + AG95_A_PCAN_CHANNEL,
-        "ag95_A_gripper_id:=" + AG95_A_GRIPPER_ID,
-        "ag95_B_serial_port:=" + AG95_B_SERIAL_PORT,
-        "ag95_B_can_interface:=" + AG95_B_CAN_INTERFACE,
-        "ag95_B_pcan_channel:=" + AG95_B_PCAN_CHANNEL,
-        "ag95_B_gripper_id:=" + AG95_B_GRIPPER_ID,
+        "ur_reverse_ip:=" + ur["reverse_ip"],
+        "ur_A_robot_ip:=" + ur["arm_A"]["robot_ip"],
+        "ur_B_robot_ip:=" + ur["arm_B"]["robot_ip"],
+        "ur_A_reverse_port:=" + ur["arm_A"]["reverse_port"],
+        "ur_A_script_sender_port:=" + ur["arm_A"]["script_sender_port"],
+        "ur_A_script_command_port:=" + ur["arm_A"]["script_command_port"],
+        "ur_A_trajectory_port:=" + ur["arm_A"]["trajectory_port"],
+        "ur_A_rw_rate:=" + ur["arm_A"]["rw_rate"],
+        "ur_B_reverse_port:=" + ur["arm_B"]["reverse_port"],
+        "ur_B_script_sender_port:=" + ur["arm_B"]["script_sender_port"],
+        "ur_B_script_command_port:=" + ur["arm_B"]["script_command_port"],
+        "ur_B_trajectory_port:=" + ur["arm_B"]["trajectory_port"],
+        "ur_B_rw_rate:=" + ur["arm_B"]["rw_rate"],
+        "g2f85_A_com_port:=" + g2["A_com_port"],
+        "g2f85_B_com_port:=" + g2["B_com_port"],
+        "ag95_gripper_transport_type:=" + ag["transport_type"],
+        "ag95_gripper_serial_baudrate:=" + ag["serial_baudrate"],
+        "ag95_gripper_can_bitrate:=" + ag["can_bitrate"],
+        "ag95_gripper_pcan_bitrate:=" + ag["pcan_bitrate"],
+        "ag95_gripper_gripper_model:=" + ag["gripper_model"],
+        "ag95_gripper_default_force_percent:=" + ag["default_force_percent"],
+        "ag95_gripper_auto_initialize:=" + ag["auto_initialize"],
+        "ag95_gripper_rw_rate:=" + ag["rw_rate"],
+        "ag95_gripper_command_interval_ms:=" + ag["command_interval_ms"],
+        "ag95_A_serial_port:=" + ag["arm_A"]["serial_port"],
+        "ag95_A_can_interface:=" + ag["arm_A"]["can_interface"],
+        "ag95_A_pcan_channel:=" + ag["arm_A"]["pcan_channel"],
+        "ag95_A_gripper_id:=" + ag["arm_A"]["gripper_id"],
+        "ag95_B_serial_port:=" + ag["arm_B"]["serial_port"],
+        "ag95_B_can_interface:=" + ag["arm_B"]["can_interface"],
+        "ag95_B_pcan_channel:=" + ag["arm_B"]["pcan_channel"],
+        "ag95_B_gripper_id:=" + ag["arm_B"]["gripper_id"],
     ]
 
 
@@ -122,20 +109,17 @@ def _generate_planning_urdf(urdf_xml: str, output_path: str) -> str:
 # ============================================================
 def launch_setup(context, *args, **kwargs):
     fake_hw = LaunchConfiguration("use_fake_hardware").perform(context)
-    fake_sensor = LaunchConfiguration("use_fake_sensor_commands").perform(context)
     headless = LaunchConfiguration("ur_headless_mode").perform(context)
     launch_rviz = LaunchConfiguration("launch_rviz")
     use_sim_time = LaunchConfiguration("use_sim_time").perform(context).lower() == "true"
 
     control_share = get_package_share_directory(CONTROL_PACKAGE)
     xacro_input = os.path.join(control_share, DESCRIPTION_FILE)
-    ur_a_init = os.path.join(control_share, "config", "ur_A_initial_positions.yaml")
-    ur_b_init = os.path.join(control_share, "config", "ur_B_initial_positions.yaml")
 
     # ========== 运行 xacro 一次，同时用于 robot_description 和 planning URDF ==========
     print("[OCS2 Launch] Running xacro...")
     result = subprocess.run(
-        _build_xacro_cmd(xacro_input, fake_hw, fake_sensor, headless, ur_a_init, ur_b_init),
+        _build_xacro_cmd(xacro_input, fake_hw, headless),
         capture_output=True, text=True,
     )
     if result.returncode != 0:
@@ -167,26 +151,30 @@ def launch_setup(context, *args, **kwargs):
              arguments=["--controller-manager", "/controller_manager",
                         "--controller-manager-timeout", "60",
                         "joint_state_broadcaster", "ocs2_arm_controller",
-                        "arm_A_adaptive_gripper_controller",
-                        "arm_B_adaptive_gripper_controller"]),
+                        "left_adaptive_gripper_controller",
+                        "right_adaptive_gripper_controller"]),
 
         Node(package="arms_target_manager", executable="arms_target_manager_node",
              output="screen", parameters=[{
                  "dual_arm_mode": True,
                  "control_base_frame": "arm_shelf",
                  "marker_fixed_frame": "arm_shelf",
-                 "hand_controllers": ["arm_A_adaptive_gripper_controller",
-                                      "arm_B_adaptive_gripper_controller"],
+                 "hand_controllers": ["left_adaptive_gripper_controller",
+                                      "right_adaptive_gripper_controller"],
                  "linear_scale": 0.005, "angular_scale": 0.05,
                  "enable_vr": False, "use_sim_time": use_sim_time,
-             }], condition=UnlessCondition(LaunchConfiguration("no_arms_target_manager"))),
+             }]),
     ]
 
     if launch_rviz.perform(context).lower() != "false":
         nodes.append(
             Node(package="rviz2", executable="rviz2", output="log",
                  arguments=["-d", rviz_path],
-                 parameters=[{"use_sim_time": use_sim_time}]),
+                 parameters=[{"use_sim_time": use_sim_time},
+                             # GripperControlPanel 通过 rviz 节点的 hand_controllers
+                             # 参数自动发现夹爪控制器（无此参数时面板为空）。
+                             {"hand_controllers": ["left_adaptive_gripper_controller",
+                                                   "right_adaptive_gripper_controller"]}]),
         )
 
     return nodes
@@ -196,12 +184,10 @@ def launch_setup(context, *args, **kwargs):
 def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument("use_fake_hardware", default_value="true"),
-        DeclareLaunchArgument("use_fake_sensor_commands", default_value="true"),
         DeclareLaunchArgument("ur_headless_mode", default_value="false"),
         DeclareLaunchArgument("launch_rviz", default_value="true"),
         # 默认 false：fake hardware 场景无 /clock 发布者，使用 wall clock。
         # 仿真（MuJoCo 等，有 /clock）或需要同步仿真时钟时传 use_sim_time:=true。
         DeclareLaunchArgument("use_sim_time", default_value="false"),
-        DeclareLaunchArgument("no_arms_target_manager", default_value="false"),
         OpaqueFunction(function=launch_setup),
     ])

@@ -16,10 +16,12 @@ controller_manager:
       type: ocs2_arm_controller/Ocs2ArmController
 
     # ---- Adaptive 夹爪控制器 ----
-    arm_A_adaptive_gripper_controller:
+    # left = arm_B（物理左臂/UR5e）, right = arm_A（物理右臂/UR5）
+    # —— 与 GripperControlPanel 的 left/right 按钮及 RViz marker 左右一致
+    left_adaptive_gripper_controller:
       type: adaptive_gripper_controller/AdaptiveGripperController
 
-    arm_B_adaptive_gripper_controller:
+    right_adaptive_gripper_controller:
       type: adaptive_gripper_controller/AdaptiveGripperController
 
 
@@ -37,7 +39,8 @@ ocs2_arm_controller:
 
     # 关节列表（顺序必须匹配 URDF kinematic chain → Pinocchio 状态向量）
     # arm_A = 右臂 (索引 0-5), arm_B = 左臂 (索引 6-11)
-    # 注意：代码中 left=arm_A, right=arm_B（与物理左右相反，仅影响 RViz marker 标签）
+    # 注意：OCS2 中 left=arm_B(eeFrame), right=arm_A(eeFrame1)，与物理左右一致
+    # （本顺序不可交换：observation.state 必须与 Pinocchio model 关节顺序一致）
     joints:
       # Arm A (UR5) — 右臂
       - arm_A_ur_shoulder_pan_joint
@@ -92,17 +95,26 @@ ocs2_arm_controller:
 
 
 # ============================================================
-# Adaptive Gripper Controller A
+# Adaptive Gripper Controller — 左夹爪（arm_B / 物理左臂 / UR5e）
+#
+# 命名说明：arms_rviz_control_plugin 的 GripperControlPanel 按控制器名
+# 中是否含 "left"/"right" 分配左右夹爪按钮（determineControllerMapping）。
+# 原 arm_A/arm_B 命名均不含 left/right，面板进入 SINGLE-SIDE 模式导致
+# 一侧夹爪开/关按钮失效。重命名后：
+#   - left  → GripperControlPanel 左按钮 + VR 左夹爪（对应 Left Arm Target marker）
+#   - right → 右按钮 + VR 右夹爪（对应 Right Arm Target marker）
+# 需同步修改：launch/start_my_env_ocs2.launch.py
+# （spawner / arms_target_manager / rviz2 hand_controllers 共 6 处）。
 # ============================================================
-arm_A_adaptive_gripper_controller:
+left_adaptive_gripper_controller:
   ros__parameters:
-    joint: arm_A_dhag95_gripper_finger1_joint
+    joint: arm_B_dhag95_gripper_finger1_joint
     use_effort_interface: false
 
 # ============================================================
-# Adaptive Gripper Controller B
+# Adaptive Gripper Controller — 右夹爪（arm_A / 物理右臂 / UR5）
 # ============================================================
-arm_B_adaptive_gripper_controller:
+right_adaptive_gripper_controller:
   ros__parameters:
-    joint: arm_B_dhag95_gripper_finger1_joint
+    joint: arm_A_dhag95_gripper_finger1_joint
     use_effort_interface: false

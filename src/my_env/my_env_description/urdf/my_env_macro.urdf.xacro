@@ -88,14 +88,14 @@
   <joint name="table_to_ur_mount_A" type="fixed">
     <parent link="arm_shelf"/>
     <child link="ur_mount_A"/>
-    <origin xyz="0.431 0.1875 1.0575" rpy="0 ${pi/2} 0" />
+    <origin xyz="0.431 0.1875 1.2075" rpy="0 ${pi/2} 0" />
   </joint>
 
   <link name="ur_mount_B"/>
   <joint name="table_to_ur_mount_B" type="fixed">
     <parent link="arm_shelf"/>
     <child link="ur_mount_B"/>
-    <origin xyz="-0.363 0.1875 1.0575" rpy="0 ${-pi/2} 0" />
+    <origin xyz="-0.363 0.1875 1.2075" rpy="0 ${-pi/2} 0" />
   </joint>
 
   <!-- 创建 UR 机器人 (Jazzy: 仅传几何相关参数) -->

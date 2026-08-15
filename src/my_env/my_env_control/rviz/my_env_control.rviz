@@ -4,6 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /TF1
         - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 1033
@@ -55,47 +56,47 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        arm_A_gripper_base_link:
+        arm_A_dhag95_gripper_base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_A_gripper_finger1_finger_link:
+        arm_A_dhag95_gripper_finger1_finger_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_A_gripper_finger1_finger_tip_link:
+        arm_A_dhag95_gripper_finger1_finger_tip_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_A_gripper_finger1_inner_knuckle_link:
+        arm_A_dhag95_gripper_finger1_inner_knuckle_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_A_gripper_finger1_knuckle_link:
+        arm_A_dhag95_gripper_finger1_knuckle_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_A_gripper_finger2_finger_link:
+        arm_A_dhag95_gripper_finger2_finger_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_A_gripper_finger2_finger_tip_link:
+        arm_A_dhag95_gripper_finger2_finger_tip_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_A_gripper_finger2_inner_knuckle_link:
+        arm_A_dhag95_gripper_finger2_inner_knuckle_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_A_gripper_finger2_knuckle_link:
+        arm_A_dhag95_gripper_finger2_knuckle_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -177,47 +178,47 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        arm_B_gripper_base_link:
+        arm_B_dhag95_gripper_base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_B_gripper_finger1_finger_link:
+        arm_B_dhag95_gripper_finger1_finger_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_B_gripper_finger1_finger_tip_link:
+        arm_B_dhag95_gripper_finger1_finger_tip_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_B_gripper_finger1_inner_knuckle_link:
+        arm_B_dhag95_gripper_finger1_inner_knuckle_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_B_gripper_finger1_knuckle_link:
+        arm_B_dhag95_gripper_finger1_knuckle_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_B_gripper_finger2_finger_link:
+        arm_B_dhag95_gripper_finger2_finger_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_B_gripper_finger2_finger_tip_link:
+        arm_B_dhag95_gripper_finger2_finger_tip_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_B_gripper_finger2_inner_knuckle_link:
+        arm_B_dhag95_gripper_finger2_inner_knuckle_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        arm_B_gripper_finger2_knuckle_link:
+        arm_B_dhag95_gripper_finger2_knuckle_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -300,6 +301,10 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         table:
           Alpha: 1
           Show Axes: false
@@ -334,23 +339,23 @@ Visualization Manager:
         All Enabled: false
         arm_A__tcp:
           Value: true
-        arm_A_gripper_base_link:
+        arm_A_dhag95_gripper_base_link:
           Value: false
-        arm_A_gripper_finger1_finger_link:
+        arm_A_dhag95_gripper_finger1_finger_link:
           Value: false
-        arm_A_gripper_finger1_finger_tip_link:
+        arm_A_dhag95_gripper_finger1_finger_tip_link:
           Value: false
-        arm_A_gripper_finger1_inner_knuckle_link:
+        arm_A_dhag95_gripper_finger1_inner_knuckle_link:
           Value: false
-        arm_A_gripper_finger1_knuckle_link:
+        arm_A_dhag95_gripper_finger1_knuckle_link:
           Value: false
-        arm_A_gripper_finger2_finger_link:
+        arm_A_dhag95_gripper_finger2_finger_link:
           Value: false
-        arm_A_gripper_finger2_finger_tip_link:
+        arm_A_dhag95_gripper_finger2_finger_tip_link:
           Value: false
-        arm_A_gripper_finger2_inner_knuckle_link:
+        arm_A_dhag95_gripper_finger2_inner_knuckle_link:
           Value: false
-        arm_A_gripper_finger2_knuckle_link:
+        arm_A_dhag95_gripper_finger2_knuckle_link:
           Value: false
         arm_A_realsense_bottom_screw_frame:
           Value: false
@@ -386,23 +391,23 @@ Visualization Manager:
           Value: false
         arm_B__tcp:
           Value: true
-        arm_B_gripper_base_link:
+        arm_B_dhag95_gripper_base_link:
           Value: false
-        arm_B_gripper_finger1_finger_link:
+        arm_B_dhag95_gripper_finger1_finger_link:
           Value: false
-        arm_B_gripper_finger1_finger_tip_link:
+        arm_B_dhag95_gripper_finger1_finger_tip_link:
           Value: false
-        arm_B_gripper_finger1_inner_knuckle_link:
+        arm_B_dhag95_gripper_finger1_inner_knuckle_link:
           Value: false
-        arm_B_gripper_finger1_knuckle_link:
+        arm_B_dhag95_gripper_finger1_knuckle_link:
           Value: false
-        arm_B_gripper_finger2_finger_link:
+        arm_B_dhag95_gripper_finger2_finger_link:
           Value: false
-        arm_B_gripper_finger2_finger_tip_link:
+        arm_B_dhag95_gripper_finger2_finger_tip_link:
           Value: false
-        arm_B_gripper_finger2_inner_knuckle_link:
+        arm_B_dhag95_gripper_finger2_inner_knuckle_link:
           Value: false
-        arm_B_gripper_finger2_knuckle_link:
+        arm_B_dhag95_gripper_finger2_knuckle_link:
           Value: false
         arm_B_realsense_bottom_screw_frame:
           Value: false
@@ -438,6 +443,8 @@ Visualization Manager:
           Value: false
         arm_shelf:
           Value: false
+        base_link:
+          Value: false
         table:
           Value: false
         ur_mount_A:
@@ -453,79 +460,80 @@ Visualization Manager:
       Show Names: false
       Tree:
         world:
-          arm_shelf:
-            ur_mount_A:
-              arm_A_ur_base_link:
-                arm_A_ur_base:
-                  {}
-                arm_A_ur_base_link_inertia:
-                  arm_A_ur_shoulder_link:
-                    arm_A_ur_upper_arm_link:
-                      arm_A_ur_forearm_link:
-                        arm_A_ur_wrist_1_link:
-                          arm_A_ur_wrist_2_link:
-                            arm_A_ur_wrist_3_link:
-                              arm_A_ur_flange:
-                                arm_A_ur_tool0:
-                                  arm_A_realsense_shelf:
-                                    arm_A_realsense_bottom_screw_frame:
-                                      arm_A_realsense_link:
-                                        {}
-                                    arm_A_realsense_shelf_child_side:
-                                      arm_A_gripper_base_link:
-                                        arm_A__tcp:
+          base_link:
+            arm_shelf:
+              ur_mount_A:
+                arm_A_ur_base_link:
+                  arm_A_ur_base:
+                    {}
+                  arm_A_ur_base_link_inertia:
+                    arm_A_ur_shoulder_link:
+                      arm_A_ur_upper_arm_link:
+                        arm_A_ur_forearm_link:
+                          arm_A_ur_wrist_1_link:
+                            arm_A_ur_wrist_2_link:
+                              arm_A_ur_wrist_3_link:
+                                arm_A_ur_flange:
+                                  arm_A_ur_tool0:
+                                    arm_A_realsense_shelf:
+                                      arm_A_realsense_bottom_screw_frame:
+                                        arm_A_realsense_link:
                                           {}
-                                        arm_A_gripper_finger1_inner_knuckle_link:
-                                          arm_A_gripper_finger1_finger_tip_link:
+                                      arm_A_realsense_shelf_child_side:
+                                        arm_A_dhag95_gripper_base_link:
+                                          arm_A__tcp:
                                             {}
-                                        arm_A_gripper_finger1_knuckle_link:
-                                          arm_A_gripper_finger1_finger_link:
-                                            {}
-                                        arm_A_gripper_finger2_inner_knuckle_link:
-                                          arm_A_gripper_finger2_finger_tip_link:
-                                            {}
-                                        arm_A_gripper_finger2_knuckle_link:
-                                          arm_A_gripper_finger2_finger_link:
-                                            {}
-                              arm_A_ur_ft_frame:
-                                {}
-            ur_mount_B:
-              arm_B_ur_base_link:
-                arm_B_ur_base:
-                  {}
-                arm_B_ur_base_link_inertia:
-                  arm_B_ur_shoulder_link:
-                    arm_B_ur_upper_arm_link:
-                      arm_B_ur_forearm_link:
-                        arm_B_ur_wrist_1_link:
-                          arm_B_ur_wrist_2_link:
-                            arm_B_ur_wrist_3_link:
-                              arm_B_ur_flange:
-                                arm_B_ur_tool0:
-                                  arm_B_realsense_shelf:
-                                    arm_B_realsense_bottom_screw_frame:
-                                      arm_B_realsense_link:
-                                        {}
-                                    arm_B_realsense_shelf_child_side:
-                                      arm_B_gripper_base_link:
-                                        arm_B__tcp:
+                                          arm_A_dhag95_gripper_finger1_inner_knuckle_link:
+                                            arm_A_dhag95_gripper_finger1_finger_tip_link:
+                                              {}
+                                          arm_A_dhag95_gripper_finger1_knuckle_link:
+                                            arm_A_dhag95_gripper_finger1_finger_link:
+                                              {}
+                                          arm_A_dhag95_gripper_finger2_inner_knuckle_link:
+                                            arm_A_dhag95_gripper_finger2_finger_tip_link:
+                                              {}
+                                          arm_A_dhag95_gripper_finger2_knuckle_link:
+                                            arm_A_dhag95_gripper_finger2_finger_link:
+                                              {}
+                                arm_A_ur_ft_frame:
+                                  {}
+              ur_mount_B:
+                arm_B_ur_base_link:
+                  arm_B_ur_base:
+                    {}
+                  arm_B_ur_base_link_inertia:
+                    arm_B_ur_shoulder_link:
+                      arm_B_ur_upper_arm_link:
+                        arm_B_ur_forearm_link:
+                          arm_B_ur_wrist_1_link:
+                            arm_B_ur_wrist_2_link:
+                              arm_B_ur_wrist_3_link:
+                                arm_B_ur_flange:
+                                  arm_B_ur_tool0:
+                                    arm_B_realsense_shelf:
+                                      arm_B_realsense_bottom_screw_frame:
+                                        arm_B_realsense_link:
                                           {}
-                                        arm_B_gripper_finger1_inner_knuckle_link:
-                                          arm_B_gripper_finger1_finger_tip_link:
+                                      arm_B_realsense_shelf_child_side:
+                                        arm_B_dhag95_gripper_base_link:
+                                          arm_B__tcp:
                                             {}
-                                        arm_B_gripper_finger1_knuckle_link:
-                                          arm_B_gripper_finger1_finger_link:
-                                            {}
-                                        arm_B_gripper_finger2_inner_knuckle_link:
-                                          arm_B_gripper_finger2_finger_tip_link:
-                                            {}
-                                        arm_B_gripper_finger2_knuckle_link:
-                                          arm_B_gripper_finger2_finger_link:
-                                            {}
-                              arm_B_ur_ft_frame:
-                                {}
-          table:
-            {}
+                                          arm_B_dhag95_gripper_finger1_inner_knuckle_link:
+                                            arm_B_dhag95_gripper_finger1_finger_tip_link:
+                                              {}
+                                          arm_B_dhag95_gripper_finger1_knuckle_link:
+                                            arm_B_dhag95_gripper_finger1_finger_link:
+                                              {}
+                                          arm_B_dhag95_gripper_finger2_inner_knuckle_link:
+                                            arm_B_dhag95_gripper_finger2_finger_tip_link:
+                                              {}
+                                          arm_B_dhag95_gripper_finger2_knuckle_link:
+                                            arm_B_dhag95_gripper_finger2_finger_link:
+                                              {}
+                                arm_B_ur_ft_frame:
+                                  {}
+            table:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -583,7 +591,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 2.139052629470825
+      Distance: 4.674479961395264
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -598,10 +606,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.3497962951660156
+      Pitch: 0.6797966957092285
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.130007028579712
+      Yaw: 1.7550069093704224
     Saved: ~
 Window Geometry:
   Displays:
@@ -613,5 +621,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 2394
-  X: 24
-  Y: 20
+  X: -8
+  Y: -12

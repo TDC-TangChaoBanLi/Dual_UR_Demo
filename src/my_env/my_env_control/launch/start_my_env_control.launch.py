@@ -1,5 +1,6 @@
 from pathlib import Path
 import xml.etree.ElementTree as ET
+import yaml
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -27,58 +28,23 @@ DESCRIPTION_PACKAGE = "my_env_description"
 DESCRIPTION_FILE = "urdf/my_env_control.urdf.xacro"
 DUAL_ARM_CONFIG_FILE = "urdf/dual_arm_config.xacro"
 CONTROLLERS_FILE = "config/dual_arm_controllers.yaml"
-UPDATE_RATE_FILE = "config/dual_arm_update_rate.yaml"
 RVIZ_CONFIG_FILE = "rviz/my_env_control.rviz"
-UR_A_INITIAL_POSITIONS_FILE = "config/ur_A_initial_positions.yaml"
-UR_B_INITIAL_POSITIONS_FILE = "config/ur_B_initial_positions.yaml"
 SUPPORTED_GRIPPER_TYPES = {"dh_ag95", "robotiq_2f85"}
 
 
-# 真实硬件 IP
-UR_REVERSE_IP = "192.168.8.100"
-UR_A_ROBOT_IP = "192.168.8.17"
-UR_B_ROBOT_IP = "192.168.8.11"
+def _load_hardware_params():
+    """读取统一硬件接口参数配置文件。
 
-# 两台 UR 的端口必须不同
-UR_A_REVERSE_PORT = "50001"
-UR_A_SCRIPT_SENDER_PORT = "50002"
-UR_A_SCRIPT_COMMAND_PORT = "50003"
-UR_A_TRAJECTORY_PORT = "50004"
+    硬件参数（UR 网络 / Robotiq 串口 / DH-AG95 夹爪）集中定义在
+    config/hardware_interface_controller_params.yaml，供两个 launch 文件共用。
+    """
+    config_file = (
+        Path(get_package_share_directory(CONTROL_PACKAGE))
+        / "config" / "hardware_interface_controller_params.yaml"
+    )
+    with open(config_file, "r") as f:
+        return yaml.safe_load(f)
 
-UR_B_REVERSE_PORT = "50011"
-UR_B_SCRIPT_SENDER_PORT = "50012"
-UR_B_SCRIPT_COMMAND_PORT = "50013"
-UR_B_TRAJECTORY_PORT = "50014"
-
-# UR5 若为 CB3，建议 125；UR5e 可 500。
-# 如果你想先保守调试，也可以把二者都设为 0，并在 update_rate yaml 中统一用 125。
-UR_A_RW_RATE = "125"
-UR_B_RW_RATE = "500"
-
-# Robotiq 串口
-G2F85_A_COM_PORT = "/dev/ttyUSB0"
-G2F85_B_COM_PORT = "/dev/ttyUSB1"
-
-# DH-Robotics AG-95 夹爪 共享参数
-AG95_GRIPPER_TRANSPORT_TYPE = "socketcan"
-AG95_GRIPPER_SERIAL_BAUDRATE = "115200"
-AG95_GRIPPER_CAN_BITRATE = "500000"
-AG95_GRIPPER_PCAN_BITRATE = "500000"
-AG95_GRIPPER_GRIPPER_MODEL = "ag-160-95"
-AG95_GRIPPER_DEFAULT_FORCE_PERCENT = "100"
-AG95_GRIPPER_AUTO_INITIALIZE = "true"
-AG95_GRIPPER_RW_RATE = "25"
-AG95_GRIPPER_COMMAND_INTERVAL_MS = "10"
-# DH-Robotics AG-95 臂A 独立参数
-AG95_A_SERIAL_PORT = "/dev/ttyAG95_A"
-AG95_A_CAN_INTERFACE = "can0"
-AG95_A_PCAN_CHANNEL = "PCAN_USBBUS1"
-AG95_A_GRIPPER_ID = "1"
-# DH-Robotics AG-95 臂B 独立参数
-AG95_B_SERIAL_PORT = "/dev/ttyAG95_B"
-AG95_B_CAN_INTERFACE = "can0"
-AG95_B_PCAN_CHANNEL = "PCAN_USBBUS1"
-AG95_B_GRIPPER_ID = "2"
 
 # 是否启动真实 UR 辅助节点
 LAUNCH_URSCRIPT_INTERFACE = False
@@ -217,7 +183,6 @@ def _read_configured_gripper_type():
 
 def launch_setup(context, *args, **kwargs):
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
-    use_fake_sensor_commands = LaunchConfiguration("use_fake_sensor_commands")
     ur_headless_mode = LaunchConfiguration("ur_headless_mode")
     launch_rviz = LaunchConfiguration("launch_rviz")
     activate_ur_controller = LaunchConfiguration("activate_ur_controller")
@@ -227,6 +192,7 @@ def launch_setup(context, *args, **kwargs):
 
     initial_ur_suffix = LaunchConfiguration("initial_ur_controller").perform(context)
     _gripper_type = _read_configured_gripper_type()
+    HW = _load_hardware_params()
 
     # ### 激活的控制器列表 ###
     controllers_active = list(BASE_ACTIVE_CONTROLLERS)
@@ -272,31 +238,10 @@ def launch_setup(context, *args, **kwargs):
         ]
     )
 
-    update_rate_config_file = PathJoinSubstitution( # 控制更新率配置文件
-        [
-            FindPackageShare(CONTROL_PACKAGE),
-            UPDATE_RATE_FILE,
-        ]
-    )
-
     rviz_config_file = PathJoinSubstitution( # RVIZ 配置文件
         [
             FindPackageShare(CONTROL_PACKAGE),
             RVIZ_CONFIG_FILE,
-        ]
-    )
-
-    ur_A_initial_positions_file = PathJoinSubstitution(
-        [
-            FindPackageShare(CONTROL_PACKAGE),
-            UR_A_INITIAL_POSITIONS_FILE,
-        ]
-    )
-
-    ur_B_initial_positions_file = PathJoinSubstitution(
-        [
-            FindPackageShare(CONTROL_PACKAGE),
-            UR_B_INITIAL_POSITIONS_FILE,
         ]
     )
 
@@ -309,54 +254,51 @@ def launch_setup(context, *args, **kwargs):
 
             # 经常修改的启动参数
             "use_fake_hardware:=", use_fake_hardware, " ",
-            "use_fake_sensor_commands:=", use_fake_sensor_commands, " ",
             "ur_headless_mode:=", ur_headless_mode, " ",
 
-            # 固定参数：UR 网络
-            "ur_reverse_ip:=", UR_REVERSE_IP, " ",
-            "ur_A_robot_ip:=", UR_A_ROBOT_IP, " ",
-            "ur_B_robot_ip:=", UR_B_ROBOT_IP, " ",
+            # 固定参数：UR 网络（来自 hardware_interface_controller_params.yaml）
+            "ur_reverse_ip:=", str(HW["ur"]["reverse_ip"]), " ",
+            "ur_A_robot_ip:=", str(HW["ur"]["arm_A"]["robot_ip"]), " ",
+            "ur_B_robot_ip:=", str(HW["ur"]["arm_B"]["robot_ip"]), " ",
 
             # 固定参数：UR A 端口
-            "ur_A_reverse_port:=", UR_A_REVERSE_PORT, " ",
-            "ur_A_script_sender_port:=", UR_A_SCRIPT_SENDER_PORT, " ",
-            "ur_A_script_command_port:=", UR_A_SCRIPT_COMMAND_PORT, " ",
-            "ur_A_trajectory_port:=", UR_A_TRAJECTORY_PORT, " ",
-            "ur_A_rw_rate:=", UR_A_RW_RATE, " ",
-            "ur_A_initial_positions_file:=", ur_A_initial_positions_file, " ",
+            "ur_A_reverse_port:=", str(HW["ur"]["arm_A"]["reverse_port"]), " ",
+            "ur_A_script_sender_port:=", str(HW["ur"]["arm_A"]["script_sender_port"]), " ",
+            "ur_A_script_command_port:=", str(HW["ur"]["arm_A"]["script_command_port"]), " ",
+            "ur_A_trajectory_port:=", str(HW["ur"]["arm_A"]["trajectory_port"]), " ",
+            "ur_A_rw_rate:=", str(HW["ur"]["arm_A"]["rw_rate"]), " ",
 
             # 固定参数：UR B 端口
-            "ur_B_reverse_port:=", UR_B_REVERSE_PORT, " ",
-            "ur_B_script_sender_port:=", UR_B_SCRIPT_SENDER_PORT, " ",
-            "ur_B_script_command_port:=", UR_B_SCRIPT_COMMAND_PORT, " ",
-            "ur_B_trajectory_port:=", UR_B_TRAJECTORY_PORT, " ",
-            "ur_B_rw_rate:=", UR_B_RW_RATE, " ",
-            "ur_B_initial_positions_file:=", ur_B_initial_positions_file, " ",
+            "ur_B_reverse_port:=", str(HW["ur"]["arm_B"]["reverse_port"]), " ",
+            "ur_B_script_sender_port:=", str(HW["ur"]["arm_B"]["script_sender_port"]), " ",
+            "ur_B_script_command_port:=", str(HW["ur"]["arm_B"]["script_command_port"]), " ",
+            "ur_B_trajectory_port:=", str(HW["ur"]["arm_B"]["trajectory_port"]), " ",
+            "ur_B_rw_rate:=", str(HW["ur"]["arm_B"]["rw_rate"]), " ",
 
             # 固定参数：Robotiq 串口
-            "g2f85_A_com_port:=", G2F85_A_COM_PORT, " ",
-            "g2f85_B_com_port:=", G2F85_B_COM_PORT, " ",
+            "g2f85_A_com_port:=", str(HW["g2f85"]["A_com_port"]), " ",
+            "g2f85_B_com_port:=", str(HW["g2f85"]["B_com_port"]), " ",
 
             # 固定参数：DH-Robotics AG-95 共享
-            "ag95_gripper_transport_type:=", AG95_GRIPPER_TRANSPORT_TYPE, " ",
-            "ag95_gripper_serial_baudrate:=", AG95_GRIPPER_SERIAL_BAUDRATE, " ",
-            "ag95_gripper_can_bitrate:=", AG95_GRIPPER_CAN_BITRATE, " ",
-            "ag95_gripper_pcan_bitrate:=", AG95_GRIPPER_PCAN_BITRATE, " ",
-            "ag95_gripper_gripper_model:=", AG95_GRIPPER_GRIPPER_MODEL, " ",
-            "ag95_gripper_default_force_percent:=", AG95_GRIPPER_DEFAULT_FORCE_PERCENT, " ",
-            "ag95_gripper_auto_initialize:=", AG95_GRIPPER_AUTO_INITIALIZE, " ",
-            "ag95_gripper_rw_rate:=", AG95_GRIPPER_RW_RATE, " ",
-            "ag95_gripper_command_interval_ms:=", AG95_GRIPPER_COMMAND_INTERVAL_MS, " ",
+            "ag95_gripper_transport_type:=", str(HW["ag95"]["transport_type"]), " ",
+            "ag95_gripper_serial_baudrate:=", str(HW["ag95"]["serial_baudrate"]), " ",
+            "ag95_gripper_can_bitrate:=", str(HW["ag95"]["can_bitrate"]), " ",
+            "ag95_gripper_pcan_bitrate:=", str(HW["ag95"]["pcan_bitrate"]), " ",
+            "ag95_gripper_gripper_model:=", str(HW["ag95"]["gripper_model"]), " ",
+            "ag95_gripper_default_force_percent:=", str(HW["ag95"]["default_force_percent"]), " ",
+            "ag95_gripper_auto_initialize:=", str(HW["ag95"]["auto_initialize"]), " ",
+            "ag95_gripper_rw_rate:=", str(HW["ag95"]["rw_rate"]), " ",
+            "ag95_gripper_command_interval_ms:=", str(HW["ag95"]["command_interval_ms"]), " ",
             # 固定参数：DH-Robotics AG-95 臂A
-            "ag95_A_serial_port:=", AG95_A_SERIAL_PORT, " ",
-            "ag95_A_can_interface:=", AG95_A_CAN_INTERFACE, " ",
-            "ag95_A_pcan_channel:=", AG95_A_PCAN_CHANNEL, " ",
-            "ag95_A_gripper_id:=", AG95_A_GRIPPER_ID, " ",
+            "ag95_A_serial_port:=", str(HW["ag95"]["arm_A"]["serial_port"]), " ",
+            "ag95_A_can_interface:=", str(HW["ag95"]["arm_A"]["can_interface"]), " ",
+            "ag95_A_pcan_channel:=", str(HW["ag95"]["arm_A"]["pcan_channel"]), " ",
+            "ag95_A_gripper_id:=", str(HW["ag95"]["arm_A"]["gripper_id"]), " ",
             # 固定参数：DH-Robotics AG-95 臂B
-            "ag95_B_serial_port:=", AG95_B_SERIAL_PORT, " ",
-            "ag95_B_can_interface:=", AG95_B_CAN_INTERFACE, " ",
-            "ag95_B_pcan_channel:=", AG95_B_PCAN_CHANNEL, " ",
-            "ag95_B_gripper_id:=", AG95_B_GRIPPER_ID, " ",
+            "ag95_B_serial_port:=", str(HW["ag95"]["arm_B"]["serial_port"]), " ",
+            "ag95_B_can_interface:=", str(HW["ag95"]["arm_B"]["can_interface"]), " ",
+            "ag95_B_pcan_channel:=", str(HW["ag95"]["arm_B"]["pcan_channel"]), " ",
+            "ag95_B_gripper_id:=", str(HW["ag95"]["arm_B"]["gripper_id"]), " ",
         ]
     )
 
@@ -380,7 +322,6 @@ def launch_setup(context, *args, **kwargs):
         executable="ros2_control_node",
         output="screen",
         parameters=[
-            update_rate_config_file,
             ParameterFile(controllers_file, allow_substs=True),
         ],
     )
@@ -401,7 +342,7 @@ def launch_setup(context, *args, **kwargs):
             output="screen",
             parameters=[
                 {"headless_mode": ur_headless_mode},
-                {"robot_ip": UR_A_ROBOT_IP},
+                {"robot_ip": str(HW["ur"]["arm_A"]["robot_ip"])},
             ],
             condition=UnlessCondition(use_fake_hardware),
         )
@@ -414,7 +355,7 @@ def launch_setup(context, *args, **kwargs):
             output="screen",
             parameters=[
                 {"headless_mode": ur_headless_mode},
-                {"robot_ip": UR_B_ROBOT_IP},
+                {"robot_ip": str(HW["ur"]["arm_B"]["robot_ip"])},
             ],
             condition=UnlessCondition(use_fake_hardware),
         )
@@ -433,7 +374,7 @@ def launch_setup(context, *args, **kwargs):
             name="urscript_interface",
             output="screen",
             parameters=[
-                {"robot_ip": UR_A_ROBOT_IP},
+                {"robot_ip": str(HW["ur"]["arm_A"]["robot_ip"])},
             ],
             condition=UnlessCondition(use_fake_hardware),
         )
@@ -445,7 +386,7 @@ def launch_setup(context, *args, **kwargs):
             name="urscript_interface",
             output="screen",
             parameters=[
-                {"robot_ip": UR_B_ROBOT_IP},
+                {"robot_ip": str(HW["ur"]["arm_B"]["robot_ip"])},
             ],
             condition=UnlessCondition(use_fake_hardware),
         )
@@ -551,14 +492,6 @@ def generate_launch_description():
             "use_fake_hardware",
             default_value="true",
             description="Use mock hardware for UR and Robotiq.",
-        )
-    )
-
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "use_fake_sensor_commands",
-            default_value="true",
-            description="Enable fake sensor command interfaces when using mock hardware.",
         )
     )
 
