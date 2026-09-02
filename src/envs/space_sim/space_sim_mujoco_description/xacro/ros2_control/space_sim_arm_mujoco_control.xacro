@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="space_sim_arm_mujoco_control" params="
+    ur_tf_prefix
+    ur_initial_positions:=${dict(shoulder_pan_joint=0.0,shoulder_lift_joint=-1.57,elbow_joint=0.0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}
+  "> 
+
+    <xacro:property name="_ur_tf_prefix" value="${ur_tf_prefix}"/>
+    <xacro:property name="_ur_initial_positions" value="${ur_initial_positions}"/>
+
+    <!-- UR 机械臂相关 -->
+    <joint name="${_ur_tf_prefix}shoulder_pan_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <!-- initial position for the FakeSystem and simulation -->
+        <param name="initial_value">${_ur_initial_positions['shoulder_pan_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${_ur_tf_prefix}shoulder_lift_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <!-- initial position for the FakeSystem and simulation -->
+        <param name="initial_value">${_ur_initial_positions['shoulder_lift_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${_ur_tf_prefix}elbow_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <!-- initial position for the FakeSystem and simulation -->
+        <param name="initial_value">${_ur_initial_positions['elbow_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${_ur_tf_prefix}wrist_1_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <!-- initial position for the FakeSystem and simulation -->
+        <param name="initial_value">${_ur_initial_positions['wrist_1_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${_ur_tf_prefix}wrist_2_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <!-- initial position for the FakeSystem and simulation -->
+        <param name="initial_value">${_ur_initial_positions['wrist_2_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${_ur_tf_prefix}wrist_3_joint">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+        <!-- initial position for the FakeSystem and simulation -->
+        <param name="initial_value">${_ur_initial_positions['wrist_3_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+
+    <sensor name="${_ur_tf_prefix}tcp_fts_sensor">
+      <param name="mujoco_type">fts</param>
+      <!-- There is _no requirement_ for the mujoco_sensor_name to match the ros2_control sensor name -->
+      <param name="mujoco_sensor_name">${_ur_tf_prefix}tcp_fts_sensor</param>
+      <!-- Default value of force_mjcf_suffix is '_force' -->
+      <param name="force_mjcf_suffix">_force</param>
+      <!-- Default value of torque_mjcf_suffix is '_torque' -->
+      <param name="torque_mjcf_suffix">_torque</param>
+      <!-- 上述三个参数配合形成 mjcf 中的力和力矩传感器名称：{mujoco_sensor_name}{force_mjcf_suffix} 和 {mujoco_sensor_name}{torque_mjcf_suffix}  -->
+
+      <state_interface name="force.x"/>
+      <state_interface name="force.y"/>
+      <state_interface name="force.z"/>
+      <state_interface name="torque.x"/>
+      <state_interface name="torque.y"/>
+      <state_interface name="torque.z"/>
+    </sensor>
+
+    <!-- ============================================ -->
+    <!-- 夹爪（预留）                                  -->
+    <!-- gripper_type 由 dual_arm_config.xacro 定义   -->
+    <!-- 当前 space_sim 无夹爪，后续添加时在此处       -->
+    <!-- 根据 gripper_type 条件添加夹爪 joint 接口     -->
+    <!-- ============================================ -->
+
+  </xacro:macro>
+</robot>

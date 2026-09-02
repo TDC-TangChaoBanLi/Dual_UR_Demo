@@ -5,5 +5,9 @@ log/
 __pycache__/
 
 
-src/my_env/my_env_mujoco/meshes/*
+src/envs/*/*_mujoco_description/meshes/*
+
 MUJOCO_LOG.TXT
+PLAN.md
+
+tmp/

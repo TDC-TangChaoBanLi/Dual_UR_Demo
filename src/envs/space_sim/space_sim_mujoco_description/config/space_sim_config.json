@@ -1,0 +1,144 @@
+{
+    "mjcf_generator": {
+        "config": {
+            "add_default_actuator":     false,
+            "add_default_equality":     true,
+
+            "add_ros2_mujoco_actuator": false,
+            "add_ros2_mujoco_sensor":   false,
+            
+            "add_json_option":      true,
+            "add_json_compiler":    true,
+            "add_json_actuator":    true,
+            "add_json_site":        true,
+            "add_json_sensor":      true,
+            "add_json_camera":      true,
+
+            "add_json_texture":     true,
+            "add_json_light":       true,
+
+            "add_json_contact":     true,
+            "add_json_equality":    true
+        },
+        "worldbody": { 
+            "add_default_floor": false, 
+            "add_default_skybox": true, 
+            "add_default_light": false, 
+            "add_default_freejoint": false,
+            "add_json_freejoint": true,
+            "freejoint_body":[
+            ],
+
+            "add_json_floor": false,
+            "add_json_skybox": false,
+
+            "floor": {
+                "geom":     {"name": "floor", "type": "plane", "size": "0 0 0.05", "material": "floor"},
+                "material": {"name": "floor", "texture": "floor", "texuniform": "true", "texrepeat": "5 5", "reflectance": "0.2"},
+                "texture":  {"name": "floor", "type": "2d", "builtin": "checker", "mark": "edge", "rgb1": "0.2 0.3 0.4", "rgb2": "0.1 0.2 0.3", "markrgb": "0.8 0.8 0.8", "width": "300", "height": "300"}
+            },
+            "skybox_texture": {
+                "name": "skybox", "type": "skybox", "builtin": "gradient", "rgb1": ".3 .5 .7", "rgb2": "0 0 0", "width": "1024", "height": "1024"
+            }
+        },
+
+        "option": { "timestep": 0.001, "gravity": "0 0 0", "cone":"elliptic", "impratio": "10"},
+        "compiler": { "angle": "radian", "balanceinertia": true },
+
+        "gravcomp": {
+            "add_gravcomp": false,
+            "add_actuatorgravcomp": false
+        },
+        
+        "actuator": {
+            "motor":[
+            ],
+            "position":[
+                {"group": 1, "kp":600, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_A_ur_shoulder_pan_joint"},
+                {"group": 1, "kp":600, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_A_ur_shoulder_lift_joint"},
+                {"group": 1, "kp":300, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_elbow_joint_ACTUATOR_POSITION",                  "joint": "arm_A_ur_elbow_joint"},
+                {"group": 1, "kp":150, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_1_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_1_joint"},
+                {"group": 1, "kp":130, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_2_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_2_joint"},
+                {"group": 1, "kp":100, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_3_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_3_joint"},
+
+                {"group": 1, "kp":600, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_B_ur_shoulder_pan_joint"},
+                {"group": 1, "kp":600, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_B_ur_shoulder_lift_joint"},
+                {"group": 1, "kp":300, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_elbow_joint_ACTUATOR_POSITION",                  "joint": "arm_B_ur_elbow_joint"},
+                {"group": 1, "kp":150, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_1_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_1_joint"},
+                {"group": 1, "kp":130, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_2_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_2_joint"},
+                {"group": 1, "kp":100, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_3_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_3_joint"}
+            ]
+        },
+        "site":{
+            "arm_A_ur_ft_frame" :[
+                {"name": "arm_A_ur_ft_frame_SITE", "pos":"0 0 0", "quat": "1 0 0 0" }
+            ],
+            "arm_B_ur_ft_frame" :[
+                {"name": "arm_B_ur_ft_frame_SITE", "pos":"0 0 0", "quat": "1 0 0 0" }
+            ]
+        },
+        "sensor": {
+            "force":[
+                { "name": "arm_A_ur_tcp_fts_sensor_force", "site": "arm_A_ur_ft_frame_SITE"},
+                { "name": "arm_B_ur_tcp_fts_sensor_force", "site": "arm_B_ur_ft_frame_SITE"}
+            ],
+            "torque": [
+                { "name": "arm_A_ur_tcp_fts_sensor_torque", "site": "arm_A_ur_ft_frame_SITE"},
+                { "name": "arm_B_ur_tcp_fts_sensor_torque", "site": "arm_B_ur_ft_frame_SITE"}
+            ]
+        },
+        "camera": {
+        },
+
+        "texture": {
+        },
+
+        "light": {
+            "worldbody": [
+                {"name":"default_light", "pos":"5 0 5", "dir":"-1 0 -1", "directional":"true", "intensity":"100000"}
+            ]
+        },
+
+        "contact":{
+            "exclude": [
+                {"body1": "arm_A_ur_base_link_inertia", "body2": "arm_A_ur_shoulder_link"},
+                {"body1": "arm_A_ur_shoulder_link",     "body2": "arm_A_ur_upper_arm_link"},
+                {"body1": "arm_A_ur_upper_arm_link",    "body2": "arm_A_ur_forearm_link"},
+                {"body1": "arm_A_ur_forearm_link",      "body2": "arm_A_ur_wrist_1_link"},
+                {"body1": "arm_A_ur_wrist_1_link",      "body2": "arm_A_ur_wrist_2_link"},
+                {"body1": "arm_A_ur_wrist_2_link",      "body2": "arm_A_ur_wrist_3_link"},
+
+                {"body1": "arm_B_ur_base_link_inertia", "body2": "arm_B_ur_shoulder_link"},
+                {"body1": "arm_B_ur_shoulder_link",     "body2": "arm_B_ur_upper_arm_link"},
+                {"body1": "arm_B_ur_upper_arm_link",    "body2": "arm_B_ur_forearm_link"},
+                {"body1": "arm_B_ur_forearm_link",      "body2": "arm_B_ur_wrist_1_link"},
+                {"body1": "arm_B_ur_wrist_1_link",      "body2": "arm_B_ur_wrist_2_link"},
+                {"body1": "arm_B_ur_wrist_2_link",      "body2": "arm_B_ur_wrist_3_link"}
+            ]
+        },
+        "equality":{
+            "connect": [
+            ]
+        }
+    },
+
+    "coacd":{
+        "threshold": 0.03,
+        "max_convex_hull": 20,
+        "preprocess_mode": "auto",
+        "preprocess_resolution": 60,
+        "resolution": 3000,
+        "mcts_nodes": 20,
+        "mcts_iterations": 200,
+        "mcts_max_depth": 3,
+        "pca": true,
+        "merge": true,
+        "decimate": false,
+        "max_ch_vertex": 256,
+        "extrude": false,
+        "extrude_margin": 0.01,
+        "apx_mode": "ch",
+        "seed": 0,
+        "log_level": "error"
+        }
+}

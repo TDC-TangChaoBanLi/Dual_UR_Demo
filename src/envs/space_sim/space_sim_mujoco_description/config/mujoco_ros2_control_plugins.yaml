@@ -1,0 +1,25 @@
+/**:
+  ros__parameters:
+    mujoco_plugins:
+      heart_beat_plugin:
+        type: "mujoco_ros2_control_plugins/HeartbeatPublisherPlugin"
+        update_rate: 1.0
+      # ============================================================
+      # 相机插件（预留）
+      # space_sim 当前无相机，后续添加相机时在此处启用 CameraPlugin
+      # ============================================================
+      # mujoco_camera_plugin:
+      #   type: "mujoco_ros2_control_plugins/CameraPlugin"
+      #   camera_publish_rate: 30.0
+      #   arm_A_camera:
+      #     policy: streaming
+      #     frame_name: arm_A_camera_link
+      #     info_topic: /arm_A_camera/camera_info
+      #     image_topic: /arm_A_camera/color
+      #     depth_topic: /arm_A_camera/depth
+      #   arm_B_camera:
+      #     policy: streaming
+      #     frame_name: arm_B_camera_link
+      #     info_topic: /arm_B_camera/camera_info
+      #     image_topic: /arm_B_camera/color
+      #     depth_topic: /arm_B_camera/depth

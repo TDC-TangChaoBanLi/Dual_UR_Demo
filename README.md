@@ -12,8 +12,8 @@
   </tr>
 
   <tr>
-    <td><center><img src=".doc/my_env_mujoco_rviz.png" >my_env_mujoco_rviz </center></td>
-    <td ><center><img src=".doc/my_env_mujoco.png"  >my_env_mujoco </center> </td>
+    <td><center><img src=".doc/my_env_mujoco_rviz.png" >lab_bench_mujoco_rviz </center></td>
+    <td ><center><img src=".doc/my_env_mujoco.png"  >lab_bench_mujoco </center> </td>
   </tr>
 </table>
 
@@ -51,17 +51,17 @@ ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5e robot_ip:=192.168
 # sudo apt install colcon -y
 # colcon build --symlink-install --packages-select robotiq_driver robotiq_controllers robotiq_description
 colcon build --symlink-install --packages-select dh_ag95_description dh_ag95_controllers
-colcon build --symlink-install --packages-select my_env_description my_env_moveit_config my_env_control
-colcon build --symlink-install --packages-select my_env_mujoco
-colcon build --symlink-install --packages-select my_control_demo
+colcon build --symlink-install --packages-select lab_bench_description lab_bench_moveit_config launch_controller
+colcon build --symlink-install --packages-select lab_bench_mujoco_description
+colcon build --symlink-install --packages-select test_control
 ```
 
 提取机械臂校准文件：
 
 ```bash
 source install/setup.bash
-ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.17 target_filename:="src/my_env/my_env_control/config/ur_A_kinematics_calibration.yaml"
-ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.11 target_filename:="src/my_env/my_env_control/config/ur_B_kinematics_calibration.yaml"
+ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.17 target_filename:="src/envs/lab_bench/lab_bench_description/config/ros2_control/ur_A_kinematics_calibration.yaml"
+ros2 launch ur_calibration calibration_correction.launch.py robot_ip:=192.168.1.11 target_filename:="src/envs/lab_bench/lab_bench_description/config/ros2_control/ur_B_kinematics_calibration.yaml"
 ```
 
 打开 CAN0 接口：
@@ -76,7 +76,7 @@ sudo ip link set can0 up
 
 ```bash
 source install/setup.bash
-ros2 launch my_env_control start_dual_ur_dashboard_client.launch.py
+ros2 launch launch_controller start_dual_ur_dashboard_client.launch.py
 ```
 
 使用 dashboard_client 启动机械臂：
@@ -97,7 +97,7 @@ ros2 service call /arm_B/dashboard_client/brake_release std_srvs/srv/Trigger {} 
 
 ```bash
 source install/setup.bash
-ros2 launch my_env_control start_my_env_control.launch.py use_fake_hardware:=false launch_rviz:=false
+ros2 launch launch_controller start_traditional_controllers.launch.py use_fake_hardware:=false launch_rviz:=false
 ```
 
 启动机械臂程序：
@@ -122,7 +122,7 @@ ros2 control switch_controllers --deactivate arm_A_ur_forward_position_controlle
 ros2 control switch_controllers --deactivate arm_B_ur_forward_position_controller --activate arm_B_ur_scaled_joint_trajectory_controller
 
 # 启动 move_group
-ros2 launch my_env_moveit_config start_my_env_moveit.launch.py launch_rviz:=true
+ros2 launch lab_bench_moveit_config start_lab_bench_moveit.launch.py launch_rviz:=true
 ```
 
 启动 MoveIt servo：
@@ -134,7 +134,7 @@ ros2 control switch_controllers --deactivate arm_A_ur_scaled_joint_trajectory_co
 ros2 control switch_controllers --deactivate arm_B_ur_scaled_joint_trajectory_controller --activate arm_B_ur_forward_position_controller
 
 # 启动 servo
-ros2 launch my_env_moveit_config start_my_env_servo.launch.py
+ros2 launch lab_bench_moveit_config start_lab_bench_servo.launch.py
 ```
 
 设置 Servo 模式：
@@ -293,10 +293,10 @@ sudo dpkg -i ros-jazzy-arms-ros2-control_*.deb
 source install/setup.bash
 
 # 仿真（默认 use_fake_hardware:=true，无需连接真实机械臂）
-ros2 launch my_env_control start_my_env_ocs2.launch.py
+ros2 launch launch_controller start_ocs2_arms_controller.launch.py
 
 # 真实硬件（需先启动 dashboard_client 并 power_on / brake_release）
-ros2 launch my_env_control start_my_env_ocs2.launch.py use_fake_hardware:=false
+ros2 launch launch_controller start_ocs2_arms_controller.launch.py use_fake_hardware:=false
 ```
 
 常用参数：
@@ -313,10 +313,10 @@ ros2 launch my_env_control start_my_env_ocs2.launch.py use_fake_hardware:=false
 source install/setup.bash
 
 # 启动 MuJoCo 仿真 + OCS2 控制器 + RViz（带 MuJoCo 视窗）
-ros2 launch my_env_mujoco start_my_env_mujoco_ocs2.launch.py
+ros2 launch launch_controller start_ocs2_arms_controller.launch.py env:=lab_bench_mujoco
 
 # 无头模式（不弹 MuJoCo 视窗，可配合 RViz 使用）
-ros2 launch my_env_mujoco start_my_env_mujoco_ocs2.launch.py mujoco_headless:=true
+ros2 launch launch_controller start_ocs2_arms_controller.launch.py env:=lab_bench_mujoco mujoco_headless:=true
 ```
 
 常用参数：
@@ -345,17 +345,17 @@ MuJoCo 仿真基于 [mujoco_ros2_control](https://github.com/ros-controls/mujoco
 
 ```bash
 # 1. 从 xacro 生成 urdf
-xacro src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf.xacro -o src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf
+xacro src/envs/lab_bench/lab_bench_mujoco_description/xacro/ros2_control/lab_bench_mujoco.xacro -o /tmp/lab_bench_mujoco_description.urdf
 
 # 2. 用 urdf2mjcf 转换为 MuJoCo XML（需先安装 urdf2mjcf）
 source ~/CodeProjects/urdf2mjcf/.venv/bin/activate
-urdf2mjcf src/my_env/my_env_mujoco/urdf/my_env_mujoco.urdf \
-  -o src/my_env/my_env_mujoco/mjcf/my_env_mujoco.xml \
-  -m src/my_env/my_env_mujoco/meshes \
-  -j src/my_env/my_env_mujoco/config/my_env_config.json -c
+urdf2mjcf /tmp/lab_bench_mujoco_description.urdf \
+  -o src/envs/lab_bench/lab_bench_mujoco_description/mjcf/lab_bench_mujoco.xml \
+  -m src/envs/lab_bench/lab_bench_mujoco_description/meshes \
+  -j src/envs/lab_bench/lab_bench_mujoco_description/config/lab_bench_config.json -c
 
 # 3. 编译
-colcon build --symlink-install --packages-select my_env_mujoco
+colcon build --symlink-install --packages-select lab_bench_mujoco_description
 ```
 
 ### 启动仿真
@@ -364,16 +364,16 @@ colcon build --symlink-install --packages-select my_env_mujoco
 source install/setup.bash
 
 # 普通 ros2_control 控制（forward_position / joint_trajectory 等仿真控制器）
-ros2 launch my_env_mujoco start_my_env_mujoco.launch.py
+ros2 launch launch_controller start_traditional_controllers.launch.py env:=lab_bench_mujoco
 
 # OCS2 控制（见上方「OCS2 控制启动」第 2 节）
-ros2 launch my_env_mujoco start_my_env_mujoco_ocs2.launch.py
+ros2 launch launch_controller start_ocs2_arms_controller.launch.py env:=lab_bench_mujoco
 ```
 
 仿真演示（预置动作循环）：
 
 ```bash
 source install/setup.bash
-ros2 run my_control_demo my_env_mujoco_control
+ros2 run test_control test_mujoco_control
 ```
 

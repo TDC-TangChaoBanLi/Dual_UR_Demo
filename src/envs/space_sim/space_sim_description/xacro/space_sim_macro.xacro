@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<robot name="space_sim" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find space_sim_description)/xacro/dual_arm_config.xacro"/>
+  <xacro:include filename="$(find space_sim_description)/xacro/space_sim_arm_macro.xacro"/>
+
+  <!-- Jazzy: 纯几何描述，不包含 ros2_control -->
+  <xacro:macro name="space_sim" params="
+  safety_limits:=false
+  safety_pos_margin:=0.15
+  safety_k_position:=20
+  force_abs_paths:=false
+  ">
+
+  <!-- 定义材料 -->
+  <material name="cube_material">
+    <color rgba="0.55 0.55 0.60 1"/>
+  </material>
+  <material name="hex_prism_material">
+    <color rgba="0.75 0.60 0.20 1"/>
+  </material>
+
+  <link name="world"/>
+
+  <!-- world 到 base_cube 的固定连接 -->
+  <joint name="world_to_base_cube" type="fixed">
+    <parent link="world" />
+    <child link="base_cube" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <!-- ============================================ -->
+  <!-- 固定方块 base_cube (0.6*0.6*0.6 m, 300 kg)   -->
+  <!-- 固定在 world 原点，中心在 (0,0,0)            -->
+  <!-- 惯量: 均匀立方体 I = m/12*(a²+b²)           -->
+  <!--       = 300/12*(0.6²+0.6²) = 18 kg·m²       -->
+  <!-- ============================================ -->
+  <link name="base_cube">
+    <inertial>
+      <mass value="300.0"/>
+      <inertia ixx="18.0" ixy="0.0" ixz="0.0"
+               iyy="18.0" iyz="0.0"
+               izz="18.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.6 0.6 0.6"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <material name="cube_material"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.6 0.6 0.6"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+    </collision>
+  </link>
+
+  <!-- ============================================ -->
+  <!-- 正六边棱柱 hex_prism                          -->
+  <!-- 对向边距 0.3m，高 0.05m，固定在方块顶面中心   -->
+  <!-- 方块顶面 z = 0.3，棱柱中心 z = 0.3+0.025      -->
+  <!-- ============================================ -->
+  <link name="hex_prism">
+    <inertial>
+      <mass value="5.0"/>
+      <!-- 正六边形棱柱: R=0.3/√3≈0.173205, h=0.05   -->
+      <!-- Izz = m*(5R²/12) = 0.0625                  -->
+      <!-- Ixx = Iyy = m*(5R²/24 + h²/12) ≈ 0.032292  -->
+      <inertia ixx="0.032292" ixy="0.0" ixz="0.0"
+               iyy="0.032292" iyz="0.0"
+               izz="0.0625"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://space_sim_description/meshes/len.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <material name="hex_prism_material"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://space_sim_description/meshes/len.stl"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+    </collision>
+  </link>
+  <joint name="base_cube_to_hex_prism" type="fixed">
+    <parent link="base_cube" />
+    <child link="hex_prism" />
+    <origin xyz="0 0 0.325" rpy="0 0 0" />
+  </joint>
+
+  <!-- ============================================ -->
+  <!-- UR 安装座 link & joint                        -->
+  <!-- 对侧安装: arm_A 在 +X 侧面, arm_B 在 -X 侧面  -->
+  <!-- 方块半宽 0.3，安装面在 x=±0.3                 -->
+  <!-- ============================================ -->
+  <link name="ur_mount_A"/>
+  <joint name="base_cube_to_ur_mount_A" type="fixed">
+    <parent link="base_cube"/>
+    <child link="ur_mount_A"/>
+    <origin xyz="0.3 0 0" rpy="0 ${pi/2} 0" />
+  </joint>
+
+  <link name="ur_mount_B"/>
+  <joint name="base_cube_to_ur_mount_B" type="fixed">
+    <parent link="base_cube"/>
+    <child link="ur_mount_B"/>
+    <origin xyz="-0.3 0 0" rpy="0 ${-pi/2} 0" />
+  </joint>
+
+  <!-- 创建 UR 机器人 (Jazzy: 仅传几何相关参数) -->
+  <xacro:space_sim_arm
+    name = "ur_A"
+    tf_prefix = "${arm_A_tf_prefix}"
+    parent = "ur_mount_A"
+    ur_type = "${ur_A_ur_type}"
+    kinematics_parameters_file = "${ur_A_kinematics_parameters_file}"
+    gripper_type = "${gripper_type}"
+    safety_limits = "${safety_limits}"
+    safety_pos_margin = "${safety_pos_margin}"
+    safety_k_position = "${safety_k_position}"
+    force_abs_paths = "${force_abs_paths}"
+  >
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:space_sim_arm>
+
+  <xacro:space_sim_arm
+    name = "ur_B"
+    tf_prefix = "${arm_B_tf_prefix}"
+    parent = "ur_mount_B"
+    ur_type = "${ur_B_ur_type}"
+    kinematics_parameters_file = "${ur_B_kinematics_parameters_file}"
+    gripper_type = "${gripper_type}"
+    safety_limits = "${safety_limits}"
+    safety_pos_margin = "${safety_pos_margin}"
+    safety_k_position = "${safety_k_position}"
+    force_abs_paths = "${force_abs_paths}"
+  >
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:space_sim_arm>
+
+  </xacro:macro>
+</robot>

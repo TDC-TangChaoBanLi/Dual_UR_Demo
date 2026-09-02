@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<robot name="space_sim_mujoco_description" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- 包含几何描述宏 -->
+  <xacro:include filename="$(find space_sim_description)/xacro/space_sim_macro.xacro"/>
+  <!-- Jazzy: mujoco ros2_control 宏（位于 space_sim_mujoco_description 包） -->
+  <xacro:include filename="$(find space_sim_mujoco_description)/xacro/ros2_control/space_sim_arm_mujoco_control.xacro"/>
+
+  <!-- 控制参数 -->
+  <xacro:arg name="mjcf_file_path" default="$(find space_sim_mujoco_description)/mjcf/space_sim_mujoco.xml"/>
+  <xacro:arg name="pids_config_file_path" default="$(find space_sim_mujoco_description)/config/mujoco_pids_config.yaml"/>
+  <xacro:arg name="ur_A_initial_positions_file" default="$(find space_sim_description)/config/ros2_control/ur_A_initial_positions.yaml"/>
+  <xacro:arg name="ur_B_initial_positions_file" default="$(find space_sim_description)/config/ros2_control/ur_B_initial_positions.yaml"/>
+
+  <!-- UR 安全限位和路径参数（几何用） -->
+  <xacro:arg name="safety_limits" default="false"/>
+  <xacro:arg name="safety_pos_margin" default="0.15"/>
+  <xacro:arg name="safety_k_position" default="20"/>
+  <xacro:arg name="force_abs_paths" default="false"/>
+
+  <!-- ============================================ -->
+  <!-- Mujoco ros2_control 可选参数                  -->
+  <!-- ============================================ -->
+  <xacro:arg name="mujoco_sim_speed_factor" default="1.0"/>
+  <xacro:arg name="mujoco_headless" default="false"/>
+  <xacro:property name="ur_A_initial_positions_file" value="$(arg ur_A_initial_positions_file)"/>
+  <xacro:property name="ur_B_initial_positions_file" value="$(arg ur_B_initial_positions_file)"/>
+
+  <!-- Jazzy: 纯几何描述（仅传几何参数给 space_sim） -->
+  <xacro:space_sim 
+    safety_limits="$(arg safety_limits)"
+    safety_pos_margin="$(arg safety_pos_margin)"
+    safety_k_position="$(arg safety_k_position)"
+    force_abs_paths="$(arg force_abs_paths)"
+  />
+
+  <!-- ============================================ -->
+  <!-- Jazzy: Mujoco ros2_control（从 space_sim_macro 移至此） -->
+  <!-- 只保留一个 ros2_control system：只启动一次 MujocoSystemInterface -->
+  <!-- ============================================ -->
+  <xacro:property name="arm_A_ur_prefix" value="${arm_A_tf_prefix}ur_"/> <!-- ! Match the prefix in space_sim_arm_macro.xacro -->
+  <xacro:property name="arm_B_ur_prefix" value="${arm_B_tf_prefix}ur_"/> <!-- ! Match the prefix in space_sim_arm_macro.xacro -->
+
+  <ros2_control name="space_sim_mujoco_ros2_control" type="system">
+    <hardware>
+      <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
+      <param name="mujoco_model">$(arg mjcf_file_path)</param>
+      <!-- Optional: load PID gains from a ROS parameters YAML file.
+        Enables position/velocity PID control for velocity, motor, and custom actuators. -->
+      <param name="pids_config_file">$(arg pids_config_file_path)</param>
+      <!-- Override the slowdown settings in the Simulate App -->
+      <param name="sim_speed_factor">$(arg mujoco_sim_speed_factor)</param>
+      <!-- If set to true, will not launch the Simulate App window -->
+      <param name="headless">$(arg mujoco_headless)</param>
+    </hardware>
+
+    <!-- 把两套机械臂的 joint/sensor 接口“塞进同一个 system”里 -->
+    <xacro:space_sim_arm_mujoco_control
+        ur_tf_prefix="${arm_A_ur_prefix}"
+        ur_initial_positions="${xacro.load_yaml(ur_A_initial_positions_file)}"/>
+
+    <xacro:space_sim_arm_mujoco_control
+        ur_tf_prefix="${arm_B_ur_prefix}"
+        ur_initial_positions="${xacro.load_yaml(ur_B_initial_positions_file)}"/>
+  </ros2_control>
+
+</robot>

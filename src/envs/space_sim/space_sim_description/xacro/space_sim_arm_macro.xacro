@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- ============================================ -->
+  <!-- 通用依赖（UR 机械臂本体）                    -->
+  <!-- ============================================ -->
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+
+  <!-- ============================================ -->
+  <!-- 夹爪类型条件依赖（预留，后续添加时启用）     -->
+  <!-- ============================================ -->
+  <!--
+  <xacro:if value="${gripper_type == 'robotiq_2f85'}">
+    <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro" />
+    <xacro:include filename="$(find robotiq_description)/urdf/ur_to_robotiq_adapter.urdf.xacro" />
+  </xacro:if>
+  <xacro:if value="${gripper_type == 'dh_ag95'}">
+    <xacro:include filename="$(find dh_ag95_description)/urdf/dh_ag95_macro.urdf.xacro" />
+  </xacro:if>
+  -->
+
+
+  <!-- 宏定义自己的机械臂结构 UR（无夹爪、无相机） -->
+  <!-- Jazzy: 仅纯几何描述，不包含任何 ros2_control -->
+  <xacro:macro name="space_sim_arm" params="
+    name:=space_sim_arm
+    tf_prefix:=space_sim_arm
+    parent:=world
+    ur_type:=ur5e
+    kinematics_parameters_file:=''
+    gripper_type:=none
+    safety_limits:=false
+    safety_pos_margin:=0.15
+    safety_k_position:=20
+    force_abs_paths:=false
+    *origin
+    ">
+
+    <!-- UR parameters (Jazzy: 仅 yaml 配置文件路径) -->
+    <xacro:property name="_ur_name" value="${name}_ur"/>
+    <xacro:property name="_ur_tf_prefix" value="${tf_prefix}ur_"/>
+    <xacro:property name="_ur_parent" value="${parent}"/>
+    <xacro:property name="_ur_joint_limits_parameters_file" value="$(find ur_description)/config/${ur_type}/joint_limits.yaml"/>
+    <xacro:if value="${kinematics_parameters_file == ''}">
+      <xacro:property name="_ur_kinematics_parameters_file" value="$(find ur_description)/config/${ur_type}/default_kinematics.yaml"/>
+    </xacro:if>
+    <xacro:unless value="${kinematics_parameters_file == ''}">
+      <xacro:property name="_ur_kinematics_parameters_file" value="${kinematics_parameters_file}"/>
+    </xacro:unless>
+    <xacro:property name="_ur_physical_parameters_file" value="$(find ur_description)/config/${ur_type}/physical_parameters.yaml"/>
+    <xacro:property name="_ur_visual_parameters_file" value="$(find ur_description)/config/${ur_type}/visual_parameters.yaml"/>
+
+    <!-- 创建 UR 机器人 使用宏定义 (Jazzy: 纯描述，无 ros2_control 参数) -->
+    <xacro:ur_robot
+      name="${_ur_name}"
+      tf_prefix="${_ur_tf_prefix}"
+      parent="${_ur_parent}"
+      joint_limits_parameters_file="${_ur_joint_limits_parameters_file}"
+      kinematics_parameters_file="${_ur_kinematics_parameters_file}"
+      physical_parameters_file="${_ur_physical_parameters_file}"
+      visual_parameters_file="${_ur_visual_parameters_file}"
+      safety_limits="${safety_limits}"
+      safety_pos_margin="${safety_pos_margin}"
+      safety_k_position="${safety_k_position}"
+      force_abs_paths="${force_abs_paths}"
+    >
+      <xacro:insert_block name="origin" />
+    </xacro:ur_robot>
+
+    <!-- ============================================ -->
+    <!-- 夹爪挂载点（预留）                            -->
+    <!-- ============================================ -->
+    <!--
+      后续添加夹爪时，在此处根据 gripper_type 条件实例化夹爪宏，
+      父 link 为 ${_ur_tf_prefix}tool0。
+      示例（dh_ag95）：
+      <xacro:if value="${gripper_type == 'dh_ag95'}">
+        <xacro:dh_ag95_gripper
+          prefix="${tf_prefix}dhag95_"
+          parent="${_ur_tf_prefix}tool0"
+        >
+          <origin xyz="0 0 0" rpy="0 0 0" />
+        </xacro:dh_ag95_gripper>
+      </xacro:if>
+    -->
+
+  </xacro:macro>
+</robot>

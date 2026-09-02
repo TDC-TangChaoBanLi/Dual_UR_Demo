@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!--
+    双臂共享配置文件
+    ================
+    本文件统一存放 space_sim_macro.xacro 和 space_sim.xacro 中
+    需要保持一致的双臂属性，避免在两处重复定义。
+
+    修改规则：只需修改本文件中的值，所有引用方自动同步。
+  -->
+
+  <!-- ============================================ -->
+  <!-- 臂 A 配置                                   -->
+  <!-- ============================================ -->
+  <xacro:property name="arm_A_tf_prefix" value="arm_A_"/>
+  <xacro:property name="ur_A_ur_type" value="ur5e"/>
+  <!-- 空字符串表示使用 ur_description 默认 kinematics -->
+  <xacro:property name="ur_A_kinematics_parameters_file" value=""/>
+
+  <!-- ============================================ -->
+  <!-- 臂 B 配置                                   -->
+  <!-- ============================================ -->
+  <xacro:property name="arm_B_tf_prefix" value="arm_B_"/>
+  <xacro:property name="ur_B_ur_type" value="ur5e"/>
+  <!-- 空字符串表示使用 ur_description 默认 kinematics -->
+  <xacro:property name="ur_B_kinematics_parameters_file" value=""/>
+
+  <!-- ============================================ -->
+  <!-- 夹爪类型选择                                -->
+  <!-- ============================================ -->
+  <!-- 可选值: "none" | "dh_ag95" | "robotiq_2f85" -->
+  <!-- 注意: 双臂使用同款夹爪，暂不支持混合配置      -->
+  <!--       space_sim 当前无夹爪，保留接口供后续添加 -->
+  <xacro:property name="gripper_type" value="none"/>
+
+</robot>

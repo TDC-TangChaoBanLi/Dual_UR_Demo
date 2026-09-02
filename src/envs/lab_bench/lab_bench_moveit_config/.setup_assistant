@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: lab_bench_description
+    relative_path: xacro/lab_bench.xacro
+  srdf:
+    relative_path: config/lab_bench.srdf
+  package_settings:
+    author_name: tdc
+    author_email: lihao_0630@qq.com
+    generated_timestamp: 1782640086

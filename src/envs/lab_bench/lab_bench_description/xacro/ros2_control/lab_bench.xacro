@@ -1,0 +1,274 @@
+<?xml version="1.0"?>
+<robot name="lab_bench_controlled" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- 首先包含自定义描述宏 -->
+  <xacro:include filename="$(find lab_bench_description)/xacro/lab_bench_macro.xacro"/>
+  <!-- Jazzy: ros2_control 宏分别来自 ur_robot_driver、robotiq_description 和 dh_ag95_description -->
+  <xacro:include filename="$(find ur_robot_driver)/urdf/ur.ros2_control.xacro" />
+  <xacro:if value="${gripper_type == 'robotiq_2f85'}">
+    <xacro:include filename="$(find robotiq_description)/urdf/2f_85.ros2_control.xacro" />
+  </xacro:if>
+  <xacro:if value="${gripper_type == 'dh_ag95'}">
+    <xacro:include filename="$(find dh_ag95_description)/urdf/dh_ag95.ros2_control.xacro" />
+  </xacro:if>
+
+  <!-- 我们需要指定用于参数化描述的参数 -->
+  <!-- 双臂前缀/型号等属性现在统一由 dual_arm_config.xacro 提供（通过 lab_bench_macro.xacro 间接 include） -->
+  <!-- 总体参数 -->
+  <xacro:arg name="use_fake_hardware" default="true" />
+  <xacro:arg name="use_fake_sensor_commands" default="true" />
+  <!-- UR 机器人其他参数 -->
+  <xacro:arg name="ur_reverse_ip" default="0.0.0.0"/>
+  <xacro:arg name="ur_headless_mode" default="false"/>
+  <!-- UR_A 机器人参数 (前缀和型号固定为 property) -->
+  <xacro:arg name="ur_A_robot_ip" default="192.168.1.101"/>
+  <xacro:arg name="ur_A_reverse_port" default="50001"/>
+  <xacro:arg name="ur_A_script_sender_port" default="50002"/>
+  <xacro:arg name="ur_A_script_command_port" default="50003"/>
+  <xacro:arg name="ur_A_trajectory_port" default="50004"/>
+  <xacro:arg name="ur_A_rw_rate" default="0"/>
+  <!-- UR_B 机器人参数 (前缀和型号固定为 property) -->
+  <xacro:arg name="ur_B_robot_ip" default="192.168.1.102"/>
+  <xacro:arg name="ur_B_reverse_port" default="50011"/>
+  <xacro:arg name="ur_B_script_sender_port" default="50012"/>
+  <xacro:arg name="ur_B_script_command_port" default="50013"/>
+  <xacro:arg name="ur_B_trajectory_port" default="50014"/>
+  <xacro:arg name="ur_B_rw_rate" default="0"/>
+  <!-- 夹爪和相机参数 -->
+  <xacro:arg name="g2f85_A_com_port" default="/dev/ttyUSB0"/>
+  <xacro:arg name="g2f85_B_com_port" default="/dev/ttyUSB1"/>
+  <xacro:arg name="camera_use_nominal_extrinsics" default="false"/>
+  <!-- UR 安全限位和路径参数（几何用） -->
+  <xacro:arg name="safety_limits" default="false"/>
+  <xacro:arg name="safety_pos_margin" default="0.15"/>
+  <xacro:arg name="safety_k_position" default="20"/>
+  <xacro:arg name="force_abs_paths" default="false"/>
+  <!-- UR ros2_control recipe 文件 -->
+  <xacro:arg name="script_filename" default="$(find ur_client_library)/resources/external_control.urscript"/>
+  <xacro:arg name="output_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_output_recipe.txt"/>
+  <xacro:arg name="input_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_input_recipe.txt"/>
+  <!-- DH-Robotics AG-95 夹爪 共享参数（前缀 ag95_gripper_）-->
+  <xacro:arg name="ag95_gripper_transport_type" default="official_serial"/>
+  <xacro:arg name="ag95_gripper_serial_baudrate" default="115200"/>
+  <xacro:arg name="ag95_gripper_can_bitrate" default="500000"/>
+  <xacro:arg name="ag95_gripper_pcan_bitrate" default="500000"/>
+  <xacro:arg name="ag95_gripper_gripper_model" default="ag-160-95"/>
+  <xacro:arg name="ag95_gripper_default_force_percent" default="30"/>
+  <xacro:arg name="ag95_gripper_auto_initialize" default="true"/>
+  <xacro:arg name="ag95_gripper_rw_rate" default="25"/>
+  <xacro:arg name="ag95_gripper_command_interval_ms" default="10"/>
+  <!-- DH-Robotics AG-95 臂A 独立参数（前缀 ag95_A_）-->
+  <xacro:arg name="ag95_A_serial_port" default="/dev/ttyAG95_A"/>
+  <xacro:arg name="ag95_A_can_interface" default="can0"/>
+  <xacro:arg name="ag95_A_pcan_channel" default="PCAN_USBBUS1"/>
+  <xacro:arg name="ag95_A_gripper_id" default="1"/>
+  <!-- DH-Robotics AG-95 臂B 独立参数（前缀 ag95_B_）-->
+  <xacro:arg name="ag95_B_serial_port" default="/dev/ttyAG95_B"/>
+  <xacro:arg name="ag95_B_can_interface" default="can0"/>
+  <xacro:arg name="ag95_B_pcan_channel" default="PCAN_USBBUS1"/>
+  <xacro:arg name="ag95_B_gripper_id" default="2"/>
+  <!-- 初始位置文件 -->
+  <xacro:arg name="ur_A_initial_positions_file" default="$(find lab_bench_description)/config/ros2_control/ur_A_initial_positions.yaml"/>
+  <xacro:arg name="ur_B_initial_positions_file" default="$(find lab_bench_description)/config/ros2_control/ur_B_initial_positions.yaml"/>
+
+  <!-- ============================================ -->
+  <!-- UR ros2_control 可选参数（两臂共享）           -->
+  <!-- ============================================ -->
+  <xacro:arg name="ur_transmission_hw_interface" default="hardware_interface/PositionJointInterface"/>
+  <xacro:arg name="ur_use_tool_communication" default="false"/>
+  <xacro:arg name="ur_tool_voltage" default="0"/>
+  <xacro:arg name="ur_tool_parity" default="0"/>
+  <xacro:arg name="ur_tool_baud_rate" default="115200"/>
+  <xacro:arg name="ur_tool_stop_bits" default="1"/>
+  <xacro:arg name="ur_tool_rx_idle_chars" default="1.5"/>
+  <xacro:arg name="ur_tool_tx_idle_chars" default="3.5"/>
+  <xacro:arg name="ur_tool_device_name" default="/tmp/ttyUR"/>
+  <xacro:arg name="ur_tool_tcp_port" default="54321"/>
+  <xacro:arg name="ur_non_blocking_read" default="true"/>
+  <xacro:arg name="ur_robot_receive_timeout" default="0.04"/>
+  
+
+  <!-- ============================================ -->
+  <!-- Robotiq 夹爪 ros2_control 可选参数（两臂共享） -->
+  <!-- ============================================ -->
+  <xacro:arg name="g2f85_gripper_speed_multiplier" default="1.0"/>
+  <xacro:arg name="g2f85_gripper_force_multiplier" default="0.5"/>
+  <xacro:arg name="g2f85_gripper_max_speed" default="0.150"/>
+  <xacro:arg name="g2f85_gripper_max_force" default="235.0"/>
+  <xacro:arg name="g2f85_gripper_closed_position" default="0.7929"/>
+
+  <!-- 转换为 property 以便在调用中使用 substitution -->
+  <xacro:property name="ur_A_initial_positions_file" value="$(arg ur_A_initial_positions_file)"/>
+  <xacro:property name="ur_B_initial_positions_file" value="$(arg ur_B_initial_positions_file)"/>
+
+
+  <!-- Jazzy: 纯几何描述（仅传几何参数给 lab_bench） -->
+  <xacro:lab_bench 
+    camera_use_nominal_extrinsics="$(arg camera_use_nominal_extrinsics)"
+    safety_limits="$(arg safety_limits)"
+    safety_pos_margin="$(arg safety_pos_margin)"
+    safety_k_position="$(arg safety_k_position)"
+    force_abs_paths="$(arg force_abs_paths)"
+  />
+
+  <!-- ============================================ -->
+  <!-- Jazzy: UR ros2_control (独立于几何描述)       -->
+  <!-- ============================================ -->
+
+  <!-- arm_A UR ros2_control -->
+  <xacro:ur_ros2_control
+    name="arm_A_ur_hardware"
+    tf_prefix="${arm_A_tf_prefix}ur_"
+    kinematics_parameters_file="${ur_A_kinematics_parameters_file}"
+    robot_ip="$(arg ur_A_robot_ip)"
+    script_filename="$(arg script_filename)"
+    output_recipe_filename="$(arg output_recipe_filename)"
+    input_recipe_filename="$(arg input_recipe_filename)"
+    reverse_ip="$(arg ur_reverse_ip)"
+    reverse_port="$(arg ur_A_reverse_port)"
+    script_sender_port="$(arg ur_A_script_sender_port)"
+    script_command_port="$(arg ur_A_script_command_port)"
+    trajectory_port="$(arg ur_A_trajectory_port)"
+    use_mock_hardware="$(arg use_fake_hardware)"
+    mock_sensor_commands="$(arg use_fake_sensor_commands)"
+    headless_mode="$(arg ur_headless_mode)"
+    initial_positions="${xacro.load_yaml(ur_A_initial_positions_file)}"
+    transmission_hw_interface="$(arg ur_transmission_hw_interface)"
+    use_tool_communication="$(arg ur_use_tool_communication)"
+    tool_voltage="$(arg ur_tool_voltage)"
+    tool_parity="$(arg ur_tool_parity)"
+    tool_baud_rate="$(arg ur_tool_baud_rate)"
+    tool_stop_bits="$(arg ur_tool_stop_bits)"
+    tool_rx_idle_chars="$(arg ur_tool_rx_idle_chars)"
+    tool_tx_idle_chars="$(arg ur_tool_tx_idle_chars)"
+    tool_device_name="$(arg ur_tool_device_name)"
+    tool_tcp_port="$(arg ur_tool_tcp_port)"
+    non_blocking_read="$(arg ur_non_blocking_read)"
+    robot_receive_timeout="$(arg ur_robot_receive_timeout)"
+    rw_rate="$(arg ur_A_rw_rate)"
+  />
+
+  <!-- arm_B UR ros2_control -->
+  <xacro:ur_ros2_control
+    name="arm_B_ur_hardware"
+    tf_prefix="${arm_B_tf_prefix}ur_"
+    kinematics_parameters_file="${ur_B_kinematics_parameters_file}"
+    robot_ip="$(arg ur_B_robot_ip)"
+    script_filename="$(arg script_filename)"
+    output_recipe_filename="$(arg output_recipe_filename)"
+    input_recipe_filename="$(arg input_recipe_filename)"
+    reverse_ip="$(arg ur_reverse_ip)"
+    reverse_port="$(arg ur_B_reverse_port)"
+    script_sender_port="$(arg ur_B_script_sender_port)"
+    script_command_port="$(arg ur_B_script_command_port)"
+    trajectory_port="$(arg ur_B_trajectory_port)"
+    use_mock_hardware="$(arg use_fake_hardware)"
+    mock_sensor_commands="$(arg use_fake_sensor_commands)"
+    headless_mode="$(arg ur_headless_mode)"
+    initial_positions="${xacro.load_yaml(ur_B_initial_positions_file)}"
+    transmission_hw_interface="$(arg ur_transmission_hw_interface)"
+    use_tool_communication="$(arg ur_use_tool_communication)"
+    tool_voltage="$(arg ur_tool_voltage)"
+    tool_parity="$(arg ur_tool_parity)"
+    tool_baud_rate="$(arg ur_tool_baud_rate)"
+    tool_stop_bits="$(arg ur_tool_stop_bits)"
+    tool_rx_idle_chars="$(arg ur_tool_rx_idle_chars)"
+    tool_tx_idle_chars="$(arg ur_tool_tx_idle_chars)"
+    tool_device_name="$(arg ur_tool_device_name)"
+    tool_tcp_port="$(arg ur_tool_tcp_port)"
+    non_blocking_read="$(arg ur_non_blocking_read)"
+    robot_receive_timeout="$(arg ur_robot_receive_timeout)"
+    rw_rate="$(arg ur_B_rw_rate)"
+  />
+
+  <!-- ============================================ -->
+  <!-- Jazzy: Robotiq 夹爪 ros2_control             -->
+  <!-- ============================================ -->
+  <xacro:if value="${gripper_type == 'robotiq_2f85'}">
+
+  <!-- arm_A 夹爪 ros2_control -->
+  <xacro:robotiq_gripper_ros2_control
+    name="arm_A_g2f85_hardware"
+    prefix="${arm_A_tf_prefix}"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    mock_sensor_commands="$(arg use_fake_sensor_commands)"
+    com_port="$(arg g2f85_A_com_port)"
+    sim_gazebo="False"
+    sim_isaac="False"
+    isaac_joint_commands="/isaac_joint_commands"
+    isaac_joint_states="/isaac_joint_states"
+    gripper_speed_multiplier="$(arg g2f85_gripper_speed_multiplier)"
+    gripper_force_multiplier="$(arg g2f85_gripper_force_multiplier)"
+    gripper_max_speed="$(arg g2f85_gripper_max_speed)"
+    gripper_max_force="$(arg g2f85_gripper_max_force)"
+    gripper_closed_position="$(arg g2f85_gripper_closed_position)"
+  />
+
+  <!-- arm_B 夹爪 ros2_control -->
+  <xacro:robotiq_gripper_ros2_control
+    name="arm_B_g2f85_hardware"
+    prefix="${arm_B_tf_prefix}"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    mock_sensor_commands="$(arg use_fake_sensor_commands)"
+    com_port="$(arg g2f85_B_com_port)"
+    sim_gazebo="False"
+    sim_isaac="False"
+    isaac_joint_commands="/isaac_joint_commands"
+    isaac_joint_states="/isaac_joint_states"
+    gripper_speed_multiplier="$(arg g2f85_gripper_speed_multiplier)"
+    gripper_force_multiplier="$(arg g2f85_gripper_force_multiplier)"
+    gripper_max_speed="$(arg g2f85_gripper_max_speed)"
+    gripper_max_force="$(arg g2f85_gripper_max_force)"
+    gripper_closed_position="$(arg g2f85_gripper_closed_position)"
+  />
+
+  </xacro:if>
+
+  <!-- ============================================ -->
+  <!-- Jazzy: DH-Robotics AG-95 夹爪 ros2_control   -->
+  <!-- ============================================ -->
+  <xacro:if value="${gripper_type == 'dh_ag95'}">
+
+  <!-- arm_A AG-95 夹爪 ros2_control -->
+  <xacro:dh_ag95_ros2_control
+    prefix="${arm_A_tf_prefix}dhag95_"
+    name="arm_A_ag95_hardware"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    transport_type="$(arg ag95_gripper_transport_type)"
+    serial_port="$(arg ag95_A_serial_port)"
+    serial_baudrate="$(arg ag95_gripper_serial_baudrate)"
+    can_interface="$(arg ag95_A_can_interface)"
+    can_bitrate="$(arg ag95_gripper_can_bitrate)"
+    pcan_channel="$(arg ag95_A_pcan_channel)"
+    pcan_bitrate="$(arg ag95_gripper_pcan_bitrate)"
+    gripper_id="$(arg ag95_A_gripper_id)"
+    gripper_model="$(arg ag95_gripper_gripper_model)"
+    default_force_percent="$(arg ag95_gripper_default_force_percent)"
+    auto_initialize="$(arg ag95_gripper_auto_initialize)"
+    rw_rate="$(arg ag95_gripper_rw_rate)"
+    command_interval_ms="$(arg ag95_gripper_command_interval_ms)"
+  />
+
+  <!-- arm_B AG-95 夹爪 ros2_control -->
+  <xacro:dh_ag95_ros2_control
+    prefix="${arm_B_tf_prefix}dhag95_"
+    name="arm_B_ag95_hardware"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    transport_type="$(arg ag95_gripper_transport_type)"
+    serial_port="$(arg ag95_B_serial_port)"
+    serial_baudrate="$(arg ag95_gripper_serial_baudrate)"
+    can_interface="$(arg ag95_B_can_interface)"
+    can_bitrate="$(arg ag95_gripper_can_bitrate)"
+    pcan_channel="$(arg ag95_B_pcan_channel)"
+    pcan_bitrate="$(arg ag95_gripper_pcan_bitrate)"
+    gripper_id="$(arg ag95_B_gripper_id)"
+    gripper_model="$(arg ag95_gripper_gripper_model)"
+    default_force_percent="$(arg ag95_gripper_default_force_percent)"
+    auto_initialize="$(arg ag95_gripper_auto_initialize)"
+    rw_rate="$(arg ag95_gripper_rw_rate)"
+    command_interval_ms="$(arg ag95_gripper_command_interval_ms)"
+  />
+
+  </xacro:if>
+
+</robot>

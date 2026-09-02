@@ -1,0 +1,220 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 500  # Hz
+    # ------------------------------------------------------------
+    # 全局 joint state broadcaster
+    # ------------------------------------------------------------
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    # ------------------------------------------------------------
+    # UR A: 状态广播器（仿真可用）
+    # ------------------------------------------------------------
+    arm_A_ur_force_torque_sensor_broadcaster:
+      type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+
+    # ------------------------------------------------------------
+    # UR A: 运动控制器（仿真可用）
+    # ------------------------------------------------------------
+    arm_A_ur_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    arm_A_ur_forward_position_controller:
+      type: position_controllers/JointGroupPositionController
+
+    arm_A_ur_forward_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    arm_A_ur_forward_effort_controller:
+      type: effort_controllers/JointGroupEffortController
+
+    # ------------------------------------------------------------
+    # UR B: 状态广播器（仿真可用）
+    # ------------------------------------------------------------
+    arm_B_ur_force_torque_sensor_broadcaster:
+      type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+
+    # ------------------------------------------------------------
+    # UR B: 运动控制器（仿真可用）
+    # ------------------------------------------------------------
+    arm_B_ur_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    arm_B_ur_forward_position_controller:
+      type: position_controllers/JointGroupPositionController
+
+    arm_B_ur_forward_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    arm_B_ur_forward_effort_controller:
+      type: effort_controllers/JointGroupEffortController
+
+    # ------------------------------------------------------------
+    # 夹爪控制器（预留）
+    # space_sim 当前无夹爪，后续添加夹爪时在此处添加对应控制器
+    # ------------------------------------------------------------
+
+    # ------------------------------------------------------------
+    # Jazzy 默认就是 false；这里显式写出，贴近 UR 官方配置
+    # ------------------------------------------------------------
+    enforce_command_limits: false
+
+
+# ============================================================
+# UR A 控制器参数
+# ============================================================
+
+arm_A_ur_force_torque_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: arm_A_ur_tcp_fts_sensor
+    state_interface_names:
+      - force.x
+      - force.y
+      - force.z
+      - torque.x
+      - torque.y
+      - torque.z
+    frame_id: arm_A_ur_tool0_controller
+    topic_name: arm_A_ur_ft_data
+
+arm_A_ur_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    constraints:
+      stopped_velocity_tolerance: 0.2
+      goal_time: 0.0
+      arm_A_ur_shoulder_pan_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_shoulder_lift_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_elbow_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_wrist_1_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_wrist_2_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_wrist_3_joint: { trajectory: 0.2, goal: 0.1 }
+
+arm_A_ur_forward_position_controller:
+  ros__parameters:
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+
+arm_A_ur_forward_velocity_controller:
+  ros__parameters:
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+    interface_name: velocity
+
+arm_A_ur_forward_effort_controller:
+  ros__parameters:
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+    interface_name: effort
+
+
+# ============================================================
+# UR B 控制器参数
+# ============================================================
+
+arm_B_ur_force_torque_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: arm_B_ur_tcp_fts_sensor
+    state_interface_names:
+      - force.x
+      - force.y
+      - force.z
+      - torque.x
+      - torque.y
+      - torque.z
+    frame_id: arm_B_ur_tool0_controller
+    topic_name: arm_B_ur_ft_data
+
+arm_B_ur_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    constraints:
+      stopped_velocity_tolerance: 0.2
+      goal_time: 0.0
+      arm_B_ur_shoulder_pan_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_shoulder_lift_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_elbow_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_wrist_1_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_wrist_2_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_wrist_3_joint: { trajectory: 0.2, goal: 0.1 }
+
+arm_B_ur_forward_position_controller:
+  ros__parameters:
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint
+
+arm_B_ur_forward_velocity_controller:
+  ros__parameters:
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint
+    interface_name: velocity
+
+arm_B_ur_forward_effort_controller:
+  ros__parameters:
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint
+    interface_name: effort
+
+
+# ============================================================
+# 夹爪控制器参数（预留）
+# space_sim 当前无夹爪，后续添加夹爪时在此处添加对应参数
+# ============================================================

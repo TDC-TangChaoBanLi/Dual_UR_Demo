@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="len_macro" params="
+  link_name:=len_link
+  parent_name:=world
+  *origin
+  ">
+
+  <link name="${link_name}">
+    <inertial>
+      <origin xyz="0 0 0.205" rpy="0 0 0"/>
+      <mass value="0.438"/>
+      <inertia ixx="0.003246" ixy="0.0" ixz="0.0" iyy="0.006287" iyz="0.0" izz="0.003223"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://assembly_exp_description/meshes/lens.STL"/>
+      </geometry>
+      <material name="anodized_aluminum">
+        <color rgba="0.7 0.7 0.7 1.0"/>
+      </material>
+    </visual>
+    <collision><geometry><mesh filename="package://assembly_exp_description/meshes/lens_parts/lens_0.stl"/></geometry></collision>
+    <collision><geometry><mesh filename="package://assembly_exp_description/meshes/lens_parts/lens_1.stl"/></geometry></collision>
+    <collision><geometry><mesh filename="package://assembly_exp_description/meshes/lens_parts/lens_2.stl"/></geometry></collision>
+    <collision><geometry><mesh filename="package://assembly_exp_description/meshes/lens_parts/lens_3.stl"/></geometry></collision>
+    <collision><geometry><mesh filename="package://assembly_exp_description/meshes/lens_parts/lens_4.stl"/></geometry></collision>
+    <collision><geometry><mesh filename="package://assembly_exp_description/meshes/lens_parts/lens_5.stl"/></geometry></collision>
+    <collision><geometry><mesh filename="package://assembly_exp_description/meshes/lens_parts/lens_6.stl"/></geometry></collision>
+    <collision><geometry><mesh filename="package://assembly_exp_description/meshes/lens_parts/lens_7.stl"/></geometry></collision>
+    <collision><geometry><mesh filename="package://assembly_exp_description/meshes/lens_parts/lens_8.stl"/></geometry></collision>
+  </link>
+  <joint name="${parent_name}_to_${link_name}" type="fixed">
+    <xacro:insert_block name="origin" />
+    <parent link="${parent_name}" />
+    <child link="${link_name}" />
+  </joint>
+
+  </xacro:macro>
+</robot>
