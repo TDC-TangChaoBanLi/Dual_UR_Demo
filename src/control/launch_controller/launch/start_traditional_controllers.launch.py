@@ -124,14 +124,18 @@ def _load_hardware_params(env):
     """读取统一硬件接口参数配置文件。
 
     硬件参数（UR 网络 / Robotiq 串口 / DH-AG95 夹爪）集中定义在
-    {env}_description/config/ros2_control/hardware_interface_controller_params.yaml。
+    {env}_description/config/ros2_control/hardware_interface_controller_params.yaml，
+    文件为扁平结构 {参数名}:{值}，直接作为 xacro 参数传入。
+    文件不存在时返回空 dict（如 space_sim 无真实硬件）。
     """
     config_file = (
         Path(get_package_share_directory(_env_package(env)))
         / "config" / "ros2_control" / "hardware_interface_controller_params.yaml"
     )
+    if not config_file.exists():
+        return {}
     with open(config_file, "r") as f:
-        return yaml.safe_load(f)
+        return yaml.safe_load(f) or {}
 
 
 def _read_configured_gripper_type(env, is_mujoco):
@@ -248,45 +252,14 @@ def _build_xacro_args(env, is_mujoco, context):
         use_fake_hardware = LaunchConfiguration("use_fake_hardware").perform(context)
         ur_headless_mode = LaunchConfiguration("ur_headless_mode").perform(context)
         HW = _load_hardware_params(env)
-        ur = HW["ur"]
-        g2 = HW["g2f85"]
-        ag = HW["ag95"]
         args += [
             "use_fake_hardware:=" + use_fake_hardware + " ",
             "ur_headless_mode:=" + ur_headless_mode + " ",
-            "ur_reverse_ip:=" + ur["reverse_ip"] + " ",
-            "ur_A_robot_ip:=" + ur["arm_A"]["robot_ip"] + " ",
-            "ur_B_robot_ip:=" + ur["arm_B"]["robot_ip"] + " ",
-            "ur_A_reverse_port:=" + ur["arm_A"]["reverse_port"] + " ",
-            "ur_A_script_sender_port:=" + ur["arm_A"]["script_sender_port"] + " ",
-            "ur_A_script_command_port:=" + ur["arm_A"]["script_command_port"] + " ",
-            "ur_A_trajectory_port:=" + ur["arm_A"]["trajectory_port"] + " ",
-            "ur_A_rw_rate:=" + ur["arm_A"]["rw_rate"] + " ",
-            "ur_B_reverse_port:=" + ur["arm_B"]["reverse_port"] + " ",
-            "ur_B_script_sender_port:=" + ur["arm_B"]["script_sender_port"] + " ",
-            "ur_B_script_command_port:=" + ur["arm_B"]["script_command_port"] + " ",
-            "ur_B_trajectory_port:=" + ur["arm_B"]["trajectory_port"] + " ",
-            "ur_B_rw_rate:=" + ur["arm_B"]["rw_rate"] + " ",
-            "g2f85_A_com_port:=" + g2["A_com_port"] + " ",
-            "g2f85_B_com_port:=" + g2["B_com_port"] + " ",
-            "ag95_gripper_transport_type:=" + ag["transport_type"] + " ",
-            "ag95_gripper_serial_baudrate:=" + ag["serial_baudrate"] + " ",
-            "ag95_gripper_can_bitrate:=" + ag["can_bitrate"] + " ",
-            "ag95_gripper_pcan_bitrate:=" + ag["pcan_bitrate"] + " ",
-            "ag95_gripper_gripper_model:=" + ag["gripper_model"] + " ",
-            "ag95_gripper_default_force_percent:=" + ag["default_force_percent"] + " ",
-            "ag95_gripper_auto_initialize:=" + ag["auto_initialize"] + " ",
-            "ag95_gripper_rw_rate:=" + ag["rw_rate"] + " ",
-            "ag95_gripper_command_interval_ms:=" + ag["command_interval_ms"] + " ",
-            "ag95_A_serial_port:=" + ag["arm_A"]["serial_port"] + " ",
-            "ag95_A_can_interface:=" + ag["arm_A"]["can_interface"] + " ",
-            "ag95_A_pcan_channel:=" + ag["arm_A"]["pcan_channel"] + " ",
-            "ag95_A_gripper_id:=" + ag["arm_A"]["gripper_id"] + " ",
-            "ag95_B_serial_port:=" + ag["arm_B"]["serial_port"] + " ",
-            "ag95_B_can_interface:=" + ag["arm_B"]["can_interface"] + " ",
-            "ag95_B_pcan_channel:=" + ag["arm_B"]["pcan_channel"] + " ",
-            "ag95_B_gripper_id:=" + ag["arm_B"]["gripper_id"] + " ",
         ]
+        # 将硬件参数文件中的 {参数名}:{值} 逐个作为 xacro 参数传入
+        # 不同环境可定义不同数量/名称的硬件参数
+        for k, v in HW.items():
+            args += [f"{k}:={v} "]
     return args
 
 

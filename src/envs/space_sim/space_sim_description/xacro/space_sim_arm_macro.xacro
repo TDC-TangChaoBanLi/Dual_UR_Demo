@@ -2,9 +2,10 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
   <!-- ============================================ -->
-  <!-- 通用依赖（UR 机械臂本体）                    -->
+  <!-- 通用依赖（UR 机械臂本体 + RealSense 相机）   -->
   <!-- ============================================ -->
   <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
 
   <!-- ============================================ -->
   <!-- 夹爪类型条件依赖（预留，后续添加时启用）     -->
@@ -20,7 +21,7 @@
   -->
 
 
-  <!-- 宏定义自己的机械臂结构 UR（无夹爪、无相机） -->
+  <!-- 宏定义自己的机械臂结构 UR + RealSense（无夹爪） -->
   <!-- Jazzy: 仅纯几何描述，不包含任何 ros2_control -->
   <xacro:macro name="space_sim_arm" params="
     name:=space_sim_arm
@@ -29,6 +30,7 @@
     ur_type:=ur5e
     kinematics_parameters_file:=''
     gripper_type:=none
+    realsense_use_nominal_extrinsics:=false
     safety_limits:=false
     safety_pos_margin:=0.15
     safety_k_position:=20
@@ -50,6 +52,13 @@
     <xacro:property name="_ur_physical_parameters_file" value="$(find ur_description)/config/${ur_type}/physical_parameters.yaml"/>
     <xacro:property name="_ur_visual_parameters_file" value="$(find ur_description)/config/${ur_type}/visual_parameters.yaml"/>
 
+    <!-- RealSense parameters -->
+    <xacro:property name="_realsense_name" value="${tf_prefix}realsense" />
+    <xacro:property name="_realsense_prefix" value="${tf_prefix}realsense" />
+    <xacro:property name="_realsense_use_nominal_extrinsics" value="${realsense_use_nominal_extrinsics}" />
+    <xacro:property name="_realsense_add_plug" value="false" />
+    <xacro:property name="_realsense_use_mesh" value="true" />
+
     <!-- 创建 UR 机器人 使用宏定义 (Jazzy: 纯描述，无 ros2_control 参数) -->
     <xacro:ur_robot
       name="${_ur_name}"
@@ -68,18 +77,64 @@
     </xacro:ur_robot>
 
     <!-- ============================================ -->
+    <!-- RealSense 相机支架                           -->
+    <!-- 该支架的相机螺纹孔距离机械臂末端圆心100mm，  -->
+    <!-- 支架厚度3mm（与 lab_bench 使用同一支架）     -->
+    <!-- ============================================ -->
+    <link name="${_realsense_prefix}_shelf">
+      <inertial>
+        <origin xyz="0.0 0.044 0.0015" rpy="0.0 0.0 0.0"/>
+        <mass value="0.038"/>
+        <inertia ixx="0.00006673" ixy="0.0" ixz="0.0" iyy="0.00000850" iyz="0.0" izz="0.00007517"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://space_sim_description/meshes/RealSense_D435_Shelf.STL"/>
+        </geometry>
+        <material name="anodized_aluminum">
+          <color rgba="0.7 0.7 0.7 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://space_sim_description/meshes/RealSense_D435_Shelf.STL"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${_realsense_prefix}_tool0_to_realsense_shelf" type="fixed">
+      <parent link="${_ur_tf_prefix}tool0"/>
+      <child link="${_realsense_prefix}_shelf"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 ${pi}" />
+    </joint>
+
+    <!-- ============================================ -->
+    <!-- RealSense D435 相机（无夹爪，直接挂在支架上） -->
+    <!-- ============================================ -->
+    <!-- params 'name' is actually tf_prefix with '_' -->
+    <xacro:sensor_d435
+      parent="${_realsense_prefix}_shelf"
+      name="${_realsense_prefix}"
+      use_nominal_extrinsics="${_realsense_use_nominal_extrinsics}"
+      add_plug="${_realsense_add_plug}"
+      use_mesh="${_realsense_use_mesh}"
+    >
+      <!-- RealSense 的基座位于相机底部的1/4螺纹孔，距离后背面10mm，底部平面距离后背2个螺纹孔所在直线12.5mm -->
+      <origin xyz="0 0.0875 0.013" rpy="0 ${-pi/2} ${-pi/2}"/>
+    </xacro:sensor_d435>
+
+    <!-- ============================================ -->
     <!-- 夹爪挂载点（预留）                            -->
     <!-- ============================================ -->
     <!--
       后续添加夹爪时，在此处根据 gripper_type 条件实例化夹爪宏，
-      父 link 为 ${_ur_tf_prefix}tool0。
+      父 link 为 ${_realsense_prefix}_shelf（相机支架末端）。
       示例（dh_ag95）：
       <xacro:if value="${gripper_type == 'dh_ag95'}">
         <xacro:dh_ag95_gripper
           prefix="${tf_prefix}dhag95_"
-          parent="${_ur_tf_prefix}tool0"
+          parent="${_realsense_prefix}_shelf"
         >
-          <origin xyz="0 0 0" rpy="0 0 0" />
+          <origin xyz="0 0 -0.0035" rpy="0 0 0" />
         </xacro:dh_ag95_gripper>
       </xacro:if>
     -->

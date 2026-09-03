@@ -37,11 +37,18 @@ from launch_ros.parameter_descriptions import ParameterFile
 # 与 start_traditional_controllers.launch.py 保持一致（同一 planning URDF 路径）
 PLANNING_URDF_PATH = "/tmp/dual_ur_ocs2_planning.urdf"
 
+# 支持的夹爪类型（与 start_traditional_controllers.launch.py 保持一致）
+SUPPORTED_GRIPPER_TYPES = {"dh_ag95", "robotiq_2f85", "none"}
+
 # 夹爪控制器（已按 left/right 命名，与 GripperControlPanel / VR 匹配）
+# 仅当环境配置了夹爪（gripper_type != none）时启用
 HAND_CONTROLLERS = [
     "left_adaptive_gripper_controller",
     "right_adaptive_gripper_controller",
 ]
+
+# 目标管理器基座帧（所有环境统一使用 base_link）
+CONTROL_BASE_FRAME = "base_link"
 
 
 def _env_package(env):
@@ -57,14 +64,65 @@ def _is_mujoco_env(env):
     )
 
 
+def _read_configured_gripper_type(env, is_mujoco):
+    """从 dual_arm_config.xacro 读取夹爪类型。
+
+    mujoco 环境复用对应非 mujoco 环境的几何描述
+    （space_sim_mujoco -> space_sim_description）。
+    """
+    if is_mujoco:
+        config_package = env.replace("_mujoco", "") + "_description"
+    else:
+        config_package = _env_package(env)
+
+    config_path = (
+        Path(get_package_share_directory(config_package)) / "xacro" / "dual_arm_config.xacro"
+    )
+    root = ET.parse(config_path).getroot()
+
+    for element in root.iter():
+        if not element.tag.endswith("property"):
+            continue
+        if element.attrib.get("name") == "gripper_type":
+            gripper_type = element.attrib.get("value")
+            if gripper_type in SUPPORTED_GRIPPER_TYPES:
+                return gripper_type
+            supported = ", ".join(sorted(SUPPORTED_GRIPPER_TYPES))
+            raise RuntimeError(
+                f"Unsupported gripper_type '{gripper_type}' in {config_path}. "
+                f"Supported values: {supported}."
+            )
+
+    raise RuntimeError(f"Missing gripper_type property in {config_path}.")
+
+
+def _get_hand_controllers(env, is_mujoco):
+    """根据环境夹爪类型返回夹爪控制器列表（无夹爪时为空）。"""
+    gripper_type = _read_configured_gripper_type(env, is_mujoco)
+    if gripper_type == "none":
+        return []
+    return list(HAND_CONTROLLERS)
+
+
+def _get_control_base_frame(env):
+    """返回环境对应的目标管理器基座帧（所有环境统一 base_link）。"""
+    return CONTROL_BASE_FRAME
+
+
 def _load_hardware_params(env):
-    """读取统一硬件接口参数配置文件（传统模式）。"""
+    """读取统一硬件接口参数配置文件（传统模式）。
+
+    文件为扁平结构 {参数名}:{值}，直接作为 xacro 参数传入。
+    文件不存在时返回空 dict（如 space_sim 无真实硬件）。
+    """
     config_file = os.path.join(
         get_package_share_directory(_env_package(env)),
         "config", "ros2_control", "hardware_interface_controller_params.yaml",
     )
+    if not os.path.exists(config_file):
+        return {}
     with open(config_file, "r") as f:
-        return yaml.safe_load(f)
+        return yaml.safe_load(f) or {}
 
 
 def _build_xacro_cmd(env, is_mujoco, context):
@@ -89,46 +147,16 @@ def _build_xacro_cmd(env, is_mujoco, context):
     fake_hw = LaunchConfiguration("use_fake_hardware").perform(context)
     headless = LaunchConfiguration("ur_headless_mode").perform(context)
     HW = _load_hardware_params(env)
-    ur = HW["ur"]
-    g2 = HW["g2f85"]
-    ag = HW["ag95"]
-    return [
+    args = [
         "xacro", xacro_input,
         "use_fake_hardware:=" + fake_hw,
         "ur_headless_mode:=" + headless,
-        "ur_reverse_ip:=" + ur["reverse_ip"],
-        "ur_A_robot_ip:=" + ur["arm_A"]["robot_ip"],
-        "ur_B_robot_ip:=" + ur["arm_B"]["robot_ip"],
-        "ur_A_reverse_port:=" + ur["arm_A"]["reverse_port"],
-        "ur_A_script_sender_port:=" + ur["arm_A"]["script_sender_port"],
-        "ur_A_script_command_port:=" + ur["arm_A"]["script_command_port"],
-        "ur_A_trajectory_port:=" + ur["arm_A"]["trajectory_port"],
-        "ur_A_rw_rate:=" + ur["arm_A"]["rw_rate"],
-        "ur_B_reverse_port:=" + ur["arm_B"]["reverse_port"],
-        "ur_B_script_sender_port:=" + ur["arm_B"]["script_sender_port"],
-        "ur_B_script_command_port:=" + ur["arm_B"]["script_command_port"],
-        "ur_B_trajectory_port:=" + ur["arm_B"]["trajectory_port"],
-        "ur_B_rw_rate:=" + ur["arm_B"]["rw_rate"],
-        "g2f85_A_com_port:=" + g2["A_com_port"],
-        "g2f85_B_com_port:=" + g2["B_com_port"],
-        "ag95_gripper_transport_type:=" + ag["transport_type"],
-        "ag95_gripper_serial_baudrate:=" + ag["serial_baudrate"],
-        "ag95_gripper_can_bitrate:=" + ag["can_bitrate"],
-        "ag95_gripper_pcan_bitrate:=" + ag["pcan_bitrate"],
-        "ag95_gripper_gripper_model:=" + ag["gripper_model"],
-        "ag95_gripper_default_force_percent:=" + ag["default_force_percent"],
-        "ag95_gripper_auto_initialize:=" + ag["auto_initialize"],
-        "ag95_gripper_rw_rate:=" + ag["rw_rate"],
-        "ag95_gripper_command_interval_ms:=" + ag["command_interval_ms"],
-        "ag95_A_serial_port:=" + ag["arm_A"]["serial_port"],
-        "ag95_A_can_interface:=" + ag["arm_A"]["can_interface"],
-        "ag95_A_pcan_channel:=" + ag["arm_A"]["pcan_channel"],
-        "ag95_A_gripper_id:=" + ag["arm_A"]["gripper_id"],
-        "ag95_B_serial_port:=" + ag["arm_B"]["serial_port"],
-        "ag95_B_can_interface:=" + ag["arm_B"]["can_interface"],
-        "ag95_B_pcan_channel:=" + ag["arm_B"]["pcan_channel"],
-        "ag95_B_gripper_id:=" + ag["arm_B"]["gripper_id"],
     ]
+    # 将硬件参数文件中的 {参数名}:{值} 逐个作为 xacro 参数传入
+    # 不同环境可定义不同数量/名称的硬件参数
+    for k, v in HW.items():
+        args.append(f"{k}:={v}")
+    return args
 
 
 def _generate_planning_urdf(urdf_xml: str, output_path: str) -> str:
@@ -185,6 +213,11 @@ def launch_setup(context, *args, **kwargs):
         LaunchConfiguration("use_sim_time").perform(context).lower() == "true"
     )
 
+    # 根据环境夹爪类型决定夹爪控制器列表（无夹爪时为空）
+    hand_controllers = _get_hand_controllers(env, is_mujoco)
+    # 目标管理器基座帧（lab_bench -> arm_shelf, space_sim -> base_cube）
+    control_base_frame = _get_control_base_frame(env)
+
     # 1. robot_state_publisher（仿真必须同步时钟）
     robot_state_publisher_params = [robot_description, {"use_sim_time": use_sim_time}]
     if is_mujoco:
@@ -229,30 +262,36 @@ def launch_setup(context, *args, **kwargs):
              arguments=["--controller-manager", "/controller_manager",
                         "--controller-manager-timeout", "60",
                         "joint_state_broadcaster", "ocs2_arm_controller"]
-                    + HAND_CONTROLLERS),
+                    + hand_controllers),
     )
 
-    # 4. Interactive Marker 目标管理器（帧与 OCS2 launch 一致：arm_shelf）
+    # 4. Interactive Marker 目标管理器（帧与 OCS2 launch 一致）
+    # 注意：hand_controllers 为空（如 space_sim 无夹爪）时不能传空列表，
+    # launch_ros 参数评估会因空 tuple 报错，因此仅在非空时传入该参数。
+    target_manager_params = {
+        "dual_arm_mode": True,
+        "control_base_frame": control_base_frame,
+        "marker_fixed_frame": control_base_frame,
+        "linear_scale": 0.005, "angular_scale": 0.05,
+        "enable_vr": False, "use_sim_time": use_sim_time,
+    }
+    if hand_controllers:
+        target_manager_params["hand_controllers"] = hand_controllers
     nodes.append(
         Node(package="arms_target_manager", executable="arms_target_manager_node",
-             output="screen", parameters=[{
-                 "dual_arm_mode": True,
-                 "control_base_frame": "arm_shelf",
-                 "marker_fixed_frame": "arm_shelf",
-                 "hand_controllers": HAND_CONTROLLERS,
-                 "linear_scale": 0.005, "angular_scale": 0.05,
-                 "enable_vr": False, "use_sim_time": use_sim_time,
-             }]),
+             output="screen", parameters=[target_manager_params]),
     )
 
     if launch_rviz.perform(context).lower() != "false":
+        rviz_params = [{"use_sim_time": use_sim_time}]
+        if hand_controllers:
+            # GripperControlPanel 通过 rviz 节点的 hand_controllers
+            # 参数自动发现夹爪控制器（无此参数时面板为空）。
+            rviz_params.append({"hand_controllers": hand_controllers})
         nodes.append(
             Node(package="rviz2", executable="rviz2", output="log",
                  arguments=["-d", rviz_path],
-                 parameters=[{"use_sim_time": use_sim_time},
-                             # GripperControlPanel 通过 rviz 节点的 hand_controllers
-                             # 参数自动发现夹爪控制器（无此参数时面板为空）。
-                             {"hand_controllers": HAND_CONTROLLERS}]),
+                 parameters=rviz_params),
         )
 
     return nodes

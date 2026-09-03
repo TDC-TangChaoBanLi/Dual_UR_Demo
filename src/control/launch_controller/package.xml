@@ -15,6 +15,8 @@
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>lab_bench_description</exec_depend>
   <exec_depend>lab_bench_mujoco_description</exec_depend>
+  <exec_depend>space_sim_description</exec_depend>
+  <exec_depend>space_sim_mujoco_description</exec_depend>
   <exec_depend>ur_controllers</exec_depend>
   <exec_depend>ur_robot_driver</exec_depend>
   <exec_depend>ur_client_library</exec_depend>

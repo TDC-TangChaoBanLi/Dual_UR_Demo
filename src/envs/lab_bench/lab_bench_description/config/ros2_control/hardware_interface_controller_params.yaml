@@ -2,56 +2,52 @@
 # 硬件接口控制器参数（统一配置文件）
 #
 # 供 start_traditional_controllers.launch.py 与 start_ocs2_arms_controller.launch.py
-# 共同读取，作为 xacro 参数传给 ros2_control 硬件接口，
-# 避免在两个 launch 文件中重复维护硬件参数。
+# 共同读取，作为 xacro 参数传给 ros2_control 硬件接口。
 #
-# 注意：所有值均保持字符串类型（与 xacro 参数格式一致）。
+# 格式：扁平结构 {参数名}:{值}，启动文件会将每个键值对逐个作为
+#       xacro 参数传入（{参数名}:={值}）。
+# 注意：参数名必须与 {env}_description/xacro/ros2_control/{env}.xacro
+#       中声明的 xacro arg 名称一致；不同环境可定义不同数量/名称的参数。
 # ============================================================
 
 # ---- UR 机械臂网络 ----
-ur:
-  reverse_ip: "192.168.8.100"     # 本机 IP（UR 反向连接地址）
-  arm_A:
-    robot_ip: "192.168.8.17"      # UR5
-    reverse_port: "50001"
-    script_sender_port: "50002"
-    script_command_port: "50003"
-    trajectory_port: "50004"
-    rw_rate: "125"                # UR5 CB3 建议 125
-  arm_B:
-    robot_ip: "192.168.8.11"      # UR5e
-    reverse_port: "50011"
-    script_sender_port: "50012"
-    script_command_port: "50013"
-    trajectory_port: "50014"
-    rw_rate: "500"                # UR5e 可 500
+ur_reverse_ip: "192.168.8.100"     # 本机 IP（UR 反向连接地址）
+ur_A_robot_ip: "192.168.8.17"      # UR5
+ur_A_reverse_port: "50001"
+ur_A_script_sender_port: "50002"
+ur_A_script_command_port: "50003"
+ur_A_trajectory_port: "50004"
+ur_A_rw_rate: "125"                # UR5 CB3 建议 125
+ur_B_robot_ip: "192.168.8.11"      # UR5e
+ur_B_reverse_port: "50011"
+ur_B_script_sender_port: "50012"
+ur_B_script_command_port: "50013"
+ur_B_trajectory_port: "50014"
+ur_B_rw_rate: "500"                # UR5e 可 500
 
 # ---- Robotiq 2F-85 串口 ----
-g2f85:
-  A_com_port: "/dev/ttyUSB0"
-  B_com_port: "/dev/ttyUSB1"
+g2f85_A_com_port: "/dev/ttyUSB0"
+g2f85_B_com_port: "/dev/ttyUSB1"
 
-# ---- DH-Robotics AG-95 夹爪 ----
-ag95:
-  # 共享参数
-  transport_type: "socketcan"
-  serial_baudrate: "115200"
-  can_bitrate: "500000"
-  pcan_bitrate: "500000"
-  gripper_model: "ag-160-95"
-  default_force_percent: "100"
-  auto_initialize: "true"
-  rw_rate: "25"
-  command_interval_ms: "10"
-  # 臂 A 独立参数
-  arm_A:
-    serial_port: "/dev/ttyAG95_A"
-    can_interface: "can0"
-    pcan_channel: "PCAN_USBBUS1"
-    gripper_id: "1"
-  # 臂 B 独立参数
-  arm_B:
-    serial_port: "/dev/ttyAG95_B"
-    can_interface: "can0"
-    pcan_channel: "PCAN_USBBUS1"
-    gripper_id: "2"
+# ---- DH-Robotics AG-95 夹爪（共享参数） ----
+ag95_gripper_transport_type: "socketcan"
+ag95_gripper_serial_baudrate: "115200"
+ag95_gripper_can_bitrate: "500000"
+ag95_gripper_pcan_bitrate: "500000"
+ag95_gripper_gripper_model: "ag-160-95"
+ag95_gripper_default_force_percent: "100"
+ag95_gripper_auto_initialize: "true"
+ag95_gripper_rw_rate: "25"
+ag95_gripper_command_interval_ms: "10"
+
+# ---- DH-Robotics AG-95 夹爪（臂 A 独立参数） ----
+ag95_A_serial_port: "/dev/ttyAG95_A"
+ag95_A_can_interface: "can0"
+ag95_A_pcan_channel: "PCAN_USBBUS1"
+ag95_A_gripper_id: "1"
+
+# ---- DH-Robotics AG-95 夹爪（臂 B 独立参数） ----
+ag95_B_serial_port: "/dev/ttyAG95_B"
+ag95_B_can_interface: "can0"
+ag95_B_pcan_channel: "PCAN_USBBUS1"
+ag95_B_gripper_id: "2"

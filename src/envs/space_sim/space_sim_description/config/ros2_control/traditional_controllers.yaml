@@ -1,0 +1,441 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 500  # Hz
+    # ------------------------------------------------------------
+    # 全局 joint state broadcaster
+    # ------------------------------------------------------------
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    # ------------------------------------------------------------
+    # UR A: state / status controllers
+    # ------------------------------------------------------------
+    arm_A_ur_io_and_status_controller:
+      type: ur_controllers/GPIOController
+
+    arm_A_ur_speed_scaling_state_broadcaster:
+      type: ur_controllers/SpeedScalingStateBroadcaster
+
+    arm_A_ur_force_torque_sensor_broadcaster:
+      type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+
+    arm_A_ur_tcp_pose_broadcaster:
+      type: pose_broadcaster/PoseBroadcaster
+
+    arm_A_ur_ur_configuration_controller:
+      type: ur_controllers/URConfigurationController
+
+    arm_A_ur_tool_contact_controller:
+      type: ur_controllers/ToolContactController
+
+    # ------------------------------------------------------------
+    # UR A: motion controllers
+    # ------------------------------------------------------------
+    arm_A_ur_scaled_joint_trajectory_controller:
+      type: ur_controllers/ScaledJointTrajectoryController
+
+    arm_A_ur_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    arm_A_ur_passthrough_trajectory_controller:
+      type: ur_controllers/PassthroughTrajectoryController
+
+    arm_A_ur_forward_position_controller:
+      type: position_controllers/JointGroupPositionController
+
+    arm_A_ur_forward_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    arm_A_ur_forward_effort_controller:
+      type: effort_controllers/JointGroupEffortController
+
+    arm_A_ur_force_mode_controller:
+      type: ur_controllers/ForceModeController
+
+    arm_A_ur_friction_model_controller:
+      type: ur_controllers/FrictionModelController
+
+    arm_A_ur_freedrive_mode_controller:
+      type: ur_controllers/FreedriveModeController
+
+    # ------------------------------------------------------------
+    # UR B: state / status controllers
+    # ------------------------------------------------------------
+    arm_B_ur_io_and_status_controller:
+      type: ur_controllers/GPIOController
+
+    arm_B_ur_speed_scaling_state_broadcaster:
+      type: ur_controllers/SpeedScalingStateBroadcaster
+
+    arm_B_ur_force_torque_sensor_broadcaster:
+      type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+
+    arm_B_ur_tcp_pose_broadcaster:
+      type: pose_broadcaster/PoseBroadcaster
+
+    arm_B_ur_ur_configuration_controller:
+      type: ur_controllers/URConfigurationController
+
+    arm_B_ur_tool_contact_controller:
+      type: ur_controllers/ToolContactController
+
+    # ------------------------------------------------------------
+    # UR B: motion controllers
+    # ------------------------------------------------------------
+    arm_B_ur_scaled_joint_trajectory_controller:
+      type: ur_controllers/ScaledJointTrajectoryController
+
+    arm_B_ur_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    arm_B_ur_passthrough_trajectory_controller:
+      type: ur_controllers/PassthroughTrajectoryController
+
+    arm_B_ur_forward_position_controller:
+      type: position_controllers/JointGroupPositionController
+
+    arm_B_ur_forward_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    arm_B_ur_forward_effort_controller:
+      type: effort_controllers/JointGroupEffortController
+
+    arm_B_ur_force_mode_controller:
+      type: ur_controllers/ForceModeController
+
+    arm_B_ur_friction_model_controller:
+      type: ur_controllers/FrictionModelController
+
+    arm_B_ur_freedrive_mode_controller:
+      type: ur_controllers/FreedriveModeController
+
+    # ------------------------------------------------------------
+    # 夹爪控制器（预留）
+    # space_sim 当前无夹爪（dual_arm_config.xacro 中 gripper_type=none），
+    # 后续添加夹爪时在此处补充对应控制器。
+    # ------------------------------------------------------------
+
+    # ------------------------------------------------------------
+    # Jazzy 默认就是 false；这里显式写出，贴近 UR 官方配置
+    # ------------------------------------------------------------
+    enforce_command_limits: false
+
+
+# ============================================================
+# UR A controllers parameters
+# ============================================================
+
+arm_A_ur_io_and_status_controller:
+  ros__parameters:
+    tf_prefix: "arm_A_ur_"
+
+arm_A_ur_speed_scaling_state_broadcaster:
+  ros__parameters:
+    state_publish_rate: 100.0
+    tf_prefix: "arm_A_ur_"
+
+arm_A_ur_ur_configuration_controller:
+  ros__parameters:
+    tf_prefix: "arm_A_ur_"
+
+arm_A_ur_force_torque_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: arm_A_ur_tcp_fts_sensor
+    state_interface_names:
+      - force.x
+      - force.y
+      - force.z
+      - torque.x
+      - torque.y
+      - torque.z
+    frame_id: arm_A_ur_tool0_controller
+    topic_name: arm_A_ur_ft_data
+
+arm_A_ur_tcp_pose_broadcaster:
+  ros__parameters:
+    frame_id: arm_A_ur_base
+    pose_name: arm_A_ur_tcp_pose
+    tf:
+      child_frame_id: arm_A_ur_tool0_controller
+
+arm_A_ur_tool_contact_controller:
+  ros__parameters:
+    tf_prefix: "arm_A_ur_"
+
+
+arm_A_ur_scaled_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    speed_scaling_interface_name: arm_A_ur_speed_scaling/speed_scaling_factor
+    constraints:
+      stopped_velocity_tolerance: 0.2
+      goal_time: 0.0
+      arm_A_ur_shoulder_pan_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_shoulder_lift_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_elbow_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_wrist_1_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_wrist_2_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_wrist_3_joint: { trajectory: 0.2, goal: 0.1 }
+
+arm_A_ur_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    constraints:
+      stopped_velocity_tolerance: 0.2
+      goal_time: 0.0
+      arm_A_ur_shoulder_pan_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_shoulder_lift_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_elbow_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_wrist_1_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_wrist_2_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_A_ur_wrist_3_joint: { trajectory: 0.2, goal: 0.1 }
+
+arm_A_ur_passthrough_trajectory_controller:
+  ros__parameters:
+    tf_prefix: "arm_A_ur_"
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+    state_interfaces:
+      - position
+      - velocity
+    speed_scaling_interface_name: arm_A_ur_speed_scaling/speed_scaling_factor
+
+arm_A_ur_forward_position_controller:
+  ros__parameters:
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+
+arm_A_ur_forward_velocity_controller:
+  ros__parameters:
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+    interface_name: velocity
+
+arm_A_ur_forward_effort_controller:
+  ros__parameters:
+    joints:
+      - arm_A_ur_shoulder_pan_joint
+      - arm_A_ur_shoulder_lift_joint
+      - arm_A_ur_elbow_joint
+      - arm_A_ur_wrist_1_joint
+      - arm_A_ur_wrist_2_joint
+      - arm_A_ur_wrist_3_joint
+    interface_name: effort
+
+arm_A_ur_force_mode_controller:
+  ros__parameters:
+    tf_prefix: "arm_A_ur_"
+
+arm_A_ur_friction_model_controller:
+  ros__parameters:
+    tf_prefix: "arm_A_ur_"
+
+arm_A_ur_freedrive_mode_controller:
+  ros__parameters:
+    tf_prefix: "arm_A_ur_"
+
+
+# ============================================================
+# UR B controllers parameters
+# ============================================================
+
+arm_B_ur_io_and_status_controller:
+  ros__parameters:
+    tf_prefix: "arm_B_ur_"
+
+arm_B_ur_speed_scaling_state_broadcaster:
+  ros__parameters:
+    state_publish_rate: 100.0
+    tf_prefix: "arm_B_ur_"
+
+arm_B_ur_ur_configuration_controller:
+  ros__parameters:
+    tf_prefix: "arm_B_ur_"
+
+arm_B_ur_force_torque_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: arm_B_ur_tcp_fts_sensor
+    state_interface_names:
+      - force.x
+      - force.y
+      - force.z
+      - torque.x
+      - torque.y
+      - torque.z
+    frame_id: arm_B_ur_tool0_controller
+    topic_name: arm_B_ur_ft_data
+
+arm_B_ur_tcp_pose_broadcaster:
+  ros__parameters:
+    frame_id: arm_B_ur_base
+    pose_name: arm_B_ur_tcp_pose
+    tf:
+      child_frame_id: arm_B_ur_tool0_controller
+
+arm_B_ur_tool_contact_controller:
+  ros__parameters:
+    tf_prefix: "arm_B_ur_"
+
+
+arm_B_ur_scaled_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    speed_scaling_interface_name: arm_B_ur_speed_scaling/speed_scaling_factor
+    constraints:
+      stopped_velocity_tolerance: 0.2
+      goal_time: 0.0
+      arm_B_ur_shoulder_pan_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_shoulder_lift_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_elbow_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_wrist_1_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_wrist_2_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_wrist_3_joint: { trajectory: 0.2, goal: 0.1 }
+
+arm_B_ur_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    constraints:
+      stopped_velocity_tolerance: 0.2
+      goal_time: 0.0
+      arm_B_ur_shoulder_pan_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_shoulder_lift_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_elbow_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_wrist_1_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_wrist_2_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_B_ur_wrist_3_joint: { trajectory: 0.2, goal: 0.1 }
+
+arm_B_ur_passthrough_trajectory_controller:
+  ros__parameters:
+    tf_prefix: "arm_B_ur_"
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint
+    state_interfaces:
+      - position
+      - velocity
+    speed_scaling_interface_name: arm_B_ur_speed_scaling/speed_scaling_factor
+
+arm_B_ur_forward_position_controller:
+  ros__parameters:
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint
+
+arm_B_ur_forward_velocity_controller:
+  ros__parameters:
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint
+    interface_name: velocity
+
+arm_B_ur_forward_effort_controller:
+  ros__parameters:
+    joints:
+      - arm_B_ur_shoulder_pan_joint
+      - arm_B_ur_shoulder_lift_joint
+      - arm_B_ur_elbow_joint
+      - arm_B_ur_wrist_1_joint
+      - arm_B_ur_wrist_2_joint
+      - arm_B_ur_wrist_3_joint
+    interface_name: effort
+
+arm_B_ur_force_mode_controller:
+  ros__parameters:
+    tf_prefix: "arm_B_ur_"
+
+arm_B_ur_friction_model_controller:
+  ros__parameters:
+    tf_prefix: "arm_B_ur_"
+
+arm_B_ur_freedrive_mode_controller:
+  ros__parameters:
+    tf_prefix: "arm_B_ur_"
+
+
+# ============================================================
+# 夹爪控制器参数（预留）
+# space_sim 当前无夹爪，后续添加夹爪时在此处补充。
+# ============================================================

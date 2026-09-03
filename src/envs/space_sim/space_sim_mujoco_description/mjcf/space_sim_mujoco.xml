@@ -52,153 +52,134 @@
     <mesh name="MESH_wrist2_bde41993_2" file="../meshes/wrist2_bde41993_2.obj"/>
     <mesh name="MESH_wrist3_21abe53b" file="../meshes/wrist3_21abe53b.stl"/>
     <mesh name="MESH_wrist3_8e7adc5c_0" file="../meshes/wrist3_8e7adc5c_0.obj"/>
+    <mesh name="MESH_RealSense_D435_Shelf_d359ca29" file="../meshes/RealSense_D435_Shelf_d359ca29.STL"/>
+    <mesh name="MESH_d435_6743a526_0" file="../meshes/d435_6743a526_0.obj"/>
+    <mesh name="MESH_d435_6743a526_1" file="../meshes/d435_6743a526_1.obj"/>
+    <mesh name="MESH_d435_6743a526_2" file="../meshes/d435_6743a526_2.obj"/>
+    <mesh name="MESH_d435_6743a526_3" file="../meshes/d435_6743a526_3.obj"/>
+    <mesh name="MESH_d435_6743a526_4" file="../meshes/d435_6743a526_4.obj"/>
+    <mesh name="MESH_d435_6743a526_5" file="../meshes/d435_6743a526_5.obj"/>
+    <mesh name="MESH_d435_6743a526_6" file="../meshes/d435_6743a526_6.obj"/>
+    <mesh name="MESH_d435_6743a526_7" file="../meshes/d435_6743a526_7.obj"/>
+    <mesh name="MESH_d435_6743a526_8" file="../meshes/d435_6743a526_8.obj"/>
+    <mesh name="MESH_d435_6743a526_9" file="../meshes/d435_6743a526_9.obj"/>
+    <mesh name="MESH_d435_6743a526_10" file="../meshes/d435_6743a526_10.obj"/>
+    <mesh name="MESH_d435_6743a526_11" file="../meshes/d435_6743a526_11.obj"/>
+    <mesh name="MESH_d435_6743a526_12" file="../meshes/d435_6743a526_12.obj"/>
+    <mesh name="MESH_d435_6743a526_13" file="../meshes/d435_6743a526_13.obj"/>
+    <mesh name="MESH_d435_6743a526_14" file="../meshes/d435_6743a526_14.obj"/>
+    <mesh name="MESH_d435_6743a526_15" file="../meshes/d435_6743a526_15.obj"/>
+    <mesh name="MESH_d435_6743a526_16" file="../meshes/d435_6743a526_16.obj"/>
+    <mesh name="MESH_d435_6743a526_17" file="../meshes/d435_6743a526_17.obj"/>
     <texture name="skybox" type="skybox" builtin="gradient" rgb1=".3 .5 .7" rgb2="0 0 0" width="1024" height="1024"/>
+    <material name="aluminum" rgba="0.5 0.5 0.5 1"/>
+    <material name="plastic" rgba="0.1 0.1 0.1 1"/>
     <material name="cube_material" rgba="0.55 0.55 0.60 1"/>
     <material name="hex_prism_material" rgba="0.75 0.60 0.20 1"/>
   </asset>
   <worldbody>
-    <body name="base_cube" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
-      <inertial mass="300.0" diaginertia="18.0 18.0 18.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-      <geom class="collision" name="COLLISION_base_cube_0" type="box" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.3 0.3 0.3"/>
-      <geom class="visual" name="VISUAL_base_cube_0" type="box" material="cube_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.3 0.3 0.3"/>
-      <body name="hex_prism" pos="0 0 0.325" quat="1.0 0.0 0.0 0.0">
-        <inertial mass="5.0" diaginertia="0.032292 0.032292 0.0625" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-        <geom class="collision" name="COLLISION_hex_prism_0" type="mesh" mesh="MESH_len_fa11c571" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-        <geom class="visual" name="VISUAL_hex_prism_0" type="mesh" mesh="MESH_len_fa11c571" material="hex_prism_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-      </body>
-      <body name="ur_mount_A" pos="0.3 0 0" quat="0.7071067811865476 0.0 0.7071067811865475 0.0">
-        <body name="arm_A_ur_base_link" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
-          <body name="arm_A_ur_base_link_inertia" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0">
-            <inertial mass="4.0" diaginertia="0.00443333156 0.00443333156 0.0072" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-            <geom class="collision" name="COLLISION_arm_A_ur_base_link_inertia_0" type="mesh" mesh="MESH_base_bd1b2dd6" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-            <geom class="visual" name="VISUAL_arm_A_ur_base_link_inertia_0" type="mesh" mesh="MESH_base_b81001a2_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-            <geom class="visual" name="VISUAL_arm_A_ur_base_link_inertia_1" type="mesh" mesh="MESH_base_b81001a2_1" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-            <body name="arm_A_ur_shoulder_link" pos="0 0 0.1625" quat="1.0 0.0 0.0 0.0">
-              <inertial mass="3.761" diaginertia="0.006024775831167757 0.0070003048838239885 0.007030789285008251" pos="0.0 -0.00193 -0.02561" quat="0.20206705998679322 0.6747312134749398 0.365097644892179 -0.6087777940473136"/>
-              <joint name="arm_A_ur_shoulder_pan_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
-              <geom class="collision" name="COLLISION_arm_A_ur_shoulder_link_0" type="mesh" mesh="MESH_shoulder_661339ad" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-              <geom class="visual" name="VISUAL_arm_A_ur_shoulder_link_0" type="mesh" mesh="MESH_shoulder_0fe2d913_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-              <geom class="visual" name="VISUAL_arm_A_ur_shoulder_link_1" type="mesh" mesh="MESH_shoulder_0fe2d913_1" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-              <geom class="visual" name="VISUAL_arm_A_ur_shoulder_link_2" type="mesh" mesh="MESH_shoulder_0fe2d913_2" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-              <body name="arm_A_ur_upper_arm_link" pos="0 0 0" quat="0.7071067811140325 0.7071067812590626 0.0 0.0">
-                <inertial mass="8.058" diaginertia="0.015058840753982044 0.3324720677719464 0.3338808714740716" pos="-0.2125 0.0 0.11336" quat="0.7066521546519151 0.7075611104882223 5.365436380901162e-05 -6.611874721869904e-05"/>
-                <joint name="arm_A_ur_shoulder_lift_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
-                <geom class="collision" name="COLLISION_arm_A_ur_upper_arm_link_0" type="mesh" mesh="MESH_upperarm_d0455716" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_0" type="mesh" mesh="MESH_upperarm_12b51e98_0" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_1" type="mesh" mesh="MESH_upperarm_12b51e98_1" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_2" type="mesh" mesh="MESH_upperarm_12b51e98_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_3" type="mesh" mesh="MESH_upperarm_12b51e98_3" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_4" type="mesh" mesh="MESH_upperarm_12b51e98_4" rgba="0.81960784 0.81960784 0.81960784 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_5" type="mesh" mesh="MESH_upperarm_12b51e98_5" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_6" type="mesh" mesh="MESH_upperarm_12b51e98_6" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_7" type="mesh" mesh="MESH_upperarm_12b51e98_7" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <body name="arm_A_ur_forearm_link" pos="-0.425 0 0" quat="1.0 0.0 0.0 0.0">
-                  <inertial mass="2.846" diaginertia="0.003971028904819707 0.0785102224320644 0.07879270866311583" pos="-0.2422 0.0 0.0265" quat="0.6984488939206283 0.715600664432383 -0.006368275363090868 -0.006654074983260038"/>
-                  <joint name="arm_A_ur_elbow_joint" type="hinge" axis="0 0 1" ref="" range="-3.141592653589793 3.141592653589793"/>
-                  <geom class="collision" name="COLLISION_arm_A_ur_forearm_link_0" type="mesh" mesh="MESH_forearm_98bdcf8e" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_0" type="mesh" mesh="MESH_forearm_861ccd15_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_1" type="mesh" mesh="MESH_forearm_861ccd15_1" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_2" type="mesh" mesh="MESH_forearm_861ccd15_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_3" type="mesh" mesh="MESH_forearm_861ccd15_3" rgba="0.81960784 0.81960784 0.81960784 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_4" type="mesh" mesh="MESH_forearm_861ccd15_4" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_5" type="mesh" mesh="MESH_forearm_861ccd15_5" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_6" type="mesh" mesh="MESH_forearm_861ccd15_6" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <body name="arm_A_ur_wrist_1_link" pos="-0.3922 0 0.1333" quat="1.0 0.0 0.0 0.0">
-                    <inertial mass="1.37" diaginertia="0.0011986756140664695 0.0014236273687040747 0.0016550170172294559" pos="0.0 -0.01634 -0.0018" quat="0.617164970477703 0.3485939338997156 0.334307835150133 0.6211504969174605"/>
-                    <joint name="arm_A_ur_wrist_1_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
-                    <geom class="collision" name="COLLISION_arm_A_ur_wrist_1_link_0" type="mesh" mesh="MESH_wrist1_2df87b9f" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
-                    <geom class="visual" name="VISUAL_arm_A_ur_wrist_1_link_0" type="mesh" mesh="MESH_wrist1_1e3ee180_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
-                    <geom class="visual" name="VISUAL_arm_A_ur_wrist_1_link_1" type="mesh" mesh="MESH_wrist1_1e3ee180_1" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
-                    <geom class="visual" name="VISUAL_arm_A_ur_wrist_1_link_2" type="mesh" mesh="MESH_wrist1_1e3ee180_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
-                    <body name="arm_A_ur_wrist_2_link" pos="0 -0.0997 -2.044881182297852e-11" quat="0.7071067811140325 0.7071067812590626 0.0 0.0">
-                      <inertial mass="1.3" diaginertia="0.0009581396620642861 0.001286066344108885 0.001356373993826829" pos="0.0 0.01634 -0.0018" quat="0.5288470911292525 -0.47465159334892915 -0.4440672234695894 0.5457388754481953"/>
-                      <joint name="arm_A_ur_wrist_2_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
-                      <geom class="collision" name="COLLISION_arm_A_ur_wrist_2_link_0" type="mesh" mesh="MESH_wrist2_e6869549" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
-                      <geom class="visual" name="VISUAL_arm_A_ur_wrist_2_link_0" type="mesh" mesh="MESH_wrist2_bde41993_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
-                      <geom class="visual" name="VISUAL_arm_A_ur_wrist_2_link_1" type="mesh" mesh="MESH_wrist2_bde41993_1" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
-                      <geom class="visual" name="VISUAL_arm_A_ur_wrist_2_link_2" type="mesh" mesh="MESH_wrist2_bde41993_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
-                      <body name="arm_A_ur_wrist_3_link" pos="0 0.0996 -2.042830148012698e-11" quat="0.7071067811140325 -0.7071067812590626 8.659560562354933e-17 8.880527684815676e-27">
-                        <inertial mass="0.365" diaginertia="0.00018693802309626027 0.00018906920634770998 0.0002575727705560295" pos="0.0 0.0 -0.001159" quat="0.9998848543715624 -0.006732397405301174 0.0011178804501228406 0.013553714134353396"/>
-                        <joint name="arm_A_ur_wrist_3_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
-                        <geom class="collision" name="COLLISION_arm_A_ur_wrist_3_link_0" type="mesh" mesh="MESH_wrist3_21abe53b" pos="0 0 -0.0989" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
-                        <geom class="visual" name="VISUAL_arm_A_ur_wrist_3_link_0" type="mesh" mesh="MESH_wrist3_8e7adc5c_0" rgba="0.81960784 0.81960784 0.81960784 1.0" pos="0 0 -0.0989" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
-                        <body name="arm_A_ur_ft_frame" pos="0 0 0" quat="6.123233995736766e-17 1.0 0.0 0.0">
-                          <site name="arm_A_ur_ft_frame_SITE" pos="0 0 0" quat="1 0 0 0"/>
-                        </body>
-                        <body name="arm_A_ur_flange" pos="0 0 0" quat="0.5000000000000001 -0.4999999999999999 -0.5 -0.5">
-                          <body name="arm_A_ur_tool0" pos="0 0 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
-                        </body>
-                      </body>
-                    </body>
-                  </body>
-                </body>
-              </body>
-            </body>
-          </body>
-          <body name="arm_A_ur_base" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+    <body name="base_link" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+      <body name="base_cube" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+        <inertial mass="300.0" diaginertia="18.0 18.0 18.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+        <geom class="collision" name="COLLISION_base_cube_0" type="box" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.3 0.3 0.3"/>
+        <geom class="visual" name="VISUAL_base_cube_0" type="box" material="cube_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.3 0.3 0.3"/>
+        <body name="hex_prism" pos="0 0 0.325" quat="1.0 0.0 0.0 0.0">
+          <inertial mass="5.0" diaginertia="0.032292 0.032292 0.0625" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+          <geom class="collision" name="COLLISION_hex_prism_0" type="mesh" mesh="MESH_len_fa11c571" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+          <geom class="visual" name="VISUAL_hex_prism_0" type="mesh" mesh="MESH_len_fa11c571" material="hex_prism_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         </body>
-      </body>
-      <body name="ur_mount_B" pos="-0.3 0 0" quat="0.7071067811865476 0.0 -0.7071067811865475 0.0">
-        <body name="arm_B_ur_base_link" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
-          <body name="arm_B_ur_base_link_inertia" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0">
-            <inertial mass="4.0" diaginertia="0.00443333156 0.00443333156 0.0072" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-            <geom class="collision" name="COLLISION_arm_B_ur_base_link_inertia_0" type="mesh" mesh="MESH_base_bd1b2dd6" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-            <geom class="visual" name="VISUAL_arm_B_ur_base_link_inertia_0" type="mesh" mesh="MESH_base_b81001a2_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-            <geom class="visual" name="VISUAL_arm_B_ur_base_link_inertia_1" type="mesh" mesh="MESH_base_b81001a2_1" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-            <body name="arm_B_ur_shoulder_link" pos="0 0 0.1625" quat="1.0 0.0 0.0 0.0">
-              <inertial mass="3.761" diaginertia="0.006024775831167757 0.0070003048838239885 0.007030789285008251" pos="0.0 -0.00193 -0.02561" quat="0.20206705998679322 0.6747312134749398 0.365097644892179 -0.6087777940473136"/>
-              <joint name="arm_B_ur_shoulder_pan_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
-              <geom class="collision" name="COLLISION_arm_B_ur_shoulder_link_0" type="mesh" mesh="MESH_shoulder_661339ad" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-              <geom class="visual" name="VISUAL_arm_B_ur_shoulder_link_0" type="mesh" mesh="MESH_shoulder_0fe2d913_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-              <geom class="visual" name="VISUAL_arm_B_ur_shoulder_link_1" type="mesh" mesh="MESH_shoulder_0fe2d913_1" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-              <geom class="visual" name="VISUAL_arm_B_ur_shoulder_link_2" type="mesh" mesh="MESH_shoulder_0fe2d913_2" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
-              <body name="arm_B_ur_upper_arm_link" pos="0 0 0" quat="0.7071067811140325 0.7071067812590626 0.0 0.0">
-                <inertial mass="8.058" diaginertia="0.015058840753982044 0.3324720677719464 0.3338808714740716" pos="-0.2125 0.0 0.11336" quat="0.7066521546519151 0.7075611104882223 5.365436380901162e-05 -6.611874721869904e-05"/>
-                <joint name="arm_B_ur_shoulder_lift_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
-                <geom class="collision" name="COLLISION_arm_B_ur_upper_arm_link_0" type="mesh" mesh="MESH_upperarm_d0455716" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_0" type="mesh" mesh="MESH_upperarm_12b51e98_0" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_1" type="mesh" mesh="MESH_upperarm_12b51e98_1" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_2" type="mesh" mesh="MESH_upperarm_12b51e98_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_3" type="mesh" mesh="MESH_upperarm_12b51e98_3" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_4" type="mesh" mesh="MESH_upperarm_12b51e98_4" rgba="0.81960784 0.81960784 0.81960784 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_5" type="mesh" mesh="MESH_upperarm_12b51e98_5" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_6" type="mesh" mesh="MESH_upperarm_12b51e98_6" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_7" type="mesh" mesh="MESH_upperarm_12b51e98_7" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                <body name="arm_B_ur_forearm_link" pos="-0.425 0 0" quat="1.0 0.0 0.0 0.0">
-                  <inertial mass="2.846" diaginertia="0.003971028904819707 0.0785102224320644 0.07879270866311583" pos="-0.2422 0.0 0.0265" quat="0.6984488939206283 0.715600664432383 -0.006368275363090868 -0.006654074983260038"/>
-                  <joint name="arm_B_ur_elbow_joint" type="hinge" axis="0 0 1" ref="" range="-3.141592653589793 3.141592653589793"/>
-                  <geom class="collision" name="COLLISION_arm_B_ur_forearm_link_0" type="mesh" mesh="MESH_forearm_98bdcf8e" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_0" type="mesh" mesh="MESH_forearm_861ccd15_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_1" type="mesh" mesh="MESH_forearm_861ccd15_1" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_2" type="mesh" mesh="MESH_forearm_861ccd15_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_3" type="mesh" mesh="MESH_forearm_861ccd15_3" rgba="0.81960784 0.81960784 0.81960784 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_4" type="mesh" mesh="MESH_forearm_861ccd15_4" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_5" type="mesh" mesh="MESH_forearm_861ccd15_5" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_6" type="mesh" mesh="MESH_forearm_861ccd15_6" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
-                  <body name="arm_B_ur_wrist_1_link" pos="-0.3922 0 0.1333" quat="1.0 0.0 0.0 0.0">
-                    <inertial mass="1.37" diaginertia="0.0011986756140664695 0.0014236273687040747 0.0016550170172294559" pos="0.0 -0.01634 -0.0018" quat="0.617164970477703 0.3485939338997156 0.334307835150133 0.6211504969174605"/>
-                    <joint name="arm_B_ur_wrist_1_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
-                    <geom class="collision" name="COLLISION_arm_B_ur_wrist_1_link_0" type="mesh" mesh="MESH_wrist1_2df87b9f" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
-                    <geom class="visual" name="VISUAL_arm_B_ur_wrist_1_link_0" type="mesh" mesh="MESH_wrist1_1e3ee180_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
-                    <geom class="visual" name="VISUAL_arm_B_ur_wrist_1_link_1" type="mesh" mesh="MESH_wrist1_1e3ee180_1" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
-                    <geom class="visual" name="VISUAL_arm_B_ur_wrist_1_link_2" type="mesh" mesh="MESH_wrist1_1e3ee180_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
-                    <body name="arm_B_ur_wrist_2_link" pos="0 -0.0997 -2.044881182297852e-11" quat="0.7071067811140325 0.7071067812590626 0.0 0.0">
-                      <inertial mass="1.3" diaginertia="0.0009581396620642861 0.001286066344108885 0.001356373993826829" pos="0.0 0.01634 -0.0018" quat="0.5288470911292525 -0.47465159334892915 -0.4440672234695894 0.5457388754481953"/>
-                      <joint name="arm_B_ur_wrist_2_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
-                      <geom class="collision" name="COLLISION_arm_B_ur_wrist_2_link_0" type="mesh" mesh="MESH_wrist2_e6869549" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
-                      <geom class="visual" name="VISUAL_arm_B_ur_wrist_2_link_0" type="mesh" mesh="MESH_wrist2_bde41993_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
-                      <geom class="visual" name="VISUAL_arm_B_ur_wrist_2_link_1" type="mesh" mesh="MESH_wrist2_bde41993_1" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
-                      <geom class="visual" name="VISUAL_arm_B_ur_wrist_2_link_2" type="mesh" mesh="MESH_wrist2_bde41993_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
-                      <body name="arm_B_ur_wrist_3_link" pos="0 0.0996 -2.042830148012698e-11" quat="0.7071067811140325 -0.7071067812590626 8.659560562354933e-17 8.880527684815676e-27">
-                        <inertial mass="0.365" diaginertia="0.00018693802309626027 0.00018906920634770998 0.0002575727705560295" pos="0.0 0.0 -0.001159" quat="0.9998848543715624 -0.006732397405301174 0.0011178804501228406 0.013553714134353396"/>
-                        <joint name="arm_B_ur_wrist_3_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
-                        <geom class="collision" name="COLLISION_arm_B_ur_wrist_3_link_0" type="mesh" mesh="MESH_wrist3_21abe53b" pos="0 0 -0.0989" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
-                        <geom class="visual" name="VISUAL_arm_B_ur_wrist_3_link_0" type="mesh" mesh="MESH_wrist3_8e7adc5c_0" rgba="0.81960784 0.81960784 0.81960784 1.0" pos="0 0 -0.0989" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
-                        <body name="arm_B_ur_ft_frame" pos="0 0 0" quat="6.123233995736766e-17 1.0 0.0 0.0">
-                          <site name="arm_B_ur_ft_frame_SITE" pos="0 0 0" quat="1 0 0 0"/>
-                        </body>
-                        <body name="arm_B_ur_flange" pos="0 0 0" quat="0.5000000000000001 -0.4999999999999999 -0.5 -0.5">
-                          <body name="arm_B_ur_tool0" pos="0 0 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+        <body name="ur_mount_A" pos="0.3 0 0" quat="0.7071067811865476 0.0 0.7071067811865475 0.0">
+          <body name="arm_A_ur_base_link" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+            <body name="arm_A_ur_base_link_inertia" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0">
+              <inertial mass="4.0" diaginertia="0.00443333156 0.00443333156 0.0072" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+              <geom class="collision" name="COLLISION_arm_A_ur_base_link_inertia_0" type="mesh" mesh="MESH_base_bd1b2dd6" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+              <geom class="visual" name="VISUAL_arm_A_ur_base_link_inertia_0" type="mesh" mesh="MESH_base_b81001a2_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+              <geom class="visual" name="VISUAL_arm_A_ur_base_link_inertia_1" type="mesh" mesh="MESH_base_b81001a2_1" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+              <body name="arm_A_ur_shoulder_link" pos="0 0 0.1625" quat="1.0 0.0 0.0 0.0">
+                <inertial mass="3.761" diaginertia="0.006024775831167757 0.0070003048838239885 0.007030789285008251" pos="0.0 -0.00193 -0.02561" quat="0.20206705998679322 0.6747312134749398 0.365097644892179 -0.6087777940473136"/>
+                <joint name="arm_A_ur_shoulder_pan_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
+                <geom class="collision" name="COLLISION_arm_A_ur_shoulder_link_0" type="mesh" mesh="MESH_shoulder_661339ad" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <geom class="visual" name="VISUAL_arm_A_ur_shoulder_link_0" type="mesh" mesh="MESH_shoulder_0fe2d913_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <geom class="visual" name="VISUAL_arm_A_ur_shoulder_link_1" type="mesh" mesh="MESH_shoulder_0fe2d913_1" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <geom class="visual" name="VISUAL_arm_A_ur_shoulder_link_2" type="mesh" mesh="MESH_shoulder_0fe2d913_2" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <body name="arm_A_ur_upper_arm_link" pos="0 0 0" quat="0.7071067811140325 0.7071067812590626 0.0 0.0">
+                  <inertial mass="8.058" diaginertia="0.015058840753982044 0.3324720677719464 0.3338808714740716" pos="-0.2125 0.0 0.11336" quat="0.7066521546519151 0.7075611104882223 5.365436380901162e-05 -6.611874721869904e-05"/>
+                  <joint name="arm_A_ur_shoulder_lift_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
+                  <geom class="collision" name="COLLISION_arm_A_ur_upper_arm_link_0" type="mesh" mesh="MESH_upperarm_d0455716" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_0" type="mesh" mesh="MESH_upperarm_12b51e98_0" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_1" type="mesh" mesh="MESH_upperarm_12b51e98_1" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_2" type="mesh" mesh="MESH_upperarm_12b51e98_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_3" type="mesh" mesh="MESH_upperarm_12b51e98_3" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_4" type="mesh" mesh="MESH_upperarm_12b51e98_4" rgba="0.81960784 0.81960784 0.81960784 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_5" type="mesh" mesh="MESH_upperarm_12b51e98_5" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_6" type="mesh" mesh="MESH_upperarm_12b51e98_6" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_A_ur_upper_arm_link_7" type="mesh" mesh="MESH_upperarm_12b51e98_7" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <body name="arm_A_ur_forearm_link" pos="-0.425 0 0" quat="1.0 0.0 0.0 0.0">
+                    <inertial mass="2.846" diaginertia="0.003971028904819707 0.0785102224320644 0.07879270866311583" pos="-0.2422 0.0 0.0265" quat="0.6984488939206283 0.715600664432383 -0.006368275363090868 -0.006654074983260038"/>
+                    <joint name="arm_A_ur_elbow_joint" type="hinge" axis="0 0 1" ref="" range="-3.141592653589793 3.141592653589793"/>
+                    <geom class="collision" name="COLLISION_arm_A_ur_forearm_link_0" type="mesh" mesh="MESH_forearm_98bdcf8e" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_0" type="mesh" mesh="MESH_forearm_861ccd15_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_1" type="mesh" mesh="MESH_forearm_861ccd15_1" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_2" type="mesh" mesh="MESH_forearm_861ccd15_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_3" type="mesh" mesh="MESH_forearm_861ccd15_3" rgba="0.81960784 0.81960784 0.81960784 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_4" type="mesh" mesh="MESH_forearm_861ccd15_4" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_5" type="mesh" mesh="MESH_forearm_861ccd15_5" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_A_ur_forearm_link_6" type="mesh" mesh="MESH_forearm_861ccd15_6" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <body name="arm_A_ur_wrist_1_link" pos="-0.3922 0 0.1333" quat="1.0 0.0 0.0 0.0">
+                      <inertial mass="1.37" diaginertia="0.0011986756140664695 0.0014236273687040747 0.0016550170172294559" pos="0.0 -0.01634 -0.0018" quat="0.617164970477703 0.3485939338997156 0.334307835150133 0.6211504969174605"/>
+                      <joint name="arm_A_ur_wrist_1_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
+                      <geom class="collision" name="COLLISION_arm_A_ur_wrist_1_link_0" type="mesh" mesh="MESH_wrist1_2df87b9f" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <geom class="visual" name="VISUAL_arm_A_ur_wrist_1_link_0" type="mesh" mesh="MESH_wrist1_1e3ee180_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <geom class="visual" name="VISUAL_arm_A_ur_wrist_1_link_1" type="mesh" mesh="MESH_wrist1_1e3ee180_1" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <geom class="visual" name="VISUAL_arm_A_ur_wrist_1_link_2" type="mesh" mesh="MESH_wrist1_1e3ee180_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <body name="arm_A_ur_wrist_2_link" pos="0 -0.0997 -2.044881182297852e-11" quat="0.7071067811140325 0.7071067812590626 0.0 0.0">
+                        <inertial mass="1.3" diaginertia="0.0009581396620642861 0.001286066344108885 0.001356373993826829" pos="0.0 0.01634 -0.0018" quat="0.5288470911292525 -0.47465159334892915 -0.4440672234695894 0.5457388754481953"/>
+                        <joint name="arm_A_ur_wrist_2_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
+                        <geom class="collision" name="COLLISION_arm_A_ur_wrist_2_link_0" type="mesh" mesh="MESH_wrist2_e6869549" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
+                        <geom class="visual" name="VISUAL_arm_A_ur_wrist_2_link_0" type="mesh" mesh="MESH_wrist2_bde41993_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
+                        <geom class="visual" name="VISUAL_arm_A_ur_wrist_2_link_1" type="mesh" mesh="MESH_wrist2_bde41993_1" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
+                        <geom class="visual" name="VISUAL_arm_A_ur_wrist_2_link_2" type="mesh" mesh="MESH_wrist2_bde41993_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
+                        <body name="arm_A_ur_wrist_3_link" pos="0 0.0996 -2.042830148012698e-11" quat="0.7071067811140325 -0.7071067812590626 8.659560562354933e-17 8.880527684815676e-27">
+                          <inertial mass="0.365" diaginertia="0.00018693802309626027 0.00018906920634770998 0.0002575727705560295" pos="0.0 0.0 -0.001159" quat="0.9998848543715624 -0.006732397405301174 0.0011178804501228406 0.013553714134353396"/>
+                          <joint name="arm_A_ur_wrist_3_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
+                          <geom class="collision" name="COLLISION_arm_A_ur_wrist_3_link_0" type="mesh" mesh="MESH_wrist3_21abe53b" pos="0 0 -0.0989" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                          <geom class="visual" name="VISUAL_arm_A_ur_wrist_3_link_0" type="mesh" mesh="MESH_wrist3_8e7adc5c_0" rgba="0.81960784 0.81960784 0.81960784 1.0" pos="0 0 -0.0989" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                          <body name="arm_A_ur_ft_frame" pos="0 0 0" quat="6.123233995736766e-17 1.0 0.0 0.0">
+                            <site name="arm_A_ur_ft_frame_SITE" pos="0 0 0" quat="1 0 0 0"/>
+                          </body>
+                          <body name="arm_A_ur_flange" pos="0 0 0" quat="0.5000000000000001 -0.4999999999999999 -0.5 -0.5">
+                            <body name="arm_A_ur_tool0" pos="0 0 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5">
+                              <body name="arm_A_realsense_shelf" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0">
+                                <inertial mass="0.038" diaginertia="6.673e-05 8.5e-06 7.517e-05" pos="0.0 0.044 0.0015" quat="1.0 0.0 0.0 0.0"/>
+                                <geom class="collision" name="COLLISION_arm_A_realsense_shelf_0" type="mesh" mesh="MESH_RealSense_D435_Shelf_d359ca29" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                <geom class="visual" name="VISUAL_arm_A_realsense_shelf_0" type="mesh" mesh="MESH_RealSense_D435_Shelf_d359ca29" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                <body name="arm_A_realsense_bottom_screw_frame" pos="0 0.0875 0.013" quat="0.5000000000000001 -0.4999999999999999 -0.5 -0.5">
+                                  <body name="arm_A_realsense_link" pos="0.010600000000000002 0.0175 0.0125" quat="1.0 0.0 0.0 0.0">
+                                    <inertial mass="0.072" diaginertia="0.003881243 0.00049894 0.003879257" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <geom class="collision" name="COLLISION_arm_A_realsense_link_0" type="box" pos="0 -0.0175 0" quat="1.0 0.0 0.0 0.0" size="0.012525 0.045 0.0125"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_0" type="mesh" mesh="MESH_d435_6743a526_0" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_1" type="mesh" mesh="MESH_d435_6743a526_1" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_2" type="mesh" mesh="MESH_d435_6743a526_2" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_3" type="mesh" mesh="MESH_d435_6743a526_3" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_4" type="mesh" mesh="MESH_d435_6743a526_4" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_5" type="mesh" mesh="MESH_d435_6743a526_5" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_6" type="mesh" mesh="MESH_d435_6743a526_6" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_7" type="mesh" mesh="MESH_d435_6743a526_7" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_8" type="mesh" mesh="MESH_d435_6743a526_8" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_9" type="mesh" mesh="MESH_d435_6743a526_9" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_10" type="mesh" mesh="MESH_d435_6743a526_10" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_11" type="mesh" mesh="MESH_d435_6743a526_11" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_12" type="mesh" mesh="MESH_d435_6743a526_12" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_13" type="mesh" mesh="MESH_d435_6743a526_13" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_14" type="mesh" mesh="MESH_d435_6743a526_14" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_15" type="mesh" mesh="MESH_d435_6743a526_15" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_16" type="mesh" mesh="MESH_d435_6743a526_16" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_A_realsense_link_17" type="mesh" mesh="MESH_d435_6743a526_17" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+                          </body>
                         </body>
                       </body>
                     </body>
@@ -206,8 +187,110 @@
                 </body>
               </body>
             </body>
+            <body name="arm_A_ur_base" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
           </body>
-          <body name="arm_B_ur_base" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+        </body>
+        <body name="ur_mount_B" pos="-0.3 0 0" quat="0.7071067811865476 0.0 -0.7071067811865475 0.0">
+          <body name="arm_B_ur_base_link" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+            <body name="arm_B_ur_base_link_inertia" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0">
+              <inertial mass="4.0" diaginertia="0.00443333156 0.00443333156 0.0072" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+              <geom class="collision" name="COLLISION_arm_B_ur_base_link_inertia_0" type="mesh" mesh="MESH_base_bd1b2dd6" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+              <geom class="visual" name="VISUAL_arm_B_ur_base_link_inertia_0" type="mesh" mesh="MESH_base_b81001a2_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+              <geom class="visual" name="VISUAL_arm_B_ur_base_link_inertia_1" type="mesh" mesh="MESH_base_b81001a2_1" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+              <body name="arm_B_ur_shoulder_link" pos="0 0 0.1625" quat="1.0 0.0 0.0 0.0">
+                <inertial mass="3.761" diaginertia="0.006024775831167757 0.0070003048838239885 0.007030789285008251" pos="0.0 -0.00193 -0.02561" quat="0.20206705998679322 0.6747312134749398 0.365097644892179 -0.6087777940473136"/>
+                <joint name="arm_B_ur_shoulder_pan_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
+                <geom class="collision" name="COLLISION_arm_B_ur_shoulder_link_0" type="mesh" mesh="MESH_shoulder_661339ad" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <geom class="visual" name="VISUAL_arm_B_ur_shoulder_link_0" type="mesh" mesh="MESH_shoulder_0fe2d913_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <geom class="visual" name="VISUAL_arm_B_ur_shoulder_link_1" type="mesh" mesh="MESH_shoulder_0fe2d913_1" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <geom class="visual" name="VISUAL_arm_B_ur_shoulder_link_2" type="mesh" mesh="MESH_shoulder_0fe2d913_2" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+                <body name="arm_B_ur_upper_arm_link" pos="0 0 0" quat="0.7071067811140325 0.7071067812590626 0.0 0.0">
+                  <inertial mass="8.058" diaginertia="0.015058840753982044 0.3324720677719464 0.3338808714740716" pos="-0.2125 0.0 0.11336" quat="0.7066521546519151 0.7075611104882223 5.365436380901162e-05 -6.611874721869904e-05"/>
+                  <joint name="arm_B_ur_shoulder_lift_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
+                  <geom class="collision" name="COLLISION_arm_B_ur_upper_arm_link_0" type="mesh" mesh="MESH_upperarm_d0455716" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_0" type="mesh" mesh="MESH_upperarm_12b51e98_0" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_1" type="mesh" mesh="MESH_upperarm_12b51e98_1" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_2" type="mesh" mesh="MESH_upperarm_12b51e98_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_3" type="mesh" mesh="MESH_upperarm_12b51e98_3" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_4" type="mesh" mesh="MESH_upperarm_12b51e98_4" rgba="0.81960784 0.81960784 0.81960784 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_5" type="mesh" mesh="MESH_upperarm_12b51e98_5" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_6" type="mesh" mesh="MESH_upperarm_12b51e98_6" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <geom class="visual" name="VISUAL_arm_B_ur_upper_arm_link_7" type="mesh" mesh="MESH_upperarm_12b51e98_7" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.138" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                  <body name="arm_B_ur_forearm_link" pos="-0.425 0 0" quat="1.0 0.0 0.0 0.0">
+                    <inertial mass="2.846" diaginertia="0.003971028904819707 0.0785102224320644 0.07879270866311583" pos="-0.2422 0.0 0.0265" quat="0.6984488939206283 0.715600664432383 -0.006368275363090868 -0.006654074983260038"/>
+                    <joint name="arm_B_ur_elbow_joint" type="hinge" axis="0 0 1" ref="" range="-3.141592653589793 3.141592653589793"/>
+                    <geom class="collision" name="COLLISION_arm_B_ur_forearm_link_0" type="mesh" mesh="MESH_forearm_98bdcf8e" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_0" type="mesh" mesh="MESH_forearm_861ccd15_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_1" type="mesh" mesh="MESH_forearm_861ccd15_1" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_2" type="mesh" mesh="MESH_forearm_861ccd15_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_3" type="mesh" mesh="MESH_forearm_861ccd15_3" rgba="0.81960784 0.81960784 0.81960784 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_4" type="mesh" mesh="MESH_forearm_861ccd15_4" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_5" type="mesh" mesh="MESH_forearm_861ccd15_5" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <geom class="visual" name="VISUAL_arm_B_ur_forearm_link_6" type="mesh" mesh="MESH_forearm_861ccd15_6" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 0.007" quat="0.5000000000000001 0.5 -0.4999999999999999 -0.5"/>
+                    <body name="arm_B_ur_wrist_1_link" pos="-0.3922 0 0.1333" quat="1.0 0.0 0.0 0.0">
+                      <inertial mass="1.37" diaginertia="0.0011986756140664695 0.0014236273687040747 0.0016550170172294559" pos="0.0 -0.01634 -0.0018" quat="0.617164970477703 0.3485939338997156 0.334307835150133 0.6211504969174605"/>
+                      <joint name="arm_B_ur_wrist_1_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
+                      <geom class="collision" name="COLLISION_arm_B_ur_wrist_1_link_0" type="mesh" mesh="MESH_wrist1_2df87b9f" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <geom class="visual" name="VISUAL_arm_B_ur_wrist_1_link_0" type="mesh" mesh="MESH_wrist1_1e3ee180_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <geom class="visual" name="VISUAL_arm_B_ur_wrist_1_link_1" type="mesh" mesh="MESH_wrist1_1e3ee180_1" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <geom class="visual" name="VISUAL_arm_B_ur_wrist_1_link_2" type="mesh" mesh="MESH_wrist1_1e3ee180_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 -0.127" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                      <body name="arm_B_ur_wrist_2_link" pos="0 -0.0997 -2.044881182297852e-11" quat="0.7071067811140325 0.7071067812590626 0.0 0.0">
+                        <inertial mass="1.3" diaginertia="0.0009581396620642861 0.001286066344108885 0.001356373993826829" pos="0.0 0.01634 -0.0018" quat="0.5288470911292525 -0.47465159334892915 -0.4440672234695894 0.5457388754481953"/>
+                        <joint name="arm_B_ur_wrist_2_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
+                        <geom class="collision" name="COLLISION_arm_B_ur_wrist_2_link_0" type="mesh" mesh="MESH_wrist2_e6869549" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
+                        <geom class="visual" name="VISUAL_arm_B_ur_wrist_2_link_0" type="mesh" mesh="MESH_wrist2_bde41993_0" rgba="0.27843137 0.27843137 0.27843137 1.0" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
+                        <geom class="visual" name="VISUAL_arm_B_ur_wrist_2_link_1" type="mesh" mesh="MESH_wrist2_bde41993_1" rgba="0.49019608 0.67843137 0.8 1.0" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
+                        <geom class="visual" name="VISUAL_arm_B_ur_wrist_2_link_2" type="mesh" mesh="MESH_wrist2_bde41993_2" rgba="0.03137255 0.03137255 0.03137255 1.0" pos="0 0 -0.0997" quat="1.0 0.0 0.0 0.0"/>
+                        <body name="arm_B_ur_wrist_3_link" pos="0 0.0996 -2.042830148012698e-11" quat="0.7071067811140325 -0.7071067812590626 8.659560562354933e-17 8.880527684815676e-27">
+                          <inertial mass="0.365" diaginertia="0.00018693802309626027 0.00018906920634770998 0.0002575727705560295" pos="0.0 0.0 -0.001159" quat="0.9998848543715624 -0.006732397405301174 0.0011178804501228406 0.013553714134353396"/>
+                          <joint name="arm_B_ur_wrist_3_joint" type="hinge" axis="0 0 1" ref="" range="-6.283185307179586 6.283185307179586"/>
+                          <geom class="collision" name="COLLISION_arm_B_ur_wrist_3_link_0" type="mesh" mesh="MESH_wrist3_21abe53b" pos="0 0 -0.0989" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                          <geom class="visual" name="VISUAL_arm_B_ur_wrist_3_link_0" type="mesh" mesh="MESH_wrist3_8e7adc5c_0" rgba="0.81960784 0.81960784 0.81960784 1.0" pos="0 0 -0.0989" quat="0.7071067811865476 0.7071067811865475 0.0 0.0"/>
+                          <body name="arm_B_ur_ft_frame" pos="0 0 0" quat="6.123233995736766e-17 1.0 0.0 0.0">
+                            <site name="arm_B_ur_ft_frame_SITE" pos="0 0 0" quat="1 0 0 0"/>
+                          </body>
+                          <body name="arm_B_ur_flange" pos="0 0 0" quat="0.5000000000000001 -0.4999999999999999 -0.5 -0.5">
+                            <body name="arm_B_ur_tool0" pos="0 0 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5">
+                              <body name="arm_B_realsense_shelf" pos="0.0 0.0 0.0" quat="6.123233995736766e-17 0.0 0.0 1.0">
+                                <inertial mass="0.038" diaginertia="6.673e-05 8.5e-06 7.517e-05" pos="0.0 0.044 0.0015" quat="1.0 0.0 0.0 0.0"/>
+                                <geom class="collision" name="COLLISION_arm_B_realsense_shelf_0" type="mesh" mesh="MESH_RealSense_D435_Shelf_d359ca29" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                <geom class="visual" name="VISUAL_arm_B_realsense_shelf_0" type="mesh" mesh="MESH_RealSense_D435_Shelf_d359ca29" rgba="0.7 0.7 0.7 1.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                <body name="arm_B_realsense_bottom_screw_frame" pos="0 0.0875 0.013" quat="0.5000000000000001 -0.4999999999999999 -0.5 -0.5">
+                                  <body name="arm_B_realsense_link" pos="0.010600000000000002 0.0175 0.0125" quat="1.0 0.0 0.0 0.0">
+                                    <inertial mass="0.072" diaginertia="0.003881243 0.00049894 0.003879257" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
+                                    <geom class="collision" name="COLLISION_arm_B_realsense_link_0" type="box" pos="0 -0.0175 0" quat="1.0 0.0 0.0 0.0" size="0.012525 0.045 0.0125"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_0" type="mesh" mesh="MESH_d435_6743a526_0" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_1" type="mesh" mesh="MESH_d435_6743a526_1" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_2" type="mesh" mesh="MESH_d435_6743a526_2" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_3" type="mesh" mesh="MESH_d435_6743a526_3" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_4" type="mesh" mesh="MESH_d435_6743a526_4" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_5" type="mesh" mesh="MESH_d435_6743a526_5" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_6" type="mesh" mesh="MESH_d435_6743a526_6" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_7" type="mesh" mesh="MESH_d435_6743a526_7" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_8" type="mesh" mesh="MESH_d435_6743a526_8" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_9" type="mesh" mesh="MESH_d435_6743a526_9" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_10" type="mesh" mesh="MESH_d435_6743a526_10" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_11" type="mesh" mesh="MESH_d435_6743a526_11" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_12" type="mesh" mesh="MESH_d435_6743a526_12" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_13" type="mesh" mesh="MESH_d435_6743a526_13" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_14" type="mesh" mesh="MESH_d435_6743a526_14" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_15" type="mesh" mesh="MESH_d435_6743a526_15" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_16" type="mesh" mesh="MESH_d435_6743a526_16" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                    <geom class="visual" name="VISUAL_arm_B_realsense_link_17" type="mesh" mesh="MESH_d435_6743a526_17" rgba="0.74901961 0.74901961 0.74901961 1.0" pos="0.0043 -0.0175 0" quat="0.5000000000000001 0.5 0.4999999999999999 0.5"/>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+            <body name="arm_B_ur_base" pos="0 0 0" quat="6.123233995736766e-17 0.0 0.0 1.0"/>
+          </body>
         </body>
       </body>
     </body>

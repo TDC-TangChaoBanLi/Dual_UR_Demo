@@ -18,6 +18,12 @@
   <xacro:arg name="safety_k_position" default="20"/>
   <xacro:arg name="force_abs_paths" default="false"/>
 
+  <!-- 相机参数：
+       space_sim 双臂末端已挂载 RealSense D435 相机（几何描述），
+       launch_controller 的 mujoco 分支会统一传入
+       camera_use_nominal_extrinsics:=false，因此必须声明该 arg 并透传。 -->
+  <xacro:arg name="camera_use_nominal_extrinsics" default="false"/>
+
   <!-- ============================================ -->
   <!-- Mujoco ros2_control 可选参数                  -->
   <!-- ============================================ -->
@@ -28,6 +34,7 @@
 
   <!-- Jazzy: 纯几何描述（仅传几何参数给 space_sim） -->
   <xacro:space_sim 
+    camera_use_nominal_extrinsics="$(arg camera_use_nominal_extrinsics)"
     safety_limits="$(arg safety_limits)"
     safety_pos_margin="$(arg safety_pos_margin)"
     safety_k_position="$(arg safety_k_position)"
