@@ -69,7 +69,7 @@ ocs2_arm_controller:
     ocs2_library_folder: "/tmp/ocs2_ros2/dual_ur"
 
     # 未来时刻插值偏移（仿真环境可用较小值）
-    future_time_offset: 1.0
+    future_time_offset: 0.5
 
     # home 位姿：12 关节 (arm_A 右臂 在前, arm_B 左臂 在后)
     home_1: [

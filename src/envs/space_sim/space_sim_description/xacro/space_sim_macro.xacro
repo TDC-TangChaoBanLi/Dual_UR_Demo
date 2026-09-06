@@ -15,10 +15,10 @@
 
   <!-- 定义材料 -->
   <material name="satellite_material">
-    <color rgba="0.70 0.60 0.20 1"/>
+    <texture filename="package://space_sim_description/meshes/gold_leaf.png" />
   </material>
-  <material name="len_material">
-    <color rgba="0.75 0.60 0.20 1"/>
+  <material name="len_shelf_material">
+    <color rgba="0.60 0.60 0.60 1"/>
   </material>
 
   <link name="world"/>
@@ -44,9 +44,7 @@
   <link name="satellite">
     <inertial>
       <mass value="300.0"/>
-      <inertia ixx="18.0" ixy="0.0" ixz="0.0"
-               iyy="18.0" iyz="0.0"
-               izz="18.0"/>
+      <inertia ixx="18.0" ixy="0.0" ixz="0.0" iyy="18.0" iyz="0.0" izz="18.0"/>
     </inertial>
     <visual>
       <geometry>
@@ -64,30 +62,32 @@
   </link>
 
   <!-- ============================================ -->
-  <!-- 正六边棱柱 hex_prism                          -->
-  <!-- 对向边距 0.3m，高 0.05m，固定在方块顶面中心   -->
-  <!-- 方块顶面 z = 0.3，棱柱中心 z = 0.3+0.025      -->
+  <!-- 镜片部分                                      -->
   <!-- ============================================ -->
+
+  <!-- 镜片支架 -->
   <link name="len_shelf">
     <inertial>
       <mass value="5.0"/>
-      <!-- 正六边形棱柱: R=0.3/√3≈0.173205, h=0.05   -->
-      <!-- Izz = m*(5R²/12) = 0.0625                  -->
-      <!-- Ixx = Iyy = m*(5R²/24 + h²/12) ≈ 0.032292  -->
-      <inertia ixx="0.032292" ixy="0.0" ixz="0.0"
-               iyy="0.032292" iyz="0.0"
-               izz="0.0625"/>
+      <inertia ixx="0.032292" ixy="0.0" ixz="0.0" iyy="0.032292" iyz="0.0" izz="0.0625"/>
     </inertial>
     <visual>
       <geometry>
-        <cylinder radius="0.03" length="1.5"/>
+        <cylinder radius="0.02" length="1.5"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0.75" />
-      <material name="len_material"/>
+      <material name="len_shelf_material"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.05" length="0.08"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 1.5" />
+      <material name="len_shelf_material"/>
     </visual>
     <collision>
       <geometry>
-        <cylinder radius="0.03" length="1.5"/>
+        <cylinder radius="0.02" length="1.5"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0.75" />
     </collision>
@@ -98,37 +98,102 @@
     <origin xyz="0 0 0.30" rpy="0 0 0" />
   </joint>
 
-
+  <!-- 中心镜片 -->
   <link name="len_center">
     <inertial>
       <mass value="5.0"/>
-      <!-- 正六边形棱柱: R=0.3/√3≈0.173205, h=0.05   -->
-      <!-- Izz = m*(5R²/12) = 0.0625                  -->
-      <!-- Ixx = Iyy = m*(5R²/24 + h²/12) ≈ 0.032292  -->
-      <inertia ixx="0.032292" ixy="0.0" ixz="0.0"
-               iyy="0.032292" iyz="0.0"
-               izz="0.0625"/>
+      <inertia ixx="0.032292" ixy="0.0" ixz="0.0" iyy="0.032292" iyz="0.0" izz="0.0625"/>
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://space_sim_description/meshes/len_center.stl"/>
+        <mesh filename="package://space_sim_description/meshes/len_center.obj"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0" />
-      <material name="len_material"/>
     </visual>
     <collision>
       <geometry>
         <mesh filename="package://space_sim_description/meshes/len_center.stl"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0" />
     </collision>
   </link>
   <joint name="len_shelf_to_center" type="fixed">
     <parent link="len_shelf" />
     <child link="len_center" />
-    <origin xyz="0 0 0.1" rpy="3.1416 0 0" />
+    <origin xyz="0 0 0.1" rpy="0 0 0" />
   </joint>
 
+  <!-- <link name="len_ring1_1">
+    <inertial>
+      <mass value="5.0"/>
+      <inertia ixx="0.032292" ixy="0.0" ixz="0.0" iyy="0.032292" iyz="0.0" izz="0.0625"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://space_sim_description/meshes/len_ring1.obj"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://space_sim_description/meshes/len_ring1.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="len_center_to_ring1_1" type="fixed">
+    <parent link="len_center" />
+    <child link="len_ring1_1" />
+    <origin xyz="-0.5130 -0.0000 0.0905" rpy="-0.349066 -0.000000 -1.570796"/>
+  </joint> -->
+
+  <!-- ============================================ -->
+  <!-- 卫星附件 太阳能板                            -->
+  <!-- 对侧安装: 在 +/-Y 侧面                       -->
+  <!-- 方块半宽 0.3，安装面在 y=±0.3                -->
+  <!-- ============================================ -->
+
+  <link name="solar_panel_A">
+    <inertial>
+      <mass value="6.580"/>
+      <origin xyz="-1.309 0.003 0.000" rpy="0 0 0" />
+      <inertia ixx="0.1246" ixy="0.0" ixz="0.0" iyy="2.090" iyz="0.0" izz="1.965"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://space_sim_description/meshes/solar_panel.obj"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://space_sim_description/meshes/solar_panel.obj"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="satellite_to_solar_panel_A" type="fixed">
+    <parent link="satellite" />
+    <child link="solar_panel_A" />
+    <origin xyz="0 0.3 0" rpy="0 0 ${-pi/2}" />
+  </joint>
+
+  <link name="solar_panel_B">
+    <inertial>
+      <mass value="6.580"/>
+      <origin xyz="-1.309 0.003 0.000" rpy="0 0 0" />
+      <inertia ixx="0.1246" ixy="0.0" ixz="0.0" iyy="2.090" iyz="0.0" izz="1.965"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://space_sim_description/meshes/solar_panel.obj"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://space_sim_description/meshes/solar_panel.obj"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="satellite_to_solar_panel_B" type="fixed">
+    <parent link="satellite" />
+    <child link="solar_panel_B" />
+    <origin xyz="0 -0.3 0" rpy="0 0 ${pi/2}" />
+  </joint>
 
   <!-- ============================================ -->
   <!-- UR 安装座 link & joint                        -->

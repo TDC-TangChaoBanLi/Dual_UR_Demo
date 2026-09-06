@@ -38,10 +38,14 @@
     *origin
     ">
 
+    <!-- 机械臂基座 parameters -->
+    <xacro:property name="_arm_base_name" value="${tf_prefix}base"/>
+
+
     <!-- UR parameters (Jazzy: 仅 yaml 配置文件路径) -->
     <xacro:property name="_ur_name" value="${name}_ur"/>
     <xacro:property name="_ur_tf_prefix" value="${tf_prefix}ur_"/>
-    <xacro:property name="_ur_parent" value="${parent}"/>
+    <xacro:property name="_ur_parent" value="${_arm_base_name}_main"/>
     <xacro:property name="_ur_joint_limits_parameters_file" value="$(find ur_description)/config/${ur_type}/joint_limits.yaml"/>
     <xacro:if value="${kinematics_parameters_file == ''}">
       <xacro:property name="_ur_kinematics_parameters_file" value="$(find ur_description)/config/${ur_type}/default_kinematics.yaml"/>
@@ -59,6 +63,70 @@
     <xacro:property name="_realsense_add_plug" value="false" />
     <xacro:property name="_realsense_use_mesh" value="true" />
 
+    <!-- gripper parameters -->
+    <xacro:property name="_gripper_name" value="${tf_prefix}gripper" />
+
+
+
+    <!-- 机械臂基座-->
+    <link name="${_arm_base_name}_dock">
+      <inertial>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <mass value="0.6"/>
+        <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <cylinder radius="0.07" length="0.025"/>
+        </geometry>
+        <material name="arm_base_dock_material">
+          <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="0.07" length="0.025"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+    </link>
+    <joint name="${_arm_base_name}_dock_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${_arm_base_name}_dock"/>
+      <origin xyz="0 0 0.0125" rpy="0 0 0"/>
+    </joint>
+
+
+    <link name="${_arm_base_name}_main">
+      <inertial>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <mass value="35.0"/>
+        <inertia ixx="0.182" ixy="0.0" ixz="0.0" iyy="0.182" iyz="0.0" izz="0.233"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <box size="0.3 0.3 0.2"/>
+        </geometry>
+        <material name="arm_base_main_material">
+          <texture filename="package://space_sim_description/meshes/gold_leaf.png"/>
+        </material>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.3 0.3 0.2"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+    </link>
+    <joint name="${_arm_base_name}_dock_to_main_joint" type="fixed">
+      <parent link="${_arm_base_name}_dock"/>
+      <child link="${_arm_base_name}_main"/>
+      <origin xyz="0 0 0.1125" rpy="0 0 0"/>
+    </joint>
+
+
     <!-- 创建 UR 机器人 使用宏定义 (Jazzy: 纯描述，无 ros2_control 参数) -->
     <xacro:ur_robot
       name="${_ur_name}"
@@ -73,7 +141,8 @@
       safety_k_position="${safety_k_position}"
       force_abs_paths="${force_abs_paths}"
     >
-      <xacro:insert_block name="origin" />
+      <!-- <xacro:insert_block name="origin" /> -->
+      <origin xyz="0 0 0.1" rpy="0 0 0" />
     </xacro:ur_robot>
 
     <!-- ============================================ -->
@@ -106,7 +175,14 @@
       <child link="${_realsense_prefix}_shelf"/>
       <origin xyz="0.0 0.0 0.0" rpy="0 0 ${pi}" />
     </joint>
-
+    <!-- 创建 RealSense 相机支架 child 端的 link 和 joint -->
+    <link name="${_realsense_prefix}_shelf_child_side"/>
+    <joint name="${_realsense_prefix}_shelf_to_child_side" type="fixed">
+      <parent link="${_realsense_prefix}_shelf"/>
+      <child link="${_realsense_prefix}_shelf_child_side"/>
+      <!-- 相机支架厚度 3mm + 夹爪底座坐标z轴偏移3mm -->
+      <origin xyz="0.0 0.0 0.006" rpy="0 0 0" />
+    </joint>
     <!-- ============================================ -->
     <!-- RealSense D435 相机（无夹爪，直接挂在支架上） -->
     <!-- ============================================ -->
@@ -123,21 +199,69 @@
     </xacro:sensor_d435>
 
     <!-- ============================================ -->
-    <!-- 夹爪挂载点（预留）                            -->
+    <!-- 夹爪                                         -->
     <!-- ============================================ -->
-    <!--
-      后续添加夹爪时，在此处根据 gripper_type 条件实例化夹爪宏，
-      父 link 为 ${_realsense_prefix}_shelf（相机支架末端）。
-      示例（dh_ag95）：
-      <xacro:if value="${gripper_type == 'dh_ag95'}">
-        <xacro:dh_ag95_gripper
-          prefix="${tf_prefix}dhag95_"
-          parent="${_realsense_prefix}_shelf"
-        >
-          <origin xyz="0 0 -0.0035" rpy="0 0 0" />
-        </xacro:dh_ag95_gripper>
-      </xacro:if>
-    -->
+    <link name="${_gripper_name}_base">
+      <inertial>
+        <origin xyz="0.0 0.0 0.055348" rpy="0.0 0.0 0.0"/>
+        <mass value="1.203"/>
+        <inertia ixx=" 0.001246" ixy="0.0" ixz="0.0" iyy="0.001777" iyz="0.0" izz="0.001085"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://space_sim_description/meshes/magnetic_gripper.STL"/>
+        </geometry>
+        <material name="gripper_base_material">
+          <color rgba="0.6 0.6 0.6 1"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://space_sim_description/meshes/magnetic_gripper.STL"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${_realsense_prefix}_shelf_to_${_gripper_name}_base" type="fixed">
+      <parent link="${_realsense_prefix}_shelf_child_side"/>
+      <child link="${_gripper_name}_base"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="${_gripper_name}_dock">
+      <inertial>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <mass value="0.3"/>
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <box size="0.1 0.04 0.02"/>
+        </geometry>
+        <material name="gripper_dock_material">
+          <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+        <origin xyz="0 0 0.01" rpy="0 0 0"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.1 0.04 0.02"/>
+        </geometry>
+        <origin xyz="0 0 0.01" rpy="0 0 0"/>
+      </collision>
+    </link>
+    <joint name="${_gripper_name}_base_to_${_gripper_name}_dock" type="fixed">
+      <parent link="${_gripper_name}_base"/>
+      <child link="${_gripper_name}_dock"/>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    </joint>
+
+
+    <link name="${tf_prefix}_tcp"/>
+      <joint name="${tf_prefix}_tcp_joint" type="fixed">
+          <origin xyz="0 0 0.12" rpy="0 0 0"/>
+          <parent link="${_gripper_name}_base"/>
+          <child link="${tf_prefix}_tcp"/>
+      </joint>
 
   </xacro:macro>
 </robot>

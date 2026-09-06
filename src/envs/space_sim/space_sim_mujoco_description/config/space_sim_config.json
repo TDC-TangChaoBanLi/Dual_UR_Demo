@@ -22,7 +22,7 @@
         },
         "worldbody": { 
             "add_default_floor": false, 
-            "add_default_skybox": true, 
+            "add_default_skybox": false, 
             "add_default_light": false, 
             "add_default_freejoint": false,
             "add_json_freejoint": true,
@@ -30,7 +30,7 @@
             ],
 
             "add_json_floor": false,
-            "add_json_skybox": false,
+            "add_json_skybox": true,
 
             "floor": {
                 "geom":     {"name": "floor", "type": "plane", "size": "0 0 0.05", "material": "floor"},
@@ -38,7 +38,8 @@
                 "texture":  {"name": "floor", "type": "2d", "builtin": "checker", "mark": "edge", "rgb1": "0.2 0.3 0.4", "rgb2": "0.1 0.2 0.3", "markrgb": "0.8 0.8 0.8", "width": "300", "height": "300"}
             },
             "skybox_texture": {
-                "name": "skybox", "type": "skybox", "builtin": "gradient", "rgb1": ".3 .5 .7", "rgb2": "0 0 0", "width": "1024", "height": "1024"
+                "name": "skybox", "type": "skybox", "file": "../textures/skybox_stars.png",
+                "gridsize": "3 4", "gridlayout": ".U..LFRB.D.."
             }
         },
 

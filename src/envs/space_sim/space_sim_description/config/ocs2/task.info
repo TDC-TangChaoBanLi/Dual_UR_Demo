@@ -15,8 +15,8 @@ model_information {
 
   ; end-effector frames — eeFrame 对应 OCS2 leftArm, eeFrame1 对应 rightArm
   ; space_sim 无夹爪，直接使用 UR tool0 作为末端执行器帧
-  eeFrame                   "arm_B_ur_tool0"
-  eeFrame1                  "arm_A_ur_tool0"
+  eeFrame                   "arm_B__tcp"
+  eeFrame1                  "arm_A__tcp"
 
   ; 无夹爪关节，无需 removeJoints
 }
@@ -89,7 +89,7 @@ mpc {
   coldStart                  false
   debugPrint                 false
   mpcDesiredFrequency        100      ; [Hz] MPC 求解频率
-  mrtDesiredFrequency        400     ; [Hz] MRT 策略评估频率
+  mrtDesiredFrequency        500     ; [Hz] MRT 策略评估频率
 }
 
 ; ============================================================

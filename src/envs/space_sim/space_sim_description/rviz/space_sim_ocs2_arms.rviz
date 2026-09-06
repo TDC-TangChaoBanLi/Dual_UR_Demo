@@ -6,7 +6,7 @@ Panels:
       Expanded:
         - /RobotModel1
         - /TF1
-        - /TF1/Frames1
+        - /InteractiveMarkers1
       Splitter Ratio: 0.5
     Tree Height: 581
   - Class: rviz_common/Views
@@ -63,6 +63,30 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        arm_A__tcp:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        arm_A_base_dock:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_A_base_main:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_A_gripper_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_A_gripper_dock:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         arm_A_realsense_bottom_screw_frame:
           Alpha: 1
           Show Axes: false
@@ -77,6 +101,10 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        arm_A_realsense_shelf_child_side:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         arm_A_ur_base:
           Alpha: 1
           Show Axes: false
@@ -132,6 +160,30 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        arm_B__tcp:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        arm_B_base_dock:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_B_base_main:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_B_gripper_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_B_gripper_dock:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         arm_B_realsense_bottom_screw_frame:
           Alpha: 1
           Show Axes: false
@@ -146,6 +198,10 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        arm_B_realsense_shelf_child_side:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         arm_B_ur_base:
           Alpha: 1
           Show Axes: false
@@ -201,16 +257,36 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        base_cube:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        hex_prism:
+        len_center:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        len_ring1_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        len_shelf:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        satellite:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        solar_panel_A:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        solar_panel_B:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -242,11 +318,23 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        arm_A__tcp:
+          Value: true
+        arm_A_base_dock:
+          Value: false
+        arm_A_base_main:
+          Value: false
+        arm_A_gripper_base:
+          Value: false
+        arm_A_gripper_dock:
+          Value: false
         arm_A_realsense_bottom_screw_frame:
           Value: false
         arm_A_realsense_link:
           Value: false
         arm_A_realsense_shelf:
+          Value: false
+        arm_A_realsense_shelf_child_side:
           Value: false
         arm_A_ur_base:
           Value: false
@@ -263,7 +351,7 @@ Visualization Manager:
         arm_A_ur_shoulder_link:
           Value: false
         arm_A_ur_tool0:
-          Value: true
+          Value: false
         arm_A_ur_upper_arm_link:
           Value: false
         arm_A_ur_wrist_1_link:
@@ -272,11 +360,23 @@ Visualization Manager:
           Value: false
         arm_A_ur_wrist_3_link:
           Value: false
+        arm_B__tcp:
+          Value: true
+        arm_B_base_dock:
+          Value: false
+        arm_B_base_main:
+          Value: false
+        arm_B_gripper_base:
+          Value: false
+        arm_B_gripper_dock:
+          Value: false
         arm_B_realsense_bottom_screw_frame:
           Value: false
         arm_B_realsense_link:
           Value: false
         arm_B_realsense_shelf:
+          Value: false
+        arm_B_realsense_shelf_child_side:
           Value: false
         arm_B_ur_base:
           Value: false
@@ -293,7 +393,7 @@ Visualization Manager:
         arm_B_ur_shoulder_link:
           Value: false
         arm_B_ur_tool0:
-          Value: true
+          Value: false
         arm_B_ur_upper_arm_link:
           Value: false
         arm_B_ur_wrist_1_link:
@@ -302,11 +402,19 @@ Visualization Manager:
           Value: false
         arm_B_ur_wrist_3_link:
           Value: false
-        base_cube:
-          Value: false
         base_link:
           Value: false
-        hex_prism:
+        len_center:
+          Value: false
+        len_ring1_1:
+          Value: false
+        len_shelf:
+          Value: false
+        satellite:
+          Value: false
+        solar_panel_A:
+          Value: false
+        solar_panel_B:
           Value: false
         ur_mount_A:
           Value: false
@@ -322,47 +430,69 @@ Visualization Manager:
       Tree:
         world:
           base_link:
-            base_cube:
-              hex_prism:
+            satellite:
+              len_shelf:
+                len_center:
+                  len_ring1_1:
+                    {}
+              solar_panel_A:
+                {}
+              solar_panel_B:
                 {}
               ur_mount_A:
-                arm_A_ur_base_link:
-                  arm_A_ur_base:
-                    {}
-                  arm_A_ur_base_link_inertia:
-                    arm_A_ur_shoulder_link:
-                      arm_A_ur_upper_arm_link:
-                        arm_A_ur_forearm_link:
-                          arm_A_ur_wrist_1_link:
-                            arm_A_ur_wrist_2_link:
-                              arm_A_ur_wrist_3_link:
-                                arm_A_ur_flange:
-                                  arm_A_ur_tool0:
-                                    arm_A_realsense_shelf:
-                                      arm_A_realsense_bottom_screw_frame:
-                                        arm_A_realsense_link:
-                                          {}
-                                arm_A_ur_ft_frame:
-                                  {}
+                arm_A_base_dock:
+                  arm_A_base_main:
+                    arm_A_ur_base_link:
+                      arm_A_ur_base:
+                        {}
+                      arm_A_ur_base_link_inertia:
+                        arm_A_ur_shoulder_link:
+                          arm_A_ur_upper_arm_link:
+                            arm_A_ur_forearm_link:
+                              arm_A_ur_wrist_1_link:
+                                arm_A_ur_wrist_2_link:
+                                  arm_A_ur_wrist_3_link:
+                                    arm_A_ur_flange:
+                                      arm_A_ur_tool0:
+                                        arm_A_realsense_shelf:
+                                          arm_A_realsense_bottom_screw_frame:
+                                            arm_A_realsense_link:
+                                              {}
+                                          arm_A_realsense_shelf_child_side:
+                                            arm_A_gripper_base:
+                                              arm_A__tcp:
+                                                {}
+                                              arm_A_gripper_dock:
+                                                {}
+                                    arm_A_ur_ft_frame:
+                                      {}
               ur_mount_B:
-                arm_B_ur_base_link:
-                  arm_B_ur_base:
-                    {}
-                  arm_B_ur_base_link_inertia:
-                    arm_B_ur_shoulder_link:
-                      arm_B_ur_upper_arm_link:
-                        arm_B_ur_forearm_link:
-                          arm_B_ur_wrist_1_link:
-                            arm_B_ur_wrist_2_link:
-                              arm_B_ur_wrist_3_link:
-                                arm_B_ur_flange:
-                                  arm_B_ur_tool0:
-                                    arm_B_realsense_shelf:
-                                      arm_B_realsense_bottom_screw_frame:
-                                        arm_B_realsense_link:
-                                          {}
-                                arm_B_ur_ft_frame:
-                                  {}
+                arm_B_base_dock:
+                  arm_B_base_main:
+                    arm_B_ur_base_link:
+                      arm_B_ur_base:
+                        {}
+                      arm_B_ur_base_link_inertia:
+                        arm_B_ur_shoulder_link:
+                          arm_B_ur_upper_arm_link:
+                            arm_B_ur_forearm_link:
+                              arm_B_ur_wrist_1_link:
+                                arm_B_ur_wrist_2_link:
+                                  arm_B_ur_wrist_3_link:
+                                    arm_B_ur_flange:
+                                      arm_B_ur_tool0:
+                                        arm_B_realsense_shelf:
+                                          arm_B_realsense_bottom_screw_frame:
+                                            arm_B_realsense_link:
+                                              {}
+                                          arm_B_realsense_shelf_child_side:
+                                            arm_B_gripper_base:
+                                              arm_B__tcp:
+                                                {}
+                                              arm_B_gripper_dock:
+                                                {}
+                                    arm_B_ur_ft_frame:
+                                      {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -404,6 +534,15 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /arm_B_ur_tcp_pose
+      Value: true
+    - Class: rviz_default_plugins/InteractiveMarkers
+      Enable Transparency: true
+      Enabled: true
+      Interactive Markers Namespace: /arms_target_manager
+      Name: InteractiveMarkers
+      Show Axes: false
+      Show Descriptions: true
+      Show Visual Aids: false
       Value: true
   Enabled: true
   Global Options:
@@ -466,10 +605,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.21979637444019318
+      Pitch: 0.4297963082790375
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.570397973060608
+      Yaw: 1.6103979349136353
     Saved: ~
 Window Geometry:
   Displays:
@@ -487,5 +626,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1566
-  X: 3031
-  Y: 173
+  X: 3019
+  Y: 166
