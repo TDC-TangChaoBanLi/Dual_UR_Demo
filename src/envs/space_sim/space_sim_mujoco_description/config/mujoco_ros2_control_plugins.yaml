@@ -4,22 +4,171 @@
       heart_beat_plugin:
         type: "mujoco_ros2_control_plugins/HeartbeatPublisherPlugin"
         update_rate: 1.0
+
       # ============================================================
-      # 相机插件（预留）
-      # space_sim 当前无相机，后续添加相机时在此处启用 CameraPlugin
+      # 对接口对接插件
       # ============================================================
-      # mujoco_camera_plugin:
-      #   type: "mujoco_ros2_control_plugins/CameraPlugin"
-      #   camera_publish_rate: 30.0
-      #   arm_A_camera:
-      #     policy: streaming
-      #     frame_name: arm_A_camera_link
-      #     info_topic: /arm_A_camera/camera_info
-      #     image_topic: /arm_A_camera/color
-      #     depth_topic: /arm_A_camera/depth
-      #   arm_B_camera:
-      #     policy: streaming
-      #     frame_name: arm_B_camera_link
-      #     info_topic: /arm_B_camera/camera_info
-      #     image_topic: /arm_B_camera/color
-      #     depth_topic: /arm_B_camera/depth
+      # 用一组 weld 约束（weld 池）模拟对接口的对接/释放：
+      #   * 两个 site 的相对位姿进入该组的容差范围后开始计时；
+      #   * 在 dock_time 内持续保持在容差内 -> 视为对接成功，激活 weld 并把两者
+      #     约束到该组的 dock_relpose（site2 在 site1 系下的目标位姿）；
+      #   * release 等待 release_time 后取消激活，槽位归还池中。
+      # 服务：~/dock、~/release   动作：~/dock、~/release
+      mujoco_dock_sim_plugin:
+        type: "mujoco_dock_sim_plugin/DockSimPlugin"
+
+        # MuJoCo 的等式约束数量在编译期固定，插件无法在运行时新建约束，因此由 MJCF
+        # 预先声明 weld，再由本列表指出哪些属于本插件：
+        #   * 列表中的 weld 是"池槽位"，插件可将其重新指向任意对接口并激活/取消；
+        #   * 不在列表中的 weld 插件完全不碰；
+        #   * 列表中的 weld 若在 MJCF 中初始就是激活的，视为该对接口"已对接"，
+        #     可直接被 release 释放。
+        # 共 14 个：6 个镜片 <-> 中心镜片、6 个镜片 <-> 卫星下方接口、2 个机械臂末端。
+        welds_pool:
+          - "dock_weld_1"
+          - "dock_weld_2"
+          - "dock_weld_3"
+          - "dock_weld_4"
+          - "dock_weld_5"
+          - "dock_weld_6"
+          - "center_weld_1"
+          - "center_weld_2"
+          - "center_weld_3"
+          - "center_weld_4"
+          - "center_weld_5"
+          - "center_weld_6"
+          - "tcp_weld_A"
+          - "tcp_weld_B"
+
+        groups:
+          # 当前场景里所有对接口都是同一种规格（0.1 x 0.04 的凸台插合面），可以互相
+          # 对接，因此只配置一个组。groups 只用于区分"不同种类的对接口"：不同组之间
+          # 不能对接（如需区分，再加组并把相应 site 分别列进去即可）。
+          #
+          # 所有接口 site 都按"插合帧"定义：两个对接口插合时其 site 帧完全重合，因此
+          # 目标相对位姿为单位位姿（position 0，quaternion w=1）。
+          default:
+            sites:
+              # --- 镜片六个侧面的对接口（S5 用于与中心镜片/底部接口对接，
+              #     S1~S4/S6 用于机械臂末端抓取）---
+              - "len_ring_1_S1"
+              - "len_ring_1_S2"
+              - "len_ring_1_S3"
+              - "len_ring_1_S4"
+              - "len_ring_1_S5"
+              - "len_ring_1_S6"
+              - "len_ring_2_S1"
+              - "len_ring_2_S2"
+              - "len_ring_2_S3"
+              - "len_ring_2_S4"
+              - "len_ring_2_S5"
+              - "len_ring_2_S6"
+              - "len_ring_3_S1"
+              - "len_ring_3_S2"
+              - "len_ring_3_S3"
+              - "len_ring_3_S4"
+              - "len_ring_3_S5"
+              - "len_ring_3_S6"
+              - "len_ring_4_S1"
+              - "len_ring_4_S2"
+              - "len_ring_4_S3"
+              - "len_ring_4_S4"
+              - "len_ring_4_S5"
+              - "len_ring_4_S6"
+              - "len_ring_5_S1"
+              - "len_ring_5_S2"
+              - "len_ring_5_S3"
+              - "len_ring_5_S4"
+              - "len_ring_5_S5"
+              - "len_ring_5_S6"
+              - "len_ring_6_S1"
+              - "len_ring_6_S2"
+              - "len_ring_6_S3"
+              - "len_ring_6_S4"
+              - "len_ring_6_S5"
+              - "len_ring_6_S6"
+              # --- 中心镜片六个侧面的对接口 ---
+              - "len_center_S1"
+              - "len_center_S2"
+              - "len_center_S3"
+              - "len_center_S4"
+              - "len_center_S5"
+              - "len_center_S6"
+              # --- 卫星底部接口盘上的六个镜片接口 ---
+              - "len_dock_1_site"
+              - "len_dock_2_site"
+              - "len_dock_3_site"
+              - "len_dock_4_site"
+              - "len_dock_5_site"
+              - "len_dock_6_site"
+              # --- 两个机械臂末端（磁吸面）---
+              - "arm_A__tcp_site"
+              - "arm_B__tcp_site"
+            # 两个 site 的相对位姿与目标位姿的位置/角度偏差上限
+            position_tolerance: 0.01
+            rotation_tolerance: 0.15
+            # 对接目标：site2 在 site1 系下的位姿（单位位姿 = 两插合帧重合）
+            dock_relpose: [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+            # 位姿保持在容差内多久算对接成功 / 释放耗时
+            dock_time: 0.5
+            release_time: 0.2
+
+      # ============================================================
+      # 场景数据直接读写插件
+      # ============================================================
+      # 话题：~/pose/<type>/<name>、~/joint_states、~/actuator_state
+      # 服务：~/get_object_pose、~/set_object_pose、~/get_joint_states、
+      #       ~/get_actuator_state、~/set_actuator_control、~/clear_actuator_control
+      # 动作：~/set_object_pose、~/set_actuator_control
+      mujoco_god_plugin:
+        type: "mujoco_god_plugin/GodPlugin"
+        publish_rate: 30.0
+        frame_id: ""
+        joint_states_topic: "joint_states"
+        actuator_state_topic: "actuator_state"
+        # 需要额外以 PoseStamped 话题发布的 site/body/geom（"<type>:<name>"）
+        objects:
+          - "body:len_ring_1"
+          - "body:len_ring_2"
+          - "body:len_ring_3"
+          - "body:len_ring_4"
+          - "body:len_ring_5"
+          - "body:len_ring_6"
+          - "site:len_ring_1_S5"
+          - "site:len_ring_2_S5"
+          - "site:len_ring_3_S5"
+          - "site:len_ring_4_S5"
+          - "site:len_ring_5_S5"
+          - "site:len_ring_6_S5"
+          - "site:len_center_S1"
+          - "site:len_center_S2"
+          - "site:len_center_S3"
+          - "site:len_center_S4"
+          - "site:len_center_S5"
+          - "site:len_center_S6"
+          - "site:arm_A__tcp_site"
+          - "site:arm_B__tcp_site"
+
+      # ============================================================
+      # 相机插件（两个机械臂末端的 RealSense）
+      # ============================================================
+      # 相机由 MJCF 中的 <camera> 定义（见 space_sim_config.json 的 "camera" 段），
+      # 这里的键名必须与 MJCF 中的相机名一致。
+      # 每台相机发布 camera_info / color / depth 三组话题。
+      mujoco_camera_plugin:
+        type: "mujoco_ros2_control_plugins/CameraPlugin"
+        camera_publish_rate: 30.0
+        # arm_A 末端 RealSense
+        arm_A_realsense_camera:
+          policy: streaming
+          frame_name: arm_A_realsense_link
+          info_topic: /arm_A_realsense_camera/camera_info
+          image_topic: /arm_A_realsense_camera/color
+          depth_topic: /arm_A_realsense_camera/depth
+        # arm_B 末端 RealSense
+        arm_B_realsense_camera:
+          policy: streaming
+          frame_name: arm_B_realsense_link
+          info_topic: /arm_B_realsense_camera/camera_info
+          image_topic: /arm_B_realsense_camera/color
+          depth_topic: /arm_B_realsense_camera/depth

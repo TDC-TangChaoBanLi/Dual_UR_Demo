@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- ============================================================ -->
+  <!-- space_sim 镜片存储/对接几何宏                                   -->
+  <!-- ============================================================ -->
+  <!--
+    本文件定义卫星底部的镜片接口盘、6 个镜片接口 (len_dock) 以及 6 片待装配
+    镜片 (len_ring)，它们初始安装在接口盘上（后续由机械臂搬运到卫星顶部的
+    中心镜片 len_center 六个侧面上完成拼装）。
+
+    几何数据来源
+
+    src/envs/space_sim/space_sim_description/meshes/dome_assembly.txt
+    该文件给出的六棱台穹顶总装数据（1 个中心块 + 6 个环块）用于推导：
+      * 每个环镜片与中心镜片对接的侧面凸台 —— 经验算全部是 **S5**；
+      * 环 S5 的外端面中心与中心镜片对应侧面凸台 (S1..S6) 的外端面中心**完全重合**，
+        法向反平行，因此装配 weld 的相对位姿是纯 180° 旋转。
+
+    存储姿态推导（见 tmp/derive_lens_layout.py）
+
+    S5 凸台外法向与镜片局部 +z 相差 80°。若直接把凸台法向摆正到竖直 (+Z)，镜片整体
+    会倾斜 10°，导致 Y 向占位 0.139 m —— 大于 0.1 m 的接口间距，相邻镜片会穿模。
+    因此本文件把镜片额外绕世界 X 轴预旋 ∓10°，使其**竖直悬挂**（Y 向占位仅 0.05 m，
+    相邻镜片留 0.05 m 间隙），代价是凸台端面与接口底面之间有 10° 楔形缝（由 weld 刚性
+    约束固定，不影响仿真）。6 个 len_dock 链接本身保持轴对齐且朝向完全一致。
+
+    数值约定
+
+    * 卫星方块中心在 (0,0,0)，边长 0.6，底面 z = -0.3；
+    * 接口盘中心 z = -0.31（厚 0.02，上下表面 -0.30 / -0.32）；
+    * 接口盘下表面起往下 0.02 即 len_dock 中心，故 len_dock 中心 z = -0.33；
+    * 镜片接口 (凸台端面) 安装在 len_dock **底面中心** dock 系 (0,0,-0.01) 处。
+  -->
+
+  <!-- ============================================================ -->
+  <!-- 材质                                                        -->
+  <!-- ============================================================ -->
+  <material name="len_dock_pannel_material">
+    <color rgba="0.55 0.55 0.57 1.0"/>
+  </material>
+
+  <!-- ============================================================ -->
+  <!-- len_dock_pannel : 卫星底部镜片接口盘                          -->
+  <!--   与卫星长宽一致 (0.6 x 0.6)，厚 0.02，金属灰色               -->
+  <!-- ============================================================ -->
+  <xacro:macro name="len_dock_pannel_macro" params="name parent *origin">
+    <link name="${name}">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="5.0"/>
+        <!-- 均匀薄板: I = m/12*(b²+c²) 等 -->
+        <inertia ixx="0.15017" ixy="0.0" ixz="0.0" iyy="0.15017" iyz="0.0" izz="0.3"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <box size="0.6 0.6 0.02"/>
+        </geometry>
+        <material name="len_dock_pannel_material"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.6 0.6 0.02"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${parent}_to_${name}" type="fixed">
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent}"/>
+      <child link="${name}"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- ============================================================ -->
+  <!-- len_dock : 单个镜片接口                                       -->
+  <!--   0.1(L, X) * 0.04(W, Y) * 0.02(H, Z)                         -->
+  <!--   位于接口盘下方，其下表面即插合面（与镜片凸台端面贴合）      -->
+  <!-- ============================================================ -->
+  <xacro:macro name="len_dock_macro" params="name parent xyz:='0 0 0' rpy:='0 0 0'">
+    <link name="${name}">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.3"/>
+        <inertia ixx="0.00005" ixy="0.0" ixz="0.0" iyy="0.00026" iyz="0.0" izz="0.00029"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <box size="0.1 0.04 0.02"/>
+        </geometry>
+        <material name="len_dock_pannel_material"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.1 0.04 0.02"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${parent}_to_${name}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- ============================================================ -->
+  <!-- len_ring : 待装配镜片                                         -->
+  <!--   外形 = len_ring1 六棱台块 (六边形扁棱柱，6 个侧面各有        -->
+  <!--   0.1*0.04*0.015 的凸起接口)；镜面(金色面)在局部 z=0 平面     -->
+  <!--   局部系原点 = 底面(近 O)中心，z 轴 = 块轴线(指向穹顶中心 O)  -->
+  <!-- ============================================================ -->
+  <xacro:macro name="len_ring_macro" params="name parent xyz:='0 0 0' rpy:='0 0 0'">
+    <link name="${name}">
+      <inertial>
+        <!-- 六棱台块质心在局部 (0, 0, -H/2) 处 -->
+        <origin xyz="0 0 -0.025" rpy="0 0 0"/>
+        <mass value="5.0"/>
+        <!-- 包围盒 0.5888(X) * 0.5162(Y) * 0.05(Z) 的等效长方体惯量 -->
+        <inertia ixx="0.11207" ixy="0.0" ixz="0.0" iyy="0.14549" iyz="0.0" izz="0.25548"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://space_sim_description/meshes/len_ring1.obj"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://space_sim_description/meshes/len_ring1.stl"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${parent}_to_${name}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- ============================================================ -->
+  <!-- len_dock_slot : 1 个接口 + 安装在其上的 1 片镜片                -->
+  <!--   y > 0 : 镜面朝 +Y   ;   y < 0 : 镜面朝 -Y                   -->
+  <!--                                                              -->
+  <!--   镜片沿块轴线方向与垂直线相差 10 度，若接口仍保持水平，凸台   -->
+  <!--   端面会与接口底面形成 10 度楔形并互相穿插约 3.2 mm。因此接口  -->
+  <!--   随之倾斜 10 度，使两侧插合面平行贴合（镜片世界位姿保持不变）。-->
+  <!-- ============================================================ -->
+  <xacro:macro name="len_dock_slot_macro" params="index y">
+    <!-- 镜面朝向: y>0 -> +Y, y<0 -> -Y -->
+    <xacro:property name="mirror_sign" value="${1 if y > 0 else -1}"/>
+    <!-- 插合面倾角 (10 deg)，与镜片倾斜一致 -->
+    <xacro:property name="dock_tilt" value="${10*pi/180}"/>
+
+    <xacro:len_dock_macro
+      name="len_dock_${index}"
+      parent="len_dock_pannel"
+      xyz="0 ${y + mirror_sign*0.001736} -0.020152"
+      rpy="${-mirror_sign*dock_tilt} 0 0"/>
+
+    <xacro:len_ring_macro
+      name="len_ring_${index}"
+      parent="len_dock_${index}"
+      xyz="0 ${0.068667*mirror_sign} -0.270433"
+      rpy="1.396263402 0 ${pi if y > 0 else 0}"/>
+  </xacro:macro>
+
+  <!-- ============================================================ -->
+  <!-- len_dock_assembly : 接口盘 + 6 个接口 + 6 片镜片（完整存储态）  -->
+  <!--                                                              -->
+  <!--   6 片镜片沿 Y 轴一排布置，间距 0.1，镜片竖直悬挂：            -->
+  <!--     i = 1..3 : y = +0.05/+0.15/+0.25，镜面(金色面)朝 +Y       -->
+  <!--     i = 4..6 : y = -0.05/-0.15/-0.25，镜面朝 -Y               -->
+  <!--   每个镜片用 S5 凸台安装到对应 len_dock 的底面中心。           -->
+  <!-- ============================================================ -->
+  <xacro:macro name="len_dock_assembly_macro" params="parent">
+
+    <!-- 接口盘：卫星底面下方 -->
+    <xacro:len_dock_pannel_macro name="len_dock_pannel" parent="${parent}">
+      <origin xyz="0 0 -0.31" rpy="0 0 0"/>
+    </xacro:len_dock_pannel_macro>
+
+    <!-- 6 个镜片接口 + 6 片镜片 -->
+    <xacro:len_dock_slot_macro index="1" y="0.05"/>
+    <xacro:len_dock_slot_macro index="2" y="0.15"/>
+    <xacro:len_dock_slot_macro index="3" y="0.25"/>
+    <xacro:len_dock_slot_macro index="4" y="-0.05"/>
+    <xacro:len_dock_slot_macro index="5" y="-0.15"/>
+    <xacro:len_dock_slot_macro index="6" y="-0.25"/>
+
+  </xacro:macro>
+
+</robot>

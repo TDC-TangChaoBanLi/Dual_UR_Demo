@@ -1,145 +1,738 @@
 {
-    "mjcf_generator": {
-        "config": {
-            "add_default_actuator":     false,
-            "add_default_equality":     true,
-
-            "add_ros2_mujoco_actuator": false,
-            "add_ros2_mujoco_sensor":   false,
-            
-            "add_json_option":      true,
-            "add_json_compiler":    true,
-            "add_json_actuator":    true,
-            "add_json_site":        true,
-            "add_json_sensor":      true,
-            "add_json_camera":      true,
-
-            "add_json_texture":     true,
-            "add_json_light":       true,
-
-            "add_json_contact":     true,
-            "add_json_equality":    true
-        },
-        "worldbody": { 
-            "add_default_floor": false, 
-            "add_default_skybox": false, 
-            "add_default_light": false, 
-            "add_default_freejoint": false,
-            "add_json_freejoint": true,
-            "freejoint_body":[
-            ],
-
-            "add_json_floor": false,
-            "add_json_skybox": true,
-
-            "floor": {
-                "geom":     {"name": "floor", "type": "plane", "size": "0 0 0.05", "material": "floor"},
-                "material": {"name": "floor", "texture": "floor", "texuniform": "true", "texrepeat": "5 5", "reflectance": "0.2"},
-                "texture":  {"name": "floor", "type": "2d", "builtin": "checker", "mark": "edge", "rgb1": "0.2 0.3 0.4", "rgb2": "0.1 0.2 0.3", "markrgb": "0.8 0.8 0.8", "width": "300", "height": "300"}
-            },
-            "skybox_texture": {
-                "name": "skybox", "type": "skybox", "file": "../textures/skybox_stars.png",
-                "gridsize": "3 4", "gridlayout": ".U..LFRB.D.."
-            }
-        },
-
-        "option": { "timestep": 0.001, "gravity": "0 0 0", "cone":"elliptic", "impratio": "10"},
-        "compiler": { "angle": "radian", "balanceinertia": true },
-
-        "gravcomp": {
-            "add_gravcomp": false,
-            "add_actuatorgravcomp": false
-        },
-        
-        "actuator": {
-            "motor":[
-            ],
-            "position":[
-                {"group": 1, "kp":600, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_A_ur_shoulder_pan_joint"},
-                {"group": 1, "kp":600, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_A_ur_shoulder_lift_joint"},
-                {"group": 1, "kp":300, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_elbow_joint_ACTUATOR_POSITION",                  "joint": "arm_A_ur_elbow_joint"},
-                {"group": 1, "kp":150, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_1_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_1_joint"},
-                {"group": 1, "kp":130, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_2_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_2_joint"},
-                {"group": 1, "kp":100, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_A_ur_wrist_3_joint_ACTUATOR_POSITION",                "joint": "arm_A_ur_wrist_3_joint"},
-
-                {"group": 1, "kp":600, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_shoulder_pan_joint_ACTUATOR_POSITION",           "joint": "arm_B_ur_shoulder_pan_joint"},
-                {"group": 1, "kp":600, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_shoulder_lift_joint_ACTUATOR_POSITION",          "joint": "arm_B_ur_shoulder_lift_joint"},
-                {"group": 1, "kp":300, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_elbow_joint_ACTUATOR_POSITION",                  "joint": "arm_B_ur_elbow_joint"},
-                {"group": 1, "kp":150, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_1_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_1_joint"},
-                {"group": 1, "kp":130, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_2_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_2_joint"},
-                {"group": 1, "kp":100, "dampratio":0.95, "ctrlrange":"-6.2832 6.2832", "name": "arm_B_ur_wrist_3_joint_ACTUATOR_POSITION",                "joint": "arm_B_ur_wrist_3_joint"}
-            ]
-        },
-        "site":{
-            "arm_A_ur_ft_frame" :[
-                {"name": "arm_A_ur_ft_frame_SITE", "pos":"0 0 0", "quat": "1 0 0 0" }
-            ],
-            "arm_B_ur_ft_frame" :[
-                {"name": "arm_B_ur_ft_frame_SITE", "pos":"0 0 0", "quat": "1 0 0 0" }
-            ]
-        },
-        "sensor": {
-            "force":[
-                { "name": "arm_A_ur_tcp_fts_sensor_force", "site": "arm_A_ur_ft_frame_SITE"},
-                { "name": "arm_B_ur_tcp_fts_sensor_force", "site": "arm_B_ur_ft_frame_SITE"}
-            ],
-            "torque": [
-                { "name": "arm_A_ur_tcp_fts_sensor_torque", "site": "arm_A_ur_ft_frame_SITE"},
-                { "name": "arm_B_ur_tcp_fts_sensor_torque", "site": "arm_B_ur_ft_frame_SITE"}
-            ]
-        },
-        "camera": {
-        },
-
-        "texture": {
-        },
-
-        "light": {
-            "worldbody": [
-                {"name":"default_light", "pos":"5 0 5", "dir":"-1 0 -1", "directional":"true", "intensity":"100000"}
-            ]
-        },
-
-        "contact":{
-            "exclude": [
-                {"body1": "arm_A_ur_base_link_inertia", "body2": "arm_A_ur_shoulder_link"},
-                {"body1": "arm_A_ur_shoulder_link",     "body2": "arm_A_ur_upper_arm_link"},
-                {"body1": "arm_A_ur_upper_arm_link",    "body2": "arm_A_ur_forearm_link"},
-                {"body1": "arm_A_ur_forearm_link",      "body2": "arm_A_ur_wrist_1_link"},
-                {"body1": "arm_A_ur_wrist_1_link",      "body2": "arm_A_ur_wrist_2_link"},
-                {"body1": "arm_A_ur_wrist_2_link",      "body2": "arm_A_ur_wrist_3_link"},
-
-                {"body1": "arm_B_ur_base_link_inertia", "body2": "arm_B_ur_shoulder_link"},
-                {"body1": "arm_B_ur_shoulder_link",     "body2": "arm_B_ur_upper_arm_link"},
-                {"body1": "arm_B_ur_upper_arm_link",    "body2": "arm_B_ur_forearm_link"},
-                {"body1": "arm_B_ur_forearm_link",      "body2": "arm_B_ur_wrist_1_link"},
-                {"body1": "arm_B_ur_wrist_1_link",      "body2": "arm_B_ur_wrist_2_link"},
-                {"body1": "arm_B_ur_wrist_2_link",      "body2": "arm_B_ur_wrist_3_link"}
-            ]
-        },
-        "equality":{
-            "connect": [
-            ]
-        }
+  "mjcf_generator": {
+    "config": {
+      "add_default_actuator": false,
+      "add_default_equality": true,
+      "add_ros2_mujoco_actuator": false,
+      "add_ros2_mujoco_sensor": false,
+      "add_json_option": true,
+      "add_json_compiler": true,
+      "add_json_actuator": true,
+      "add_json_site": true,
+      "add_json_sensor": true,
+      "add_json_camera": true,
+      "add_json_texture": true,
+      "add_json_light": true,
+      "add_json_contact": true,
+      "add_json_equality": true
     },
-
-    "coacd":{
-        "threshold": 0.03,
-        "max_convex_hull": 20,
-        "preprocess_mode": "auto",
-        "preprocess_resolution": 60,
-        "resolution": 3000,
-        "mcts_nodes": 20,
-        "mcts_iterations": 200,
-        "mcts_max_depth": 3,
-        "pca": true,
-        "merge": true,
-        "decimate": false,
-        "max_ch_vertex": 256,
-        "extrude": false,
-        "extrude_margin": 0.01,
-        "apx_mode": "ch",
-        "seed": 0,
-        "log_level": "error"
+    "worldbody": {
+      "add_default_floor": false,
+      "add_default_skybox": false,
+      "add_default_light": false,
+      "add_default_freejoint": false,
+      "add_json_freejoint": true,
+      "freejoint_body": [
+        "len_ring_1",
+        "len_ring_2",
+        "len_ring_3",
+        "len_ring_4",
+        "len_ring_5",
+        "len_ring_6"
+      ],
+      "add_json_floor": false,
+      "add_json_skybox": true,
+      "floor": {
+        "geom": {
+          "name": "floor",
+          "type": "plane",
+          "size": "0 0 0.05",
+          "material": "floor"
+        },
+        "material": {
+          "name": "floor",
+          "texture": "floor",
+          "texuniform": "true",
+          "texrepeat": "5 5",
+          "reflectance": "0.2"
+        },
+        "texture": {
+          "name": "floor",
+          "type": "2d",
+          "builtin": "checker",
+          "mark": "edge",
+          "rgb1": "0.2 0.3 0.4",
+          "rgb2": "0.1 0.2 0.3",
+          "markrgb": "0.8 0.8 0.8",
+          "width": "300",
+          "height": "300"
         }
+      },
+      "skybox_texture": {
+        "name": "skybox",
+        "type": "skybox",
+        "file": "../textures/skybox_stars.png",
+        "gridsize": "3 4",
+        "gridlayout": ".U..LFRB.D.."
+      }
+    },
+    "option": {
+      "timestep": 0.001,
+      "gravity": "0 0 0",
+      "cone": "elliptic",
+      "impratio": "10"
+    },
+    "compiler": {
+      "angle": "radian",
+      "balanceinertia": true
+    },
+    "gravcomp": {
+      "add_gravcomp": false,
+      "add_actuatorgravcomp": false
+    },
+    "actuator": {
+      "motor": [],
+      "position": [
+        {
+          "group": 1,
+          "kp": 600,
+          "dampratio": 0.95,
+          "ctrlrange": "-6.2832 6.2832",
+          "name": "arm_A_ur_shoulder_pan_joint_ACTUATOR_POSITION",
+          "joint": "arm_A_ur_shoulder_pan_joint"
+        },
+        {
+          "group": 1,
+          "kp": 600,
+          "dampratio": 0.95,
+          "ctrlrange": "-6.2832 6.2832",
+          "name": "arm_A_ur_shoulder_lift_joint_ACTUATOR_POSITION",
+          "joint": "arm_A_ur_shoulder_lift_joint"
+        },
+        {
+          "group": 1,
+          "kp": 300,
+          "dampratio": 0.95,
+          "ctrlrange": "-6.2832 6.2832",
+          "name": "arm_A_ur_elbow_joint_ACTUATOR_POSITION",
+          "joint": "arm_A_ur_elbow_joint"
+        },
+        {
+          "group": 1,
+          "kp": 150,
+          "dampratio": 0.95,
+          "ctrlrange": "-6.2832 6.2832",
+          "name": "arm_A_ur_wrist_1_joint_ACTUATOR_POSITION",
+          "joint": "arm_A_ur_wrist_1_joint"
+        },
+        {
+          "group": 1,
+          "kp": 130,
+          "dampratio": 0.95,
+          "ctrlrange": "-6.2832 6.2832",
+          "name": "arm_A_ur_wrist_2_joint_ACTUATOR_POSITION",
+          "joint": "arm_A_ur_wrist_2_joint"
+        },
+        {
+          "group": 1,
+          "kp": 100,
+          "dampratio": 0.95,
+          "ctrlrange": "-6.2832 6.2832",
+          "name": "arm_A_ur_wrist_3_joint_ACTUATOR_POSITION",
+          "joint": "arm_A_ur_wrist_3_joint"
+        },
+        {
+          "group": 1,
+          "kp": 600,
+          "dampratio": 0.95,
+          "ctrlrange": "-6.2832 6.2832",
+          "name": "arm_B_ur_shoulder_pan_joint_ACTUATOR_POSITION",
+          "joint": "arm_B_ur_shoulder_pan_joint"
+        },
+        {
+          "group": 1,
+          "kp": 600,
+          "dampratio": 0.95,
+          "ctrlrange": "-6.2832 6.2832",
+          "name": "arm_B_ur_shoulder_lift_joint_ACTUATOR_POSITION",
+          "joint": "arm_B_ur_shoulder_lift_joint"
+        },
+        {
+          "group": 1,
+          "kp": 300,
+          "dampratio": 0.95,
+          "ctrlrange": "-6.2832 6.2832",
+          "name": "arm_B_ur_elbow_joint_ACTUATOR_POSITION",
+          "joint": "arm_B_ur_elbow_joint"
+        },
+        {
+          "group": 1,
+          "kp": 150,
+          "dampratio": 0.95,
+          "ctrlrange": "-6.2832 6.2832",
+          "name": "arm_B_ur_wrist_1_joint_ACTUATOR_POSITION",
+          "joint": "arm_B_ur_wrist_1_joint"
+        },
+        {
+          "group": 1,
+          "kp": 130,
+          "dampratio": 0.95,
+          "ctrlrange": "-6.2832 6.2832",
+          "name": "arm_B_ur_wrist_2_joint_ACTUATOR_POSITION",
+          "joint": "arm_B_ur_wrist_2_joint"
+        },
+        {
+          "group": 1,
+          "kp": 100,
+          "dampratio": 0.95,
+          "ctrlrange": "-6.2832 6.2832",
+          "name": "arm_B_ur_wrist_3_joint_ACTUATOR_POSITION",
+          "joint": "arm_B_ur_wrist_3_joint"
+        }
+      ]
+    },
+    "site": {
+      "arm_A_ur_ft_frame": [
+        {
+          "name": "arm_A_ur_ft_frame_SITE",
+          "pos": "0 0 0",
+          "quat": "1 0 0 0"
+        }
+      ],
+      "arm_B_ur_ft_frame": [
+        {
+          "name": "arm_B_ur_ft_frame_SITE",
+          "pos": "0 0 0",
+          "quat": "1 0 0 0"
+        }
+      ],
+      "len_ring_1": [
+        {
+          "name": "len_ring_1_S1",
+          "pos": "-0.230800 0.128700 -0.022400",
+          "quat": "0.391340 0.329268 -0.553243 -0.657539"
+        },
+        {
+          "name": "len_ring_1_S2",
+          "pos": "0.224300 -0.139900 -0.022400",
+          "quat": "0.670930 0.564485 0.309565 0.367939"
+        },
+        {
+          "name": "len_ring_1_S3",
+          "pos": "-0.224300 -0.139900 -0.022400",
+          "quat": "0.670930 0.564485 -0.309565 -0.367939"
+        },
+        {
+          "name": "len_ring_1_S4",
+          "pos": "0.000000 -0.268400 -0.022400",
+          "quat": "0.766045 0.642787 0.000000 0.000000"
+        },
+        {
+          "name": "len_ring_1_S5",
+          "pos": "0.000000 0.268400 -0.022400",
+          "quat": "-0.000000 -0.000000 0.642787 0.766045"
+        },
+        {
+          "name": "len_ring_1_S6",
+          "pos": "0.230800 0.128700 -0.022400",
+          "quat": "0.391340 0.329268 0.553243 0.657539"
+        }
+      ],
+      "len_ring_2": [
+        {
+          "name": "len_ring_2_S1",
+          "pos": "-0.230800 0.128700 -0.022400",
+          "quat": "0.391340 0.329268 -0.553243 -0.657539"
+        },
+        {
+          "name": "len_ring_2_S2",
+          "pos": "0.224300 -0.139900 -0.022400",
+          "quat": "0.670930 0.564485 0.309565 0.367939"
+        },
+        {
+          "name": "len_ring_2_S3",
+          "pos": "-0.224300 -0.139900 -0.022400",
+          "quat": "0.670930 0.564485 -0.309565 -0.367939"
+        },
+        {
+          "name": "len_ring_2_S4",
+          "pos": "0.000000 -0.268400 -0.022400",
+          "quat": "0.766045 0.642787 0.000000 0.000000"
+        },
+        {
+          "name": "len_ring_2_S5",
+          "pos": "0.000000 0.268400 -0.022400",
+          "quat": "-0.000000 -0.000000 0.642787 0.766045"
+        },
+        {
+          "name": "len_ring_2_S6",
+          "pos": "0.230800 0.128700 -0.022400",
+          "quat": "0.391340 0.329268 0.553243 0.657539"
+        }
+      ],
+      "len_ring_3": [
+        {
+          "name": "len_ring_3_S1",
+          "pos": "-0.230800 0.128700 -0.022400",
+          "quat": "0.391340 0.329268 -0.553243 -0.657539"
+        },
+        {
+          "name": "len_ring_3_S2",
+          "pos": "0.224300 -0.139900 -0.022400",
+          "quat": "0.670930 0.564485 0.309565 0.367939"
+        },
+        {
+          "name": "len_ring_3_S3",
+          "pos": "-0.224300 -0.139900 -0.022400",
+          "quat": "0.670930 0.564485 -0.309565 -0.367939"
+        },
+        {
+          "name": "len_ring_3_S4",
+          "pos": "0.000000 -0.268400 -0.022400",
+          "quat": "0.766045 0.642787 0.000000 0.000000"
+        },
+        {
+          "name": "len_ring_3_S5",
+          "pos": "0.000000 0.268400 -0.022400",
+          "quat": "-0.000000 -0.000000 0.642787 0.766045"
+        },
+        {
+          "name": "len_ring_3_S6",
+          "pos": "0.230800 0.128700 -0.022400",
+          "quat": "0.391340 0.329268 0.553243 0.657539"
+        }
+      ],
+      "len_ring_4": [
+        {
+          "name": "len_ring_4_S1",
+          "pos": "-0.230800 0.128700 -0.022400",
+          "quat": "0.391340 0.329268 -0.553243 -0.657539"
+        },
+        {
+          "name": "len_ring_4_S2",
+          "pos": "0.224300 -0.139900 -0.022400",
+          "quat": "0.670930 0.564485 0.309565 0.367939"
+        },
+        {
+          "name": "len_ring_4_S3",
+          "pos": "-0.224300 -0.139900 -0.022400",
+          "quat": "0.670930 0.564485 -0.309565 -0.367939"
+        },
+        {
+          "name": "len_ring_4_S4",
+          "pos": "0.000000 -0.268400 -0.022400",
+          "quat": "0.766045 0.642787 0.000000 0.000000"
+        },
+        {
+          "name": "len_ring_4_S5",
+          "pos": "0.000000 0.268400 -0.022400",
+          "quat": "-0.000000 -0.000000 0.642787 0.766045"
+        },
+        {
+          "name": "len_ring_4_S6",
+          "pos": "0.230800 0.128700 -0.022400",
+          "quat": "0.391340 0.329268 0.553243 0.657539"
+        }
+      ],
+      "len_ring_5": [
+        {
+          "name": "len_ring_5_S1",
+          "pos": "-0.230800 0.128700 -0.022400",
+          "quat": "0.391340 0.329268 -0.553243 -0.657539"
+        },
+        {
+          "name": "len_ring_5_S2",
+          "pos": "0.224300 -0.139900 -0.022400",
+          "quat": "0.670930 0.564485 0.309565 0.367939"
+        },
+        {
+          "name": "len_ring_5_S3",
+          "pos": "-0.224300 -0.139900 -0.022400",
+          "quat": "0.670930 0.564485 -0.309565 -0.367939"
+        },
+        {
+          "name": "len_ring_5_S4",
+          "pos": "0.000000 -0.268400 -0.022400",
+          "quat": "0.766045 0.642787 0.000000 0.000000"
+        },
+        {
+          "name": "len_ring_5_S5",
+          "pos": "0.000000 0.268400 -0.022400",
+          "quat": "-0.000000 -0.000000 0.642787 0.766045"
+        },
+        {
+          "name": "len_ring_5_S6",
+          "pos": "0.230800 0.128700 -0.022400",
+          "quat": "0.391340 0.329268 0.553243 0.657539"
+        }
+      ],
+      "len_ring_6": [
+        {
+          "name": "len_ring_6_S1",
+          "pos": "-0.230800 0.128700 -0.022400",
+          "quat": "0.391340 0.329268 -0.553243 -0.657539"
+        },
+        {
+          "name": "len_ring_6_S2",
+          "pos": "0.224300 -0.139900 -0.022400",
+          "quat": "0.670930 0.564485 0.309565 0.367939"
+        },
+        {
+          "name": "len_ring_6_S3",
+          "pos": "-0.224300 -0.139900 -0.022400",
+          "quat": "0.670930 0.564485 -0.309565 -0.367939"
+        },
+        {
+          "name": "len_ring_6_S4",
+          "pos": "0.000000 -0.268400 -0.022400",
+          "quat": "0.766045 0.642787 0.000000 0.000000"
+        },
+        {
+          "name": "len_ring_6_S5",
+          "pos": "0.000000 0.268400 -0.022400",
+          "quat": "-0.000000 -0.000000 0.642787 0.766045"
+        },
+        {
+          "name": "len_ring_6_S6",
+          "pos": "0.230800 0.128700 -0.022400",
+          "quat": "0.391340 0.329268 0.553243 0.657539"
+        }
+      ],
+      "len_center": [
+        {
+          "name": "len_center_S1",
+          "pos": "0.134224 -0.232512 -0.022347",
+          "quat": "-0.166366 -0.198267 0.739942 0.620885"
+        },
+        {
+          "name": "len_center_S2",
+          "pos": "0.134224 0.232512 -0.022347",
+          "quat": "-0.620885 -0.739942 0.198267 0.166366"
+        },
+        {
+          "name": "len_center_S3",
+          "pos": "0.268448 0.000000 -0.022347",
+          "quat": "-0.454520 -0.541675 0.541675 0.454520"
+        },
+        {
+          "name": "len_center_S4",
+          "pos": "-0.268448 0.000000 -0.022347",
+          "quat": "0.454519 0.541675 0.541675 0.454520"
+        },
+        {
+          "name": "len_center_S5",
+          "pos": "-0.134224 -0.232512 -0.022347",
+          "quat": "0.166366 0.198267 0.739942 0.620885"
+        },
+        {
+          "name": "len_center_S6",
+          "pos": "-0.134224 0.232512 -0.022347",
+          "quat": "0.620885 0.739942 0.198267 0.166366"
+        }
+      ],
+      "len_dock_1": [
+        {
+          "name": "len_dock_1_site",
+          "pos": "-0.000000 -0.000000 -0.010000",
+          "quat": "-1.000000 +0.000000 -0.000000 -0.000000"
+        }
+      ],
+      "len_dock_2": [
+        {
+          "name": "len_dock_2_site",
+          "pos": "-0.000000 -0.000000 -0.010000",
+          "quat": "-1.000000 +0.000000 -0.000000 -0.000000"
+        }
+      ],
+      "len_dock_3": [
+        {
+          "name": "len_dock_3_site",
+          "pos": "-0.000000 -0.000000 -0.010000",
+          "quat": "-1.000000 +0.000000 -0.000000 -0.000000"
+        }
+      ],
+      "len_dock_4": [
+        {
+          "name": "len_dock_4_site",
+          "pos": "+0.000000 +0.000000 -0.010000",
+          "quat": "-0.000000 -0.000000 -0.000000 +1.000000"
+        }
+      ],
+      "len_dock_5": [
+        {
+          "name": "len_dock_5_site",
+          "pos": "+0.000000 +0.000000 -0.010000",
+          "quat": "-0.000000 -0.000000 -0.000000 +1.000000"
+        }
+      ],
+      "len_dock_6": [
+        {
+          "name": "len_dock_6_site",
+          "pos": "+0.000000 +0.000000 -0.010000",
+          "quat": "-0.000000 -0.000000 -0.000000 +1.000000"
+        }
+      ],
+      "arm_A__tcp": [
+        {
+          "name": "arm_A__tcp_site",
+          "pos": "0 0 0",
+          "quat": "0 1 0 0"
+        }
+      ],
+      "arm_B__tcp": [
+        {
+          "name": "arm_B__tcp_site",
+          "pos": "0 0 0",
+          "quat": "0 1 0 0"
+        }
+      ]
+    },
+    "sensor": {
+      "force": [
+        {
+          "name": "arm_A_ur_tcp_fts_sensor_force",
+          "site": "arm_A_ur_ft_frame_SITE"
+        },
+        {
+          "name": "arm_B_ur_tcp_fts_sensor_force",
+          "site": "arm_B_ur_ft_frame_SITE"
+        }
+      ],
+      "torque": [
+        {
+          "name": "arm_A_ur_tcp_fts_sensor_torque",
+          "site": "arm_A_ur_ft_frame_SITE"
+        },
+        {
+          "name": "arm_B_ur_tcp_fts_sensor_torque",
+          "site": "arm_B_ur_ft_frame_SITE"
+        }
+      ]
+    },
+    "camera": {
+      "arm_A_realsense_link": [
+        {
+          "name": "arm_A_realsense_camera",
+          "mode": "fixed",
+          "pos": "0 0 0",
+          "euler": "0 -1.5708 -1.5708",
+          "fovy": "75",
+          "resolution": "640 480"
+        }
+      ],
+      "arm_B_realsense_link": [
+        {
+          "name": "arm_B_realsense_camera",
+          "mode": "fixed",
+          "pos": "0 0 0",
+          "euler": "0 -1.5708 -1.5708",
+          "fovy": "75",
+          "resolution": "640 480"
+        }
+      ]
+    },
+    "texture": {},
+    "light": {
+      "worldbody": [
+        {
+          "name": "default_light",
+          "pos": "5 0 5",
+          "dir": "-1 0 -1",
+          "directional": "true",
+          "intensity": "100000"
+        }
+      ]
+    },
+    "contact": {
+      "exclude": [
+        {
+          "body1": "arm_A_ur_base_link_inertia",
+          "body2": "arm_A_ur_shoulder_link"
+        },
+        {
+          "body1": "arm_A_ur_shoulder_link",
+          "body2": "arm_A_ur_upper_arm_link"
+        },
+        {
+          "body1": "arm_A_ur_upper_arm_link",
+          "body2": "arm_A_ur_forearm_link"
+        },
+        {
+          "body1": "arm_A_ur_forearm_link",
+          "body2": "arm_A_ur_wrist_1_link"
+        },
+        {
+          "body1": "arm_A_ur_wrist_1_link",
+          "body2": "arm_A_ur_wrist_2_link"
+        },
+        {
+          "body1": "arm_A_ur_wrist_2_link",
+          "body2": "arm_A_ur_wrist_3_link"
+        },
+        {
+          "body1": "arm_B_ur_base_link_inertia",
+          "body2": "arm_B_ur_shoulder_link"
+        },
+        {
+          "body1": "arm_B_ur_shoulder_link",
+          "body2": "arm_B_ur_upper_arm_link"
+        },
+        {
+          "body1": "arm_B_ur_upper_arm_link",
+          "body2": "arm_B_ur_forearm_link"
+        },
+        {
+          "body1": "arm_B_ur_forearm_link",
+          "body2": "arm_B_ur_wrist_1_link"
+        },
+        {
+          "body1": "arm_B_ur_wrist_1_link",
+          "body2": "arm_B_ur_wrist_2_link"
+        },
+        {
+          "body1": "arm_B_ur_wrist_2_link",
+          "body2": "arm_B_ur_wrist_3_link"
+        }
+      ]
+    },
+    "equality": {
+      "weld": [
+        {
+          "name": "dock_weld_1",
+          "body1": "len_ring_1",
+          "body2": "len_dock_1",
+          "relpose": "-0.000000 +0.278248 -0.020664 +0.000000 -0.000000 -0.642788 -0.766044",
+          "active": "true",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "dock_weld_2",
+          "body1": "len_ring_2",
+          "body2": "len_dock_2",
+          "relpose": "-0.000000 +0.278248 -0.020664 +0.000000 -0.000000 -0.642788 -0.766044",
+          "active": "true",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "dock_weld_3",
+          "body1": "len_ring_3",
+          "body2": "len_dock_3",
+          "relpose": "-0.000000 +0.278248 -0.020664 +0.000000 -0.000000 -0.642788 -0.766044",
+          "active": "true",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "dock_weld_4",
+          "body1": "len_ring_4",
+          "body2": "len_dock_4",
+          "relpose": "-0.000000 +0.278248 -0.020664 +0.766044 -0.642788 +0.000000 +0.000000",
+          "active": "true",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "dock_weld_5",
+          "body1": "len_ring_5",
+          "body2": "len_dock_5",
+          "relpose": "-0.000000 +0.278248 -0.020664 +0.766044 -0.642788 +0.000000 +0.000000",
+          "active": "true",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "dock_weld_6",
+          "body1": "len_ring_6",
+          "body2": "len_dock_6",
+          "relpose": "-0.000000 +0.278248 -0.020664 +0.766044 -0.642788 +0.000000 +0.000000",
+          "active": "true",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "center_weld_1",
+          "body1": "len_ring_1",
+          "body2": "len_center",
+          "relpose": "+0.000000 +0.513015 +0.090414 +0.696364 +0.122788 -0.122788 +0.696364",
+          "active": "false",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "center_weld_2",
+          "body1": "len_ring_2",
+          "body2": "len_center",
+          "relpose": "-0.000015 +0.513039 +0.090423 +0.951251 +0.167731 -0.044943 +0.254887",
+          "active": "false",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "center_weld_3",
+          "body1": "len_ring_3",
+          "body2": "len_center",
+          "relpose": "+0.000014 +0.513039 +0.090423 +0.254887 +0.044943 -0.167731 +0.951251",
+          "active": "false",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "center_weld_4",
+          "body1": "len_ring_4",
+          "body2": "len_center",
+          "relpose": "+0.000015 +0.513039 +0.090423 +0.951251 +0.167731 +0.044943 -0.254887",
+          "active": "false",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "center_weld_5",
+          "body1": "len_ring_5",
+          "body2": "len_center",
+          "relpose": "-0.000014 +0.513039 +0.090423 +0.254887 +0.044943 +0.167731 -0.951251",
+          "active": "false",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "center_weld_6",
+          "body1": "len_ring_6",
+          "body2": "len_center",
+          "relpose": "-0.000000 +0.513015 +0.090414 +0.696364 +0.122788 +0.122788 -0.696364",
+          "active": "false",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "tcp_weld_A",
+          "body1": "arm_A__tcp",
+          "body2": "len_ring_3",
+          "relpose": "0 0 0 1 0 0 0",
+          "active": "false",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        },
+        {
+          "name": "tcp_weld_B",
+          "body1": "arm_B__tcp",
+          "body2": "len_ring_6",
+          "relpose": "0 0 0 1 0 0 0",
+          "active": "false",
+          "solref": "0.005 1",
+          "solimp": "0.95 0.99 0.001"
+        }
+      ]
+    }
+  },
+  "coacd": {
+    "threshold": 0.03,
+    "max_convex_hull": 20,
+    "preprocess_mode": "auto",
+    "preprocess_resolution": 60,
+    "resolution": 3000,
+    "mcts_nodes": 20,
+    "mcts_iterations": 200,
+    "mcts_max_depth": 3,
+    "pca": true,
+    "merge": true,
+    "decimate": false,
+    "max_ch_vertex": 256,
+    "extrude": false,
+    "extrude_margin": 0.01,
+    "apx_mode": "ch",
+    "seed": 0,
+    "log_level": "error"
+  }
 }

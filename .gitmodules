@@ -11,3 +11,9 @@
 [submodule "lib/dh_ag95_ros2"]
 	path = lib/dh_ag95_ros2
 	url = https://github.com/TDC-TangChaoBanLi/dh_ag95_ros2.git
+[submodule "lib/mujoco_ros2_control_plugins/mujoco_god_plugin"]
+	path = lib/mujoco_ros2_control_plugins/mujoco_god_plugin
+	url = git@github.com:TDC-TangChaoBanLi/mujoco_god_plugin.git
+[submodule "lib/mujoco_ros2_control_plugins/mujoco_dock_sim_plugin"]
+	path = lib/mujoco_ros2_control_plugins/mujoco_dock_sim_plugin
+	url = git@github.com:TDC-TangChaoBanLi/mujoco_dock_sim_plugin.git

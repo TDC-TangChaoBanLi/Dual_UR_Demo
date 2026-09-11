@@ -3,6 +3,7 @@
 
   <xacro:include filename="$(find space_sim_description)/xacro/dual_arm_config.xacro"/>
   <xacro:include filename="$(find space_sim_description)/xacro/space_sim_arm_macro.xacro"/>
+  <xacro:include filename="$(find space_sim_description)/xacro/len_macro.xacro"/>
 
   <!-- Jazzy: 纯几何描述，不包含 ros2_control -->
   <xacro:macro name="space_sim" params="
@@ -121,28 +122,6 @@
     <origin xyz="0 0 0.1" rpy="0 0 0" />
   </joint>
 
-  <!-- <link name="len_ring1_1">
-    <inertial>
-      <mass value="5.0"/>
-      <inertia ixx="0.032292" ixy="0.0" ixz="0.0" iyy="0.032292" iyz="0.0" izz="0.0625"/>
-    </inertial>
-    <visual>
-      <geometry>
-        <mesh filename="package://space_sim_description/meshes/len_ring1.obj"/>
-      </geometry>
-    </visual>
-    <collision>
-      <geometry>
-        <mesh filename="package://space_sim_description/meshes/len_ring1.stl"/>
-      </geometry>
-    </collision>
-  </link>
-  <joint name="len_center_to_ring1_1" type="fixed">
-    <parent link="len_center" />
-    <child link="len_ring1_1" />
-    <origin xyz="-0.5130 -0.0000 0.0905" rpy="-0.349066 -0.000000 -1.570796"/>
-  </joint> -->
-
   <!-- ============================================ -->
   <!-- 卫星附件 太阳能板                            -->
   <!-- 对侧安装: 在 +/-Y 侧面                       -->
@@ -194,6 +173,12 @@
     <child link="solar_panel_B" />
     <origin xyz="0 -0.3 0" rpy="0 0 ${pi/2}" />
   </joint>
+
+  <!-- ============================================ -->
+  <!-- 卫星底部镜片接口盘 + 6 个镜片接口 + 6 片待装配镜片 -->
+  <!-- 详见 len_macro.xacro 中的几何说明            -->
+  <!-- ============================================ -->
+  <xacro:len_dock_assembly_macro parent="satellite"/>
 
   <!-- ============================================ -->
   <!-- UR 安装座 link & joint                        -->

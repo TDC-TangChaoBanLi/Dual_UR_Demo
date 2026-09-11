@@ -9,6 +9,7 @@ install(DIRECTORY
   mjcf
   config
   rviz
+  textures
   DESTINATION share/${PROJECT_NAME}/
 )
 
