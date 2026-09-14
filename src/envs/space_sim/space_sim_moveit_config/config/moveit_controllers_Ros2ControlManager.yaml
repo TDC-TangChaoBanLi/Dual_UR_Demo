@@ -1,0 +1,11 @@
+# 备选的控制器管理器：由 move_group 通过 controller_manager 的服务直接发现控制器，
+# 不需要在下面手写关节列表。
+#
+# [WARN] 与 SimpleControllerManager 的取舍：
+#   * Ros2ControlManager 更"自动"，但会配合 moveit_manage_controllers 做控制器切换，
+#     双臂并行执行时容易被串行化，默认不使用（在 launch_controller 的
+#     start_moveit_group.launch.py 里由 use_ros2_control_manager 参数切换）。
+moveit_controller_manager: moveit_ros_control_interface/Ros2ControlManager
+
+ros_control_namespace: /
+controller_service_call_timeout: 5.0

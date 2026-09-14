@@ -45,6 +45,33 @@ ros2 launch launch_controller start_ocs2_arms_controller.launch.py env:=space_si
 - 重力为 0（太空环境）
 - mjcf 中不包含地板（太空环境无地面）
 
+## 对接口与对接插件：
+
+- 场景中的对接口都是同一种规格（0.1 × 0.04 m 矩形插合面），共 4 类：
+  - `len_dock_*_site`：卫星底部接口盘上的 6 个镜片存储插口
+  - `len_center_S*`：中心镜片的 6 个侧面（S0 = +x 面，顺时针依次 S1..S5）
+  - `len_ring_*_S*`：每片镜片的 6 个侧面凸台（S0 = 与中心镜片对接的面，
+    S3 = 与其相对的另一侧；S0 用于存储/穹顶装配，其余用于抓取）
+  - `arm_A__tcp_site` / `arm_B__tcp_site`：两个机械臂末端的磁吸面
+- **site 帧约定**（由 `tmp/gen_space_sim_config.py` 生成，几何推导见 `tmp/derive_lens_layout.py`）：
+  - `+z` = 对接面外法向（背离所属物体，指向配合件）
+  - `+x` = 定位方向（0.1 m 长边）
+  - 原点 = 对接参考点（插合时对方 site 原点落在该点）
+
+  于是两个插合的矩形接口相对姿态恒为绕 y 轴 180°，即 `(w,x,y,z) = (0,0,1,0)`
+  （z 反向、x 反向、y 同向）。
+- 侧面编号与镜片局部坐标系以 `dome_assembly.txt` 为准（该文件给出 S0..S5 的凸台
+  pos/rpy 与装配表；局部 +x 即与中心镜片对接的方向）。
+- 对接/释放由 `mujoco_dock_sim_plugin` 完成，配置见 `config/mujoco_ros2_control_plugins.yaml`：
+  两个 group —— `default`（存储/穹顶装配，`symmetry.mode: none` 要求固定相位）与
+  `grasp`（机械臂磁吸抓取，`symmetry.mode: discrete` 允许 180° 两个相位）。
+  插件用法/参数/接口见
+  [`mujoco_dock_sim_plugin/README.md`](../../../../lib/mujoco_ros2_control_plugins/mujoco_dock_sim_plugin/README.md)。
+- 初始状态：6 片镜片用 S0 凸台插在各自的存储插口上（MJCF 中 `dock_weld_*` 为 `active="true"`）。
+- 相关脚本：`tmp/gen_space_sim_config.py`（重新生成 site/weld 配置）、
+  `tmp/derive_lens_layout.py`（几何推导与对接目标校验）、`tmp/check_mjcf.py`（校验 site 帧与对接目标）、
+  `tmp/e2e_test.sh`（释放 → 搬运 → 穹顶装配 → 稳定性 → 释放）。
+
 ## ros2_control 配置文件：
 
 | 文件 | 说明 |
@@ -55,8 +82,8 @@ ros2 launch launch_controller start_ocs2_arms_controller.launch.py env:=space_si
 | `config/ros2_control/ocs2_arms_controllers.yaml` | OCS2 双臂控制器（无夹爪） |
 | `config/ocs2/task.info` | OCS2 任务配置（OCS2 控制器按 robot_name 在此包内查找） |
 | `config/mujoco_pids_config.yaml` | 12 个 UR 关节 PID 增益 |
-| `config/mujoco_ros2_control_plugins.yaml` | mujoco 插件（heartbeat，相机插件预留） |
-| `mjcf/space_sim_mujoco.xml` | MuJoCo 场景（含 RealSense 相机视觉模型） |
+| `config/mujoco_ros2_control_plugins.yaml` | mujoco 插件（心跳、对接口对接、场景读写 god 插件、双臂 RealSense 相机） |
+| `mjcf/space_sim_mujoco.xml` | MuJoCo 场景（含 RealSense 相机视觉模型，由 xacro + `space_sim_config.json` 生成） |
 
 ## 配置预留：
 

@@ -122,7 +122,7 @@ ros2 control switch_controllers --deactivate arm_A_ur_forward_position_controlle
 ros2 control switch_controllers --deactivate arm_B_ur_forward_position_controller --activate arm_B_ur_scaled_joint_trajectory_controller
 
 # 启动 move_group
-ros2 launch lab_bench_moveit_config start_lab_bench_moveit.launch.py launch_rviz:=true
+ros2 launch launch_controller start_moveit_group.launch.py env:=lab_bench launch_rviz:=true
 ```
 
 启动 MoveIt servo：

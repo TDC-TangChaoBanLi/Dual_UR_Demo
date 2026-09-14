@@ -1,0 +1,21 @@
+/**:
+  ros__parameters:
+    allow_trajectory_execution: true
+
+    # [WARN] 双臂并行装配的关键开关：必须保持 false。
+    #        false 时 move_group 不接管控制器，执行只是把轨迹通过
+    #        FollowJointTrajectory action 发给对应的 JTC -> 两条臂的轨迹可以真正并发执行。
+    #        若设为 true，move_group 会在执行前切换/激活控制器，双臂执行会被串行化。
+    moveit_manage_controllers: false
+
+    trajectory_execution.allowed_execution_duration_scaling: 1.2
+    trajectory_execution.allowed_goal_duration_margin: 0.5
+    trajectory_execution.allowed_start_tolerance: 0.01
+
+    # 仿真里 MuJoCo 的 position actuator 有跟随误差，关掉时长监控更稳
+    trajectory_execution.execution_duration_monitoring: false
+
+    publish_planning_scene: true
+    publish_geometry_updates: true
+    publish_state_updates: true
+    publish_transforms_updates: true

@@ -1,0 +1,71 @@
+# joint_limits.yaml allows the dynamics properties specified in the URDF to be overwritten or augmented as needed
+#
+# [WARN] 这里的值必须与 UR5e 的 URDF 限制兼容：仿真里关节由 MuJoCo 的 position actuator
+#        驱动（kp 600/600/300/150/130/100），速度上限放太高会让轨迹在仿真中跟不上。
+#        default_velocity_scaling_factor 越小越保守，装配任务先按 0.1 起步。
+
+default_velocity_scaling_factor: 0.1
+default_acceleration_scaling_factor: 0.1
+
+joint_limits:
+  arm_A_ur_shoulder_pan_joint:
+    has_velocity_limits: true
+    max_velocity: 1.5708
+    has_acceleration_limits: true
+    max_acceleration: 2.0
+  arm_A_ur_shoulder_lift_joint:
+    has_velocity_limits: true
+    max_velocity: 1.5708
+    has_acceleration_limits: true
+    max_acceleration: 2.0
+  arm_A_ur_elbow_joint:
+    has_velocity_limits: true
+    max_velocity: 1.5708
+    has_acceleration_limits: true
+    max_acceleration: 2.0
+  arm_A_ur_wrist_1_joint:
+    has_velocity_limits: true
+    max_velocity: 2.0
+    has_acceleration_limits: true
+    max_acceleration: 3.0
+  arm_A_ur_wrist_2_joint:
+    has_velocity_limits: true
+    max_velocity: 2.0
+    has_acceleration_limits: true
+    max_acceleration: 3.0
+  arm_A_ur_wrist_3_joint:
+    has_velocity_limits: true
+    max_velocity: 2.0
+    has_acceleration_limits: true
+    max_acceleration: 3.0
+
+  arm_B_ur_shoulder_pan_joint:
+    has_velocity_limits: true
+    max_velocity: 1.5708
+    has_acceleration_limits: true
+    max_acceleration: 2.0
+  arm_B_ur_shoulder_lift_joint:
+    has_velocity_limits: true
+    max_velocity: 1.5708
+    has_acceleration_limits: true
+    max_acceleration: 2.0
+  arm_B_ur_elbow_joint:
+    has_velocity_limits: true
+    max_velocity: 1.5708
+    has_acceleration_limits: true
+    max_acceleration: 2.0
+  arm_B_ur_wrist_1_joint:
+    has_velocity_limits: true
+    max_velocity: 2.0
+    has_acceleration_limits: true
+    max_acceleration: 3.0
+  arm_B_ur_wrist_2_joint:
+    has_velocity_limits: true
+    max_velocity: 2.0
+    has_acceleration_limits: true
+    max_acceleration: 3.0
+  arm_B_ur_wrist_3_joint:
+    has_velocity_limits: true
+    max_velocity: 2.0
+    has_acceleration_limits: true
+    max_acceleration: 3.0

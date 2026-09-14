@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: space_sim_description
+    relative_path: xacro/space_sim.xacro
+  srdf:
+    relative_path: config/space_sim.srdf
+  package_settings:
+    author_name: tdc
+    author_email: lihao_0630@qq.com
+    generated_timestamp: 1789313093

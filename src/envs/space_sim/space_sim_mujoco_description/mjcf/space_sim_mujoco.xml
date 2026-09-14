@@ -169,12 +169,12 @@
             <geom class="visual" name="VISUAL_len_center_0" type="mesh" mesh="MESH_len_center_obj_0" material="len_center_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
             <geom class="visual" name="VISUAL_len_center_1" type="mesh" mesh="MESH_len_center_obj_1" material="len_center_obj_1_mat_bulge" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
             <geom class="visual" name="VISUAL_len_center_2" type="mesh" mesh="MESH_len_center_obj_2" material="len_center_obj_2_mat_other" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-            <site name="len_center_S1" pos="0.134224 -0.232512 -0.022347" quat="-0.166366 -0.198267 0.739942 0.620885"/>
-            <site name="len_center_S2" pos="0.134224 0.232512 -0.022347" quat="-0.620885 -0.739942 0.198267 0.166366"/>
-            <site name="len_center_S3" pos="0.268448 0.000000 -0.022347" quat="-0.454520 -0.541675 0.541675 0.454520"/>
-            <site name="len_center_S4" pos="-0.268448 0.000000 -0.022347" quat="0.454519 0.541675 0.541675 0.454520"/>
-            <site name="len_center_S5" pos="-0.134224 -0.232512 -0.022347" quat="0.166366 0.198267 0.739942 0.620885"/>
-            <site name="len_center_S6" pos="-0.134224 0.232512 -0.022347" quat="0.620885 0.739942 0.198267 0.166366"/>
+            <site name="len_center_S0" pos="0.268448 -0.000000 -0.022347" quat="0.541675 0.454519 0.454519 0.541675"/>
+            <site name="len_center_S1" pos="0.134224 -0.232512 -0.022347" quat="0.739942 0.620885 0.166366 0.198267"/>
+            <site name="len_center_S2" pos="-0.134224 -0.232512 -0.022347" quat="0.739942 0.620885 -0.166366 -0.198267"/>
+            <site name="len_center_S3" pos="-0.268448 -0.000000 -0.022347" quat="0.541675 0.454519 -0.454519 -0.541675"/>
+            <site name="len_center_S4" pos="-0.134224 0.232512 -0.022347" quat="0.198267 0.166366 -0.620885 -0.739942"/>
+            <site name="len_center_S5" pos="0.134224 0.232512 -0.022347" quat="0.198267 0.166366 0.620885 0.739942"/>
           </body>
         </body>
         <body name="solar_panel_A" pos="0 0.3 0" quat="0.7071067811865476 0.0 0.0 -0.7071067811865475">
@@ -201,37 +201,37 @@
             <inertial mass="0.3" diaginertia="5e-05 0.00026 0.00029" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
             <geom class="collision" name="COLLISION_len_dock_1_0" type="box" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
             <geom class="visual" name="VISUAL_len_dock_1_0" type="box" material="len_dock_pannel_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
-            <site name="len_dock_1_site" pos="-0.000000 -0.000000 -0.010000" quat="-1.000000 +0.000000 -0.000000 -0.000000"/>
+            <site name="len_dock_1_site" pos="0.000000 -0.000000 -0.010000" quat="0.000000 0.000000 -1.000000 0.000000"/>
           </body>
           <body name="len_dock_2" pos="0 0.15173599999999998 -0.020152" quat="0.9961946980917455 -0.08715574274765817 0.0 0.0">
             <inertial mass="0.3" diaginertia="5e-05 0.00026 0.00029" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
             <geom class="collision" name="COLLISION_len_dock_2_0" type="box" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
             <geom class="visual" name="VISUAL_len_dock_2_0" type="box" material="len_dock_pannel_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
-            <site name="len_dock_2_site" pos="-0.000000 -0.000000 -0.010000" quat="-1.000000 +0.000000 -0.000000 -0.000000"/>
+            <site name="len_dock_2_site" pos="0.000000 -0.000000 -0.010000" quat="0.000000 0.000000 -1.000000 0.000000"/>
           </body>
           <body name="len_dock_3" pos="0 0.251736 -0.020152" quat="0.9961946980917455 -0.08715574274765817 0.0 0.0">
             <inertial mass="0.3" diaginertia="5e-05 0.00026 0.00029" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
             <geom class="collision" name="COLLISION_len_dock_3_0" type="box" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
             <geom class="visual" name="VISUAL_len_dock_3_0" type="box" material="len_dock_pannel_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
-            <site name="len_dock_3_site" pos="-0.000000 -0.000000 -0.010000" quat="-1.000000 +0.000000 -0.000000 -0.000000"/>
+            <site name="len_dock_3_site" pos="0.000000 -0.000000 -0.010000" quat="0.000000 0.000000 -1.000000 0.000000"/>
           </body>
           <body name="len_dock_4" pos="0 -0.051736000000000004 -0.020152" quat="0.9961946980917455 0.08715574274765817 0.0 0.0">
             <inertial mass="0.3" diaginertia="5e-05 0.00026 0.00029" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
             <geom class="collision" name="COLLISION_len_dock_4_0" type="box" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
             <geom class="visual" name="VISUAL_len_dock_4_0" type="box" material="len_dock_pannel_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
-            <site name="len_dock_4_site" pos="+0.000000 +0.000000 -0.010000" quat="-0.000000 -0.000000 -0.000000 +1.000000"/>
+            <site name="len_dock_4_site" pos="-0.000000 0.000000 -0.010000" quat="0.000000 1.000000 0.000000 0.000000"/>
           </body>
           <body name="len_dock_5" pos="0 -0.15173599999999998 -0.020152" quat="0.9961946980917455 0.08715574274765817 0.0 0.0">
             <inertial mass="0.3" diaginertia="5e-05 0.00026 0.00029" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
             <geom class="collision" name="COLLISION_len_dock_5_0" type="box" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
             <geom class="visual" name="VISUAL_len_dock_5_0" type="box" material="len_dock_pannel_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
-            <site name="len_dock_5_site" pos="+0.000000 +0.000000 -0.010000" quat="-0.000000 -0.000000 -0.000000 +1.000000"/>
+            <site name="len_dock_5_site" pos="-0.000000 0.000000 -0.010000" quat="0.000000 1.000000 0.000000 0.000000"/>
           </body>
           <body name="len_dock_6" pos="0 -0.251736 -0.020152" quat="0.9961946980917455 0.08715574274765817 0.0 0.0">
             <inertial mass="0.3" diaginertia="5e-05 0.00026 0.00029" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
             <geom class="collision" name="COLLISION_len_dock_6_0" type="box" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
             <geom class="visual" name="VISUAL_len_dock_6_0" type="box" material="len_dock_pannel_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
-            <site name="len_dock_6_site" pos="+0.000000 +0.000000 -0.010000" quat="-0.000000 -0.000000 -0.000000 +1.000000"/>
+            <site name="len_dock_6_site" pos="-0.000000 0.000000 -0.010000" quat="0.000000 1.000000 0.000000 0.000000"/>
           </body>
         </body>
         <body name="ur_mount_A" pos="0.3 0 0" quat="0.7071067811865476 0.0 0.7071067811865475 0.0">
@@ -318,7 +318,7 @@
                                           <geom class="visual" name="VISUAL_arm_A_gripper_dock_0" type="box" material="gripper_dock_material" pos="0 0 0.01" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
                                         </body>
                                         <body name="arm_A__tcp" pos="0 0 0.12" quat="1.0 0.0 0.0 0.0">
-                                          <site name="arm_A__tcp_site" pos="0 0 0" quat="0 1 0 0"/>
+                                          <site name="arm_A__tcp_site" pos="0 0 0" quat="1.000000 0.000000 0.000000 0.000000"/>
                                         </body>
                                       </body>
                                     </body>
@@ -446,7 +446,7 @@
                                           <geom class="visual" name="VISUAL_arm_B_gripper_dock_0" type="box" material="gripper_dock_material" pos="0 0 0.01" quat="1.0 0.0 0.0 0.0" size="0.05 0.02 0.01"/>
                                         </body>
                                         <body name="arm_B__tcp" pos="0 0 0.12" quat="1.0 0.0 0.0 0.0">
-                                          <site name="arm_B__tcp_site" pos="0 0 0" quat="0 1 0 0"/>
+                                          <site name="arm_B__tcp_site" pos="0 0 0" quat="1.000000 0.000000 0.000000 0.000000"/>
                                         </body>
                                       </body>
                                     </body>
@@ -493,88 +493,88 @@
       </body>
     </body>
     <light name="default_light" pos="5 0 5" dir="-1 0 -1" directional="true" intensity="100000"/>
-    <body name="len_ring_1" pos="0.0 0.07239959634508833 -0.6084004144862055" quat="5.015859644557229e-17 3.5121427352328197e-17 0.7071067813295727 0.7071067810435223">
+    <body name="len_ring_1" pos="0.0 0.07239959634508833 -0.6084004144862055" quat="0.499999999898866 -0.5000000001011341 -0.5000000001011342 -0.4999999998988659">
       <inertial mass="5.0" diaginertia="0.11207 0.14549 0.25548" pos="0 0 -0.025" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_len_ring_1_0" type="mesh" mesh="MESH_len_ring1_binary" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_1_0" type="mesh" mesh="MESH_len_ring1_obj_0" material="len_ring1_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_1_1" type="mesh" mesh="MESH_len_ring1_obj_1" material="len_ring1_obj_1_mat_bulge" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_1_2" type="mesh" mesh="MESH_len_ring1_obj_2" material="len_ring1_obj_2_mat_other" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-      <site name="len_ring_1_S1" pos="-0.230800 0.128700 -0.022400" quat="0.391340 0.329268 -0.553243 -0.657539"/>
-      <site name="len_ring_1_S2" pos="0.224300 -0.139900 -0.022400" quat="0.670930 0.564485 0.309565 0.367939"/>
-      <site name="len_ring_1_S3" pos="-0.224300 -0.139900 -0.022400" quat="0.670930 0.564485 -0.309565 -0.367939"/>
-      <site name="len_ring_1_S4" pos="0.000000 -0.268400 -0.022400" quat="0.766045 0.642787 0.000000 0.000000"/>
-      <site name="len_ring_1_S5" pos="0.000000 0.268400 -0.022400" quat="-0.000000 -0.000000 0.642787 0.766045"/>
-      <site name="len_ring_1_S6" pos="0.230800 0.128700 -0.022400" quat="0.391340 0.329268 0.553243 0.657539"/>
+      <site name="len_ring_1_S0" pos="0.268400 0.000000 -0.022400" quat="0.541675 0.454519 0.454519 0.541675"/>
+      <site name="len_ring_1_S1" pos="0.128700 -0.230800 -0.022400" quat="0.741670 0.624029 0.158374 0.188231"/>
+      <site name="len_ring_1_S2" pos="-0.139900 -0.224300 -0.022400" quat="0.734592 0.618046 -0.180256 -0.214247"/>
+      <site name="len_ring_1_S3" pos="-0.268400 0.000000 -0.022400" quat="0.541675 0.454519 -0.454519 -0.541675"/>
+      <site name="len_ring_1_S4" pos="-0.139900 0.224300 -0.022400" quat="0.214247 0.180256 -0.618046 -0.734592"/>
+      <site name="len_ring_1_S5" pos="0.128700 0.230800 -0.022400" quat="0.188231 0.158375 0.624029 0.741670"/>
       <freejoint name="len_ring_1_freejoint"/>
     </body>
-    <body name="len_ring_2" pos="0.0 0.1723995963450883 -0.6084004144862055" quat="5.015859644557229e-17 3.5121427352328197e-17 0.7071067813295727 0.7071067810435223">
+    <body name="len_ring_2" pos="0.0 0.1723995963450883 -0.6084004144862055" quat="0.499999999898866 -0.5000000001011341 -0.5000000001011342 -0.4999999998988659">
       <inertial mass="5.0" diaginertia="0.11207 0.14549 0.25548" pos="0 0 -0.025" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_len_ring_2_0" type="mesh" mesh="MESH_len_ring1_binary" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_2_0" type="mesh" mesh="MESH_len_ring1_obj_0" material="len_ring1_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_2_1" type="mesh" mesh="MESH_len_ring1_obj_1" material="len_ring1_obj_1_mat_bulge" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_2_2" type="mesh" mesh="MESH_len_ring1_obj_2" material="len_ring1_obj_2_mat_other" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-      <site name="len_ring_2_S1" pos="-0.230800 0.128700 -0.022400" quat="0.391340 0.329268 -0.553243 -0.657539"/>
-      <site name="len_ring_2_S2" pos="0.224300 -0.139900 -0.022400" quat="0.670930 0.564485 0.309565 0.367939"/>
-      <site name="len_ring_2_S3" pos="-0.224300 -0.139900 -0.022400" quat="0.670930 0.564485 -0.309565 -0.367939"/>
-      <site name="len_ring_2_S4" pos="0.000000 -0.268400 -0.022400" quat="0.766045 0.642787 0.000000 0.000000"/>
-      <site name="len_ring_2_S5" pos="0.000000 0.268400 -0.022400" quat="-0.000000 -0.000000 0.642787 0.766045"/>
-      <site name="len_ring_2_S6" pos="0.230800 0.128700 -0.022400" quat="0.391340 0.329268 0.553243 0.657539"/>
+      <site name="len_ring_2_S0" pos="0.268400 0.000000 -0.022400" quat="0.541675 0.454519 0.454519 0.541675"/>
+      <site name="len_ring_2_S1" pos="0.128700 -0.230800 -0.022400" quat="0.741670 0.624029 0.158374 0.188231"/>
+      <site name="len_ring_2_S2" pos="-0.139900 -0.224300 -0.022400" quat="0.734592 0.618046 -0.180256 -0.214247"/>
+      <site name="len_ring_2_S3" pos="-0.268400 0.000000 -0.022400" quat="0.541675 0.454519 -0.454519 -0.541675"/>
+      <site name="len_ring_2_S4" pos="-0.139900 0.224300 -0.022400" quat="0.214247 0.180256 -0.618046 -0.734592"/>
+      <site name="len_ring_2_S5" pos="0.128700 0.230800 -0.022400" quat="0.188231 0.158375 0.624029 0.741670"/>
       <freejoint name="len_ring_2_freejoint"/>
     </body>
-    <body name="len_ring_3" pos="0.0 0.27239959634508837 -0.6084004144862055" quat="5.015859644557229e-17 3.5121427352328197e-17 0.7071067813295727 0.7071067810435223">
+    <body name="len_ring_3" pos="0.0 0.27239959634508837 -0.6084004144862055" quat="0.499999999898866 -0.5000000001011341 -0.5000000001011342 -0.4999999998988659">
       <inertial mass="5.0" diaginertia="0.11207 0.14549 0.25548" pos="0 0 -0.025" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_len_ring_3_0" type="mesh" mesh="MESH_len_ring1_binary" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_3_0" type="mesh" mesh="MESH_len_ring1_obj_0" material="len_ring1_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_3_1" type="mesh" mesh="MESH_len_ring1_obj_1" material="len_ring1_obj_1_mat_bulge" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_3_2" type="mesh" mesh="MESH_len_ring1_obj_2" material="len_ring1_obj_2_mat_other" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-      <site name="len_ring_3_S1" pos="-0.230800 0.128700 -0.022400" quat="0.391340 0.329268 -0.553243 -0.657539"/>
-      <site name="len_ring_3_S2" pos="0.224300 -0.139900 -0.022400" quat="0.670930 0.564485 0.309565 0.367939"/>
-      <site name="len_ring_3_S3" pos="-0.224300 -0.139900 -0.022400" quat="0.670930 0.564485 -0.309565 -0.367939"/>
-      <site name="len_ring_3_S4" pos="0.000000 -0.268400 -0.022400" quat="0.766045 0.642787 0.000000 0.000000"/>
-      <site name="len_ring_3_S5" pos="0.000000 0.268400 -0.022400" quat="-0.000000 -0.000000 0.642787 0.766045"/>
-      <site name="len_ring_3_S6" pos="0.230800 0.128700 -0.022400" quat="0.391340 0.329268 0.553243 0.657539"/>
+      <site name="len_ring_3_S0" pos="0.268400 0.000000 -0.022400" quat="0.541675 0.454519 0.454519 0.541675"/>
+      <site name="len_ring_3_S1" pos="0.128700 -0.230800 -0.022400" quat="0.741670 0.624029 0.158374 0.188231"/>
+      <site name="len_ring_3_S2" pos="-0.139900 -0.224300 -0.022400" quat="0.734592 0.618046 -0.180256 -0.214247"/>
+      <site name="len_ring_3_S3" pos="-0.268400 0.000000 -0.022400" quat="0.541675 0.454519 -0.454519 -0.541675"/>
+      <site name="len_ring_3_S4" pos="-0.139900 0.224300 -0.022400" quat="0.214247 0.180256 -0.618046 -0.734592"/>
+      <site name="len_ring_3_S5" pos="0.128700 0.230800 -0.022400" quat="0.188231 0.158375 0.624029 0.741670"/>
       <freejoint name="len_ring_3_freejoint"/>
     </body>
-    <body name="len_ring_4" pos="0.0 -0.07239959634508833 -0.6084004144862055" quat="0.7071067810435223 0.7071067813295727 0.0 0.0">
+    <body name="len_ring_4" pos="0.0 -0.07239959634508833 -0.6084004144862055" quat="0.499999999898866 0.5000000001011341 -0.5000000001011342 0.4999999998988659">
       <inertial mass="5.0" diaginertia="0.11207 0.14549 0.25548" pos="0 0 -0.025" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_len_ring_4_0" type="mesh" mesh="MESH_len_ring1_binary" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_4_0" type="mesh" mesh="MESH_len_ring1_obj_0" material="len_ring1_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_4_1" type="mesh" mesh="MESH_len_ring1_obj_1" material="len_ring1_obj_1_mat_bulge" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_4_2" type="mesh" mesh="MESH_len_ring1_obj_2" material="len_ring1_obj_2_mat_other" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-      <site name="len_ring_4_S1" pos="-0.230800 0.128700 -0.022400" quat="0.391340 0.329268 -0.553243 -0.657539"/>
-      <site name="len_ring_4_S2" pos="0.224300 -0.139900 -0.022400" quat="0.670930 0.564485 0.309565 0.367939"/>
-      <site name="len_ring_4_S3" pos="-0.224300 -0.139900 -0.022400" quat="0.670930 0.564485 -0.309565 -0.367939"/>
-      <site name="len_ring_4_S4" pos="0.000000 -0.268400 -0.022400" quat="0.766045 0.642787 0.000000 0.000000"/>
-      <site name="len_ring_4_S5" pos="0.000000 0.268400 -0.022400" quat="-0.000000 -0.000000 0.642787 0.766045"/>
-      <site name="len_ring_4_S6" pos="0.230800 0.128700 -0.022400" quat="0.391340 0.329268 0.553243 0.657539"/>
+      <site name="len_ring_4_S0" pos="0.268400 0.000000 -0.022400" quat="0.541675 0.454519 0.454519 0.541675"/>
+      <site name="len_ring_4_S1" pos="0.128700 -0.230800 -0.022400" quat="0.741670 0.624029 0.158374 0.188231"/>
+      <site name="len_ring_4_S2" pos="-0.139900 -0.224300 -0.022400" quat="0.734592 0.618046 -0.180256 -0.214247"/>
+      <site name="len_ring_4_S3" pos="-0.268400 0.000000 -0.022400" quat="0.541675 0.454519 -0.454519 -0.541675"/>
+      <site name="len_ring_4_S4" pos="-0.139900 0.224300 -0.022400" quat="0.214247 0.180256 -0.618046 -0.734592"/>
+      <site name="len_ring_4_S5" pos="0.128700 0.230800 -0.022400" quat="0.188231 0.158375 0.624029 0.741670"/>
       <freejoint name="len_ring_4_freejoint"/>
     </body>
-    <body name="len_ring_5" pos="0.0 -0.1723995963450883 -0.6084004144862055" quat="0.7071067810435223 0.7071067813295727 0.0 0.0">
+    <body name="len_ring_5" pos="0.0 -0.1723995963450883 -0.6084004144862055" quat="0.499999999898866 0.5000000001011341 -0.5000000001011342 0.4999999998988659">
       <inertial mass="5.0" diaginertia="0.11207 0.14549 0.25548" pos="0 0 -0.025" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_len_ring_5_0" type="mesh" mesh="MESH_len_ring1_binary" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_5_0" type="mesh" mesh="MESH_len_ring1_obj_0" material="len_ring1_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_5_1" type="mesh" mesh="MESH_len_ring1_obj_1" material="len_ring1_obj_1_mat_bulge" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_5_2" type="mesh" mesh="MESH_len_ring1_obj_2" material="len_ring1_obj_2_mat_other" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-      <site name="len_ring_5_S1" pos="-0.230800 0.128700 -0.022400" quat="0.391340 0.329268 -0.553243 -0.657539"/>
-      <site name="len_ring_5_S2" pos="0.224300 -0.139900 -0.022400" quat="0.670930 0.564485 0.309565 0.367939"/>
-      <site name="len_ring_5_S3" pos="-0.224300 -0.139900 -0.022400" quat="0.670930 0.564485 -0.309565 -0.367939"/>
-      <site name="len_ring_5_S4" pos="0.000000 -0.268400 -0.022400" quat="0.766045 0.642787 0.000000 0.000000"/>
-      <site name="len_ring_5_S5" pos="0.000000 0.268400 -0.022400" quat="-0.000000 -0.000000 0.642787 0.766045"/>
-      <site name="len_ring_5_S6" pos="0.230800 0.128700 -0.022400" quat="0.391340 0.329268 0.553243 0.657539"/>
+      <site name="len_ring_5_S0" pos="0.268400 0.000000 -0.022400" quat="0.541675 0.454519 0.454519 0.541675"/>
+      <site name="len_ring_5_S1" pos="0.128700 -0.230800 -0.022400" quat="0.741670 0.624029 0.158374 0.188231"/>
+      <site name="len_ring_5_S2" pos="-0.139900 -0.224300 -0.022400" quat="0.734592 0.618046 -0.180256 -0.214247"/>
+      <site name="len_ring_5_S3" pos="-0.268400 0.000000 -0.022400" quat="0.541675 0.454519 -0.454519 -0.541675"/>
+      <site name="len_ring_5_S4" pos="-0.139900 0.224300 -0.022400" quat="0.214247 0.180256 -0.618046 -0.734592"/>
+      <site name="len_ring_5_S5" pos="0.128700 0.230800 -0.022400" quat="0.188231 0.158375 0.624029 0.741670"/>
       <freejoint name="len_ring_5_freejoint"/>
     </body>
-    <body name="len_ring_6" pos="0.0 -0.27239959634508837 -0.6084004144862055" quat="0.7071067810435223 0.7071067813295727 0.0 0.0">
+    <body name="len_ring_6" pos="0.0 -0.27239959634508837 -0.6084004144862055" quat="0.499999999898866 0.5000000001011341 -0.5000000001011342 0.4999999998988659">
       <inertial mass="5.0" diaginertia="0.11207 0.14549 0.25548" pos="0 0 -0.025" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_len_ring_6_0" type="mesh" mesh="MESH_len_ring1_binary" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_6_0" type="mesh" mesh="MESH_len_ring1_obj_0" material="len_ring1_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_6_1" type="mesh" mesh="MESH_len_ring1_obj_1" material="len_ring1_obj_1_mat_bulge" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_6_2" type="mesh" mesh="MESH_len_ring1_obj_2" material="len_ring1_obj_2_mat_other" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-      <site name="len_ring_6_S1" pos="-0.230800 0.128700 -0.022400" quat="0.391340 0.329268 -0.553243 -0.657539"/>
-      <site name="len_ring_6_S2" pos="0.224300 -0.139900 -0.022400" quat="0.670930 0.564485 0.309565 0.367939"/>
-      <site name="len_ring_6_S3" pos="-0.224300 -0.139900 -0.022400" quat="0.670930 0.564485 -0.309565 -0.367939"/>
-      <site name="len_ring_6_S4" pos="0.000000 -0.268400 -0.022400" quat="0.766045 0.642787 0.000000 0.000000"/>
-      <site name="len_ring_6_S5" pos="0.000000 0.268400 -0.022400" quat="-0.000000 -0.000000 0.642787 0.766045"/>
-      <site name="len_ring_6_S6" pos="0.230800 0.128700 -0.022400" quat="0.391340 0.329268 0.553243 0.657539"/>
+      <site name="len_ring_6_S0" pos="0.268400 0.000000 -0.022400" quat="0.541675 0.454519 0.454519 0.541675"/>
+      <site name="len_ring_6_S1" pos="0.128700 -0.230800 -0.022400" quat="0.741670 0.624029 0.158374 0.188231"/>
+      <site name="len_ring_6_S2" pos="-0.139900 -0.224300 -0.022400" quat="0.734592 0.618046 -0.180256 -0.214247"/>
+      <site name="len_ring_6_S3" pos="-0.268400 0.000000 -0.022400" quat="0.541675 0.454519 -0.454519 -0.541675"/>
+      <site name="len_ring_6_S4" pos="-0.139900 0.224300 -0.022400" quat="0.214247 0.180256 -0.618046 -0.734592"/>
+      <site name="len_ring_6_S5" pos="0.128700 0.230800 -0.022400" quat="0.188231 0.158375 0.624029 0.741670"/>
       <freejoint name="len_ring_6_freejoint"/>
     </body>
   </worldbody>
@@ -619,20 +619,20 @@
     <position group="1" kp="100" dampratio="0.95" ctrlrange="-6.2832 6.2832" name="arm_B_ur_wrist_3_joint_ACTUATOR_POSITION" joint="arm_B_ur_wrist_3_joint"/>
   </actuator>
   <equality>
-    <weld name="dock_weld_1" body1="len_ring_1" body2="len_dock_1" relpose="-0.000000 +0.278248 -0.020664 +0.000000 -0.000000 -0.642788 -0.766044" active="true" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="dock_weld_2" body1="len_ring_2" body2="len_dock_2" relpose="-0.000000 +0.278248 -0.020664 +0.000000 -0.000000 -0.642788 -0.766044" active="true" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="dock_weld_3" body1="len_ring_3" body2="len_dock_3" relpose="-0.000000 +0.278248 -0.020664 +0.000000 -0.000000 -0.642788 -0.766044" active="true" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="dock_weld_4" body1="len_ring_4" body2="len_dock_4" relpose="-0.000000 +0.278248 -0.020664 +0.766044 -0.642788 +0.000000 +0.000000" active="true" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="dock_weld_5" body1="len_ring_5" body2="len_dock_5" relpose="-0.000000 +0.278248 -0.020664 +0.766044 -0.642788 +0.000000 +0.000000" active="true" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="dock_weld_6" body1="len_ring_6" body2="len_dock_6" relpose="-0.000000 +0.278248 -0.020664 +0.766044 -0.642788 +0.000000 +0.000000" active="true" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="center_weld_1" body1="len_ring_1" body2="len_center" relpose="+0.000000 +0.513015 +0.090414 +0.696364 +0.122788 -0.122788 +0.696364" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="center_weld_2" body1="len_ring_2" body2="len_center" relpose="-0.000015 +0.513039 +0.090423 +0.951251 +0.167731 -0.044943 +0.254887" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="center_weld_3" body1="len_ring_3" body2="len_center" relpose="+0.000014 +0.513039 +0.090423 +0.254887 +0.044943 -0.167731 +0.951251" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="center_weld_4" body1="len_ring_4" body2="len_center" relpose="+0.000015 +0.513039 +0.090423 +0.951251 +0.167731 +0.044943 -0.254887" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="center_weld_5" body1="len_ring_5" body2="len_center" relpose="-0.000014 +0.513039 +0.090423 +0.254887 +0.044943 +0.167731 -0.951251" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="center_weld_6" body1="len_ring_6" body2="len_center" relpose="-0.000000 +0.513015 +0.090414 +0.696364 +0.122788 +0.122788 -0.696364" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="tcp_weld_A" site1="arm_A__tcp_site" site2="len_ring_1_S3" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
-    <weld name="tcp_weld_B" site1="arm_B__tcp_site" site2="len_ring_6_S3" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="dock_weld_1" body1="len_ring_1" body2="len_dock_1" relpose="+0.278248 -0.000000 -0.020664 -0.541675 -0.454519 -0.454519 -0.541675" active="true" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="dock_weld_2" body1="len_ring_2" body2="len_dock_2" relpose="+0.278248 -0.000000 -0.020664 -0.541675 -0.454519 -0.454519 -0.541675" active="true" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="dock_weld_3" body1="len_ring_3" body2="len_dock_3" relpose="+0.278248 -0.000000 -0.020664 -0.541675 -0.454519 -0.454519 -0.541675" active="true" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="dock_weld_4" body1="len_ring_4" body2="len_dock_4" relpose="+0.278248 -0.000000 -0.020664 +0.541675 -0.454519 +0.454519 -0.541675" active="true" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="dock_weld_5" body1="len_ring_5" body2="len_dock_5" relpose="+0.278248 -0.000000 -0.020664 +0.541675 -0.454519 +0.454519 -0.541675" active="true" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="dock_weld_6" body1="len_ring_6" body2="len_dock_6" relpose="+0.278248 -0.000000 -0.020664 +0.541675 -0.454519 +0.454519 -0.541675" active="true" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="center_weld_1" body1="len_ring_1" body2="len_center" relpose="+0.513015 +0.000000 +0.090414 +0.984808 +0.000000 -0.173648 +0.000000" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="center_weld_2" body1="len_ring_2" body2="len_center" relpose="+0.513039 +0.000014 +0.090423 +0.852868 +0.086824 -0.150384 -0.492404" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="center_weld_3" body1="len_ring_3" body2="len_center" relpose="+0.513039 -0.000014 +0.090423 +0.852868 -0.086824 -0.150384 +0.492404" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="center_weld_4" body1="len_ring_4" body2="len_center" relpose="+0.513039 -0.000014 +0.090423 +0.492404 +0.150384 -0.086824 -0.852868" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="center_weld_5" body1="len_ring_5" body2="len_center" relpose="+0.513039 +0.000014 +0.090423 +0.492404 -0.150384 -0.086824 +0.852868" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="center_weld_6" body1="len_ring_6" body2="len_center" relpose="+0.513015 -0.000000 +0.090414 -0.000000 +0.173648 +0.000000 -0.984808" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="tcp_weld_A" body1="arm_A__tcp" body2="len_ring_3" relpose="0 0 0 1 0 0 0" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
+    <weld name="tcp_weld_B" body1="arm_B__tcp" body2="len_ring_6" relpose="0 0 0 1 0 0 0" active="false" solref="0.005 1" solimp="0.95 0.99 0.001"/>
   </equality>
   <sensor>
     <force name="arm_A_ur_tcp_fts_sensor_force" site="arm_A_ur_ft_frame_SITE"/>

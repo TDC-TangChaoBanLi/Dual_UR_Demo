@@ -11,9 +11,16 @@
       # 用一组 weld 约束（weld 池）模拟对接口的对接/释放：
       #   * 两个 site 的相对位姿进入该组的容差范围后开始计时；
       #   * 在 dock_time 内持续保持在容差内 -> 视为对接成功，激活 weld 并把两者
-      #     约束到该组的 dock_relpose（site2 在 site1 系下的目标位姿）；
+      #     约束到该组"离当前位姿最近的合法目标位姿"（见下 dock_target）；
       #   * release 等待 release_time 后取消激活，槽位归还池中。
       # 服务：~/dock、~/release   动作：~/dock、~/release
+      #
+      # site 帧约定（本场景所有对接口统一）：
+      #   * +z = 对接面外法向（背离所属物体、指向配合件）；
+      #   * +x = 接口定位方向（本场景 = 0.1 m 长边方向）；
+      #   * 原点 = 对接参考点（插合时对方的 site 原点落在该点上）。
+      # 于是两个插合的矩形接口满足 z 轴反平行、x 轴反平行、y 轴同向，即相对姿态为
+      # 绕 y 轴 180°：(w,x,y,z) = (0, 0, 1, 0)，也就是下面的 dock_target.quaternion。
       mujoco_dock_sim_plugin:
         type: "mujoco_dock_sim_plugin/DockSimPlugin"
 
@@ -41,59 +48,69 @@
           - "tcp_weld_B"
 
         groups:
-          # 当前场景里所有对接口都是同一种规格（0.1 x 0.04 的凸台插合面），可以互相
-          # 对接，因此只配置一个组。groups 只用于区分"不同种类的对接口"：不同组之间
-          # 不能对接（如需区分，再加组并把相应 site 分别列进去即可）。
+          # groups 用于区分"不同种类的对接口"：不同组之间不能对接；一个 site 可以属于
+          # 多个组，对接请求按两个 site 所属的组解析（组名按字母序，取第一个匹配的组）。
           #
-          # 所有接口 site 都按"插合帧"定义：两个对接口插合时其 site 帧完全重合，因此
-          # 目标相对位姿为单位位姿（position 0，quaternion w=1）。
+          # dock_target：site2 在 site1 系下的目标位姿
+          #   position      目标位置（3 个数）
+          #   quaternion    目标姿态（4 个数，(w,x,y,z) 顺序）
+          #   symmetry      目标姿态的对称自由度：满足该对称的其它相位同样算"对准"，
+          #                 对接成功时焊到离当前位姿最近的合法位姿
+          #     mode: none       只接受 dock_target 本身（非对称 / 键槽式接口）
+          #     mode: discrete   绕 axis 转 angles_deg 中任一角度都接受
+          #     mode: continuous 绕 axis 任意相位都接受（圆形接口）
+          #   axis 为对称轴（site1 系，默认 z = 插入轴）
+          #
+          # 存储 / 穹顶装配：镜片用 S5 插到接口盘 socket 或中心镜片侧面上。
+          # 0.1 x 0.04 的矩形插合面在几何上有 180° 两种相位，这里要求固定一种
+          # （y 轴同向、x 轴反向，mode: none），使存储态与穹顶装配态完全一致。
           default:
             sites:
-              # --- 镜片六个侧面的对接口（S5 用于与中心镜片/底部接口对接，
-              #     S1~S4/S6 用于机械臂末端抓取）---
+              # --- 镜片六个侧面的对接口（S0 = 与中心镜片对接的 +x 面，用于存储与
+              #     穹顶装配；S1~S5 为其余侧面，供机械臂末端磁吸抓取）---
+              - "len_ring_1_S0"
               - "len_ring_1_S1"
               - "len_ring_1_S2"
               - "len_ring_1_S3"
               - "len_ring_1_S4"
               - "len_ring_1_S5"
-              - "len_ring_1_S6"
+              - "len_ring_2_S0"
               - "len_ring_2_S1"
               - "len_ring_2_S2"
               - "len_ring_2_S3"
               - "len_ring_2_S4"
               - "len_ring_2_S5"
-              - "len_ring_2_S6"
+              - "len_ring_3_S0"
               - "len_ring_3_S1"
               - "len_ring_3_S2"
               - "len_ring_3_S3"
               - "len_ring_3_S4"
               - "len_ring_3_S5"
-              - "len_ring_3_S6"
+              - "len_ring_4_S0"
               - "len_ring_4_S1"
               - "len_ring_4_S2"
               - "len_ring_4_S3"
               - "len_ring_4_S4"
               - "len_ring_4_S5"
-              - "len_ring_4_S6"
+              - "len_ring_5_S0"
               - "len_ring_5_S1"
               - "len_ring_5_S2"
               - "len_ring_5_S3"
               - "len_ring_5_S4"
               - "len_ring_5_S5"
-              - "len_ring_5_S6"
+              - "len_ring_6_S0"
               - "len_ring_6_S1"
               - "len_ring_6_S2"
               - "len_ring_6_S3"
               - "len_ring_6_S4"
               - "len_ring_6_S5"
-              - "len_ring_6_S6"
               # --- 中心镜片六个侧面的对接口 ---
+              - "len_center_S0"
               - "len_center_S1"
               - "len_center_S2"
               - "len_center_S3"
               - "len_center_S4"
               - "len_center_S5"
-              - "len_center_S6"
               # --- 卫星底部接口盘上的六个镜片接口 ---
               - "len_dock_1_site"
               - "len_dock_2_site"
@@ -101,17 +118,91 @@
               - "len_dock_4_site"
               - "len_dock_5_site"
               - "len_dock_6_site"
-              # --- 两个机械臂末端（磁吸面）---
-              - "arm_A__tcp_site"
-              - "arm_B__tcp_site"
             # 两个 site 的相对位姿与目标位姿的位置/角度偏差上限
             position_tolerance: 0.01
             rotation_tolerance: 0.15
-            # 对接目标：site2 在 site1 系下的位姿（单位位姿 = 两插合帧重合）
-            dock_relpose: [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+            dock_target:
+              # site2 原点在 site1 系下的目标位置（对接参考点重合）
+              position: [0.0, 0.0, 0.0]
+              # 绕 y 轴 180°：z 反向、x 反向、y 同向（= 矩形接口的固定插合相位）
+              quaternion: [0.0, 0.0, 1.0, 0.0]
+              symmetry:
+                mode: none
+                axis: z
             # 位姿保持在容差内多久算对接成功 / 释放耗时
             dock_time: 0.5
             release_time: 0.2
+
+          # 机械臂磁吸抓取：夹爪磁吸面（0.1 x 0.04） <-> 镜片侧面凸台（0.1 x 0.04）。
+          # 两个矩形面在几何上有 180° 两种相位，抓取时两种都允许，插件会焊到离当前
+          # 位姿最近的那一种。
+          grasp:
+            sites:
+              - "len_ring_1_S0"
+              - "len_ring_1_S1"
+              - "len_ring_1_S2"
+              - "len_ring_1_S3"
+              - "len_ring_1_S4"
+              - "len_ring_1_S5"
+              - "len_ring_2_S0"
+              - "len_ring_2_S1"
+              - "len_ring_2_S2"
+              - "len_ring_2_S3"
+              - "len_ring_2_S4"
+              - "len_ring_2_S5"
+              - "len_ring_3_S0"
+              - "len_ring_3_S1"
+              - "len_ring_3_S2"
+              - "len_ring_3_S3"
+              - "len_ring_3_S4"
+              - "len_ring_3_S5"
+              - "len_ring_4_S0"
+              - "len_ring_4_S1"
+              - "len_ring_4_S2"
+              - "len_ring_4_S3"
+              - "len_ring_4_S4"
+              - "len_ring_4_S5"
+              - "len_ring_5_S0"
+              - "len_ring_5_S1"
+              - "len_ring_5_S2"
+              - "len_ring_5_S3"
+              - "len_ring_5_S4"
+              - "len_ring_5_S5"
+              - "len_ring_6_S0"
+              - "len_ring_6_S1"
+              - "len_ring_6_S2"
+              - "len_ring_6_S3"
+              - "len_ring_6_S4"
+              - "len_ring_6_S5"
+              # --- 两个机械臂末端（磁吸面）---
+              - "arm_A__tcp_site"
+              - "arm_B__tcp_site"
+            position_tolerance: 0.01
+            rotation_tolerance: 0.15
+            dock_target:
+              position: [0.0, 0.0, 0.0]
+              quaternion: [0.0, 0.0, 1.0, 0.0]
+              symmetry:
+                # 矩形面两种相位都允许，对接时就近吸附（0° 即 dock_target 本身）
+                mode: discrete
+                axis: z
+                angles_deg: [0.0, 180.0]
+            dock_time: 0.5
+            release_time: 0.2
+
+          # 圆形对接口示例（当前场景未使用，仅说明如何配置）：
+          #   circular:
+          #     sites: [...]
+          #     position_tolerance: 0.01
+          #     rotation_tolerance: 0.15
+          #     dock_target:
+          #       position: [0.0, 0.0, 0.0]
+          #       quaternion: [0.0, 1.0, 0.0, 0.0]   # 任意一个 "z 反向" 的代表位姿
+          #       symmetry:
+          #         mode: continuous   # 只要 z 反平行，绕轴相位任意
+          #         axis: z
+          #     dock_time: 0.5
+          #     release_time: 0.2
 
       # ============================================================
       # 场景数据直接读写插件
@@ -134,18 +225,18 @@
           - "body:len_ring_4"
           - "body:len_ring_5"
           - "body:len_ring_6"
-          - "site:len_ring_1_S5"
-          - "site:len_ring_2_S5"
-          - "site:len_ring_3_S5"
-          - "site:len_ring_4_S5"
-          - "site:len_ring_5_S5"
-          - "site:len_ring_6_S5"
+          - "site:len_ring_1_S0"
+          - "site:len_ring_2_S0"
+          - "site:len_ring_3_S0"
+          - "site:len_ring_4_S0"
+          - "site:len_ring_5_S0"
+          - "site:len_ring_6_S0"
+          - "site:len_center_S0"
           - "site:len_center_S1"
           - "site:len_center_S2"
           - "site:len_center_S3"
           - "site:len_center_S4"
           - "site:len_center_S5"
-          - "site:len_center_S6"
           - "site:arm_A__tcp_site"
           - "site:arm_B__tcp_site"
 
