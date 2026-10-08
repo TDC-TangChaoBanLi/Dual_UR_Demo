@@ -1,0 +1,12 @@
+string arm
+string centre_face
+string[] allowed_faces
+bool randomize
+bool return_home
+---
+bool success
+int32 lens
+string centre_face
+string message
+---
+string stage

@@ -159,7 +159,7 @@ bool copy_move_group_parameters(const rclcpp::Node::SharedPtr& node)
   {
     RCLCPP_ERROR(node->get_logger(),
                  "Could not read robot_description and robot_description_semantic from %s. "
-                 "Make sure start_lab_bench_moveit.launch.py is running.",
+                 "Make sure launch_controller/start_moveit_group.launch.py is running.",
                  source_node.c_str());
     return false;
   }

@@ -1,0 +1,14 @@
+# Both arms pick and transfer independently. S0/S3 may dock in either order;
+# later centre docks wait only to preserve the required first-two assembly order.
+# lens=0 samples only lens_candidates; an empty grasp_face samples grasp_faces.
+action_timeout_s: 600
+expected_faces: [S0, S1, S2, S3, S4, S5]
+arms:
+  arm_A:
+    - {lens: 6, grasp_face: S2, phase_deg: 0, centre_face: S0, return_home: false}
+    - {lens: 5, grasp_face: S2, phase_deg: 0, centre_face: S1, return_home: false}
+    - {lens: 1, grasp_face: S4, phase_deg: 0, centre_face: S5, return_home: true}
+  arm_B:
+    - {lens: 3, grasp_face: S2, phase_deg: 0, centre_face: S3, return_home: false}
+    - {lens: 4, grasp_face: S4, phase_deg: 0, centre_face: S2, return_home: false}
+    - {lens: 2, grasp_face: S2, phase_deg: 0, centre_face: S4, return_home: true}

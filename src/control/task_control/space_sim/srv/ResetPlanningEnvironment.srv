@@ -1,0 +1,9 @@
+# Omitted joint names use SRDF home angles. Only positions are accepted.
+sensor_msgs/JointState joint_states
+# Omitted lenses remain in storage. Each lens and centre interface/arm is unique.
+LensInitialState[] lenses
+---
+bool success
+string message
+sensor_msgs/JointState joint_states
+LensInitialState[] lenses

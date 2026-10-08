@@ -95,8 +95,10 @@ world ──(fixed)── base_link ──(fixed)── satellite            # �
 # 仿真 + 控制器
 ros2 launch launch_controller start_traditional_controllers.launch.py \
     env:=space_sim_mujoco initial_ur_controller:=joint_trajectory_controller
-# 仿真 + MoveIt + RViz 一键
-ros2 launch space_sim_moveit_config demo.launch.py mujoco_headless:=true
+# move_group（默认带 RViz）—— demo.launch.py **只起 move_group**，不再起仿真/控制器
+ros2 launch space_sim_moveit_config demo.launch.py
+# 或统一入口（env 任意已构建的 {env}_moveit_config，带 _mujoco 后缀自动重定向）
+ros2 launch launch_controller start_moveit_group.launch.py env:=space_sim
 ```
 
 ### 2.2 dock 插件（`mujoco_dock_sim_plugin`）
@@ -240,11 +242,16 @@ stateDiagram-v2
 ```bash
 colcon build --symlink-install --packages-select space_sim_moveit_config space_sim_task_control
 
-ros2 launch space_sim_moveit_config demo.launch.py mujoco_headless:=true launch_rviz:=false
+# 仿真 + 控制器
+ros2 launch launch_controller start_traditional_controllers.launch.py \
+  env:=space_sim_mujoco initial_ur_controller:=joint_trajectory_controller \
+  mujoco_headless:=true launch_rviz:=false
+# move_group（demo.launch.py 现在只起它；也可用统一入口 env:=space_sim）
+ros2 launch space_sim_moveit_config demo.launch.py launch_rviz:=false
 # 可行性探测 / 复核
 python3 tmp/space_sim_assembly_probe.py --stage ik
 python3 tmp/space_sim_probe_report.py
-# 装配任务（dry_run 先看随机方案）
+# 装配任务（dry_run 先看随机方案；规划器默认 chomp，可用 planner:= 换）
 ros2 launch space_sim_task_control space_sim_lens_assembly.launch.py dry_run:=true
 ```
 

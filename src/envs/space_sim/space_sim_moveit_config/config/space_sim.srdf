@@ -69,12 +69,6 @@
     <disable_collisions link1="arm_A_base_dock" link2="len_dock_5" reason="Never"/>
     <disable_collisions link1="arm_A_base_dock" link2="len_dock_6" reason="Never"/>
     <disable_collisions link1="arm_A_base_dock" link2="len_dock_pannel" reason="Never"/>
-    <disable_collisions link1="arm_A_base_dock" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="arm_A_base_dock" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="arm_A_base_dock" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="arm_A_base_dock" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="arm_A_base_dock" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="arm_A_base_dock" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="arm_A_base_dock" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="arm_A_base_dock" link2="satellite" reason="Adjacent"/>
     <disable_collisions link1="arm_A_base_dock" link2="solar_panel_A" reason="Never"/>
@@ -91,12 +85,6 @@
     <disable_collisions link1="arm_A_base_main" link2="len_dock_5" reason="Never"/>
     <disable_collisions link1="arm_A_base_main" link2="len_dock_6" reason="Never"/>
     <disable_collisions link1="arm_A_base_main" link2="len_dock_pannel" reason="Never"/>
-    <disable_collisions link1="arm_A_base_main" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="arm_A_base_main" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="arm_A_base_main" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="arm_A_base_main" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="arm_A_base_main" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="arm_A_base_main" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="arm_A_base_main" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="arm_A_base_main" link2="satellite" reason="Never"/>
     <disable_collisions link1="arm_A_base_main" link2="solar_panel_A" reason="Never"/>
@@ -123,12 +111,6 @@
     <disable_collisions link1="arm_A_ur_base_link_inertia" link2="len_dock_5" reason="Never"/>
     <disable_collisions link1="arm_A_ur_base_link_inertia" link2="len_dock_6" reason="Never"/>
     <disable_collisions link1="arm_A_ur_base_link_inertia" link2="len_dock_pannel" reason="Never"/>
-    <disable_collisions link1="arm_A_ur_base_link_inertia" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="arm_A_ur_base_link_inertia" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="arm_A_ur_base_link_inertia" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="arm_A_ur_base_link_inertia" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="arm_A_ur_base_link_inertia" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="arm_A_ur_base_link_inertia" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="arm_A_ur_base_link_inertia" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="arm_A_ur_base_link_inertia" link2="satellite" reason="Never"/>
     <disable_collisions link1="arm_A_ur_base_link_inertia" link2="solar_panel_A" reason="Never"/>
@@ -148,12 +130,6 @@
     <disable_collisions link1="arm_B_base_dock" link2="len_dock_5" reason="Never"/>
     <disable_collisions link1="arm_B_base_dock" link2="len_dock_6" reason="Never"/>
     <disable_collisions link1="arm_B_base_dock" link2="len_dock_pannel" reason="Never"/>
-    <disable_collisions link1="arm_B_base_dock" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="arm_B_base_dock" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="arm_B_base_dock" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="arm_B_base_dock" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="arm_B_base_dock" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="arm_B_base_dock" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="arm_B_base_dock" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="arm_B_base_dock" link2="satellite" reason="Adjacent"/>
     <disable_collisions link1="arm_B_base_dock" link2="solar_panel_A" reason="Never"/>
@@ -167,12 +143,6 @@
     <disable_collisions link1="arm_B_base_main" link2="len_dock_5" reason="Never"/>
     <disable_collisions link1="arm_B_base_main" link2="len_dock_6" reason="Never"/>
     <disable_collisions link1="arm_B_base_main" link2="len_dock_pannel" reason="Never"/>
-    <disable_collisions link1="arm_B_base_main" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="arm_B_base_main" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="arm_B_base_main" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="arm_B_base_main" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="arm_B_base_main" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="arm_B_base_main" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="arm_B_base_main" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="arm_B_base_main" link2="satellite" reason="Never"/>
     <disable_collisions link1="arm_B_base_main" link2="solar_panel_A" reason="Never"/>
@@ -196,12 +166,6 @@
     <disable_collisions link1="arm_B_ur_base_link_inertia" link2="len_dock_5" reason="Never"/>
     <disable_collisions link1="arm_B_ur_base_link_inertia" link2="len_dock_6" reason="Never"/>
     <disable_collisions link1="arm_B_ur_base_link_inertia" link2="len_dock_pannel" reason="Never"/>
-    <disable_collisions link1="arm_B_ur_base_link_inertia" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="arm_B_ur_base_link_inertia" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="arm_B_ur_base_link_inertia" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="arm_B_ur_base_link_inertia" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="arm_B_ur_base_link_inertia" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="arm_B_ur_base_link_inertia" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="arm_B_ur_base_link_inertia" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="arm_B_ur_base_link_inertia" link2="satellite" reason="Never"/>
     <disable_collisions link1="arm_B_ur_base_link_inertia" link2="solar_panel_A" reason="Never"/>
@@ -218,12 +182,6 @@
     <disable_collisions link1="len_center" link2="len_dock_5" reason="Never"/>
     <disable_collisions link1="len_center" link2="len_dock_6" reason="Never"/>
     <disable_collisions link1="len_center" link2="len_dock_pannel" reason="Never"/>
-    <disable_collisions link1="len_center" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="len_center" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="len_center" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="len_center" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="len_center" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="len_center" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="len_center" link2="len_shelf" reason="Adjacent"/>
     <disable_collisions link1="len_center" link2="satellite" reason="Never"/>
     <disable_collisions link1="len_center" link2="solar_panel_A" reason="Never"/>
@@ -234,12 +192,6 @@
     <disable_collisions link1="len_dock_1" link2="len_dock_5" reason="Never"/>
     <disable_collisions link1="len_dock_1" link2="len_dock_6" reason="Never"/>
     <disable_collisions link1="len_dock_1" link2="len_dock_pannel" reason="Adjacent"/>
-    <disable_collisions link1="len_dock_1" link2="len_ring_1" reason="Adjacent"/>
-    <disable_collisions link1="len_dock_1" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="len_dock_1" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="len_dock_1" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="len_dock_1" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="len_dock_1" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="len_dock_1" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="len_dock_1" link2="satellite" reason="Never"/>
     <disable_collisions link1="len_dock_1" link2="solar_panel_A" reason="Never"/>
@@ -249,12 +201,6 @@
     <disable_collisions link1="len_dock_2" link2="len_dock_5" reason="Never"/>
     <disable_collisions link1="len_dock_2" link2="len_dock_6" reason="Never"/>
     <disable_collisions link1="len_dock_2" link2="len_dock_pannel" reason="Adjacent"/>
-    <disable_collisions link1="len_dock_2" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="len_dock_2" link2="len_ring_2" reason="Adjacent"/>
-    <disable_collisions link1="len_dock_2" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="len_dock_2" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="len_dock_2" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="len_dock_2" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="len_dock_2" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="len_dock_2" link2="satellite" reason="Never"/>
     <disable_collisions link1="len_dock_2" link2="solar_panel_A" reason="Never"/>
@@ -263,12 +209,6 @@
     <disable_collisions link1="len_dock_3" link2="len_dock_5" reason="Never"/>
     <disable_collisions link1="len_dock_3" link2="len_dock_6" reason="Never"/>
     <disable_collisions link1="len_dock_3" link2="len_dock_pannel" reason="Adjacent"/>
-    <disable_collisions link1="len_dock_3" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="len_dock_3" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="len_dock_3" link2="len_ring_3" reason="Adjacent"/>
-    <disable_collisions link1="len_dock_3" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="len_dock_3" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="len_dock_3" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="len_dock_3" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="len_dock_3" link2="satellite" reason="Never"/>
     <disable_collisions link1="len_dock_3" link2="solar_panel_A" reason="Never"/>
@@ -276,88 +216,25 @@
     <disable_collisions link1="len_dock_4" link2="len_dock_5" reason="Never"/>
     <disable_collisions link1="len_dock_4" link2="len_dock_6" reason="Never"/>
     <disable_collisions link1="len_dock_4" link2="len_dock_pannel" reason="Adjacent"/>
-    <disable_collisions link1="len_dock_4" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="len_dock_4" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="len_dock_4" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="len_dock_4" link2="len_ring_4" reason="Adjacent"/>
-    <disable_collisions link1="len_dock_4" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="len_dock_4" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="len_dock_4" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="len_dock_4" link2="satellite" reason="Never"/>
     <disable_collisions link1="len_dock_4" link2="solar_panel_A" reason="Never"/>
     <disable_collisions link1="len_dock_4" link2="solar_panel_B" reason="Never"/>
     <disable_collisions link1="len_dock_5" link2="len_dock_6" reason="Never"/>
     <disable_collisions link1="len_dock_5" link2="len_dock_pannel" reason="Adjacent"/>
-    <disable_collisions link1="len_dock_5" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="len_dock_5" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="len_dock_5" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="len_dock_5" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="len_dock_5" link2="len_ring_5" reason="Adjacent"/>
-    <disable_collisions link1="len_dock_5" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="len_dock_5" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="len_dock_5" link2="satellite" reason="Never"/>
     <disable_collisions link1="len_dock_5" link2="solar_panel_A" reason="Never"/>
     <disable_collisions link1="len_dock_5" link2="solar_panel_B" reason="Never"/>
     <disable_collisions link1="len_dock_6" link2="len_dock_pannel" reason="Adjacent"/>
-    <disable_collisions link1="len_dock_6" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="len_dock_6" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="len_dock_6" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="len_dock_6" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="len_dock_6" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="len_dock_6" link2="len_ring_6" reason="Adjacent"/>
     <disable_collisions link1="len_dock_6" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="len_dock_6" link2="satellite" reason="Never"/>
     <disable_collisions link1="len_dock_6" link2="solar_panel_A" reason="Never"/>
     <disable_collisions link1="len_dock_6" link2="solar_panel_B" reason="Never"/>
-    <disable_collisions link1="len_dock_pannel" link2="len_ring_1" reason="Never"/>
-    <disable_collisions link1="len_dock_pannel" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="len_dock_pannel" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="len_dock_pannel" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="len_dock_pannel" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="len_dock_pannel" link2="len_ring_6" reason="Never"/>
     <disable_collisions link1="len_dock_pannel" link2="len_shelf" reason="Never"/>
     <disable_collisions link1="len_dock_pannel" link2="satellite" reason="Adjacent"/>
     <disable_collisions link1="len_dock_pannel" link2="solar_panel_A" reason="Never"/>
     <disable_collisions link1="len_dock_pannel" link2="solar_panel_B" reason="Never"/>
-    <disable_collisions link1="len_ring_1" link2="len_ring_2" reason="Never"/>
-    <disable_collisions link1="len_ring_1" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="len_ring_1" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="len_ring_1" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="len_ring_1" link2="len_ring_6" reason="Never"/>
-    <disable_collisions link1="len_ring_1" link2="len_shelf" reason="Never"/>
-    <disable_collisions link1="len_ring_1" link2="satellite" reason="Never"/>
-    <disable_collisions link1="len_ring_1" link2="solar_panel_A" reason="Never"/>
-    <disable_collisions link1="len_ring_1" link2="solar_panel_B" reason="Never"/>
-    <disable_collisions link1="len_ring_2" link2="len_ring_3" reason="Never"/>
-    <disable_collisions link1="len_ring_2" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="len_ring_2" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="len_ring_2" link2="len_ring_6" reason="Never"/>
-    <disable_collisions link1="len_ring_2" link2="len_shelf" reason="Never"/>
-    <disable_collisions link1="len_ring_2" link2="satellite" reason="Never"/>
-    <disable_collisions link1="len_ring_2" link2="solar_panel_A" reason="Never"/>
-    <disable_collisions link1="len_ring_2" link2="solar_panel_B" reason="Never"/>
-    <disable_collisions link1="len_ring_3" link2="len_ring_4" reason="Never"/>
-    <disable_collisions link1="len_ring_3" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="len_ring_3" link2="len_ring_6" reason="Never"/>
-    <disable_collisions link1="len_ring_3" link2="len_shelf" reason="Never"/>
-    <disable_collisions link1="len_ring_3" link2="satellite" reason="Never"/>
-    <disable_collisions link1="len_ring_3" link2="solar_panel_A" reason="Never"/>
-    <disable_collisions link1="len_ring_3" link2="solar_panel_B" reason="Never"/>
-    <disable_collisions link1="len_ring_4" link2="len_ring_5" reason="Never"/>
-    <disable_collisions link1="len_ring_4" link2="len_ring_6" reason="Never"/>
-    <disable_collisions link1="len_ring_4" link2="len_shelf" reason="Never"/>
-    <disable_collisions link1="len_ring_4" link2="satellite" reason="Never"/>
-    <disable_collisions link1="len_ring_4" link2="solar_panel_A" reason="Never"/>
-    <disable_collisions link1="len_ring_4" link2="solar_panel_B" reason="Never"/>
-    <disable_collisions link1="len_ring_5" link2="len_ring_6" reason="Never"/>
-    <disable_collisions link1="len_ring_5" link2="len_shelf" reason="Never"/>
-    <disable_collisions link1="len_ring_5" link2="satellite" reason="Never"/>
-    <disable_collisions link1="len_ring_5" link2="solar_panel_A" reason="Never"/>
-    <disable_collisions link1="len_ring_5" link2="solar_panel_B" reason="Never"/>
-    <disable_collisions link1="len_ring_6" link2="len_shelf" reason="Never"/>
-    <disable_collisions link1="len_ring_6" link2="satellite" reason="Never"/>
-    <disable_collisions link1="len_ring_6" link2="solar_panel_A" reason="Never"/>
-    <disable_collisions link1="len_ring_6" link2="solar_panel_B" reason="Never"/>
     <disable_collisions link1="len_shelf" link2="satellite" reason="Adjacent"/>
     <disable_collisions link1="len_shelf" link2="solar_panel_A" reason="Never"/>
     <disable_collisions link1="len_shelf" link2="solar_panel_B" reason="Never"/>

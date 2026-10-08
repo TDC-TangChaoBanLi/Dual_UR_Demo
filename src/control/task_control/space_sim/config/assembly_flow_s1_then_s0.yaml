@@ -1,0 +1,14 @@
+# S1 is installed first. S0 is installed second, grasped at its S2 interface.
+# Both arms may pick and transfer independently; only centre docking has gates.
+action_timeout_s: 600
+expected_faces: [S0, S1, S2, S3, S4, S5]
+expected_prefix: [S1, S0]
+arms:
+  arm_A:
+    - {lens: 5, grasp_face: S2, phase_deg: 0, centre_face: S1, return_home: true}
+    - {lens: 6, grasp_face: S2, phase_deg: 0, centre_face: S0, return_home: true}
+    - {lens: 1, grasp_face: S4, phase_deg: 0, centre_face: S5, after: S3, return_home: true}
+  arm_B:
+    - {lens: 3, grasp_faces: [S1, S2], phase_deg: 0, centre_face: S3, after: S0, return_home: true}
+    - {lens: 4, grasp_face: S4, phase_deg: 0, centre_face: S2, after: S3, return_home: true}
+    - {lens: 2, grasp_face: S2, phase_deg: 0, centre_face: S4, before_pick: S5, after: S3, return_home: true}

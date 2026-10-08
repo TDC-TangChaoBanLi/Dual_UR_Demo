@@ -1,59 +1,91 @@
 /**:
   ros__parameters:
     planning_pipelines:
-      - ompl
+      - pilz_industrial_motion_planner
+      - stomp
 
-    default_planning_pipeline: ompl
+    default_planning_pipeline: stomp
 
-    ompl:
+    stomp:
+      planning_plugins:
+        - space_sim_stomp/StompPlanner
       request_adapters:
         - default_planning_request_adapters/ResolveConstraintFrames
         - default_planning_request_adapters/ValidateWorkspaceBounds
         - default_planning_request_adapters/CheckStartStateBounds
         - default_planning_request_adapters/CheckStartStateCollision
-
-      planning_plugins:
-        - ompl_interface/OMPLPlanner
-
       response_adapters:
-        - default_planning_response_adapters/AddTimeOptimalParameterization
         - default_planning_response_adapters/ValidateSolution
         - default_planning_response_adapters/DisplayMotionPath
+      # ParamListener reads stomp.<key>, without an extra stomp_moveit level.
+      # These match the validated 2.12.4 defaults; each request is capped by
+      # planning_time_s. A seed trajectory overrides num_timesteps.
+      num_timesteps: 40
+      num_iterations: 1000
+      num_iterations_after_valid: 0
+      num_rollouts: 15
+      max_rollouts: 25
+      exponentiated_cost_sensitivity: 0.5
+      control_cost_weight: 0.1
+      delta_t: 0.1
 
+    pilz_industrial_motion_planner:
+      request_adapters:
+        - default_planning_request_adapters/ResolveConstraintFrames
+        - default_planning_request_adapters/ValidateWorkspaceBounds
+        - default_planning_request_adapters/CheckStartStateBounds
+        - default_planning_request_adapters/CheckStartStateCollision
+      planning_plugins:
+        - pilz_industrial_motion_planner/CommandPlanner
+      response_adapters:
+        # Ruckig 平滑（jerk 受限）比纯时间参数化更好跟踪，直接针对仿真里
+        # “State tolerances failed / PATH_TOLERANCE_VIOLATED” 这类问题
+        - default_planning_response_adapters/AddRuckigTrajectorySmoothing
+        - default_planning_response_adapters/ValidateSolution
+        - default_planning_response_adapters/DisplayMotionPath
       start_state_max_bounds_error: 0.1
 
-      planner_configs:
-        # 默认规划器：快，先用它试
-        RRTConnectkConfigDefault:
-          type: geometric::RRTConnect
-          range: 0.0
-        # 备用规划器：RRTConnect 失败时（储存位/穹顶槽位这种窄空间）改用它
-        RRTstarkConfigDefault:
-          type: geometric::RRTstar
-          range: 0.0
-          goal_bias: 0.05
-          delay_collision_checking: 1
+    # ------------------------------------------------------------------ #
+    # 保留 CHOMP 参数供对比；当前未加载此管线，默认及任务规划使用 STOMP。
+    # ------------------------------------------------------------------ #
+    chomp:
+      request_adapters:
+        - default_planning_request_adapters/ResolveConstraintFrames
+        - default_planning_request_adapters/ValidateWorkspaceBounds
+        - default_planning_request_adapters/CheckStartStateBounds
+        - default_planning_request_adapters/CheckStartStateCollision
+      planning_plugins:
+        - chomp_interface/CHOMPPlanner
+      response_adapters:
+        # CHOMP 折返路径交给任务节点的保守时间参数化与 Ruckig 平滑。
+        - default_planning_response_adapters/ValidateSolution
+        - default_planning_response_adapters/DisplayMotionPath
+      start_state_max_bounds_error: 0.1
 
-      # 单臂组：projection 用肩部两个关节（与 UR 官方一致）
-      arm_A:
-        planner_configs:
-          - RRTConnectkConfigDefault
-          - RRTstarkConfigDefault
-        projection_evaluator: joints(arm_A_ur_shoulder_pan_joint,arm_A_ur_shoulder_lift_joint)
-        longest_valid_segment_fraction: 0.005
-
-      arm_B:
-        planner_configs:
-          - RRTConnectkConfigDefault
-          - RRTstarkConfigDefault
-        projection_evaluator: joints(arm_B_ur_shoulder_pan_joint,arm_B_ur_shoulder_lift_joint)
-        longest_valid_segment_fraction: 0.005
-
-      # 双臂同步组（12 维）：projection 取两条臂的肩部关节。
-      # longest_valid_segment_fraction 更要取小值，否则 12 维轨迹的碰撞检查会漏判。
-      arm_BOTH:
-        planner_configs:
-          - RRTConnectkConfigDefault
-          - RRTstarkConfigDefault
-        projection_evaluator: joints(arm_A_ur_shoulder_pan_joint,arm_A_ur_shoulder_lift_joint,arm_B_ur_shoulder_pan_joint,arm_B_ur_shoulder_lift_joint)
-        longest_valid_segment_fraction: 0.005
+      # CHOMP 参数由 `chomp_interface.cpp::loadParams` 读，前缀就是管线名 `chomp`。
+      # 下面是**完整可调列表**，与 MoveIt 引擎默认值的差异已标注（只该调这几个）。
+      # [WARN] CHOMP 不看请求里的 allowed_planning_time，只看 planning_time_limit。
+      planning_time_limit: 10.0
+      max_iterations: 200
+      max_iterations_after_collision_free: 5
+      smoothness_cost_weight: 0.1
+      obstacle_cost_weight: 1.0
+      learning_rate: 0.01
+      smoothness_cost_velocity: 0.0
+      smoothness_cost_acceleration: 1.0
+      smoothness_cost_jerk: 0.0
+      ridge_factor: 0.01                 # 官方模板给 0.01（引擎默认 0.0）
+      use_pseudo_inverse: false
+      pseudo_inverse_ridge_factor: 1.0e-04
+      joint_update_limit: 0.1
+      # [WARN] 引擎默认 collision_clearance = 0.2 m —— 对本工况（储存格间隙只有 0.05 m）
+      # 太大：远离障碍的惩罚会把“贴边通过”的轨迹代价拉爆，甚至找不到解。
+      # 两者都需要用同一个目标做 A/B（见 task 包 README 的 planner 一节）。
+      collision_clearance: 0.02
+      collision_threshold: 0.07
+      use_stochastic_descent: false
+      # quintic-spline（默认，无 OMPL 依赖）/ linear（直线插值，窄空间常更好）/
+      # 本任务只用 quintic-spline，不启用依赖采样规划轨迹的初始化。
+      trajectory_initialization_method: "quintic-spline"
+      enable_failure_recovery: false      # 失败时自动换参数重试（官方模板也开）
+      max_recovery_attempts: 5

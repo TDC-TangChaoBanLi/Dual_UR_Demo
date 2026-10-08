@@ -1,0 +1,16 @@
+string arm
+int32 lens
+int32[] allowed_lenses
+string grasp_face
+string[] allowed_faces
+float64 phase_deg
+float64[] allowed_phases_deg
+bool randomize
+---
+bool success
+int32 lens
+string grasp_face
+float64 phase_deg
+string message
+---
+string stage

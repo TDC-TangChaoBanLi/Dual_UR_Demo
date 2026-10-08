@@ -11,8 +11,8 @@ from launch_ros.substitutions import FindPackageShare
 MOVEIT_CONFIG_PACKAGE = "lab_bench_moveit_config"
 DESCRIPTION_PACKAGE = "lab_bench_description"
 
-# 这里改成你的纯描述 xacro 文件名
-DESCRIPTION_FILE = "urdf/lab_bench.xacro"
+# 纯描述 xacro 入口（注意在 xacro/ 下，不是 urdf/ —— urdf/lab_bench.xacro 是过期路径）
+DESCRIPTION_FILE = "xacro/lab_bench.xacro"
 MOVEIT_CONTROLLER_YAML = "config/moveit_controllers_SimpleControllerManager.yaml"
 SRDF_FILE = "config/lab_bench.srdf"
 

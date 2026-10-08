@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>space_sim_task_control</name>
+  <version>0.1.0</version>
+  <description>
+    space_sim 双臂镜片基础动作服务端与 YAML/Python 流程客户端。
+    两臂 STOMP 规划并发执行；MuJoCo 插件负责实际对接和释放。
+  </description>
+  <maintainer email="lihao_0630@qq.com">tdc</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+
+  <depend>rclcpp</depend>
+  <depend>rclcpp_action</depend>
+  <depend>rcl_interfaces</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>shape_msgs</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>control_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>moveit_msgs</depend>
+  <depend>moveit_ros_planning_interface</depend>
+  <depend>moveit_ros_planning</depend>
+  <depend>moveit_core</depend>
+  <exec_depend>moveit_planners_stomp</exec_depend>
+  <exec_depend>space_sim_stomp_planner</exec_depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>eigen</depend>
+  <depend>ament_index_cpp</depend>
+  <!-- 场景接口：site 位姿读取（god）与对接口对接/释放（dock） -->
+  <depend>mujoco_god_plugin</depend>
+  <depend>mujoco_dock_sim_plugin</depend>
+  <depend>mujoco_ros2_control_msgs</depend>
+  <depend>controller_manager_msgs</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

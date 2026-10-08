@@ -125,6 +125,12 @@ ros2 control switch_controllers --deactivate arm_B_ur_forward_position_controlle
 ros2 launch launch_controller start_moveit_group.launch.py env:=lab_bench launch_rviz:=true
 ```
 
+> `start_moveit_group.launch.py` 不认白名单：`env` 给任意已构建的 `{env}_moveit_config` 都行，
+> 带 `_mujoco` 后缀的环境自动重定向到基环境（`space_sim_mujoco` → `space_sim_moveit_config`），
+> 规划器（含 chomp / stomp）参数全部来自该包的 `config/planning_pipelines.yaml`。
+> 每个 `*_moveit_config` 包只保留三种调试入口：`rviz2.launch.py`（只 RViz）、
+> `demo.launch.py`（**只 move_group**，默认带 RViz）、`start_<env>_servo.launch.py`（只 Servo，目前仅 lab_bench）。
+
 启动 MoveIt servo：
 
 ```bash

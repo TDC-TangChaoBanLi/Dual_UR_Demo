@@ -156,9 +156,9 @@
     <body name="base_link" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
       <body name="satellite" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
         <inertial mass="300.0" diaginertia="18.0 18.0 18.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
-        <geom class="collision" name="COLLISION_satellite_0" type="box" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.3 0.3 0.3"/>
-        <geom class="visual" name="VISUAL_satellite_0" type="box" material="satellite_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.3 0.3 0.3"/>
-        <body name="len_shelf" pos="0 0 0.30" quat="1.0 0.0 0.0 0.0">
+        <geom class="collision" name="COLLISION_satellite_0" type="box" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.3 0.3 0.25"/>
+        <geom class="visual" name="VISUAL_satellite_0" type="box" material="satellite_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.3 0.3 0.25"/>
+        <body name="len_shelf" pos="0 0 0.25" quat="1.0 0.0 0.0 0.0">
           <inertial mass="5.0" diaginertia="0.032292 0.032292 0.0625" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
           <geom class="collision" name="COLLISION_len_shelf_0" type="cylinder" pos="0 0 0.75" quat="1.0 0.0 0.0 0.0" size="0.02 0.75"/>
           <geom class="visual" name="VISUAL_len_shelf_0" type="cylinder" material="len_shelf_material" pos="0 0 0.75" quat="1.0 0.0 0.0 0.0" size="0.02 0.75"/>
@@ -193,7 +193,7 @@
           <geom class="visual" name="VISUAL_solar_panel_B_2" type="mesh" mesh="MESH_solar_panel_obj_2" material="solar_panel_obj_2_mat0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
           <geom class="visual" name="VISUAL_solar_panel_B_3" type="mesh" mesh="MESH_solar_panel_obj_3" material="solar_panel_obj_3_mat2" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
         </body>
-        <body name="len_dock_pannel" pos="0 0 -0.31" quat="1.0 0.0 0.0 0.0">
+        <body name="len_dock_pannel" pos="0 0 -0.26" quat="1.0 0.0 0.0 0.0">
           <inertial mass="5.0" diaginertia="0.15017 0.15017 0.3" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
           <geom class="collision" name="COLLISION_len_dock_pannel_0" type="box" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.3 0.3 0.01"/>
           <geom class="visual" name="VISUAL_len_dock_pannel_0" type="box" material="len_dock_pannel_material" pos="0 0 0" quat="1.0 0.0 0.0 0.0" size="0.3 0.3 0.01"/>
@@ -493,7 +493,7 @@
       </body>
     </body>
     <light name="default_light" pos="5 0 5" dir="-1 0 -1" directional="true" intensity="100000"/>
-    <body name="len_ring_1" pos="0.0 0.07239959634508833 -0.6084004144862055" quat="0.499999999898866 -0.5000000001011341 -0.5000000001011342 -0.4999999998988659">
+    <body name="len_ring_1" pos="0.0 0.07239959634508833 -0.5584004144862056" quat="0.499999999898866 -0.5000000001011341 -0.5000000001011342 -0.4999999998988659">
       <inertial mass="5.0" diaginertia="0.11207 0.14549 0.25548" pos="0 0 -0.025" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_len_ring_1_0" type="mesh" mesh="MESH_len_ring1_binary" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_1_0" type="mesh" mesh="MESH_len_ring1_obj_0" material="len_ring1_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -507,7 +507,7 @@
       <site name="len_ring_1_S5" pos="0.128700 0.230800 -0.022400" quat="0.188231 0.158375 0.624029 0.741670"/>
       <freejoint name="len_ring_1_freejoint"/>
     </body>
-    <body name="len_ring_2" pos="0.0 0.1723995963450883 -0.6084004144862055" quat="0.499999999898866 -0.5000000001011341 -0.5000000001011342 -0.4999999998988659">
+    <body name="len_ring_2" pos="0.0 0.1723995963450883 -0.5584004144862056" quat="0.499999999898866 -0.5000000001011341 -0.5000000001011342 -0.4999999998988659">
       <inertial mass="5.0" diaginertia="0.11207 0.14549 0.25548" pos="0 0 -0.025" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_len_ring_2_0" type="mesh" mesh="MESH_len_ring1_binary" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_2_0" type="mesh" mesh="MESH_len_ring1_obj_0" material="len_ring1_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -521,7 +521,7 @@
       <site name="len_ring_2_S5" pos="0.128700 0.230800 -0.022400" quat="0.188231 0.158375 0.624029 0.741670"/>
       <freejoint name="len_ring_2_freejoint"/>
     </body>
-    <body name="len_ring_3" pos="0.0 0.27239959634508837 -0.6084004144862055" quat="0.499999999898866 -0.5000000001011341 -0.5000000001011342 -0.4999999998988659">
+    <body name="len_ring_3" pos="0.0 0.27239959634508837 -0.5584004144862056" quat="0.499999999898866 -0.5000000001011341 -0.5000000001011342 -0.4999999998988659">
       <inertial mass="5.0" diaginertia="0.11207 0.14549 0.25548" pos="0 0 -0.025" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_len_ring_3_0" type="mesh" mesh="MESH_len_ring1_binary" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_3_0" type="mesh" mesh="MESH_len_ring1_obj_0" material="len_ring1_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -535,7 +535,7 @@
       <site name="len_ring_3_S5" pos="0.128700 0.230800 -0.022400" quat="0.188231 0.158375 0.624029 0.741670"/>
       <freejoint name="len_ring_3_freejoint"/>
     </body>
-    <body name="len_ring_4" pos="0.0 -0.07239959634508833 -0.6084004144862055" quat="0.499999999898866 0.5000000001011341 -0.5000000001011342 0.4999999998988659">
+    <body name="len_ring_4" pos="0.0 -0.07239959634508833 -0.5584004144862056" quat="0.499999999898866 0.5000000001011341 -0.5000000001011342 0.4999999998988659">
       <inertial mass="5.0" diaginertia="0.11207 0.14549 0.25548" pos="0 0 -0.025" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_len_ring_4_0" type="mesh" mesh="MESH_len_ring1_binary" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_4_0" type="mesh" mesh="MESH_len_ring1_obj_0" material="len_ring1_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -549,7 +549,7 @@
       <site name="len_ring_4_S5" pos="0.128700 0.230800 -0.022400" quat="0.188231 0.158375 0.624029 0.741670"/>
       <freejoint name="len_ring_4_freejoint"/>
     </body>
-    <body name="len_ring_5" pos="0.0 -0.1723995963450883 -0.6084004144862055" quat="0.499999999898866 0.5000000001011341 -0.5000000001011342 0.4999999998988659">
+    <body name="len_ring_5" pos="0.0 -0.1723995963450883 -0.5584004144862056" quat="0.499999999898866 0.5000000001011341 -0.5000000001011342 0.4999999998988659">
       <inertial mass="5.0" diaginertia="0.11207 0.14549 0.25548" pos="0 0 -0.025" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_len_ring_5_0" type="mesh" mesh="MESH_len_ring1_binary" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_5_0" type="mesh" mesh="MESH_len_ring1_obj_0" material="len_ring1_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
@@ -563,7 +563,7 @@
       <site name="len_ring_5_S5" pos="0.128700 0.230800 -0.022400" quat="0.188231 0.158375 0.624029 0.741670"/>
       <freejoint name="len_ring_5_freejoint"/>
     </body>
-    <body name="len_ring_6" pos="0.0 -0.27239959634508837 -0.6084004144862055" quat="0.499999999898866 0.5000000001011341 -0.5000000001011342 0.4999999998988659">
+    <body name="len_ring_6" pos="0.0 -0.27239959634508837 -0.5584004144862056" quat="0.499999999898866 0.5000000001011341 -0.5000000001011342 0.4999999998988659">
       <inertial mass="5.0" diaginertia="0.11207 0.14549 0.25548" pos="0 0 -0.025" quat="1.0 0.0 0.0 0.0"/>
       <geom class="collision" name="COLLISION_len_ring_6_0" type="mesh" mesh="MESH_len_ring1_binary" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>
       <geom class="visual" name="VISUAL_len_ring_6_0" type="mesh" mesh="MESH_len_ring1_obj_0" material="len_ring1_obj_0_mat_bottom" pos="0 0 0" quat="1.0 0.0 0.0 0.0"/>

@@ -29,7 +29,8 @@ DESCRIPTION_PACKAGE = "lab_bench_description"
 # File path constants
 # ============================================================
 
-DESCRIPTION_FILE = "urdf/lab_bench.xacro"
+# 纯描述 xacro 入口（注意在 xacro/ 下，不是 urdf/ —— urdf/lab_bench.xacro 是过期路径）
+DESCRIPTION_FILE = "xacro/lab_bench.xacro"
 
 JOINT_LIMITS_FILE = "config/joint_limits.yaml"
 KINEMATICS_FILE = "config/kinematics.yaml"
@@ -66,6 +67,11 @@ ARM_B_NODE_NAME_PREFIX = "arm_B_"
 SERVO_NODE_NAME_SUFFIX = "servo_node"
 
 JOINT_STATE_TOPIC = "/joint_states"
+
+# 位姿目标测试（取代原来 launch/pub_arm_A_pose.py 那个脚本；数值按当前末端附近改）:
+#   ros2 topic pub -r 50 /arm_A_servo_node/pose_target_cmds geometry_msgs/msg/PoseStamped \
+#     "{header: {frame_id: world}, pose: {position: {x: 0.35, y: 0.7, z: 1.3},
+#        orientation: {w: 0.5, x: 0.5, y: -0.5, z: -0.5}}}"
 
 
 def load_file(package_name: str, relative_file_path: str) -> str:

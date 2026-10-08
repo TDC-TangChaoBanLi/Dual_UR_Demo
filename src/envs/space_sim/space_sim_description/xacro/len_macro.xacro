@@ -2,6 +2,20 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
   <!-- ============================================================ -->
+  <!-- 可搬运镜片 (len_ring_1..6) 是否作为 URDF link 生成              -->
+  <!-- ============================================================ -->
+  <!--
+    默认 true：MuJoCo 仿真需要这些 link（它们同时是仿真里被搬运/装配的浮动体）。
+
+    生成 **MoveIt 规划场景** 时传 false（见 launch_controller/start_moveit_group.launch.py）：
+    这些镜片是“会动的物体”，不应该当作机械人的固定 link —— 否则它们在规划场景里被钉死在
+    初始储存位（“幽灵镜片”），抓取后还得靠 ACM 豁免去绕开，装配完还会在储存位留个假障碍。
+    改为：规划场景里由任务节点用 CollisionObject 把真实网格加进世界系，抓取时 attach 到
+    末端，装配到位后再固定到安装位置。
+  -->
+  <xacro:arg name="include_movable_lenses" default="true"/>
+
+  <!-- ============================================================ -->
   <!-- space_sim 镜片存储/对接几何宏                                   -->
   <!-- ============================================================ -->
   <!--
@@ -155,11 +169,14 @@
       xyz="0 ${y + mirror_sign*0.001736} -0.020152"
       rpy="${-mirror_sign*dock_tilt} 0 0"/>
 
-    <xacro:len_ring_macro
-      name="len_ring_${index}"
-      parent="len_dock_${index}"
-      xyz="0 ${0.068667*mirror_sign} -0.270433"
-      rpy="0 -1.396263402 ${-mirror_sign*pi/2}"/>
+    <!-- 可搬运镜片：只在 include_movable_lenses=true 时才生成（MoveIt 规划场景里不生成） -->
+    <xacro:if value="$(arg include_movable_lenses)">
+      <xacro:len_ring_macro
+        name="len_ring_${index}"
+        parent="len_dock_${index}"
+        xyz="0 ${0.068667*mirror_sign} -0.270433"
+        rpy="0 -1.396263402 ${-mirror_sign*pi/2}"/>
+    </xacro:if>
   </xacro:macro>
 
   <!-- ============================================================ -->
@@ -174,7 +191,7 @@
 
     <!-- 接口盘：卫星底面下方 -->
     <xacro:len_dock_pannel_macro name="len_dock_pannel" parent="${parent}">
-      <origin xyz="0 0 -0.31" rpy="0 0 0"/>
+      <origin xyz="0 0 -0.26" rpy="0 0 0"/>
     </xacro:len_dock_pannel_macro>
 
     <!-- 6 个镜片接口 + 6 片镜片 -->

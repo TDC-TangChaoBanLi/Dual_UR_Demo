@@ -67,8 +67,8 @@ ros2 run test_control test_ros2_control --ros-args -p arm_target:=A -p goal_posi
 
 ```bash
 # 先启动底层控制器与 MoveIt
-ros2 launch launch_controller start_traditional_controllers.launch.py launch_rviz:=false
-ros2 launch lab_bench_moveit_config start_lab_bench_moveit.launch.py launch_rviz:=true
+ros2 launch launch_controller start_traditional_controllers.launch.py env:=lab_bench launch_rviz:=false
+ros2 launch launch_controller start_moveit_group.launch.py env:=lab_bench launch_rviz:=true
 
 # 再运行规划测试
 ros2 run test_control test_move_group

@@ -1,0 +1,9 @@
+string arm
+float64 hover_z
+float64 exit_distance
+---
+bool success
+int32 lens
+string message
+---
+string stage
