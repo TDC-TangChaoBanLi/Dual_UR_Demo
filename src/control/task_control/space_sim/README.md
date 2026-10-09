@@ -128,6 +128,8 @@ B 臂等待 S0 完成才开始 S3，也不再让 S4 等待 S5。
 和 [assembly_flow_s2_then_s3.yaml](config/assembly_flow_s2_then_s3.yaml)，分别安排
 S1→S0 与 S2→S3 为前两片，同时改变储存器取片顺序。配置中的
 `expected_prefix` 会检查实际安装顺序；六片完成后还会检查目标面集合。
+自带备用配置仅保留前两片顺序所需的跨臂依赖；后续取片和转运独立推进，
+共享区冲突由执行器复检和最后插入阶段的邻面互斥处理。
 `return_home` action 输入默认关闭，可逐任务开启；当前默认 YAML 只在每臂最后一片装配后开启。
 `after` 仅在进入中心共享区前等待指定中心面清场；`before_pick: exit:S1`
 或 `before_pick: S5` 用于相邻镜片共享存储区与中心装配区域时的防碰撞通行。
@@ -136,5 +138,82 @@ S1→S0 与 S2→S3 为前两片，同时改变储存器取片顺序。配置中
 `randomize_centre`。中心装配若仅规划失败，`dock_retries`（默认 2）允许以
 当前真实关节状态重新求解；对接或释放后失败不会重放动作。若仍失败，Python
 流程退出非零状态，保留当前镜片状态供诊断。
-若规划失败时对侧动作仍在执行，流程等待该动作状态变化后重新求解，
-避免用同一场景状态快速重复三次失败规划；初始化 service 响应超时会重试一次。
+独立规划失败不会等待对侧动作完成；只有明确的共享区域碰撞冲突才协调让行。
+初始化 service 响应超时会重试一次。
+
+## 通用 STOMP / MPC 执行栈验证
+
+通用实现位于 `lib/multi_arm_motion`。它提供 `/execute_motion` 并发 action，
+共享 MPC 循环统一检查两臂运动，控制器指令均附带经过检查的减速停止尾段。
+默认 `motion_backend:=direct` 保持原控制器后端。可选择 `motion_backend:=hybrid`
+让镜片 action 通过通用执行器运动；此时任务节点不会直接向控制器发轨迹。
+不要同时运行其他会向相同控制器发送轨迹的任务节点。
+
+在同一个独立 ROS domain 中启动 MuJoCo 控制器和 MoveIt，然后运行：
+
+```bash
+ros2 launch space_sim_moveit_config hybrid_motion.launch.py enable_execution:=true
+python3 src/control/task_control/space_sim/test/test_hybrid_motion.py \
+  --output /tmp/hybrid_motion_validation.json
+```
+
+测试向两臂同时提交不同关节目标，记录实际关节速度重叠、两路控制器相同的
+起始时间戳、最终关节误差，并用 MoveIt 复检测得的中间状态。`--offset -0.04`
+可反向复跑。停止、恢复及预测缓存重置分别使用 `/stop_motion`、
+`/resume_motion` 和 `/reset_motion_predictions`；仿真重置后应从新鲜静止反馈恢复。
+更严格的装配精度需配置执行容差，并由镜片 action 根据实时 site 位姿核验对接。
+
+装配验证入口（同一隔离 domain，先启动 MuJoCo 和 MoveIt）：
+
+```bash
+ros2 launch space_sim_moveit_config hybrid_motion.launch.py enable_execution:=true \
+  joint_tolerance:=0.0002 control_period:=0.2 \
+  command_lead:=0.16 optimization_budget:=0.05
+ros2 launch space_sim_task_control task_actions.launch.py motion_backend:=hybrid
+```
+
+卫星部署的默认参数为控制周期 0.2 s、计算预算 0.05 s、提前量 0.16 s、
+关节到位容差 0.0002 rad；通用库的默认参数不随此部署修改。
+
+以上两个命令在不同终端运行。自由空间动作先由任务层生成参考路径，交给动态
+STOMP 按其他机械臂未来轨迹再次优化；最终时间网格在优化前确定，执行前复检。
+2 cm 直线段由 MoveIt 笛卡尔插补产生，提交为不再优化几何的参考轨迹；
+MPC 同时检查 2 mm 轴线管道及姿态约束，不能通过避障偏离接口轴。
+移出存储区的镜面竖直约束同时传入动态 STOMP 与 MPC。
+`home_planning_time_s` 默认为 30 秒，单独用于装配后回 home 的动态全局优化；
+`centre_planning_time_s` 默认为 30 秒，用于到中心预装配位的动态全局优化。
+其他自由空间动作使用 `planning_time_s`（默认 12 秒）。优化失败仍明确返回失败，
+回 home 的安全中继位也必须重新规划和复检。
+
+混合后端会在选择预抓取 IK 分支时预检后续 2 cm 接近段，使用完整场景和
+5 mm 执行间距；只在预检场景中允许预定镜片与本臂对接面的接触。
+预检参考不会执行，实际接近仍重新计算并由 MPC 检查。
+自由空间动态 STOMP 在执行前失败时尝试其他确定性 IK 终点；
+接触直线失败不会改为自由空间轨迹。按组制动候选允许未受阻的机械臂继续推进，
+混合轨迹仍须通过双臂碰撞、任务约束和制动尾段检查。
+初始化/重置会先停止通用执行器并清除预测，物理环境重置完成后从新鲜反馈恢复。
+
+持片运动每 200 ms 检查一次镜片在 TCP 体坐标系中的相对位姿，位置误差限
+3 mm、姿态误差限 0.03 rad。监测读取同一物理时间戳的镜片和 TCP 位姿订阅快照，
+不在执行等待中同步调用位姿服务；快照超过 0.5 s 未更新则明确报告数据失效。
+超差或数据失效进入错误状态
+并请求停止双臂执行，因为附着对象预测已不再可信。该过程不会重置仿真或传送镜片。
+中心装配保持原抓取变换，不通过重新计算变换掩盖镜片偏移。此检查是采样监测，
+不构成连续持片或物理接触安全证明。
+
+`verify_assembly.py --record` 同时采样通用 MuJoCo `get_contacts` 服务。
+运行 `python3 test/summarize_contacts.py <记录目录>` 汇总物体对、最小间距和最大法向力；
+同时检查首次接触阶段、邻面关系，以及存储器下降离开和夹爪撤退后的接触结束时间。
+接口接触必须结合阶段日志审查，不能仅凭分类名自动判定安全。
+
+执行记录与最终六片对合检查：
+
+```bash
+python3 src/control/task_control/space_sim/test/verify_assembly.py --record --until-flow-end --output /tmp/assembly_validation
+# 流程结束后停止上面的记录程序，再执行只读检查：
+python3 src/control/task_control/space_sim/test/verify_assembly.py --output /tmp/assembly_validation
+```
+
+只读检查从实际 MuJoCo site 位姿匹配六个中心口，要求六片各占一个口、位置误差
+小于 1 mm、姿态误差小于 0.01 rad、无残留附着对象、六片世界碰撞对象齐全，
+并检查最终双臂状态。记录程序保存双臂实际运动重叠、控制器时间戳和采样碰撞检查。

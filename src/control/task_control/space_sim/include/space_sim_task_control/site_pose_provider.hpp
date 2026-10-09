@@ -9,6 +9,10 @@
 #include <optional>
 #include <string>
 #include <utility>
+#include <deque>
+#include <map>
+#include <mutex>
+#include <vector>
 
 #include "rclcpp/rclcpp.hpp"
 #include "space_sim_task_control/types.hpp"
@@ -25,8 +29,12 @@ public:
   explicit SitePoseProvider(const rclcpp::Node::SharedPtr & node, double timeout_s = 5.0);
 
   bool waitForService(double timeout_s);
+  void watch(const std::string & type, const std::string & name);
+  std::optional<Eigen::Isometry3d> cachedRelative(
+    const std::string & object_key, const std::string & reference_key, double max_age_s);
   std::optional<Eigen::Isometry3d> get(
-    const std::string & type, const std::string & name, const std::string & frame_id = "");
+    const std::string & type, const std::string & name, const std::string & frame_id = "",
+    double timeout_s = 0.0);
 
   std::optional<Eigen::Isometry3d> lensBody(int lens);
   std::optional<Eigen::Isometry3d> lensFace(int lens, const std::string & face);
@@ -45,6 +53,14 @@ private:
   rclcpp::Client<GetObjectPose>::SharedPtr client_;
   double timeout_s_;
   int failures_ = 0;
+  struct Snapshot {
+    geometry_msgs::msg::PoseStamped pose;
+    std::chrono::steady_clock::time_point received;
+  };
+  std::mutex cache_mutex_;
+  std::map<std::string, std::deque<Snapshot>> cache_;
+  rclcpp::CallbackGroup::SharedPtr cache_group_;
+  std::vector<rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr> subscriptions_;
 };
 
 }  // namespace space_sim_task_control

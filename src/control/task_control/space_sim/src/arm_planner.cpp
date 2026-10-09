@@ -1,5 +1,6 @@
 #include "space_sim_task_control/arm_planner.hpp"
 #include "space_sim_task_control/diagnostics.hpp"
+#include <multi_arm_motion_core/distance.hpp>
 
 #include <algorithm>
 #include <chrono>
@@ -87,6 +88,7 @@ ArmPlanner::ArmPlanner(
   }
   // 位姿目标 -> IK 用（move_group 侧解，客户端没有运动学插件）
   ik_client_ = node_->create_client<moveit_msgs::srv::GetPositionIK>("/compute_ik");
+  scene_client_ = node_->create_client<moveit_msgs::srv::GetPlanningScene>("/get_planning_scene");
   validity_client_ = node_->create_client<moveit_msgs::srv::GetStateValidity>(
     "/check_state_validity");
 }
@@ -380,7 +382,8 @@ bool ArmPlanner::hasIk(const Eigen::Isometry3d & target, std::string & err)
 bool ArmPlanner::planPose(
   const Eigen::Isometry3d & target, const std::vector<double> & seed_joints,
   moveit_msgs::msg::RobotTrajectory & trajectory, std::string & err,
-  bool optimizer_only, const Eigen::Isometry3d * lens_in_tcp, double vertical_tolerance)
+  bool optimizer_only, const Eigen::Isometry3d * lens_in_tcp, double vertical_tolerance,
+  const std::vector<std::vector<double>> & rejected_endpoints)
 {
   // 每次请求单独设置路径约束，返回时清除，避免约束泄漏到装配/回 home。
   struct ClearPathConstraints {
@@ -471,7 +474,7 @@ bool ArmPlanner::planPose(
       seeds.push_back(std::move(seed));
     }
   }
-  std::vector<std::vector<double>> attempted;
+  std::vector<std::vector<double>> attempted = rejected_endpoints;
   std::string failures;
   size_t seed_index = 0;
   for (const auto & seed : seeds) {
@@ -502,8 +505,9 @@ bool ArmPlanner::planPose(
     if (planJoints(joints, trajectory, plan_err, optimizer_only)) {
       // 一个 IK 支路的 STOMP 轨迹不满足镜面竖直时，继续其他支路，
       // 不把首个无碰撞但姿态无效的轨迹交给执行器。
-      if (!lens_in_tcp ||
-          checkTaskSpacePath(trajectory, 0.0, lens_in_tcp, vertical_tolerance, plan_err))
+      if ((!lens_in_tcp ||
+          checkTaskSpacePath(trajectory, 0.0, lens_in_tcp, vertical_tolerance, plan_err)) &&
+          (!approach_check_ || validateFollowingApproach(trajectory, plan_err)))
         return true;
     }
     failures += plan_err + "; ";
@@ -512,6 +516,55 @@ bool ArmPlanner::planPose(
   }
   err = failures.empty() ? "没有可用 IK 解" : failures;
   return false;
+}
+
+bool ArmPlanner::validateFollowingApproach(
+  const moveit_msgs::msg::RobotTrajectory & trajectory, std::string & err)
+{
+  if (!approach_check_) return true;
+  const auto check = *approach_check_;
+  auto request = std::make_shared<moveit_msgs::srv::GetPlanningScene::Request>();
+  request->components.components = 1023;
+  auto future = scene_client_->async_send_request(request);
+  if (future.wait_for(std::chrono::seconds(3)) != std::future_status::ready) {
+    err = "接近段预检无法读取规划场景"; return false;
+  }
+  planning_scene::PlanningScene scene(mg_.getRobotModel());
+  scene.setPlanningSceneMsg(future.get()->scene);
+  // Only the reserved lens/dock is an intentional contact in this preview.
+  scene.getAllowedCollisionMatrixNonConst().setEntry(
+    "space_sim_carried_lens_" + std::to_string(check.lens), group_ + "_gripper_dock", true);
+  moveit_msgs::msg::RobotTrajectory approach;
+  setVirtualStartFromTrajectory(trajectory);
+  struct RestoreStart { ArmPlanner & planner; ~RestoreStart() { planner.resetStartStateToCurrent(); } } restore{*this};
+  // Generate an IK preview; every resulting state is checked below against
+  // the authoritative geometry, ACM and execution clearance before acceptance.
+  const double fraction = cartesianTo(check.target, .002, false, approach, err);
+  if (!err.empty() || fraction < .999 || approach.joint_trajectory.points.empty()) {
+    err = "后续2cm接近段预检失败，完成率=" + std::to_string(fraction) + "; " + err;
+    return false;
+  }
+  auto state = scene.getCurrentState();
+  auto previous = approach.joint_trajectory.points.front().positions;
+  for (const auto & point : approach.joint_trajectory.points) {
+    double gap = 0.;
+    for (size_t j = 0; j < previous.size(); ++j) gap = std::max(gap, std::abs(point.positions[j]-previous[j]));
+    const int samples = std::max(1, static_cast<int>(std::ceil(gap/.01)));
+    for (int k = 0; k <= samples; ++k) {
+    for (size_t j = 0; j < approach.joint_trajectory.joint_names.size(); ++j)
+      state.setVariablePosition(approach.joint_trajectory.joint_names[j],
+        previous[j] + (point.positions[j]-previous[j])*k/samples);
+    state.update();
+    const double distance = multi_arm_motion::minimumDistance(scene, state, group_, check.clearance + .001);
+    if (!state.satisfiesBounds(state.getJointModelGroup(group_)) || distance < check.clearance || std::isnan(distance)) {
+      err = "后续2cm接近段IK分支间距/限位预检失败，间距=" + std::to_string(distance) +
+        " m，要求=" + std::to_string(check.clearance) + " m";
+      return false;
+    }
+    }
+    previous = point.positions;
+  }
+  return true;
 }
 
 bool ArmPlanner::planJoints(
@@ -541,11 +594,11 @@ bool ArmPlanner::planJoints(
     return true;
   }
   std::string direct_err;
-  RCLCPP_WARN(node_->get_logger(), "[规划回退] %s STOMP失败：%s；下一步=关节空间确定性直线插值+逐段碰撞检查（不是末端直线）",
+  RCLCPP_WARN(node_->get_logger(), "[参考生成回退] %s 静态STOMP失败：%s；下一步=关节空间确定性直线插值参考+逐段碰撞检查；hybrid后端仍须动态STOMP优化和MPC复检",
     diagnostic_context_.c_str(), log.c_str());
   if (group_ != "arm_BOTH" && !virtual_start_ &&
       planCollisionCheckedDirect(joints, trajectory, direct_err)) {
-    RCLCPP_INFO(node_->get_logger(), "[回退成功] %s 使用=关节空间确定性直线插值，已通过碰撞检查",
+    RCLCPP_INFO(node_->get_logger(), "[参考生成成功] %s 使用=关节空间确定性直线插值，已通过静态碰撞检查；执行验证尚未完成",
       diagnostic_context_.c_str());
     return true;
   }

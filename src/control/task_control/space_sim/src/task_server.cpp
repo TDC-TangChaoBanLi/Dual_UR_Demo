@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <atomic>
 #include <chrono>
+#include <condition_variable>
 #include <cmath>
 #include <functional>
 #include <map>
@@ -12,6 +13,7 @@
 #include <sstream>
 #include <iomanip>
 #include <string>
+#include <stdexcept>
 #include <thread>
 #include <type_traits>
 #include <vector>
@@ -114,11 +116,19 @@ public:
                             node_->declare_parameter<double>("storage_exit_dx", 0.6)),
     dock_(node_), scene_(node_), rng_(node_->declare_parameter<int>("seed", 7))
   {
+    for (int lens = 1; lens <= 6; ++lens) sites_.watch("body", st::lensBodyName(lens));
+    for (const auto & spec : st::arms()) sites_.watch("site", spec.tcp_site);
     approach_ = node_->get_parameter("approach_m").as_double();
     exit_dx_ = node_->get_parameter("storage_exit_dx").as_double();
     axis_tolerance_ = node_->declare_parameter<double>("axis_tolerance_m", 0.008);
     vertical_tolerance_ = node_->declare_parameter<double>("vertical_tolerance", 0.10);
     planning_time_ = node_->declare_parameter<double>("planning_time_s", 12.0);
+    centre_planning_time_ = node_->declare_parameter<double>("centre_planning_time_s", 30.0);
+    if(!std::isfinite(centre_planning_time_)||centre_planning_time_<=0||centre_planning_time_>30)
+      throw std::invalid_argument("centre_planning_time_s must be in (0,30]");
+    home_planning_time_ = node_->declare_parameter<double>("home_planning_time_s", 30.0);
+    if(!std::isfinite(home_planning_time_)||home_planning_time_<=0||home_planning_time_>30)
+      throw std::invalid_argument("home_planning_time_s must be in (0,30]");
     velocity_scale_ = node_->declare_parameter<double>("velocity_scale", 0.1);
     acceleration_scale_ = node_->declare_parameter<double>("acceleration_scale", 0.1);
     motion_.setNode(node_);
@@ -407,6 +417,7 @@ private:
       if (!held) weld(spec.name == "arm_A" ? "tcp_weld_A" : "tcp_weld_B", false);
     }
     RCLCPP_INFO(node_->get_logger(), "[环境重置] 请求校验通过；重置MuJoCo、控制器、MoveIt与任务记录");
+    if (!motion_.resetExecutor(false, err)) return false;
     initialized_ = false;
     if (!switchTrajectoryControllers(false, err)) return false;
     auto response = reset_scene_client_->async_send_request(reset);
@@ -491,6 +502,7 @@ private:
         return false;
       }
     }
+    if (!motion_.resetExecutor(true, err)) return false;
     initialized_ = true;
     RCLCPP_INFO(node_->get_logger(), "[环境重置完成] MuJoCo与MoveIt状态已同步");
     return true;
@@ -510,6 +522,10 @@ private:
 
   bool executeMotion(ArmContext & ctx, const st::MotionRequest & req, std::string & err)
   {
+    if (ctx.state == ArmContext::State::error) {
+      err = "机械臂任务已进入错误状态，禁止继续运动: " + context(ctx);
+      return false;
+    }
     ctx.log_stage = req.what;
     ctx.planner->setDiagnosticContext(context(ctx));
     const char * planner = req.kind == st::MotionRequest::Kind::kCartesian ?
@@ -517,16 +533,43 @@ private:
       "stomp/space_sim_stomp/StompPlanner";
     RCLCPP_INFO(node_->get_logger(), "[运动开始] %s 规划方式=%s",
       context(ctx).c_str(), planner);
-    const bool ok = motion_.move(ctx.spec->name, req, err);
+    auto guarded = req;
+    if (ctx.state == ArmContext::State::storage_docked ||
+        ctx.state == ArmContext::State::storage_released ||
+        ctx.state == ArmContext::State::carried) {
+      guarded.execution_guard = [this, &ctx](std::string & reason) {
+        const auto actual = sites_.cachedRelative("body/" + st::lensBodyName(ctx.lens),
+          "site/" + ctx.spec->tcp_site, 0.5);
+        const double position = actual ?
+          (actual->translation() - ctx.lens_in_tcp.translation()).norm() : INFINITY;
+        const double angle = actual ? std::abs(Eigen::AngleAxisd(
+          actual->rotation() * ctx.lens_in_tcp.rotation().transpose()).angle()) : INFINITY;
+        if (position <= 0.003 && angle <= 0.03) return true;
+        reason = std::string(actual ? "持片检查失败/疑似脱落: " : "持片位姿快照不可用或过期: ") + context(ctx) +
+          " TCP相对位置误差(m)=" + std::to_string(position) +
+          " 姿态误差(rad)=" + std::to_string(angle);
+        ctx.state = ArmContext::State::error;
+        // The attached-object prediction is no longer trustworthy for peers.
+        // Stop both arms without resetting physics or moving the payload.
+        motion_.stopExecution();
+        return false;
+      };
+    }
+    if (guarded.execution_guard && !guarded.execution_guard(err)) throw std::runtime_error(err);
+    const bool ok = motion_.move(ctx.spec->name, guarded, err);
     if (ok) RCLCPP_INFO(node_->get_logger(), "[运动完成] %s", context(ctx).c_str());
     else RCLCPP_WARN(node_->get_logger(), "[运动失败] %s 原因=%s（后续候选/回退另行记录）",
       context(ctx).c_str(), err.c_str());
+    // Fatal payload faults must leave all candidate loops immediately. Preserve
+    // the measured cause in the action result instead of overwriting it with
+    // subsequent "already in error" attempts.
+    if (!ok && ctx.state == ArmContext::State::error) throw std::runtime_error(err);
     return ok;
   }
 
   bool move(ArmContext & ctx, const Eigen::Isometry3d & target, const std::string & stage,
             std::string & err, double axis = 0.0, bool vertical = false,
-            bool cartesian = false, bool optimizer_only = false)
+            bool cartesian = false, bool optimizer_only = false, double planning_time_s = 0.0)
   {
     st::MotionRequest req;
     req.kind = cartesian ? st::MotionRequest::Kind::kCartesian : st::MotionRequest::Kind::kPose;
@@ -535,6 +578,7 @@ private:
     req.axis_tolerance_m = axis;
     req.mirror_vertical = vertical;
     req.optimizer_only = optimizer_only;
+    req.planning_time_s = planning_time_s;
     req.lens_in_tcp = ctx.lens_in_tcp;
     req.vertical_tolerance = vertical_tolerance_;
     return executeMotion(ctx, req, err);
@@ -690,13 +734,30 @@ private:
             continue;
           }
           feedback("pregrasp");
-          if (!move(ctx, task.pregrasp, "接近储存镜片", last)) {
+          if (motion_.hybridEnabled()) ctx.planner->checkFollowingApproach(task.grasp, lens, .005);
+          const bool pregrasp_ok = move(ctx, task.pregrasp, "接近储存镜片", last);
+          ctx.planner->clearFollowingApproach();
+          if (!pregrasp_ok) {
             RCLCPP_WARN(node_->get_logger(), "[回退] %s 原因=%s；下一步=其他允许的抓取候选",
               context(ctx).c_str(), last.c_str());
             continue;
           }
           feedback("grasp_axis");
+          // The mating dock is an intentional contact surface. Authorize only
+          // this arm's dock against its reserved lens for the contact segment;
+          // the other arm, wrist and neighbouring lenses remain checked.
+          const std::vector<std::string> contact_links{ctx.spec->name + "_gripper_dock"};
+          if (!scene_.setLensTouch(lens, contact_links, true, last)) {
+            result.message = last;
+            return false;
+          }
           if (!move(ctx, task.grasp, "沿接口轴线对合", last, axis_tolerance_, false, true)) {
+            std::string cleanup;
+            if (!scene_.setLensTouch(lens, contact_links, false, cleanup)) {
+              last += "; 恢复接口碰撞检查失败: " + cleanup;
+              result.message = last;
+              return false;
+            }
             RCLCPP_WARN(node_->get_logger(), "[回退] %s 原因=%s；下一步=其他允许的抓取候选，无 STOMP 直线回退",
               context(ctx).c_str(), last.c_str());
             continue;
@@ -705,6 +766,12 @@ private:
           const auto docked = dock_.dock(ctx.spec->tcp_site, st::lensFaceSite(lens, face), "grasp");
           if (!docked.success) {
             last = docked.message;
+            std::string cleanup;
+            if (!scene_.setLensTouch(lens, contact_links, false, cleanup)) {
+              last += "; 恢复接口碰撞检查失败: " + cleanup;
+              result.message = last;
+              return false;
+            }
             RCLCPP_WARN(node_->get_logger(), "[磁吸失败] %s 原因=%s；下一步=其他允许的抓取候选",
               context(ctx).c_str(), last.c_str());
             continue;
@@ -737,6 +804,15 @@ private:
       result.message = "本臂未持有已取出的储存镜片"; return false;
     }
     std::string err;
+    auto finish_exit = [&](const std::string & message) {
+      if (!scene_.setLensStorageContact(ctx.lens, false, err)) {
+        result.message = "镜片已移出，但恢复存储区碰撞检查失败: " + err;
+        return false;
+      }
+      result.success = true;
+      result.message = message;
+      return true;
+    };
     ctx.log_target = "存储区外侧悬停位；当前抓取接口=" + st::lensFaceSite(ctx.lens, ctx.grasp_face);
     // 移出路径只限制镜面法向的世界 z 分量；允许镜片绕其镜面法向旋转。
     const double sign = ctx.spec->base_position.x() >= 0 ? 1.0 : -1.0;
@@ -790,7 +866,7 @@ private:
       return false;
     };
     if (try_final(start)) {
-      result.success = true; result.message = "镜片已移出储存区"; return true;
+      return finish_exit("镜片已移出储存区");
     }
     // 邻近储存格中的镜片可能挡住向 X 方向的直达路径。先沿储存格
     // 排列方向尝试一小段避让，再重新规划向外移出；每段仍要求镜面竖直。
@@ -806,7 +882,7 @@ private:
         continue;
       }
       if (try_final(ctx.planner->currentTipPose())) {
-        result.success = true; result.message = "镜片经空储存格移出"; return true;
+        return finish_exit("镜片经空储存格移出");
       }
     }
     // 直达 0.6 m 时受腕部关节限位；先以原镜面姿态向外走一段，
@@ -823,7 +899,7 @@ private:
         continue;
       }
       if (try_final(ctx.planner->currentTipPose())) {
-        result.success = true; result.message = "镜片已分段移出储存区"; return true;
+        return finish_exit("镜片已分段移出储存区");
       }
     }
     result.message = "镜面竖直移出失败（尝试 " + std::to_string(failed_attempts) +
@@ -896,6 +972,37 @@ private:
           reserved_faces_.erase(face);
         }
       }};
+      bool contact_active = false;
+      const auto release_contact = [&]() {
+        if (!contact_active) return;
+        {
+          std::lock_guard<std::mutex> lock(state_mutex_);
+          centre_contacts_.erase(face);
+          contact_active = false;
+        }
+        centre_contact_cv_.notify_all();
+      };
+      ScopeExit contact_guard{release_contact};
+      const auto acquire_contact = [&]() {
+        std::unique_lock<std::mutex> lock(state_mutex_);
+        const auto available = [&]() {
+          for (const auto & entry : centre_contacts_) {
+            const int gap = std::abs(int(face[1])-int(entry.first[1]));
+            if (entry.second != ctx.spec->name && (gap == 0 || gap == 1 || gap == 5)) return false;
+          }
+          return true;
+        };
+        if (!available()) {
+          RCLCPP_INFO(node_->get_logger(), "[共享区协调] %s 等待相邻中心面的插入、释放及撤退完成；对侧动作继续执行",
+            context(ctx).c_str());
+          if (!centre_contact_cv_.wait_for(lock, std::chrono::seconds(120), available)) {
+            err = "等待相邻中心面对接共享区超时"; return false;
+          }
+        }
+        centre_contacts_[face] = ctx.spec->name;
+        contact_active = true;
+        return true;
+      };
       const auto centre = sites_.centreFace(face);
       const auto body = sites_.lensBody(ctx.lens);
       const auto s0_body = sites_.get("site", st::lensFaceSite(ctx.lens, "S0"),
@@ -905,23 +1012,26 @@ private:
         "；镜片对接接口=" + st::lensFaceSite(ctx.lens, "S0") +
         "；抓取接口=" + st::lensFaceSite(ctx.lens, ctx.grasp_face);
       RCLCPP_DEBUG(node_->get_logger(), "[中心接口位姿] %s %s", context(ctx).c_str(), poseText(*centre).c_str());
-      ctx.lens_in_tcp = ctx.planner->currentTipPose().inverse() * (*body);
+      // Preserve the verified grasp transform; refreshing it here could hide a
+      // dropped or shifted mirror and produce a false successful assembly.
       const Eigen::Isometry3d lens_goal = (*centre) * st::rotation(st::kQDock) * s0_body->inverse();
       const Eigen::Isometry3d place = lens_goal * ctx.lens_in_tcp.inverse();
       const Eigen::Vector3d axis = st::normalOf(*centre).normalized();
       Eigen::Isometry3d preplace = place;
       preplace.translation() += approach_ * axis;
-      {
-        std::lock_guard<std::mutex> lock(scene_mutex_);
-        if (!scene_.setLensCentreContact(ctx.lens, true, err)) break;
-      }
       if (ctx.state == ArmContext::State::carried) {
+        {
+          std::lock_guard<std::mutex> lock(scene_mutex_);
+          if (!scene_.setLensCentreContact(ctx.lens, false, err)) break;
+        }
         feedback("centre_preplace");
-        if (!move(ctx, preplace, "直接避障到中心预装配位（接口+z外2cm）", err)) {
+        if (!move(ctx, preplace, "直接避障到中心预装配位（接口+z外2cm）", err,
+                  0.0, false, false, false, centre_planning_time_)) {
           RCLCPP_WARN(node_->get_logger(), "[回退] %s 原因=%s；下一步=下一个允许的中心接口，无其他接口则结束",
             context(ctx).c_str(), err.c_str());
           continue;
         }
+        if (!acquire_contact()) break;
         std::vector<std::string> placed;
         {
           std::lock_guard<std::mutex> lock(state_mutex_);
@@ -929,6 +1039,7 @@ private:
         }
         {
           std::lock_guard<std::mutex> lock(scene_mutex_);
+          if (!scene_.setLensCentreContact(ctx.lens, true, err)) break;
           if (!placed.empty() && !scene_.setLensTouch(ctx.lens, placed, true, err)) break;
         }
         feedback("centre_insert");
@@ -949,6 +1060,7 @@ private:
         ctx.state = ArmContext::State::centre_docked;
         ctx.centre_face = face;
       }
+      if (!contact_active && !acquire_contact()) break;
       const auto mate = sites_.mateError(st::lensFaceSite(ctx.lens, "S0"),
                                          st::centreSite(face), st::rotation(st::kQDock));
       if (!mate || mate->first >= 0.01 || mate->second >= 0.05) {
@@ -1008,6 +1120,7 @@ private:
         result.message = "已后退 2 cm，但夹爪仍与场景碰撞: " + err;
         return false;
       }
+      release_contact();
       if (goal.return_home) {
         feedback("return_home");
         std::map<std::string, double> home;
@@ -1022,6 +1135,7 @@ private:
         st::MotionRequest request;
         request.kind = st::MotionRequest::Kind::kJoints;
         request.what = "装配后回 home";
+        request.planning_time_s = home_planning_time_;
         ctx.log_target = ctx.spec->name + "_home；已安装中心接口=" + st::centreSite(face);
         for (const auto & joint : ctx.spec->joints) request.joints.push_back(home.at(joint));
         if (!executeMotion(ctx, request, err)) {
@@ -1077,10 +1191,14 @@ private:
   std::set<int> used_, reserved_;
   std::set<std::string> used_faces_;
   std::map<std::string, std::string> reserved_faces_;
+  std::map<std::string, std::string> centre_contacts_;
+  std::condition_variable centre_contact_cv_;
   std::mt19937 rng_;
   std::vector<std::thread> workers_;
   double approach_ = 0.02, exit_dx_ = 0.6, axis_tolerance_ = 0.008;
   double vertical_tolerance_ = 0.10, planning_time_ = 12.0;
+  double home_planning_time_ = 30.0;
+  double centre_planning_time_ = 30.0;
   double velocity_scale_ = 0.1, acceleration_scale_ = 0.1;
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr init_service_;
   rclcpp::Service<ResetEnvironment>::SharedPtr reset_service_;

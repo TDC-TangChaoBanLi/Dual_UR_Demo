@@ -79,6 +79,7 @@ arm_A_ur_force_torque_sensor_broadcaster:
 
 arm_A_ur_joint_trajectory_controller:
   ros__parameters:
+    interpolate_from_desired_state: true
     joints:
       - arm_A_ur_shoulder_pan_joint
       - arm_A_ur_shoulder_lift_joint
@@ -156,6 +157,7 @@ arm_B_ur_force_torque_sensor_broadcaster:
 
 arm_B_ur_joint_trajectory_controller:
   ros__parameters:
+    interpolate_from_desired_state: true
     joints:
       - arm_B_ur_shoulder_pan_joint
       - arm_B_ur_shoulder_lift_joint

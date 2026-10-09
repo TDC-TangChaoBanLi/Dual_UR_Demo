@@ -273,6 +273,11 @@ bool SceneManager::setLensCentreContact(int lens, bool allowed, std::string & er
   return setLensTouch(lens, {"len_center"}, allowed, err);
 }
 
+bool SceneManager::setLensStorageContact(int lens, bool allowed, std::string & err)
+{
+  return setLensTouch(lens, {storageSocketLink(lens), kStoragePanelLink}, allowed, err);
+}
+
 bool SceneManager::setLensTouch(
   int lens, const std::vector<std::string> & links, bool allowed, std::string & err)
 {

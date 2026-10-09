@@ -52,11 +52,168 @@ std::string trajectoryRecord(const moveit_msgs::msg::RobotTrajectory & trajector
 
 void DecoupledMotionBridge::setNode(const rclcpp::Node::SharedPtr & node)
 {
+  const auto backend=node->declare_parameter<std::string>("motion_backend", "direct");
+  if(backend!="direct"&&backend!="hybrid")throw std::invalid_argument("motion_backend must be direct or hybrid");
+  hybrid_ = backend == "hybrid";
+  planning_time_ = node->get_parameter("planning_time_s").as_double();
+  velocity_scale_ = node->get_parameter("velocity_scale").as_double();
+  acceleration_scale_ = node->get_parameter("acceleration_scale").as_double();
+  if (hybrid_) {
+    hybrid_client_ = rclcpp_action::create_client<Hybrid>(node, "/execute_motion");
+    stop_ = node->create_client<std_srvs::srv::Trigger>("/stop_motion");
+    resume_ = node->create_client<std_srvs::srv::Trigger>("/resume_motion");
+    reset_predictions_ = node->create_client<std_srvs::srv::Trigger>("/reset_motion_predictions");
+  }
   validity_ = node->create_client<moveit_msgs::srv::GetStateValidity>("/check_state_validity");
   for (const auto & arm : arms()) {
     const std::string action = "/" + arm.name + "_ur_joint_trajectory_controller/follow_joint_trajectory";
     controllers_[arm.name] = rclcpp_action::create_client<Follow>(node, action);
   }
+}
+
+void DecoupledMotionBridge::stopExecution()
+{
+  if (hybrid_) {
+    stop_->async_send_request(std::make_shared<std_srvs::srv::Trigger::Request>());
+  } else {
+    for (const auto & entry : controllers_) entry.second->async_cancel_all_goals();
+  }
+}
+
+bool DecoupledMotionBridge::resetExecutor(bool resume, std::string & err)
+{
+  if (!hybrid_) return true;
+  const auto call = [&](const rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr & client) {
+    if (!client->wait_for_service(std::chrono::seconds(5))) {err = "MPC 生命周期服务不可用"; return false;}
+    auto future = client->async_send_request(std::make_shared<std_srvs::srv::Trigger::Request>());
+    if (future.wait_for(std::chrono::seconds(5)) != std::future_status::ready) {err = "MPC 生命周期服务超时"; return false;}
+    const auto result = future.get();
+    if (!result->success) {err = result->message; return false;}
+    return true;
+  };
+  if (resume) return call(resume_);
+  if (!call(stop_)) return false;
+  // Wait for goal cancellation and the last stopping command before a simulator reset.
+  std::this_thread::sleep_for(std::chrono::milliseconds(300));
+  return call(reset_predictions_);
+}
+
+bool DecoupledMotionBridge::executeHybrid(
+  const std::string & arm, const MotionRequest & request,
+  const moveit_msgs::msg::RobotTrajectory & trajectory, std::string & err)
+{
+  if (!hybrid_client_->wait_for_action_server(std::chrono::seconds(10))) {
+    err = "通用 /execute_motion action 不可用"; return false;
+  }
+  auto & planner = *planners_.at(arm);
+  Hybrid::Goal goal;
+  goal.reference = trajectory.joint_trajectory;
+  goal.reference.header.stamp = builtin_interfaces::msg::Time{};
+  if (goal.reference.points.empty()) {
+    err = "规划返回空轨迹"; return false;
+  }
+  if (seconds(goal.reference.points.back().time_from_start) <= 0.0) {
+    const auto & first = goal.reference.points.front().positions;
+    for (const auto & point : goal.reference.points) {
+      if (point.positions.size() != first.size()) {
+        err = "零时长轨迹关节维度不一致"; return false;
+      }
+      for (size_t i = 0; i < first.size(); ++i) {
+        if (!std::isfinite(point.positions[i]) ||
+            std::abs(point.positions[i] - first[i]) > 1e-9) {
+          err = "拒绝有位移的零时长轨迹"; return false;
+        }
+      }
+    }
+    auto hold = goal.reference.points.front();
+    hold.time_from_start = builtin_interfaces::msg::Duration{};
+    hold.velocities.assign(first.size(), 0.0);
+    hold.accelerations.assign(first.size(), 0.0);
+    goal.reference.points = {hold, hold};
+    goal.reference.points.back().time_from_start.nanosec = 200000000;
+  }
+  goal.optimize_reference = request.kind != MotionRequest::Kind::kCartesian;
+  goal.request.group_name = planner.group();
+  const double global_budget=request.planning_time_s>0 ? request.planning_time_s : planning_time_;
+  if(!std::isfinite(global_budget)||global_budget<=0||global_budget>30) {
+    err="动态全局规划预算必须在 (0,30] 秒内";return false;
+  }
+  goal.request.allowed_planning_time = goal.optimize_reference ? global_budget : 3.0;
+  goal.request.max_velocity_scaling_factor = velocity_scale_;
+  goal.request.max_acceleration_scaling_factor = acceleration_scale_;
+  goal.timeout = std::max(controller_timeout_s_,
+    seconds(goal.reference.points.back().time_from_start)*3.0+global_budget+30.0);
+  moveit_msgs::msg::Constraints target;
+  for (size_t i=0;i<goal.reference.joint_names.size();++i) {
+    moveit_msgs::msg::JointConstraint c;
+    c.joint_name=goal.reference.joint_names[i];c.position=goal.reference.points.back().positions[i];
+    c.tolerance_above=c.tolerance_below=1e-5;c.weight=1.0;
+    target.joint_constraints.push_back(c);
+  }
+  goal.request.goal_constraints.push_back(target);
+  if (request.mirror_vertical) {
+    const Eigen::Vector3d normal=request.lens_in_tcp.linear().col(2);
+    std::ostringstream name;name.precision(17);
+    name << "link_normal_horizontal " << normal.x() << ' ' << normal.y() << ' ' << normal.z()
+         << ' ' << request.vertical_tolerance;
+    goal.request.path_constraints.name=name.str();
+    moveit_msgs::msg::OrientationConstraint c;c.header.frame_id="world";c.link_name=planner.tipLink();
+    c.orientation.w=1;c.absolute_x_axis_tolerance=c.absolute_y_axis_tolerance=c.absolute_z_axis_tolerance=M_PI;
+    c.weight=1;goal.request.path_constraints.orientation_constraints.push_back(c);
+  }
+  if (request.kind == MotionRequest::Kind::kCartesian) {
+    auto state=planner.mg().getCurrentState(2.0);
+    if (!state) {err="笛卡尔执行约束无法读取当前状态";return false;}
+    for(size_t i=0;i<goal.reference.joint_names.size();++i)
+      state->setVariablePosition(goal.reference.joint_names[i],goal.reference.points.front().positions[i]);
+    state->update();
+    const auto start=state->getGlobalLinkTransform(planner.tipLink());
+    for(size_t i=0;i<goal.reference.joint_names.size();++i)
+      state->setVariablePosition(goal.reference.joint_names[i],goal.reference.points.back().positions[i]);
+    state->update();
+    const Eigen::Vector3d end=state->getGlobalLinkTransform(planner.tipLink()).translation();
+    const Eigen::Vector3d delta=end-start.translation(),middle=(end+start.translation())*.5;
+    const Eigen::Quaterniond rotation=delta.norm()>1e-9 ?
+      Eigen::Quaterniond::FromTwoVectors(Eigen::Vector3d::UnitZ(),delta.normalized()) : Eigen::Quaterniond::Identity();
+    moveit_msgs::msg::PositionConstraint c;c.header.frame_id="world";c.link_name=planner.tipLink();c.weight=1;
+    shape_msgs::msg::SolidPrimitive cylinder;cylinder.type=shape_msgs::msg::SolidPrimitive::CYLINDER;
+    cylinder.dimensions={delta.norm()+.004,.002};
+    geometry_msgs::msg::Pose pose;pose.position.x=middle.x();pose.position.y=middle.y();pose.position.z=middle.z();
+    pose.orientation.x=rotation.x();pose.orientation.y=rotation.y();pose.orientation.z=rotation.z();pose.orientation.w=rotation.w();
+    c.constraint_region.primitives.push_back(cylinder);c.constraint_region.primitive_poses.push_back(pose);
+    goal.request.path_constraints.position_constraints.push_back(c);
+    if (!request.mirror_vertical) {
+      const Eigen::Quaterniond orientation(start.linear());
+      moveit_msgs::msg::OrientationConstraint fixed;
+      fixed.header.frame_id="world";fixed.link_name=planner.tipLink();fixed.weight=1;
+      fixed.orientation.x=orientation.x();fixed.orientation.y=orientation.y();
+      fixed.orientation.z=orientation.z();fixed.orientation.w=orientation.w();
+      fixed.absolute_x_axis_tolerance=fixed.absolute_y_axis_tolerance=fixed.absolute_z_axis_tolerance=.02;
+      goal.request.path_constraints.orientation_constraints.push_back(fixed);
+    }
+  }
+  RCLCPP_INFO(rclcpp::get_logger("space_sim_motion"),"[执行后端] %s %s + MPC（碰撞/路径约束复检）",
+    planner.diagnosticContext().c_str(),goal.optimize_reference?"动态STOMP种子优化":"笛卡尔参考");
+  auto accepted=hybrid_client_->async_send_goal(goal);
+  if(accepted.wait_for(std::chrono::seconds(10))!=std::future_status::ready) {err="动态规划执行服务接受目标超时";return false;}
+  auto handle=accepted.get();
+  if(!handle) {err="动态规划执行服务拒绝目标（执行器停止、反馈、组占用或请求无效）";return false;}
+  auto future=hybrid_client_->async_get_result(handle);
+  const auto deadline=std::chrono::steady_clock::now()+std::chrono::duration<double>(goal.timeout+10);
+  while(future.wait_for(std::chrono::milliseconds(200))!=std::future_status::ready) {
+    if(request.execution_guard&&!request.execution_guard(err)) {
+      hybrid_client_->async_cancel_goal(handle);return false;
+    }
+    if(std::chrono::steady_clock::now()>=deadline) {
+      hybrid_client_->async_cancel_goal(handle);err="动态规划执行服务结果超时";return false;
+    }
+  }
+  const auto result=future.get();
+  if(result.code!=rclcpp_action::ResultCode::SUCCEEDED||!result.result||result.result->error_code.val!=1) {
+    err=result.result?"动态规划执行失败 code="+std::to_string(result.result->error_code.val)+" "+result.result->message:"动态规划执行服务未返回结果";
+    return false;
+  }
+  return true;
 }
 
 void DecoupledMotionBridge::setPlanner(const std::string & arm, ArmPlanner * planner)
@@ -145,7 +302,8 @@ bool DecoupledMotionBridge::validateOverlap(
 }
 
 bool DecoupledMotionBridge::executeDirect(
-  const std::string & arm, const moveit_msgs::msg::RobotTrajectory & traj, std::string & err)
+  const std::string & arm, const MotionRequest & request,
+  const moveit_msgs::msg::RobotTrajectory & traj, std::string & err)
 {
   const auto client = controllers_.at(arm);
   if (!client->wait_for_action_server(std::chrono::seconds(5))) {
@@ -181,7 +339,19 @@ bool DecoupledMotionBridge::executeDirect(
   const auto planned_s = seconds(traj.joint_trajectory.points.back().time_from_start);
   const auto timeout = std::chrono::duration<double>(
     std::max(controller_timeout_s_, planned_s * 2.0 + 10.0));
-  if (result.wait_for(timeout) != std::future_status::ready) {
+  const auto deadline = std::chrono::steady_clock::now() + timeout;
+  bool guard_failed = false;
+  while (result.wait_for(std::chrono::milliseconds(200)) != std::future_status::ready &&
+         std::chrono::steady_clock::now() < deadline) {
+    if (request.execution_guard && !request.execution_guard(err)) {
+      client->async_cancel_goal(handle);
+      guard_failed = true;
+      break;
+    }
+  }
+  if (guard_failed) {
+    // Keep the task guard's concrete failure reason.
+  } else if (result.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
     client->async_cancel_goal(handle);
     err = "控制器执行超时";
   } else {
@@ -223,6 +393,8 @@ bool DecoupledMotionBridge::move(
       }
     }
   } end_snapshot{planner};
+  std::vector<std::vector<double>> rejected_endpoints;
+  std::string last_global_failure;
   for (int attempt = 0; attempt < 4; ++attempt) {
     if (!planner.hasVirtualStart()) {
       if (!ensureCurrentState(planner, err)) return false;
@@ -260,7 +432,9 @@ bool DecoupledMotionBridge::move(
       }
     } else if (!planner.planPose(
         req.target, req.joints, traj, err, req.optimizer_only,
-        req.mirror_vertical ? &req.lens_in_tcp : nullptr, req.vertical_tolerance)) {
+        req.mirror_vertical ? &req.lens_in_tcp : nullptr, req.vertical_tolerance, rejected_endpoints)) {
+      if (!last_global_failure.empty())
+        err = last_global_failure + "；其他IK终点候选耗尽: " + err;
       return false;
     }
     if (req.dry_run) {
@@ -295,9 +469,22 @@ bool DecoupledMotionBridge::move(
       }
     }
     err.clear();
-    if (executeDirect(arm, traj, err)) {
+    if (req.execution_guard && !req.execution_guard(err)) return false;
+    if (hybrid_ ? executeHybrid(arm, req, traj, err) : executeDirect(arm, req, traj, err)) {
+      if (req.execution_guard && !req.execution_guard(err)) return false;
       planner.resetStartStateToCurrent();
       return true;
+    }
+    if (hybrid_ && req.kind == MotionRequest::Kind::kPose &&
+        (err.find("STOMP optimization failed; no planner fallback") != std::string::npos ||
+         err.find("commit clearance violation") != std::string::npos ||
+         err.find("commit collision") != std::string::npos)) {
+      last_global_failure = err;
+      rejected_endpoints.push_back(traj.joint_trajectory.points.back().positions);
+      RCLCPP_WARN(rclcpp::get_logger("space_sim_motion"),
+        "[规划回退] %s 原因=%s；下一步=其他确定性IK终点，仍用动态STOMP；未执行失败参考",
+        planner.diagnosticContext().c_str(), err.c_str());
+      continue;
     }
     // 只有按时间采样证实会撞上正在执行的对侧轨迹时才让行；
     // 对侧离开后必须用新的关节起点重新规划，而不是执行旧轨迹。
@@ -325,7 +512,8 @@ bool DecoupledMotionBridge::move(
     }
     planner.resetStartStateToCurrent();
   }
-  err = "共享区域重新规划超过 4 次";
+  err = last_global_failure.empty() ? "共享区域重新规划超过 4 次" :
+    last_global_failure + "；动态STOMP终点尝试达到4次上限";
   return false;
 }
 

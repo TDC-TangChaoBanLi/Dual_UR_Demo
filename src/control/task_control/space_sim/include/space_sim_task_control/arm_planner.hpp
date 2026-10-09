@@ -12,12 +12,14 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <optional>
 
 #include "Eigen/Geometry"
 #include "moveit/move_group_interface/move_group_interface.hpp"
 #include "moveit_msgs/msg/robot_trajectory.hpp"
 #include "moveit_msgs/srv/get_position_ik.hpp"
 #include "moveit_msgs/srv/get_state_validity.hpp"
+#include "moveit_msgs/srv/get_planning_scene.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "space_sim_task_control/planner_registry.hpp"
 #include "space_sim_task_control/types.hpp"
@@ -89,12 +91,16 @@ public:
   /// 位姿目标：求确定性 IK 后使用 STOMP 优化关节轨迹。
   /// 镜面约束同时传入 STOMP 路径代价并在规划后复检。
   bool hasIk(const Eigen::Isometry3d & target, std::string & err);
+  void checkFollowingApproach(const Eigen::Isometry3d & target, int lens, double clearance)
+  { approach_check_ = ApproachCheck{target, lens, clearance}; }
+  void clearFollowingApproach() { approach_check_.reset(); }
 
   bool planPose(
     const Eigen::Isometry3d & target, const std::vector<double> & seed_joints,
     moveit_msgs::msg::RobotTrajectory & trajectory, std::string & err,
     bool optimizer_only = false, const Eigen::Isometry3d * lens_in_tcp = nullptr,
-    double vertical_tolerance = 0.10);
+    double vertical_tolerance = 0.10,
+    const std::vector<std::vector<double>> & rejected_endpoints = {});
 
   /// 关节目标（双臂同步规划时也用 arm_BOTH 组走这里）
   bool planJoints(
@@ -175,6 +181,9 @@ private:
   bool planCollisionCheckedDirect(
     const std::vector<double> & target, moveit_msgs::msg::RobotTrajectory & trajectory,
     std::string & err);
+  bool validateFollowingApproach(const moveit_msgs::msg::RobotTrajectory &, std::string &);
+  struct ApproachCheck { Eigen::Isometry3d target; int lens; double clearance; };
+  std::optional<ApproachCheck> approach_check_;
 
   rclcpp::Node::SharedPtr node_;
   std::string group_;
@@ -183,6 +192,7 @@ private:
   moveit::planning_interface::MoveGroupInterface mg_;
   rclcpp::Client<moveit_msgs::srv::GetPositionIK>::SharedPtr ik_client_;
   rclcpp::Client<moveit_msgs::srv::GetStateValidity>::SharedPtr validity_client_;
+  rclcpp::Client<moveit_msgs::srv::GetPlanningScene>::SharedPtr scene_client_;
   /// 默认只使用 STOMP 优化。
   std::vector<PlannerSpec> planners_{{"stomp", "space_sim_stomp/StompPlanner"}};
   std::string line_pipeline_;    ///< 直线段优先管线（如 pilz_industrial_motion_planner）

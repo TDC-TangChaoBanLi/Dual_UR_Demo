@@ -4,10 +4,10 @@ expected_faces: [S0, S1, S2, S3, S4, S5]
 expected_prefix: [S2, S3]
 arms:
   arm_A:
-    - {lens: 6, grasp_face: S1, phase_deg: 0, centre_face: S0, after: S3, return_home: true}
-    - {lens: 5, grasp_face: S2, phase_deg: 0, centre_face: S1, after: S0, return_home: true}
-    - {lens: 1, grasp_face: S4, phase_deg: 0, centre_face: S5, after: S0, return_home: true}
+    - {lens: 6, grasp_face: S1, phase_deg: 0, centre_face: S0, after: S3, return_home: false}
+    - {lens: 5, grasp_face: S2, phase_deg: 0, centre_face: S1, return_home: false}
+    - {lens: 1, grasp_face: S4, phase_deg: 0, centre_face: S5, return_home: true}
   arm_B:
-    - {lens: 4, grasp_face: S4, phase_deg: 0, centre_face: S2, return_home: true}
-    - {lens: 3, grasp_face: S2, phase_deg: 0, centre_face: S3, return_home: true}
-    - {lens: 2, grasp_face: S2, phase_deg: 0, centre_face: S4, before_pick: S5, after: S0, return_home: true}
+    - {lens: 4, grasp_face: S4, phase_deg: 0, centre_face: S2, return_home: false}
+    - {lens: 3, grasp_face: S2, phase_deg: 0, centre_face: S3, return_home: false}
+    - {lens: 2, grasp_face: S2, phase_deg: 0, centre_face: S4, return_home: true}

@@ -9,6 +9,45 @@ SitePoseProvider::SitePoseProvider(const rclcpp::Node::SharedPtr & node, double 
 : node_(node), timeout_s_(timeout_s)
 {
   client_ = node_->create_client<GetObjectPose>("/mujoco_god_plugin/get_object_pose");
+  cache_group_ = node_->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+}
+
+void SitePoseProvider::watch(const std::string & type, const std::string & name)
+{
+  const std::string key = type + "/" + name;
+  rclcpp::SubscriptionOptions options;
+  options.callback_group = cache_group_;
+  subscriptions_.push_back(node_->create_subscription<geometry_msgs::msg::PoseStamped>(
+    "/mujoco_god_plugin/pose/" + key, rclcpp::SensorDataQoS(),
+    [this, key](const geometry_msgs::msg::PoseStamped::SharedPtr msg) {
+      std::lock_guard<std::mutex> lock(cache_mutex_);
+      auto & history = cache_[key];
+      history.push_back({*msg, std::chrono::steady_clock::now()});
+      while (history.size() > 4) history.pop_front();
+    }, options));
+}
+
+std::optional<Eigen::Isometry3d> SitePoseProvider::cachedRelative(
+  const std::string & object_key, const std::string & reference_key, double max_age_s)
+{
+  std::lock_guard<std::mutex> lock(cache_mutex_);
+  const auto object = cache_.find(object_key), reference = cache_.find(reference_key);
+  if (object == cache_.end() || reference == cache_.end()) return std::nullopt;
+  const auto now = std::chrono::steady_clock::now();
+  for (auto a = object->second.rbegin(); a != object->second.rend(); ++a)
+    for (auto b = reference->second.rbegin(); b != reference->second.rend(); ++b) {
+      // Use one physics snapshot, never two independent moving-body samples.
+      if (a->pose.header.stamp != b->pose.header.stamp ||
+          a->pose.header.frame_id != b->pose.header.frame_id) continue;
+      const double simulation_age = (node_->now() - rclcpp::Time(a->pose.header.stamp, RCL_ROS_TIME)).seconds();
+      if (simulation_age < -0.01 || simulation_age > max_age_s ||
+          std::chrono::duration<double>(now-a->received).count() > max_age_s ||
+          std::chrono::duration<double>(now-b->received).count() > max_age_s) continue;
+      const auto body = fromMsg(a->pose.pose), frame = fromMsg(b->pose.pose);
+      if (!body.matrix().allFinite() || !frame.matrix().allFinite()) return std::nullopt;
+      return frame.inverse() * body;
+    }
+  return std::nullopt;
 }
 
 bool SitePoseProvider::waitForService(double timeout_s)
@@ -17,7 +56,8 @@ bool SitePoseProvider::waitForService(double timeout_s)
 }
 
 std::optional<Eigen::Isometry3d> SitePoseProvider::get(
-  const std::string & type, const std::string & name, const std::string & frame_id)
+  const std::string & type, const std::string & name, const std::string & frame_id,
+  double timeout_s)
 {
   if (!client_->service_is_ready()) {
     ++failures_;
@@ -28,7 +68,8 @@ std::optional<Eigen::Isometry3d> SitePoseProvider::get(
   req->name = name;
   req->frame_id = frame_id;
   auto future = client_->async_send_request(req);
-  if (future.wait_for(std::chrono::duration<double>(timeout_s_)) != std::future_status::ready) {
+  if (future.wait_for(std::chrono::duration<double>(timeout_s > 0.0 ? timeout_s : timeout_s_)) != std::future_status::ready) {
+    client_->remove_pending_request(future);
     ++failures_;
     return std::nullopt;
   }

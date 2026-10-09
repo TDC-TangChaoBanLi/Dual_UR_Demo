@@ -46,6 +46,7 @@ public:
 
   /// 允许 `link` 与所有其它 link / 对象碰撞（幂等）
   bool setLensCentreContact(int lens, bool allowed, std::string & err);
+  bool setLensStorageContact(int lens, bool allowed, std::string & err);
   bool setLensTouch(int lens, const std::vector<std::string> & links, bool allowed,
                     std::string & err);
 

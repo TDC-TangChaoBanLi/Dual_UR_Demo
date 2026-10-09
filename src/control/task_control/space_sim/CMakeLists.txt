@@ -9,6 +9,8 @@ find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
+find_package(multi_arm_motion_interfaces REQUIRED)
+find_package(multi_arm_motion_core REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(shape_msgs REQUIRED)
@@ -63,6 +65,8 @@ target_link_libraries(space_sim_task_server
 ament_target_dependencies(space_sim_task_server
     rclcpp
     rclcpp_action
+    multi_arm_motion_interfaces
+    multi_arm_motion_core
     rcl_interfaces
     geometry_msgs
     sensor_msgs

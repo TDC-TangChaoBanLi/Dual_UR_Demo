@@ -19,6 +19,8 @@
 
   <depend>rclcpp</depend>
   <depend>rclcpp_action</depend>
+  <depend>multi_arm_motion_interfaces</depend>
+  <depend>multi_arm_motion_core</depend>
   <depend>rcl_interfaces</depend>
   <depend>geometry_msgs</depend>
   <depend>sensor_msgs</depend>

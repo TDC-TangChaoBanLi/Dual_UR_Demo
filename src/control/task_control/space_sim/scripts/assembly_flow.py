@@ -158,14 +158,12 @@ class AssemblyFlow(Node):
                         )
                         peer = "arm_B" if arm == "arm_A" else "arm_A"
                         with self.condition:
-                            if peer in self.active_actions:
+                            if "双臂轨迹在" in message and peer in self.active_actions:
                                 completed = self.action_completed[peer]
                                 self.condition.wait_for(
                                     lambda: self.action_completed[peer] != completed or
                                     self.failed.is_set(), timeout=20.0
                                 )
-                            else:
-                                self.condition.wait(timeout=1.0)
                 if finished.lens != picked.lens:
                     raise RuntimeError(f"{arm}: picked lens {picked.lens}, docked {finished.lens}")
                 with self.condition:

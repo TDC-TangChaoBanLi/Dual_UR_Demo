@@ -17,6 +17,7 @@
   <exec_depend>moveit_planners</exec_depend>
   <exec_depend>moveit_planners_stomp</exec_depend>
   <exec_depend>space_sim_stomp_planner</exec_depend>
+  <exec_depend>multi_arm_hybrid_planning</exec_depend>
   <exec_depend>moveit_simple_controller_manager</exec_depend>
   <exec_depend>moveit_ros_control_interface</exec_depend>
   <exec_depend>moveit_configs_utils</exec_depend>
