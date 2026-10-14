@@ -20,3 +20,7 @@
 [submodule "lib/multi_arm_motion"]
 	path = lib/multi_arm_motion
 	url = git@github.com:TDC-TangChaoBanLi/multi_arm_motion.git
+[submodule "lib/serial"]
+	path = lib/serial
+	url = https://github.com/tylerjw/serial.git
+	branch = ros2

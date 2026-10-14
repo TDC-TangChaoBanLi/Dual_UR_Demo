@@ -119,6 +119,7 @@
   <xacro:ur_ros2_control
     name="arm_A_ur_hardware"
     tf_prefix="${arm_A_tf_prefix}ur_"
+    ur_type="${ur_A_ur_type}"
     kinematics_parameters_file="${ur_A_kinematics_parameters_file}"
     robot_ip="$(arg ur_A_robot_ip)"
     script_filename="$(arg script_filename)"
@@ -152,6 +153,7 @@
   <xacro:ur_ros2_control
     name="arm_B_ur_hardware"
     tf_prefix="${arm_B_tf_prefix}ur_"
+    ur_type="${ur_B_ur_type}"
     kinematics_parameters_file="${ur_B_kinematics_parameters_file}"
     robot_ip="$(arg ur_B_robot_ip)"
     script_filename="$(arg script_filename)"

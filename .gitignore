@@ -6,6 +6,7 @@ __pycache__/
 
 
 src/envs/*/*_mujoco_description/meshes/*
+!.gitkeep
 
 MUJOCO_LOG.TXT
 PLAN.md
