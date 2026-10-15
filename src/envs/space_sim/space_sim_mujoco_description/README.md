@@ -30,7 +30,7 @@ colcon build --symlink-install --packages-select space_sim_mujoco_description
 ```bash
 source ./install/setup.bash
 # 传统控制器（joint_trajectory / forward_position 等）
-ros2 launch launch_controller start_traditional_controllers.launch.py env:=space_sim_mujoco initial_ur_controller:=forward_position_controller
+ros2 launch launch_controller start_joints_controllers.launch.py env:=space_sim_mujoco initial_ur_controller:=forward_position_controller
 
 # OCS2 双臂控制器（无夹爪，Interactive Marker 基座帧为 base_cube）
 ros2 launch launch_controller start_ocs2_arms_controller.launch.py env:=space_sim_mujoco mujoco_headless:=true launch_rviz:=false

@@ -34,10 +34,10 @@ from launch_ros.parameter_descriptions import ParameterFile
 #     mjcf/{env}.xml
 # ============================================================
 
-# 与 start_traditional_controllers.launch.py 保持一致（同一 planning URDF 路径）
+# 与 start_joints_controllers.launch.py 保持一致（同一 planning URDF 路径）
 PLANNING_URDF_PATH = "/tmp/dual_ur_ocs2_planning.urdf"
 
-# 支持的夹爪类型（与 start_traditional_controllers.launch.py 保持一致）
+# 支持的夹爪类型（与 start_joints_controllers.launch.py 保持一致）
 SUPPORTED_GRIPPER_TYPES = {"dh_ag95", "robotiq_2f85", "none"}
 
 # 夹爪控制器（已按 left/right 命名，与 GripperControlPanel / VR 匹配）

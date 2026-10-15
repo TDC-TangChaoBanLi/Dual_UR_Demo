@@ -1,10 +1,16 @@
 /**:
   ros__parameters:
+    # 可用规划管线（默认使用 stomp）；RViz 的 MotionPlanning 面板中可切换
     planning_pipelines:
       - ompl
+      - stomp
+      - chomp
 
-    default_planning_pipeline: ompl
+    default_planning_pipeline: stomp
 
+    # ==================================================================
+    # OMPL（采样规划器，RRTConnect 等）
+    # ==================================================================
     ompl:
       request_adapters:
         - default_planning_request_adapters/ResolveConstraintFrames
@@ -38,3 +44,66 @@
           - RRTConnectkConfigDefault
         projection_evaluator: joints(arm_B_ur_shoulder_pan_joint,arm_B_ur_shoulder_lift_joint)
         longest_valid_segment_fraction: 0.005
+
+    # ==================================================================
+    # STOMP（随机轨迹优化，默认管线）
+    # ==================================================================
+    stomp:
+      planning_plugins:
+        - stomp_moveit/StompPlanner
+      request_adapters:
+        - default_planning_request_adapters/ResolveConstraintFrames
+        - default_planning_request_adapters/ValidateWorkspaceBounds
+        - default_planning_request_adapters/CheckStartStateBounds
+        - default_planning_request_adapters/CheckStartStateCollision
+      response_adapters:
+        - default_planning_response_adapters/ValidateSolution
+        - default_planning_response_adapters/DisplayMotionPath
+      # ParamListener 读取 stomp.<key>（不带 stomp_moveit 层级）；
+      # 每次规划时长受请求中的 allowed_planning_time 限制
+      num_timesteps: 40
+      num_iterations: 1000
+      num_iterations_after_valid: 0
+      num_rollouts: 15
+      max_rollouts: 25
+      exponentiated_cost_sensitivity: 0.5
+      control_cost_weight: 0.1
+      delta_t: 0.1
+
+    # ==================================================================
+    # CHOMP（协变哈密顿轨迹优化）
+    # ==================================================================
+    chomp:
+      planning_plugins:
+        - chomp_interface/CHOMPPlanner
+      request_adapters:
+        - default_planning_request_adapters/ResolveConstraintFrames
+        - default_planning_request_adapters/ValidateWorkspaceBounds
+        - default_planning_request_adapters/CheckStartStateBounds
+        - default_planning_request_adapters/CheckStartStateCollision
+      response_adapters:
+        - default_planning_response_adapters/ValidateSolution
+        - default_planning_response_adapters/DisplayMotionPath
+      start_state_max_bounds_error: 0.1
+      # CHOMP 参数由 chomp_interface 读取，前缀为管线名 chomp；
+      # [WARN] CHOMP 忽略请求中的 allowed_planning_time，只受 planning_time_limit 限制
+      planning_time_limit: 10.0
+      max_iterations: 200
+      max_iterations_after_collision_free: 5
+      smoothness_cost_weight: 0.1
+      obstacle_cost_weight: 1.0
+      learning_rate: 0.01
+      smoothness_cost_velocity: 0.0
+      smoothness_cost_acceleration: 1.0
+      smoothness_cost_jerk: 0.0
+      ridge_factor: 0.01
+      use_pseudo_inverse: false
+      pseudo_inverse_ridge_factor: 1.0e-04
+      joint_update_limit: 0.1
+      collision_clearance: 0.05
+      collision_threshold: 0.07
+      use_stochastic_descent: false
+      enable_failure_recovery: false
+      max_recovery_attempts: 5
+      # quintic-spline（默认）/ linear（直线插值）；不依赖采样规划轨迹初始化
+      trajectory_initialization_method: "quintic-spline"

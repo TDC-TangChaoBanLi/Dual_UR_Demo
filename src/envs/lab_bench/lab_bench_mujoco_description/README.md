@@ -31,6 +31,6 @@ colcon build --symlink-install --packages-select lab_bench_mujoco_description
 
 ```bash
 source ./install/setup.bash
-ros2 launch launch_controller start_traditional_controllers.launch.py env:=lab_bench_mujoco
+ros2 launch launch_controller start_joints_controllers.launch.py env:=lab_bench_mujoco
 ```
 

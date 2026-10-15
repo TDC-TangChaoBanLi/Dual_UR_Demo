@@ -6,7 +6,7 @@
 **只**启动 MoveIt 的 move_group（可选 RViz）：不启动 ros2_control / 控制器 / robot_state_publisher。
 真机 / 假硬件控制器要另外启动：
 
-    ros2 launch launch_controller start_traditional_controllers.launch.py \\
+    ros2 launch launch_controller start_joints_controllers.launch.py \\
         env:=lab_bench use_fake_hardware:=true
 
 本文件只是 `launch_controller/start_moveit_group.launch.py` 的薄封装（env 写死 lab_bench）；

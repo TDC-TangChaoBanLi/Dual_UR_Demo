@@ -22,8 +22,9 @@ def _load_hardware_params():
 
 
 _HW = _load_hardware_params()
-UR_A_ROBOT_IP = _HW["ur"]["arm_A"]["robot_ip"]
-UR_B_ROBOT_IP = _HW["ur"]["arm_B"]["robot_ip"]
+# hardware_interface_controller_params.yaml 为扁平结构（{参数名}: {值}）
+UR_A_ROBOT_IP = _HW["ur_A_robot_ip"]
+UR_B_ROBOT_IP = _HW["ur_B_robot_ip"]
 
 
 def _dashboard_client_group(namespace, robot_ip, dashboard_receive_timeout):

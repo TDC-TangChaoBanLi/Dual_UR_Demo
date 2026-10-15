@@ -1,7 +1,7 @@
 # ============================================================
 # 硬件接口控制器参数（统一配置文件）
 #
-# 供 start_traditional_controllers.launch.py 与 start_ocs2_arms_controller.launch.py
+# 供 start_joints_controllers.launch.py 与 start_ocs2_arms_controller.launch.py
 # 共同读取，作为 xacro 参数传给 ros2_control 硬件接口。
 #
 # 格式：扁平结构 {参数名}:{值}，启动文件会将每个键值对逐个作为

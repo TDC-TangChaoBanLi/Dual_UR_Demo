@@ -93,7 +93,7 @@ world ──(fixed)── base_link ──(fixed)── satellite            # �
 
 ```bash
 # 仿真 + 控制器
-ros2 launch launch_controller start_traditional_controllers.launch.py \
+ros2 launch launch_controller start_joints_controllers.launch.py \
     env:=space_sim_mujoco initial_ur_controller:=joint_trajectory_controller
 # move_group（默认带 RViz）—— demo.launch.py **只起 move_group**，不再起仿真/控制器
 ros2 launch space_sim_moveit_config demo.launch.py
@@ -243,7 +243,7 @@ stateDiagram-v2
 colcon build --symlink-install --packages-select space_sim_moveit_config space_sim_task_control
 
 # 仿真 + 控制器
-ros2 launch launch_controller start_traditional_controllers.launch.py \
+ros2 launch launch_controller start_joints_controllers.launch.py \
   env:=space_sim_mujoco initial_ur_controller:=joint_trajectory_controller \
   mujoco_headless:=true launch_rviz:=false
 # move_group（demo.launch.py 现在只起它；也可用统一入口 env:=space_sim）

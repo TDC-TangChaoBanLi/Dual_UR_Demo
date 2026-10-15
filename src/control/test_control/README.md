@@ -67,7 +67,7 @@ ros2 run test_control test_ros2_control --ros-args -p arm_target:=A -p goal_posi
 
 ```bash
 # 先启动底层控制器与 MoveIt
-ros2 launch launch_controller start_traditional_controllers.launch.py env:=lab_bench launch_rviz:=false
+ros2 launch launch_controller start_joints_controllers.launch.py env:=lab_bench launch_rviz:=false
 ros2 launch launch_controller start_moveit_group.launch.py env:=lab_bench launch_rviz:=true
 
 # 再运行规划测试
@@ -119,7 +119,7 @@ ros2 run test_control test_move_group
 
 ```bash
 # 先启动控制器（forward_position_controller）与 Servo
-ros2 launch launch_controller start_traditional_controllers.launch.py \
+ros2 launch launch_controller start_joints_controllers.launch.py \
   launch_rviz:=false initial_ur_controller:=forward_position_controller
 # 可组合组件方式会让 Servo 的状态监视回调在初始化期间得到执行；双臂本机测试推荐使用
 ros2 launch lab_bench_moveit_config start_lab_bench_servo.launch.py launch_as_component:=true

@@ -33,7 +33,7 @@ ENV_PREF_FILE="${HOME}/.config/dual_ur_demo/env"
 ROS_DISTRO_DEFAULT="jazzy"
 
 # ---- 启动通用参数 ----
-LAUNCH_RVIZ="true"          # 是否启动 RViz（OCS2 需要 RViz 交互 Marker / FSM 面板）
+# RViz 是否启动在「启动」流程中通过 Y/n 询问（默认启动）
 MUJOCO_HEADLESS="false"     # MuJoCo 是否隐藏 Simulate 视窗（true=无界面）
 
 # ---- RealSense 相机配置（realsense1_* / realsense2_* / realsense3_*） ----
@@ -290,13 +290,31 @@ flow_build() {
 
 # ============================== 功能 2：启动 ==============================
 
-# 真机启动：CAN 接口 + dashboard_client + 服务调用（load/power_on/brake_release/play）
-call_service() {
-  print_info "服务调用: $1"
+# 服务调用并检查返回值（success=True 视为成功）；失败返回 1
+call_service_checked() {
   # $1=服务名 $2=服务类型 $3=请求内容
-  if ! ros2 service call "$1" "$2" "$3"; then
-    print_warn "服务调用失败: $1"
+  local out
+  out="$(timeout 15 ros2 service call "$1" "$2" "$3" 2>&1)" || {
+    print_error "服务调用失败: $1（服务无响应或超时）"
+    return 1
+  }
+  if grep -q "success=True" <<< "${out}"; then
+    print_info "服务调用成功: $1"
+    return 0
   fi
+  print_error "服务返回失败: $1"
+  echo "${out}" | grep -E "message=|success=" | head -2 | sed 's/^/    /'
+  return 1
+}
+
+# 打开 CAN 接口（DH-AG95 夹爪 socketcan）
+setup_can_interface() {
+  [ -n "${CAN_INTERFACE}" ] || return 0
+  print_info "配置 CAN 接口 ${CAN_INTERFACE}（bitrate ${CAN_BITRATE}）"
+  sudo ip link set "${CAN_INTERFACE}" down 2> /dev/null || true
+  sudo ip link set "${CAN_INTERFACE}" type can bitrate "${CAN_BITRATE}" 2> /dev/null \
+    || print_warn "配置 ${CAN_INTERFACE} 失败（可能无此接口或无权限，按需忽略）"
+  sudo ip link set "${CAN_INTERFACE}" up 2> /dev/null || true
 }
 
 wait_for_dashboard() {
@@ -312,44 +330,82 @@ wait_for_dashboard() {
   return 1
 }
 
-run_real_setup() {
-  # 1) 打开 CAN 接口（DH-AG95 夹爪 socketcan）
-  if [ -n "${CAN_INTERFACE}" ]; then
-    print_info "配置 CAN 接口 ${CAN_INTERFACE}（bitrate ${CAN_BITRATE}）"
-    sudo ip link set "${CAN_INTERFACE}" down 2> /dev/null || true
-    sudo ip link set "${CAN_INTERFACE}" type can bitrate "${CAN_BITRATE}" 2> /dev/null \
-      || print_warn "配置 ${CAN_INTERFACE} 失败（可能无此接口或无权限，按需忽略）"
-    sudo ip link set "${CAN_INTERFACE}" up 2> /dev/null || true
-  fi
-
-  # 2) 启动 dashboard_client（后台，脚本退出时自动结束）
+# 启动 dashboard_client（后台）；成功返回 0 并设置全局 DASHBOARD_PID
+DASHBOARD_PID=""
+start_dashboard_client() {
   print_info "启动 dashboard_client（后台）..."
   ros2 launch "${DASHBOARD_LAUNCH_PKG}" "${DASHBOARD_LAUNCH_FILE}" &
-  BG_PIDS+=($!)
-
-  # 3) 等待服务
+  DASHBOARD_PID=$!
   if ! wait_for_dashboard; then
     print_error "dashboard_client 服务未就绪，请检查机械臂网络连接（IP 配置见 lab_bench_description）"
     return 1
   fi
+  return 0
+}
 
-  # 4) 使用 README 中的服务启动机械臂
-  local ns
+# dashboard 初始化服务：load_program → power_on → brake_release
+# 任一失败返回 1（失败内容由 call_service_checked 打印）
+run_dashboard_init_services() {
+  local ns rc=0
   for ns in "${ARM_NAMESPACES[@]}"; do
-    call_service "/${ns}/dashboard_client/load_program" \
-      "ur_dashboard_msgs/srv/Load" "{filename: '${UR_PROGRAM_NAME}'}"
+    call_service_checked "/${ns}/dashboard_client/load_program" \
+      "ur_dashboard_msgs/srv/Load" "{filename: '${UR_PROGRAM_NAME}'}" || rc=1
   done
   for ns in "${ARM_NAMESPACES[@]}"; do
-    call_service "/${ns}/dashboard_client/power_on" "std_srvs/srv/Trigger" "{}"
+    call_service_checked "/${ns}/dashboard_client/power_on" "std_srvs/srv/Trigger" "{}" || rc=1
   done
   for ns in "${ARM_NAMESPACES[@]}"; do
-    call_service "/${ns}/dashboard_client/brake_release" "std_srvs/srv/Trigger" "{}"
+    call_service_checked "/${ns}/dashboard_client/brake_release" "std_srvs/srv/Trigger" "{}" || rc=1
   done
+  return "${rc}"
+}
+
+# 控制器启动后重新启动 UR 程序（先 stop 再 play）
+# play 失败时抛出错误（[ERROR]）并返回 1
+restart_ur_program() {
+  local ns rc=0
+  print_info "重新启动 UR 机械臂程序（stop → play，程序: ${UR_PROGRAM_NAME}）..."
+
+  # 1) 停止程序
   for ns in "${ARM_NAMESPACES[@]}"; do
-    call_service "/${ns}/dashboard_client/play" "std_srvs/srv/Trigger" "{}"
+    call_service_checked "/${ns}/dashboard_client/stop" "std_srvs/srv/Trigger" "{}" \
+      || print_error "停止 ${ns} 机械臂程序失败（stop）"
   done
 
-  print_info "机械臂已上电并运行程序 ${UR_PROGRAM_NAME}"
+  # 2) 启动程序（play 失败必须抛出错误）
+  for ns in "${ARM_NAMESPACES[@]}"; do
+    call_service_checked "/${ns}/dashboard_client/play" "std_srvs/srv/Trigger" "{}" \
+      || {
+        print_error "启动 ${ns} 机械臂程序失败（play），机械臂将不响应控制命令！"
+        rc=1
+      }
+  done
+
+  if [ "${rc}" -eq 0 ]; then
+    print_info "UR 程序已重新启动（${UR_PROGRAM_NAME}）"
+  else
+    print_error "UR 程序重新启动失败"
+  fi
+  return "${rc}"
+}
+
+# 检查 dashboard_client 服务是否已就绪（需先通过主菜单「启动 dashboard_client」选项启动）
+check_dashboard_ready() {
+  ros2 service list 2> /dev/null | grep -q "arm_A/dashboard_client/play"
+}
+
+# 真机准备：CAN 配置 + 检查 dashboard_client 已就绪
+# （dashboard_client 由用户预先通过主菜单「启动 dashboard_client」选项启动并完成初始化）
+run_real_setup() {
+  setup_can_interface || true
+
+  if ! check_dashboard_ready; then
+    print_error "dashboard_client 未运行或服务未就绪"
+    print_info "  请先运行本脚本主菜单的「启动 dashboard_client」选项，"
+    print_info "  完成机械臂初始化（load_program / power_on / brake_release）后，再启动控制器。"
+    return 1
+  fi
+  print_info "dashboard_client 服务已就绪（在后台运行中）"
   return 0
 }
 
@@ -363,8 +419,56 @@ wait_for_controller_manager() {
     fi
     sleep 2
   done
-  print_warn "等待 controller_manager 超时，直接继续启动 MoveIt"
+  print_warn "等待 controller_manager 超时，继续执行"
   return 1
+}
+
+# 等待控制器激活（active）
+wait_for_controllers_active() {
+  local timeout=60 i
+  print_info "等待控制器激活（最长 ${timeout}s）..."
+  for ((i = 0; i < timeout; i++)); do
+    if ros2 control list_controllers 2> /dev/null | grep -qE "[[:space:]]active$"; then
+      print_info "控制器已激活"
+      return 0
+    fi
+    sleep 2
+  done
+  print_warn "等待控制器激活超时，继续执行"
+  return 1
+}
+
+# 询问是否启动 RViz（默认启动，回车=Y）
+ask_rviz_default_yes() {
+  local ans
+  read -rp "是否启动 RViz？[Y/n]（回车=启动）: " ans || ans=""
+  case "${ans}" in
+    n | N | no | NO) return 1 ;;
+    *) return 0 ;;
+  esac
+}
+
+# 启动控制器 launch（前台等待）；真机模式下后台启动，
+# 等控制器就绪后重新启动 UR 程序（stop → play）再保持等待
+run_controller_launch() {
+  # $1=launch 文件；其余为启动参数
+  local launch_file="$1"
+  shift
+  local -a largs=("$@")
+
+  if [ "${is_real}" -eq 1 ]; then
+    ros2 launch launch_controller "${launch_file}" "${largs[@]}" &
+    local lpid=$!
+    BG_PIDS+=("${lpid}")
+    wait_for_controller_manager
+    wait_for_controllers_active
+    sleep 2
+    restart_ur_program || true # 失败时 restart_ur_program 内部已打印详细错误
+    print_info "控制器运行中（Ctrl+C 结束）"
+    wait "${lpid}"
+  else
+    ros2 launch launch_controller "${launch_file}" "${largs[@]}"
+  fi
 }
 
 flow_launch() {
@@ -372,17 +476,23 @@ flow_launch() {
   env="$(load_env_pref)"
   local env_desc="${env}_description"
 
-  local app
-  app="$(menu_select "请选择启动项" 1 \
-    "ocs2_arms_control  （OCS2 双臂 MPC 控制器 + Interactive Marker + RViz）" \
-    "moveit             （后台启动 joints_controller + MoveIt move_group）" \
-    "joints_controller  （传统关节控制器，start_traditional_controllers）")"
-
+  # 1) 先选择运行模式
   local mode
   mode="$(menu_select "请选择运行模式" 1 \
     "mock_sim      （虚拟硬件 use_fake_hardware:=true）" \
     "mujoco_sim    （MuJoCo 仿真 env:=${env}_mujoco）" \
     "real_hardware （真实机械臂 use_fake_hardware:=false）")"
+
+  # 2) 再选择启动项
+  local app
+  app="$(menu_select "请选择启动项" 1 \
+    "ocs2_arms_control  （OCS2 双臂 MPC 控制器 + Interactive Marker）" \
+    "joints_controller  （传统关节控制器，start_joints_controllers）" \
+    "moveit             （后台 joints_controller + MoveIt move_group）")"
+
+  # 3) 询问是否启动 RViz（回车=启动）
+  local launch_rviz="true"
+  ask_rviz_default_yes || launch_rviz="false"
 
   # 模式 → 启动参数
   local launch_env="${env}" use_fake="true" is_real=0 is_mujoco=0
@@ -423,7 +533,7 @@ flow_launch() {
       # ---- OCS2 双臂控制器 ----
       local -a args=(
         "env:=${launch_env}"
-        "launch_rviz:=${LAUNCH_RVIZ}"
+        "launch_rviz:=${launch_rviz}"
       )
       if [ "${is_mujoco}" -eq 1 ]; then
         args+=("mujoco_headless:=${MUJOCO_HEADLESS}")
@@ -436,9 +546,28 @@ flow_launch() {
       fi
 
       print_info "启动 OCS2 双臂控制器（env=${launch_env}）..."
-      ros2 launch launch_controller start_ocs2_arms_controller.launch.py "${args[@]}"
+      run_controller_launch start_ocs2_arms_controller.launch.py "${args[@]}"
       ;;
     2)
+      # ---- 传统关节控制器（joints_controller） ----
+      local -a args=(
+        "env:=${launch_env}"
+        "launch_rviz:=${launch_rviz}"
+      )
+      if [ "${is_mujoco}" -eq 1 ]; then
+        args+=("mujoco_headless:=${MUJOCO_HEADLESS}")
+      else
+        args+=("use_fake_hardware:=${use_fake}")
+      fi
+
+      if [ "${is_real}" -eq 1 ]; then
+        run_real_setup || return 1
+      fi
+
+      print_info "启动 joints_controller（env=${launch_env}）..."
+      run_controller_launch start_joints_controllers.launch.py "${args[@]}"
+      ;;
+    3)
       # ---- MoveIt（后台 joints_controller + 前台 move_group） ----
       if ! ros2 pkg prefix "${env}_moveit_config" > /dev/null 2>&1; then
         print_error "未找到 ${env}_moveit_config 包（该环境可能没有 MoveIt 配置或未编译）"
@@ -461,37 +590,54 @@ flow_launch() {
 
       local joints_log="/tmp/dual_ur_joints_controller.log"
       print_info "后台启动 joints_controller（日志: ${joints_log}）..."
-      ros2 launch launch_controller start_traditional_controllers.launch.py "${joints_args[@]}" \
+      ros2 launch launch_controller start_joints_controllers.launch.py "${joints_args[@]}" \
         > "${joints_log}" 2>&1 &
       BG_PIDS+=($!)
 
       wait_for_controller_manager
+      wait_for_controllers_active
 
-      # README：MoveIt 需要 scaled_joint_trajectory_controller（joints_controller 默认已激活）
+      # 真机：控制器就绪后重新启动 UR 程序（stop → play）
+      if [ "${is_real}" -eq 1 ]; then
+        sleep 2
+        restart_ur_program || true # 失败时 restart_ur_program 内部已打印详细错误
+      fi
+
+      # MoveIt 需要 scaled_joint_trajectory_controller（joints_controller 默认已激活）
       print_info "启动 MoveIt move_group（env=${env}）..."
       ros2 launch launch_controller start_moveit_group.launch.py \
-        "env:=${env}" "launch_rviz:=${LAUNCH_RVIZ}"
-      ;;
-    3)
-      # ---- 传统关节控制器（joints_controller） ----
-      local -a args=(
-        "env:=${launch_env}"
-        "launch_rviz:=${LAUNCH_RVIZ}"
-      )
-      if [ "${is_mujoco}" -eq 1 ]; then
-        args+=("mujoco_headless:=${MUJOCO_HEADLESS}")
-      else
-        args+=("use_fake_hardware:=${use_fake}")
-      fi
-
-      if [ "${is_real}" -eq 1 ]; then
-        run_real_setup || return 1
-      fi
-
-      print_info "启动 joints_controller（env=${launch_env}）..."
-      ros2 launch launch_controller start_traditional_controllers.launch.py "${args[@]}"
+        "env:=${env}" "launch_rviz:=${launch_rviz}"
       ;;
   esac
+}
+
+# ============================== 功能 2b：启动 dashboard_client ==============================
+
+# 启动 dashboard_client 并自动执行初始化服务（load / power_on / brake_release）；
+# 任一失败则打印失败内容、停止 dashboard_client 并退出
+flow_dashboard_client() {
+  ensure_ros_env || return 1
+
+  if ! ros2 pkg prefix launch_controller > /dev/null 2>&1; then
+    print_error "未找到 launch_controller 包，请先执行「编译」"
+    return 1
+  fi
+
+  setup_can_interface || true
+
+  if ! start_dashboard_client; then
+    exit 1
+  fi
+
+  if ! run_dashboard_init_services; then
+    print_error "机械臂初始化服务失败，停止 dashboard_client 并退出"
+    kill "${DASHBOARD_PID}" 2> /dev/null
+    exit 1
+  fi
+
+  print_info "机械臂初始化完成（已加载 ${UR_PROGRAM_NAME}、上电、释放刹车）"
+  print_info "dashboard_client 已在后台运行（停止: pkill -f dashboard_client）"
+  print_info "  下一步：启动控制器（真机模式），控制器就绪后脚本会自动重新启动 UR 程序（stop → play）"
 }
 
 # ============================== 功能 3：启动相机 ==============================
@@ -666,15 +812,17 @@ echo -e "${BLUE}  当前环境: ${cur_env}${NC}"
 print_hr
 c="$(menu_select --exit "请选择操作" 1 \
   "编译（当前环境相关包）" \
-  "启动（ocs2_arms_control / moveit / joints_controller）" \
+  "启动（ocs2_arms_control / joints_controller / moveit）" \
+  "启动 dashboard_client（真实机械臂初始化：启动 + 初始化服务）" \
   "启动相机（RealSense）" \
   "切换环境（assembly_exp / lab_bench / space_sim）")"
 
 case "${c}" in
   1) flow_build ;;
   2) flow_launch ;;
-  3) flow_cameras ;;
-  4) flow_select_env ;;
+  3) flow_dashboard_client ;;
+  4) flow_cameras ;;
+  5) flow_select_env ;;
   0)
     echo "退出"
     exit 0

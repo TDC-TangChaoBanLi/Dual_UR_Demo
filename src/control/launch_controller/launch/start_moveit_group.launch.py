@@ -10,9 +10,9 @@
 env 不是固定枚举：只要是任意已构建的 `{env}_moveit_config` 就能起（见下面的“环境解析”）。
 
 配套控制器（需先启动，否则只能规划不能执行）：
-    ros2 launch launch_controller start_traditional_controllers.launch.py \\
+    ros2 launch launch_controller start_joints_controllers.launch.py \\
         env:=space_sim_mujoco initial_ur_controller:=joint_trajectory_controller
-    ros2 launch launch_controller start_traditional_controllers.launch.py env:=lab_bench
+    ros2 launch launch_controller start_joints_controllers.launch.py env:=lab_bench
 
 环境解析（**没有白名单**，直接按包名找 —— 新增环境只需建包，不用改这个文件）：
     env=<name>  -> MoveIt 配置包 {name}_moveit_config，描述包 {name}_description
